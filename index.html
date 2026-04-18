@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#201914" />
+  <title>Lantern Road</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app" class="app-shell">
+    <header class="topbar">
+      <div>
+        <h1>Lantern Road</h1>
+        <p class="subtitle">A tabletop-style road campaign in one frontier region.</p>
+      </div>
+      <div class="header-actions">
+        <button class="top-button" id="newGameBtn">New Campaign</button>
+        <button class="top-button" id="saveBtn">Save</button>
+        <button class="top-button" id="loadBtn">Load</button>
+      </div>
+    </header>
+
+    <section class="status-strip" id="statusStrip"></section>
+
+    <main class="main-layout">
+      <section class="map-panel panel">
+        <div class="panel-head">
+          <div>
+            <h2>Grey March Map</h2>
+            <p id="mapHint" class="muted">Tap a neighbouring hex to travel. Tap your current hex to focus it.</p>
+          </div>
+          <div class="map-buttons">
+            <button id="focusHereBtn">Focus Here</button>
+            <button id="campBtn">Camp</button>
+          </div>
+        </div>
+        <div class="canvas-wrap">
+          <canvas id="mapCanvas" aria-label="Hex map of the Grey March"></canvas>
+        </div>
+      </section>
+
+      <section class="side-panel panel">
+        <nav class="tabs">
+          <button class="tab active" data-tab="context">Context</button>
+          <button class="tab" data-tab="journal">Journal</button>
+          <button class="tab" data-tab="party">Party</button>
+          <button class="tab" data-tab="log">Log</button>
+        </nav>
+        <div id="tabContent" class="tab-content"></div>
+      </section>
+    </main>
+  </div>
+
+  <div id="modalRoot" class="modal-root hidden" aria-live="polite"></div>
+
+  <script src="content.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

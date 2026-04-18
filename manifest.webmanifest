@@ -1,0 +1,10 @@
+{
+  "name": "Lantern Road",
+  "short_name": "LanternRoad",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#16110d",
+  "theme_color": "#201914",
+  "description": "A static browser adventure RPG about road travel, rumours, quests, and faction intrigue.",
+  "orientation": "any"
+}
