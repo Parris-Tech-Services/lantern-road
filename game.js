@@ -27,6 +27,7 @@
     newGameBtn: document.getElementById("newGameBtn"),
     saveBtn: document.getElementById("saveBtn"),
     loadBtn: document.getElementById("loadBtn"),
+    fullscreenBtn: document.getElementById("fullscreenBtn"),
     campBtn: document.getElementById("campBtn"),
     focusHereBtn: document.getElementById("focusHereBtn"),
     mapHint: document.getElementById("mapHint")
@@ -2565,6 +2566,49 @@
     renderModal();
   }
 
+  function toggleFullscreen() {
+    if (document.fullscreenElement) {
+      document.exitFullscreen?.();
+      return;
+    }
+    document.documentElement.requestFullscreen?.();
+  }
+
+  function renderGameToText() {
+    const location = state ? currentLocation() : null;
+    return JSON.stringify({
+      coordinateSystem: "Hex map uses offset coordinates; q increases right and r increases down.",
+      mode: state?.combat ? "combat" : state?.activeScene ? "scene" : state?.ui?.dialogue ? "dialogue" : "exploration",
+      campaign: state ? {
+        day: state.day,
+        hour: state.hour,
+        weather: state.weather,
+        gold: state.gold,
+        renown: state.renown,
+        fatigue: state.fatigue,
+        position: state.position,
+        location: location?.data?.name || null,
+        inventory: state.inventory,
+        factions: state.factions,
+        activeQuests: Object.entries(state.quests)
+          .filter(([, quest]) => quest.status === "active")
+          .map(([id, quest]) => ({ id, stage: quest.stage, dueDay: quest.dueDay })),
+        party: state.party.map((member) => ({ id: member.id, hp: member.hp, guard: member.guard }))
+      } : null,
+      combat: state?.combat ? {
+        encounterId: state.combat.encounterId,
+        round: state.combat.round,
+        activeId: state.combat.turnOrder[state.combat.turnIndex],
+        enemies: state.combat.enemies.filter((enemy) => enemy.hp > 0).map((enemy) => ({
+          id: enemy.uid,
+          kind: enemy.id,
+          hp: enemy.hp,
+          maxHp: enemy.maxHp
+        }))
+      } : null
+    });
+  }
+
   function handleDocumentClick(event) {
     const button = event.target.closest("[data-action]");
     if (!button) return;
@@ -2634,6 +2678,7 @@
     });
     dom.saveBtn.addEventListener("click", saveGame);
     dom.loadBtn.addEventListener("click", loadGame);
+    dom.fullscreenBtn.addEventListener("click", toggleFullscreen);
     dom.campBtn.addEventListener("click", () => state && campParty());
     dom.focusHereBtn.addEventListener("click", () => state && focusCurrentLocation());
     dom.tabs.forEach(tab => {
@@ -2646,6 +2691,12 @@
     document.body.addEventListener("click", handleDocumentClick);
     dom.mapCanvas.addEventListener("pointerdown", onMapPointer);
     window.addEventListener("resize", renderAll);
+    document.addEventListener("keydown", event => {
+      if (event.key.toLowerCase() === "f" && !event.ctrlKey && !event.metaKey && !event.altKey) {
+        event.preventDefault();
+        toggleFullscreen();
+      }
+    });
   }
 
   function init() {
@@ -2654,6 +2705,11 @@
       navigator.serviceWorker.register("./sw.js").catch(() => {});
     }
     startNewGame();
+    window.render_game_to_text = renderGameToText;
+    window.advanceTime = () => {
+      renderAll();
+      return renderGameToText();
+    };
   }
 
   init();

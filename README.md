@@ -53,6 +53,12 @@ https://YOUR-USERNAME.github.io/YOUR-REPO/
 - Use the **Party** tab for HP, skills, and consumables.
 - Use the **Log** tab for recent events.
 - Save and load with the buttons in the top bar.
+- Press `F` or use the top-bar button to toggle fullscreen.
+
+## Runtime inspection
+
+- `window.render_game_to_text()` returns a concise JSON summary of the campaign, active quests, and combat.
+- `window.advanceTime(ms)` refreshes the turn-based view deterministically and returns the same summary.
 
 ## Design Overview
 
