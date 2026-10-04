@@ -2434,7 +2434,7 @@
       "likely_files": [
         "systems/companions/"
       ],
-      "notes": "Mechanist design layer. Storyteller supplies voice/personality; Director owns the player-agency boundary."
+      "notes": "PARKED 2026-10-04 by Agent 3 under claim-protocol v1.2. Branch: agent/LR-0092-companion-autonomy-design-c95a4f5e. Exact useful head: 0aed4d927d332a44aaef45a1fbdba5e527fb4c88. PR #53. Added systems/companions/COMPANION-WILLINGNESS-AUTONOMY-SPEC.md only; no runtime/save/story prose edits. Spec defines deterministic willingness from values/Trust/relationships/Fatigue/injury/stakes/scarcity/relevant memories, accept/reluctant-accept/counter-offer/refuse outcomes, character-grounded Garrick/Mira/Oren/Brindle profiles, bounded proactivity, predictable persuasion/Command hooks, Leader authority protections, action-economy integration and 18 automated test expectations. Acceptance criteria satisfied by authoring; remaining external closure is Director review/merge. Freshly claim companion-autonomy-design before any content change or merge reconciliation."
     },
     {
       "id": "LR-0093",
