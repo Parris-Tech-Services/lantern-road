@@ -3150,7 +3150,7 @@
         "assets/ui/README.md",
         "docs/ART-DIRECTION.md"
       ],
-      "notes": "Distinct from LR-0002's visual-system foundation and LR-0031's illustrative asset integration. This task produces the final reusable UI/map symbol artwork only; it does not change interaction semantics or runtime wiring."
+      "notes": "PARKED pending Director exact-head review. PR #65, branch agent/LR-0121-ui-iconography-9d8c4a71, useful head 65e9a7a72b63d277edfe4f8a76969fa43c3633a7. Added 40-symbol 24×24 SVG production sprite plus semantics/accessibility docs and iconography direction. QA: 40 unique ids, all symbols 24×24, currentColor-based, no scripts, explicit no-icon-only-critical-meaning rule. Coordination checks pass; only remaining gate is .agent-coordination/design-reviews/LR-0121.json for exact head. Director review requested on PR #65 comment #5977650266. After approval, fresh claimant should verify exact head, merge, mark DONE and release any fresh claim."
     },
     {
       "id": "LR-0122",
