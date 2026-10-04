@@ -27,7 +27,8 @@
     "Narrative authoring may proceed ahead of runtime/save integration when it is isolated to story/docs assets. Blocking engine integration must not unnecessarily idle the Storyteller.",
     "Agent 1 follow-on engineering tasks should remain mostly blocked behind the relevant foundations; LR-0059 is the intentionally independent current lane so Steward work can continue without colliding with parked feature branches.",
     "Josh's 4 Oct playtest direction: the player should exist in-world as party leader; active adventuring composition is leader + three companions; companions should have bounded personality-driven agency; dialogue should remember prior conversations/choices; action repeatability must be explicit; and the phone core loop should not require whole-page scroll shuttling between map and outcome.",
-    "BG3 is a reference for player-avatar-centred companion approval/dialogue and legible action-resource costs. Inkle's Sorcery! is a structural reference for remembered narrative state and map-centric cross-platform/mobile presentation. Adapt principles only; do not clone copyrighted dialogue, UI art or D&D rules."
+    "BG3 is a reference for player-avatar-centred companion approval/dialogue and legible action-resource costs. Inkle's Sorcery! is a structural reference for remembered narrative state and map-centric cross-platform/mobile presentation. Adapt principles only; do not clone copyrighted dialogue, UI art or D&D rules.",
+    "Critical-path drain mode: when high-fan-out priority-0 work is PARKED, Agent 7 prioritises its standing review before lower-impact review inventory; once required review/gates clear, the owning role prioritises fresh reconciliation/merge/closure before creating filler work. This does not permit cross-role claiming or weaken exact-head review."
   ],
   "tasks": [
     {
@@ -181,10 +182,11 @@
         "LR-0004",
         "LR-0005",
         "LR-0006",
-        "LR-0010",
         "LR-0011",
         "LR-0013",
-        "LR-0046"
+        "LR-0046",
+        "LR-0132",
+        "LR-0138"
       ],
       "goal": "Build memorable conditional travel/camp events that react to the party and prior choices.",
       "acceptance_criteria": [
@@ -196,7 +198,7 @@
         "content.js",
         "game.js"
       ],
-      "notes": "Blocked until character, consequence and progression foundations exist.",
+      "notes": "Blocked until character, consequence and progression foundations exist. Architecture dependency narrowed by LR-0128: replaces all-or-nothing LR-0010 wait with stage(s) LR-0132, LR-0138; final integration remains governed by LR-0010 where separately applicable.",
       "primary_agent": 2,
       "supporting_agents": [
         3
@@ -209,11 +211,11 @@
       "priority": 2,
       "exclusive_scope": "campaign-arc",
       "depends_on": [
-        "LR-0010",
         "LR-0011",
         "LR-0013",
         "LR-0005",
-        "LR-0043"
+        "LR-0043",
+        "LR-0138"
       ],
       "goal": "Turn the existing 18-day renown frame into a clearer escalating dramatic arc with substantially different endings.",
       "acceptance_criteria": [
@@ -226,7 +228,7 @@
         "content.js",
         "game.js"
       ],
-      "notes": "Premium-gap area: campaign arc/replayability.",
+      "notes": "Premium-gap area: campaign arc/replayability. Architecture dependency narrowed by LR-0128: replaces all-or-nothing LR-0010 wait with stage(s) LR-0138; final integration remains governed by LR-0010 where separately applicable.",
       "primary_agent": 2
     },
     {
@@ -261,34 +263,39 @@
     },
     {
       "id": "LR-0010",
-      "title": "Architecture modularisation and integration audit",
+      "title": "Architecture modularisation completion and integration audit",
       "status": "BLOCKED",
       "priority": 0,
       "exclusive_scope": "architecture-integration",
       "depends_on": [
-        "LR-0003",
-        "LR-0005",
-        "LR-0006",
-        "LR-0009",
-        "LR-0099"
+        "LR-0132",
+        "LR-0133",
+        "LR-0134",
+        "LR-0135",
+        "LR-0136",
+        "LR-0137",
+        "LR-0138"
       ],
       "primary_agent": 1,
-      "goal": "After the already-in-flight specialist branches land, split the monolithic runtime/content hotspots into safer module boundaries so the next feature wave does not keep colliding in game.js and content.js.",
+      "goal": "After the staged architecture extractions land, verify the modular runtime/content boundaries work together, remove/record temporary shims, clean the documented legacy root notes, and certify the next specialist wave can work mostly outside game.js/content.js.",
       "acceptance_criteria": [
-        "Map current state, rendering, save, combat, content and UI responsibilities and document the intended module boundaries.",
-        "Extract high-collision responsibilities from game.js/content.js into small stable modules or data files without changing player-visible behaviour.",
-        "Keep a simple static-browser build; do not introduce a heavy framework or bundler unless a documented decision explicitly approves it.",
-        "Define ownership/integration contracts so future tasks can usually touch their specialist module instead of the same monolithic files.",
-        "Run the real-browser regression harness after the split and preserve existing saves through the documented migration layer.",
-        "Record any deliberately deferred extractions as separate queue tasks rather than growing this PR indefinitely."
+        "Verify all staged extraction tasks are merged and their public contracts agree; do not re-extract the same responsibilities inside LR-0010.",
+        "Run the full real-browser regression harness, save migration/round-trip checks, content integrity and module-boundary tests against the integrated architecture.",
+        "Confirm upcoming specialist tasks map to owned modules and no unresolved circular/shared-state coupling forces routine edits back into game.js/content.js.",
+        "Remove temporary compatibility shims that can safely disappear now; convert any necessary remaining shim into an explicitly owned follow-up task.",
+        "Archive or remove legacy root notes progress.md and podcasttodo.md if still obsolete.",
+        "Record final architecture/integration risks and rollback notes; keep the static-browser deployment model and avoid a framework/bundler rewrite."
       ],
       "likely_files": [
+        "src/",
+        "content/",
         "game.js",
         "content.js",
         "README.md",
+        "tests/",
         ".agent-coordination/WORK-QUEUE.json"
       ],
-      "notes": "Mandatory next-wave architecture gate. It is intentionally blocked until the four already-active specialist branches land, avoiding a disruptive module split underneath live work. Housekeeping noted by the 4 Oct external audit: podcasttodo.md and progress.md are legacy root notes, not active queue requirements. During LR-0010's integration/doc audit, archive or remove them if still obsolete rather than letting agents treat them as current product scope."
+      "notes": "Parent completion gate for staged architecture extraction created by LR-0128. Stages: LR-0132 core state/effects; LR-0133 world/map/travel; LR-0134 party/dialogue; LR-0135 combat/actions; LR-0136 economy/services; LR-0137 UI/render shell; LR-0138 content/narrative split. Specialist tasks may depend on the smallest sufficient stage rather than waiting for this parent. Final cross-system integration/QA tasks should continue to depend on LR-0010."
     },
     {
       "id": "LR-0011",
@@ -453,12 +460,13 @@
       "priority": 1,
       "exclusive_scope": "combat-depth-ai",
       "depends_on": [
-        "LR-0010",
         "LR-0011",
         "LR-0013",
         "LR-0094",
         "LR-0103",
-        "LR-0125"
+        "LR-0125",
+        "LR-0134",
+        "LR-0135"
       ],
       "primary_agent": 3,
       "goal": "Make combat decisions substantially more interesting without turning Lantern Road into a grid tactics game.",
@@ -474,7 +482,7 @@
         "game.js",
         "content.js"
       ],
-      "notes": "Mechanist-owned. Preserve Lantern Road's compact card/target combat identity; deepen decisions rather than adding a tactical grid. Leader-roster boundary: consume LR-0103 before runtime implementation so the canonical active party is Leader + three companions rather than silently preserving the four-companion prototype. Runtime roster boundary: consume LR-0125's single Leader + three-active-companion foundation rather than implementing roster/Leader actor semantics independently."
+      "notes": "Mechanist-owned. Preserve Lantern Road's compact card/target combat identity; deepen decisions rather than adding a tactical grid. Leader-roster boundary: consume LR-0103 before runtime implementation so the canonical active party is Leader + three companions rather than silently preserving the four-companion prototype. Runtime roster boundary: consume LR-0125's single Leader + three-active-companion foundation rather than implementing roster/Leader actor semantics independently. Architecture dependency narrowed by LR-0128: replaces all-or-nothing LR-0010 wait with stage(s) LR-0134, LR-0135; final integration remains governed by LR-0010 where separately applicable."
     },
     {
       "id": "LR-0016",
@@ -484,9 +492,9 @@
       "exclusive_scope": "economy-supplies",
       "depends_on": [
         "LR-0005",
-        "LR-0010",
         "LR-0011",
-        "LR-0013"
+        "LR-0013",
+        "LR-0136"
       ],
       "primary_agent": 3,
       "goal": "Make gold, rations, rest, shops and expedition resources create sustained but fair pressure across the 18-day campaign.",
@@ -501,7 +509,7 @@
         "content.js",
         "game.js"
       ],
-      "notes": "Mechanist owns base prices, income, costs and resource-pressure balance. Consume LR-0005 faction modifier hooks rather than duplicating consequence logic."
+      "notes": "Mechanist owns base prices, income, costs and resource-pressure balance. Consume LR-0005 faction modifier hooks rather than duplicating consequence logic. Architecture dependency narrowed by LR-0128: replaces all-or-nothing LR-0010 wait with stage(s) LR-0136; final integration remains governed by LR-0010 where separately applicable."
     },
     {
       "id": "LR-0017",
@@ -511,11 +519,12 @@
       "exclusive_scope": "equipment-itemisation",
       "depends_on": [
         "LR-0006",
-        "LR-0010",
         "LR-0011",
         "LR-0013",
         "LR-0103",
-        "LR-0125"
+        "LR-0125",
+        "LR-0134",
+        "LR-0136"
       ],
       "primary_agent": 3,
       "goal": "Expand LR-0006's equipment/build foundation into a small but expressive item ecosystem with meaningful trade-offs.",
@@ -530,7 +539,7 @@
         "content.js",
         "game.js"
       ],
-      "notes": "Blocked on LR-0006 so it extends rather than competes with the progression foundation. Economy boundary: LR-0017 owns item categories, effects, availability and equip/reward plumbing; LR-0016 owns global base prices/income/resource-pressure targets, with LR-0020 providing final whole-system tuning. Leader-roster boundary: consume LR-0103 before runtime implementation so the canonical active party is Leader + three companions rather than silently preserving the four-companion prototype. Runtime roster boundary: consume LR-0125's single Leader + three-active-companion foundation rather than implementing roster/Leader actor semantics independently."
+      "notes": "Blocked on LR-0006 so it extends rather than competes with the progression foundation. Economy boundary: LR-0017 owns item categories, effects, availability and equip/reward plumbing; LR-0016 owns global base prices/income/resource-pressure targets, with LR-0020 providing final whole-system tuning. Leader-roster boundary: consume LR-0103 before runtime implementation so the canonical active party is Leader + three companions rather than silently preserving the four-companion prototype. Runtime roster boundary: consume LR-0125's single Leader + three-active-companion foundation rather than implementing roster/Leader actor semantics independently. Architecture dependency narrowed by LR-0128: replaces all-or-nothing LR-0010 wait with stage(s) LR-0134, LR-0136; final integration remains governed by LR-0010 where separately applicable."
     },
     {
       "id": "LR-0018",
@@ -540,12 +549,13 @@
       "exclusive_scope": "injury-condition-system",
       "depends_on": [
         "LR-0006",
-        "LR-0010",
         "LR-0011",
         "LR-0013",
         "LR-0016",
         "LR-0103",
-        "LR-0125"
+        "LR-0125",
+        "LR-0134",
+        "LR-0136"
       ],
       "primary_agent": 3,
       "goal": "Turn the progression foundation's injury/condition hooks into memorable persistent consequences that affect expedition decisions.",
@@ -560,7 +570,7 @@
         "content.js",
         "game.js"
       ],
-      "notes": "Blocked on LR-0006. This is the full recovery loop, not a duplicate of LR-0006's foundational persistent-state hook. Economy boundary: recovery costs and resource drains must consume the target assumptions established by LR-0016; LR-0018 owns injury/recovery mechanics, not global economy rebalance. Leader-roster boundary: consume LR-0103 before runtime implementation so the canonical active party is Leader + three companions rather than silently preserving the four-companion prototype. Runtime roster boundary: consume LR-0125's single Leader + three-active-companion foundation rather than implementing roster/Leader actor semantics independently."
+      "notes": "Blocked on LR-0006. This is the full recovery loop, not a duplicate of LR-0006's foundational persistent-state hook. Economy boundary: recovery costs and resource drains must consume the target assumptions established by LR-0016; LR-0018 owns injury/recovery mechanics, not global economy rebalance. Leader-roster boundary: consume LR-0103 before runtime implementation so the canonical active party is Leader + three companions rather than silently preserving the four-companion prototype. Runtime roster boundary: consume LR-0125's single Leader + three-active-companion foundation rather than implementing roster/Leader actor semantics independently. Architecture dependency narrowed by LR-0128: replaces all-or-nothing LR-0010 wait with stage(s) LR-0134, LR-0136; final integration remains governed by LR-0010 where separately applicable."
     },
     {
       "id": "LR-0019",
@@ -570,10 +580,11 @@
       "exclusive_scope": "combat-encounter-variety",
       "depends_on": [
         "LR-0015",
-        "LR-0010",
         "LR-0011",
         "LR-0013",
-        "LR-0016"
+        "LR-0016",
+        "LR-0135",
+        "LR-0136"
       ],
       "primary_agent": 3,
       "goal": "Use the deeper combat rules to create encounters that feel authored and mechanically distinct rather than permutations of the same fight.",
@@ -588,7 +599,7 @@
         "content.js",
         "game.js"
       ],
-      "notes": "Blocked on LR-0015 because encounter design should exploit the finished combat-depth vocabulary. Economy boundary: encounter reward/risk values must use LR-0016's documented economy assumptions; this task owns encounter composition/signature mechanics, not global price or income tuning."
+      "notes": "Blocked on LR-0015 because encounter design should exploit the finished combat-depth vocabulary. Economy boundary: encounter reward/risk values must use LR-0016's documented economy assumptions; this task owns encounter composition/signature mechanics, not global price or income tuning. Architecture dependency narrowed by LR-0128: replaces all-or-nothing LR-0010 wait with stage(s) LR-0135, LR-0136; final integration remains governed by LR-0010 where separately applicable."
     },
     {
       "id": "LR-0020",
@@ -757,7 +768,7 @@
       "exclusive_scope": "qa-new-player-clarity",
       "depends_on": [
         "LR-0009",
-        "LR-0010"
+        "LR-0137"
       ],
       "primary_agent": 6,
       "goal": "Approach Lantern Road as if seeing it for the first time and identify where the game fails to teach goals, controls, terminology, consequences or next steps naturally.",
@@ -772,7 +783,7 @@
         "QA/",
         ".agent-coordination/WORK-QUEUE.json"
       ],
-      "notes": "Tests intuitiveness rather than raw functionality. Real-browser execution is required; code inspection alone is not black-box QA."
+      "notes": "Tests intuitiveness rather than raw functionality. Real-browser execution is required; code inspection alone is not black-box QA. Architecture dependency narrowed by LR-0128: replaces all-or-nothing LR-0010 wait with stage(s) LR-0137; final integration remains governed by LR-0010 where separately applicable."
     },
     {
       "id": "LR-0027",
@@ -902,7 +913,7 @@
       "depends_on": [
         "LR-0002",
         "LR-0042",
-        "LR-0010"
+        "LR-0137"
       ],
       "primary_agent": 4,
       "goal": "Curate, optimise and integrate the approved illustration set into Lantern Road's existing visual slots while keeping mobile download cost controlled.",
@@ -919,7 +930,7 @@
         "style.css",
         "docs/ART-DIRECTION.md"
       ],
-      "notes": "Second-wave Lamplighter integration task. AI image generation itself is split into LR-0042 to avoid mixing generation with curation, optimisation and repo integration. Blocked until LR-0042 is DONE. Integration boundary: LR-0042 may generate/source art before the architecture gate, but repository/style integration waits for LR-0010 so it does not collide with the grandfathered mobile/foundation wave."
+      "notes": "Second-wave Lamplighter integration task. AI image generation itself is split into LR-0042 to avoid mixing generation with curation, optimisation and repo integration. Blocked until LR-0042 is DONE. Integration boundary: LR-0042 may generate/source art before the architecture gate, but repository/style integration waits for LR-0010 so it does not collide with the grandfathered mobile/foundation wave. Architecture dependency narrowed by LR-0128: replaces all-or-nothing LR-0010 wait with stage(s) LR-0137; final integration remains governed by LR-0010 where separately applicable."
     },
     {
       "id": "LR-0032",
@@ -929,8 +940,8 @@
       "exclusive_scope": "authored-audio-production",
       "depends_on": [
         "LR-0003",
-        "LR-0010",
-        "LR-0126"
+        "LR-0126",
+        "LR-0137"
       ],
       "primary_agent": 4,
       "goal": "Replace or augment the procedural audio foundation with a coherent authored soundscape and restrained adaptive score while preserving phone performance and player control.",
@@ -947,7 +958,7 @@
         "game.js",
         "docs/AUDIO-DIRECTION.md"
       ],
-      "notes": "Second-wave Lamplighter authored-audio integration task. LR-0126 now owns the upstream soundscape/score production bible and source-asset contract; LR-0032 consumes that approved contract for final authored audio assets/runtime integration. It still waits for LR-0010 before touching shared runtime architecture."
+      "notes": "Second-wave Lamplighter authored-audio integration task. LR-0126 now owns the upstream soundscape/score production bible and source-asset contract; LR-0032 consumes that approved contract for final authored audio assets/runtime integration. It still waits for LR-0010 before touching shared runtime architecture. Architecture dependency narrowed by LR-0128: replaces all-or-nothing LR-0010 wait with stage(s) LR-0137; final integration remains governed by LR-0010 where separately applicable."
     },
     {
       "id": "LR-0033",
@@ -1063,10 +1074,11 @@
         "LR-0004",
         "LR-0005",
         "LR-0008",
-        "LR-0010",
         "LR-0011",
         "LR-0013",
-        "LR-0044"
+        "LR-0044",
+        "LR-0134",
+        "LR-0138"
       ],
       "goal": "Turn the personal-story hooks for Garrick, Mira, Oren and Brindle into authored side arcs that deepen attachment without bloating the main campaign.",
       "acceptance_criteria": [
@@ -1081,7 +1093,7 @@
         "content.js",
         "game.js"
       ],
-      "notes": "Follow-up to LR-0004. Distinct from LR-0007 general travel/camp events and LR-0008 main campaign arc. Explicitly tracks the earlier open question of whether Mira's choices carry weight later.",
+      "notes": "Follow-up to LR-0004. Distinct from LR-0007 general travel/camp events and LR-0008 main campaign arc. Explicitly tracks the earlier open question of whether Mira's choices carry weight later. Architecture dependency narrowed by LR-0128: replaces all-or-nothing LR-0010 wait with stage(s) LR-0134, LR-0138; final integration remains governed by LR-0010 where separately applicable.",
       "primary_agent": 2
     },
     {
@@ -1093,12 +1105,13 @@
       "depends_on": [
         "LR-0005",
         "LR-0008",
-        "LR-0010",
         "LR-0011",
         "LR-0013",
         "LR-0045",
         "LR-0088",
-        "LR-0090"
+        "LR-0090",
+        "LR-0134",
+        "LR-0138"
       ],
       "goal": "Make the Grey March's recurring NPCs feel like people who notice history, faction shifts and the player's reputation rather than static quest dispensers.",
       "acceptance_criteria": [
@@ -1113,7 +1126,7 @@
         "content.js",
         "game.js"
       ],
-      "notes": "Separate from LR-0005 consequence infrastructure: this is authored social depth using that infrastructure. Separate from LR-0007 event expansion.",
+      "notes": "Separate from LR-0005 consequence infrastructure: this is authored social depth using that infrastructure. Separate from LR-0007 event expansion. Architecture dependency narrowed by LR-0128: replaces all-or-nothing LR-0010 wait with stage(s) LR-0134, LR-0138; final integration remains governed by LR-0010 where separately applicable.",
       "primary_agent": 2
     },
     {
@@ -1124,7 +1137,7 @@
       "exclusive_scope": "accessibility-navigation",
       "depends_on": [
         "LR-0009",
-        "LR-0010"
+        "LR-0137"
       ],
       "primary_agent": 5,
       "goal": "Make every critical Lantern Road loop operable and understandable without precise pointer input, including keyboard and assistive-technology use.",
@@ -1140,7 +1153,7 @@
         "style.css",
         "game.js"
       ],
-      "notes": "Discovered during LR-0009 after queue de-duplication. This is deeper interaction parity, not a repeat of LR-0009's phone layout/settings work or Warden black-box QA."
+      "notes": "Discovered during LR-0009 after queue de-duplication. This is deeper interaction parity, not a repeat of LR-0009's phone layout/settings work or Warden black-box QA. Architecture dependency narrowed by LR-0128: replaces all-or-nothing LR-0010 wait with stage(s) LR-0137; final integration remains governed by LR-0010 where separately applicable."
     },
     {
       "id": "LR-0040",
@@ -1351,9 +1364,10 @@
       "depends_on": [
         "LR-0047",
         "LR-0005",
-        "LR-0010",
         "LR-0011",
-        "LR-0013"
+        "LR-0013",
+        "LR-0134",
+        "LR-0138"
       ],
       "primary_agent": 2,
       "goal": "Integrate the LR-0047 authored quest scenes into the playable six core questlines after the shared architecture, consequence, save and browser-test foundations are ready.",
@@ -1371,7 +1385,7 @@
         "game.js",
         "tests/"
       ],
-      "notes": "Integration counterpart to LR-0047. Distinct from LR-0008, which owns the regional 18-day campaign beats/endings, and LR-0025, which independently QA-tests quest-state integrity."
+      "notes": "Integration counterpart to LR-0047. Distinct from LR-0008, which owns the regional 18-day campaign beats/endings, and LR-0025, which independently QA-tests quest-state integrity. Architecture dependency narrowed by LR-0128: replaces all-or-nothing LR-0010 wait with stage(s) LR-0134, LR-0138; final integration remains governed by LR-0010 where separately applicable."
     },
     {
       "id": "LR-0049",
@@ -1658,9 +1672,9 @@
       "priority": 1,
       "exclusive_scope": "state-invariants",
       "depends_on": [
-        "LR-0010",
         "LR-0011",
-        "LR-0013"
+        "LR-0013",
+        "LR-0132"
       ],
       "primary_agent": 1,
       "goal": "Catch impossible campaign states close to where they are introduced instead of letting corruption surface later.",
@@ -1676,7 +1690,7 @@
         "game.js",
         "tests/"
       ],
-      "notes": "Post-modularisation safety layer."
+      "notes": "Post-modularisation safety layer. Architecture dependency narrowed by LR-0128: replaces all-or-nothing LR-0010 wait with stage(s) LR-0132; final integration remains governed by LR-0010 where separately applicable."
     },
     {
       "id": "LR-0062",
@@ -1980,11 +1994,11 @@
       "priority": 1,
       "exclusive_scope": "canonical-map-rendering",
       "depends_on": [
-        "LR-0010",
         "LR-0069",
         "LR-0070",
         "LR-0072",
-        "LR-0105"
+        "LR-0105",
+        "LR-0133"
       ],
       "primary_agent": 1,
       "goal": "Render the canonical axial gameplay map over the authored Grey March terrain atlas while keeping game logic/data independent from raster artwork.",
@@ -2003,7 +2017,7 @@
         "assets/art/maps/",
         "tests/"
       ],
-      "notes": "Steward rendering architecture. The painting is never authoritative game data. Regional-label boundary: wait for LR-0105 so dynamic atlas overlays consume machine-protected canonical regions rather than Storyteller proposal files."
+      "notes": "Steward rendering architecture. The painting is never authoritative game data. Regional-label boundary: wait for LR-0105 so dynamic atlas overlays consume machine-protected canonical regions rather than Storyteller proposal files. Architecture dependency narrowed by LR-0128: replaces all-or-nothing LR-0010 wait with stage(s) LR-0133; final integration remains governed by LR-0010 where separately applicable."
     },
     {
       "id": "LR-0074",
@@ -2370,11 +2384,12 @@
       "priority": 1,
       "exclusive_scope": "stateful-dialogue-runtime",
       "depends_on": [
-        "LR-0010",
         "LR-0011",
         "LR-0013",
         "LR-0088",
-        "LR-0089"
+        "LR-0089",
+        "LR-0134",
+        "LR-0138"
       ],
       "primary_agent": 1,
       "goal": "Provide a reusable data-driven conversation runtime for deep branching dialogue, repeat conversations and remembered social state.",
@@ -2392,7 +2407,7 @@
         "content.js",
         "tests/"
       ],
-      "notes": "Steward runtime integration. Agent 2 owns prose/choice authoring; Agent 1 owns the reusable conversation engine."
+      "notes": "Steward runtime integration. Agent 2 owns prose/choice authoring; Agent 1 owns the reusable conversation engine. Architecture dependency narrowed by LR-0128: replaces all-or-nothing LR-0010 wait with stage(s) LR-0134, LR-0138; final integration remains governed by LR-0010 where separately applicable."
     },
     {
       "id": "LR-0091",
@@ -2452,13 +2467,13 @@
       "exclusive_scope": "companion-autonomy-runtime",
       "depends_on": [
         "LR-0006",
-        "LR-0010",
         "LR-0011",
         "LR-0013",
         "LR-0091",
         "LR-0092",
         "LR-0103",
-        "LR-0125"
+        "LR-0125",
+        "LR-0134"
       ],
       "primary_agent": 3,
       "goal": "Implement the leader/companion relationship mechanically so companions can meaningfully accept, resist or proactively respond to suggestions.",
@@ -2475,7 +2490,7 @@
         "game.js",
         "tests/"
       ],
-      "notes": "Mechanist integration after player-leader, authored social and progression/save foundations. Leader-roster boundary: consume LR-0103 before runtime implementation so the canonical active party is Leader + three companions rather than silently preserving the four-companion prototype. Runtime roster boundary: consume LR-0125's single Leader + three-active-companion foundation rather than implementing roster/Leader actor semantics independently."
+      "notes": "Mechanist integration after player-leader, authored social and progression/save foundations. Leader-roster boundary: consume LR-0103 before runtime implementation so the canonical active party is Leader + three companions rather than silently preserving the four-companion prototype. Runtime roster boundary: consume LR-0125's single Leader + three-active-companion foundation rather than implementing roster/Leader actor semantics independently. Architecture dependency narrowed by LR-0128: replaces all-or-nothing LR-0010 wait with stage(s) LR-0134; final integration remains governed by LR-0010 where separately applicable."
     },
     {
       "id": "LR-0094",
@@ -2531,9 +2546,10 @@
       "exclusive_scope": "responsive-play-shell",
       "depends_on": [
         "LR-0009",
-        "LR-0010",
         "LR-0013",
-        "LR-0095"
+        "LR-0095",
+        "LR-0133",
+        "LR-0137"
       ],
       "primary_agent": 5,
       "goal": "Replace the scroll-shuttle core loop with a responsive play shell that keeps geography and consequences visible together.",
@@ -2551,7 +2567,7 @@
         "src/ui/",
         "tests/e2e/"
       ],
-      "notes": "Major layout follow-up to LR-0009; intentionally waits for architecture and research."
+      "notes": "Major layout follow-up to LR-0009; intentionally waits for architecture and research. Architecture dependency narrowed by LR-0128: replaces all-or-nothing LR-0010 wait with stage(s) LR-0133, LR-0137; final integration remains governed by LR-0010 where separately applicable."
     },
     {
       "id": "LR-0097",
@@ -2587,12 +2603,12 @@
       "priority": 1,
       "exclusive_scope": "action-repeatability-runtime",
       "depends_on": [
-        "LR-0010",
         "LR-0011",
         "LR-0013",
         "LR-0094",
         "LR-0103",
-        "LR-0125"
+        "LR-0125",
+        "LR-0135"
       ],
       "primary_agent": 3,
       "goal": "Make action availability stateful and readable so combat and world interactions cannot be mindlessly repeated for unlimited benefit.",
@@ -2610,7 +2626,7 @@
         "content.js",
         "tests/"
       ],
-      "notes": "Mechanist implementation of LR-0094 across combat and non-combat repeatability. Leader-roster boundary: consume LR-0103 before runtime implementation so the canonical active party is Leader + three companions rather than silently preserving the four-companion prototype. Runtime roster boundary: consume LR-0125's single Leader + three-active-companion foundation rather than implementing roster/Leader actor semantics independently."
+      "notes": "Mechanist implementation of LR-0094 across combat and non-combat repeatability. Leader-roster boundary: consume LR-0103 before runtime implementation so the canonical active party is Leader + three companions rather than silently preserving the four-companion prototype. Runtime roster boundary: consume LR-0125's single Leader + three-active-companion foundation rather than implementing roster/Leader actor semantics independently. Architecture dependency narrowed by LR-0128: replaces all-or-nothing LR-0010 wait with stage(s) LR-0135; final integration remains governed by LR-0010 where separately applicable."
     },
     {
       "id": "LR-0099",
@@ -3242,12 +3258,13 @@
       "exclusive_scope": "leader-roster-runtime",
       "depends_on": [
         "LR-0006",
-        "LR-0010",
         "LR-0011",
         "LR-0013",
         "LR-0094",
         "LR-0103",
-        "LR-0106"
+        "LR-0106",
+        "LR-0134",
+        "LR-0135"
       ],
       "primary_agent": 3,
       "supporting_agents": [
@@ -3273,7 +3290,7 @@
         "content.js",
         "tests/"
       ],
-      "notes": "Director-routed runtime ownership gap found during second-wave review. LR-0103 defines the mechanics but explicitly leaves implementation downstream; LR-0125 is the single shared runtime foundation so LR-0015/LR-0017/LR-0018/LR-0093/LR-0098 do not each reinvent active/reserve roster semantics. Agent 1 supports save/architecture reconciliation but Agent 3 owns the gameplay roster mechanics."
+      "notes": "Director-routed runtime ownership gap found during second-wave review. LR-0103 defines the mechanics but explicitly leaves implementation downstream; LR-0125 is the single shared runtime foundation so LR-0015/LR-0017/LR-0018/LR-0093/LR-0098 do not each reinvent active/reserve roster semantics. Agent 1 supports save/architecture reconciliation but Agent 3 owns the gameplay roster mechanics. Architecture dependency narrowed by LR-0128: replaces all-or-nothing LR-0010 wait with stage(s) LR-0134, LR-0135; final integration remains governed by LR-0010 where separately applicable."
     },
     {
       "id": "LR-0126",
@@ -3356,9 +3373,10 @@
         ".agent-coordination/WORK-QUEUE.json",
         "scripts/aed-report.mjs",
         "tests/aed-report.test.mjs",
-        "docs/ARCHITECTURE-MODULARISATION-PLAN.md"
+        "docs/ARCHITECTURE-MODULARISATION-PLAN.md",
+        ".github/workflows/aed-report.yml"
       ],
-      "notes": "ACTIVE v3 LR-0128: PR #81 was green but conflicted with fast-moving main. Stage IDs LR-0132–LR-0138 remain reserved on main. Rebuilding final reform branch from current main with claim metadata pre-aligned."
+      "notes": "ACTIVE v3 LR-0128: conflict-free rebuild from current main. PR pending. Staged IDs LR-0132–LR-0138 are live-reserved; this branch adds drain rules, ranked flow inbox, LR-0010 parent conversion and narrow architecture dependencies."
     },
     {
       "id": "LR-0129",
@@ -3687,5 +3705,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T20:08:00+11:00"
+  "updated_at": "2026-10-04T20:14:00+11:00"
 }

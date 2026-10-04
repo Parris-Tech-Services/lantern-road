@@ -88,6 +88,17 @@ Agent 7 — **The Director** owns design coherence and production governance.
 
 
 
+## Critical-path drain rule
+
+When the queue contains completed **PARKED** work on the critical path, optimise for finishing flow rather than manufacturing more backlog.
+
+- Agent 7's standing review work should prioritise **priority-0 and high-downstream-fan-out parked PRs** before lower-impact review inventory, unless a correctness/security/data-loss issue is more urgent.
+- After required review or merge gates clear, the owning specialist should normally prefer a **fresh claim to reconcile/merge/close the parked task** before starting new authoring, when that closure unblocks downstream work.
+- A role with no genuinely actionable work may be temporarily idle. Do not create filler tasks merely to keep every agent busy.
+- Use `node scripts/aed-report.mjs` as an advisory flow view; its ranked inbox is not an approval authority and does not override the queue, locks, Agent 7 design governance or Josh.
+- Critical-path urgency never permits cross-role claiming, editing another agent's live scope, bypassing exact-head review, or weakening save/map/QA evidence.
+- LR-0010 architecture work is staged so specialist runtime lanes may unlock after their required seam lands; cross-system integration/QA still waits for the parent LR-0010 completion gate where the queue says so.
+
 ## AED efficiency rule
 
 Agent 8 — **AED (Agent Efficiency Department)** is the cross-agent operations and efficiency role.
