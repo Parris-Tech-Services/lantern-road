@@ -206,42 +206,39 @@ if (branchLocks.length === 0) {
   assertMergeGatesComplete();
 
   if (!needsStewardReview) {
-    // Legacy optional approval is accepted, but never required for NOT_REQUIRED tasks.
-    // If that approval reviewed a map-canon review-only commit, also accept the
-    // underlying feature head recorded in the parked handoff.
-    if (steward?.valid) {
-      const legacyUsefulHeads = [steward.reviewedHead];
-      try {
-        const reviewParent = git(["rev-parse", `${steward.reviewedHead}^`]);
-        const reviewChanges = git(["diff", "--name-only", reviewParent, steward.reviewedHead])
-          .split("\n")
-          .filter(Boolean);
-        const expectedMapCanonReview = `.agent-coordination/map-canon-reviews/${task.id}.json`;
-        if (reviewChanges.length === 1 && reviewChanges[0] === expectedMapCanonReview) {
-          legacyUsefulHeads.push(reviewParent);
-        }
-      } catch {
-        // A normal optional approval needs only its reviewed head.
-      }
-
-      const recordedLegacyHead = legacyUsefulHeads.find(candidate => notes.includes(candidate));
-      if (recordedLegacyHead) {
-        console.log(
-          `Parked no-review PR with optional legacy review-only commit verified for direct merge: ${task.id} / ${task.exclusive_scope} / ${branch} / parked useful head ${recordedLegacyHead}`
-        );
-        process.exit(0);
-      }
-    }
-
     if (!prHead) {
       fail(`${task.id}: PR_HEAD_SHA is unavailable; cannot verify frozen parked no-review head.`);
     }
-    if (!notes.includes(prHead)) {
-      fail(`${task.id}: parked queue notes do not name exact current PR head ${prHead}; fresh ownership is required before reconciliation/rebase changes.`);
+
+    // Historical review-only commits (including old Agent 7 approvals) remain valid
+    // branch history. They are not a current approval gate, so accept the current
+    // head or the underlying parked useful head when the final commit(s) contain
+    // only this task's legacy design/map review records.
+    const acceptedHeads = [prHead];
+    try {
+      const parent = git(["rev-parse", `${prHead}^`]);
+      const changes = git(["diff", "--name-only", parent, prHead]).split("\n").filter(Boolean);
+      const designReview = `.agent-coordination/design-reviews/${task.id}.json`;
+      const mapReview = `.agent-coordination/map-canon-reviews/${task.id}.json`;
+      if (changes.length === 1 && (changes[0] === designReview || changes[0] === mapReview)) {
+        acceptedHeads.push(parent);
+        const grandparent = git(["rev-parse", `${parent}^`]);
+        const parentChanges = git(["diff", "--name-only", grandparent, parent]).split("\n").filter(Boolean);
+        if (changes[0] === designReview && parentChanges.length === 1 && parentChanges[0] === mapReview) {
+          acceptedHeads.push(grandparent);
+        }
+      }
+    } catch {
+      // Single-commit branches simply rely on the exact current parked head.
+    }
+
+    const recordedHead = acceptedHeads.find(candidate => notes.includes(candidate));
+    if (!recordedHead) {
+      fail(`${task.id}: parked queue notes do not name the exact current or accepted underlying parked head. Expected one of: ${acceptedHeads.join(", ")}.`);
     }
 
     console.log(
-      `Parked NOT_REQUIRED-review PR verified for direct merge without owner re-claim: ${task.id} / ${task.exclusive_scope} / ${branch} / head ${prHead}`
+      `Parked no-review PR verified for direct merge without owner re-claim: ${task.id} / ${task.exclusive_scope} / ${branch} / parked useful head ${recordedHead}`
     );
     process.exit(0);
   }
