@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0119",
+  "reviewer_agent_number": 7,
+  "reviewer": "The Director",
+  "status": "APPROVED",
+  "reviewed_head_sha": "903f0403b739fca980af8826c3294fa01ba2fd17",
+  "reviewed_at": "2026-10-04T18:41:00+11:00",
+  "pillars_checked": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "terminology_checked": true,
+  "decision_log_checked": true,
+  "scope_conflicts_checked": true,
+  "notes": "Suspend/resume contract correctly separates same-session restoration from cold restart, treats background autosave as best-effort rather than guaranteed, forbids wall-clock campaign progression/enemy turns while hidden, preserves unresolved choices, pauses audio/haptics and defers update prompts around required decisions. Persistence remains LR-0011-owned."
+}
