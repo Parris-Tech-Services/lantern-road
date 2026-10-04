@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0088",
+  "exclusive_scope": "player-leader-dialogue-authoring",
+  "agent_number": 2,
+  "agent": "The Storyteller",
+  "session_id": "e90762d1-7db0-4f33-9cc9-01a6fcaf679c",
+  "claim_token": "d1f7fd9e-7188-46aa-a1d2-6e1e15f69f44",
+  "claimed_at": "2026-10-04T21:35:00+11:00",
+  "expires_at": "2026-10-05T09:35:00+11:00",
+  "branch": "agent/LR-0088-player-leader-dialogue-d1c62c4b",
+  "note": "Fresh post-review merge-reconciliation claim."
+}
