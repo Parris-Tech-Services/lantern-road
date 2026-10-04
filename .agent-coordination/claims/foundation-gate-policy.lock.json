@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0055",
+  "exclusive_scope": "foundation-gate-policy",
+  "agent_number": 1,
+  "agent": "The Steward",
+  "session_id": "a1f55c62-5c7d-4a7d-9a9a-81a7e2a2bd36",
+  "claim_token": "6bcb6c7d-5147-4a65-b9c5-5f25e8e054ef",
+  "claimed_at": "2026-10-04T16:02:00+11:00",
+  "expires_at": "2026-10-05T04:02:00+11:00",
+  "branch": "agent/LR-0055-foundation-gate-policy-a1f55c62",
+  "note": "Decoupling machine foundation verification from Josh's human release validation."
+}
