@@ -112,6 +112,22 @@ fs.mkdirSync(OUT, { recursive: true });
 
     await clickExact("Journal","tab: Journal after Redwater");
     await snapshot("12-redwater-journal");
+    await clickExact("Context","tab: Context before exploration");
+
+    const exploreCanvas=page.locator("#mapCanvas");
+    await exploreCanvas.scrollIntoViewIfNeeded();
+    const exploreBox=await exploreCanvas.boundingBox();
+    console.log("ACTION explore east from Redwater",JSON.stringify(exploreBox));
+    await page.touchscreen.tap(exploreBox.x+136,exploreBox.y+212);
+    await settle();
+    await snapshot("13-explore-east");
+
+    const exploreModal=page.locator("#modalRoot");
+    const exploreText=(await exploreModal.innerText()).trim();
+    if(exploreText){
+      const eLabels=await exploreModal.getByRole("button").evaluateAll(bs=>bs.filter(b=>!b.disabled && (b.offsetWidth||b.offsetHeight||b.getClientRects().length)).map(b=>(b.innerText||"").trim()));
+      console.log("EXPLORE_MODAL_BUTTONS",JSON.stringify(eLabels));
+    }
 
     console.log("\n=== BROWSER ERRORS ===");
     console.log(JSON.stringify({pageErrors,consoleErrors},null,2));
