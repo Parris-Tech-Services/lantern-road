@@ -3376,7 +3376,7 @@
         "docs/ARCHITECTURE-MODULARISATION-PLAN.md",
         ".github/workflows/aed-report.yml"
       ],
-      "notes": "ACTIVE v2 LR-0128: stage IDs LR-0132–LR-0138 are reserved on main. This branch adds critical-path drain rules, flow inbox ranking, LR-0010 parent conversion and narrow stage dependencies without changing specialist ownership."
+      "notes": "ACTIVE v2 LR-0128, PR #81: stage IDs LR-0132–LR-0138 are reserved on main. This branch adds critical-path drain rules, flow inbox ranking, LR-0010 parent conversion and narrow stage dependencies without changing specialist ownership."
     },
     {
       "id": "LR-0129",
@@ -3705,5 +3705,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T19:56:00+11:00"
+  "updated_at": "2026-10-04T20:01:00+11:00"
 }
