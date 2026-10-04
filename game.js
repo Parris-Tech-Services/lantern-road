@@ -881,7 +881,7 @@
     const config = C.heroBuilds?.[memberId];
     const choice = config?.choices?.find(entry => entry.id === buildId);
     if (!choice) {
-      showFeedback("Build unavailable", "That specialisation does not exist.", "bad");
+      showFeedback("Build unavailable", "That path does not exist.", "bad");
       return;
     }
     if (state.progression.builds[memberId]) {
@@ -933,7 +933,7 @@
     const thresholds = Object.values(C.heroBuilds || {}).map(entry => entry.unlockRenown ?? 2);
     const threshold = thresholds.length ? Math.min(...thresholds) : Infinity;
     if (previousRenown < threshold && state.renown >= threshold) {
-      addLog("Your growing renown has opened permanent hero specialisations. Choose paths in the Party tab.");
+      addLog("Your growing renown has opened permanent hero paths. Choose them in the Party tab.");
       showFeedback("Hero paths unlocked", "Open Party to choose one permanent specialisation for each hero.", "good");
     }
   }
@@ -1787,7 +1787,7 @@
         </div>
       `;
     } else if (buildConfig) {
-      buildHtml = `<p class="subtle">Specialisation unlocks at ${unlock} renown.</p>`;
+      buildHtml = `<p class="subtle">Path unlocks at ${unlock} renown.</p>`;
     }
 
     const injuryHtml = injury
