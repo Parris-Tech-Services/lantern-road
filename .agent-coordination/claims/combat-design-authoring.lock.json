@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0053",
+  "exclusive_scope": "combat-design-authoring",
+  "agent_number": 3,
+  "agent": "The Mechanist",
+  "session_id": "43fb70bb-4d5b-4dcb-b3ee-cd7bc3e2d8fd",
+  "claim_token": "655430ac-0f15-49df-a2bb-04c2b5a5c301",
+  "claimed_at": "2026-10-04T21:32:00+11:00",
+  "expires_at": "2026-10-05T09:32:00+11:00",
+  "branch": "agent/LR-0053-combat-design-authoring-4f6d9ab8",
+  "note": "Fresh closeout claim for Director-approved LR-0053 PR #19."
+}
