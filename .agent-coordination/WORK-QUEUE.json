@@ -456,7 +456,8 @@
         "LR-0010",
         "LR-0011",
         "LR-0013",
-        "LR-0094"
+        "LR-0094",
+        "LR-0103"
       ],
       "primary_agent": 3,
       "goal": "Make combat decisions substantially more interesting without turning Lantern Road into a grid tactics game.",
@@ -472,7 +473,7 @@
         "game.js",
         "content.js"
       ],
-      "notes": "Mechanist-owned. Preserve Lantern Road's compact card/target combat identity; deepen decisions rather than adding a tactical grid."
+      "notes": "Mechanist-owned. Preserve Lantern Road's compact card/target combat identity; deepen decisions rather than adding a tactical grid. Leader-roster boundary: consume LR-0103 before runtime implementation so the canonical active party is Leader + three companions rather than silently preserving the four-companion prototype."
     },
     {
       "id": "LR-0016",
@@ -511,7 +512,8 @@
         "LR-0006",
         "LR-0010",
         "LR-0011",
-        "LR-0013"
+        "LR-0013",
+        "LR-0103"
       ],
       "primary_agent": 3,
       "goal": "Expand LR-0006's equipment/build foundation into a small but expressive item ecosystem with meaningful trade-offs.",
@@ -526,7 +528,7 @@
         "content.js",
         "game.js"
       ],
-      "notes": "Blocked on LR-0006 so it extends rather than competes with the progression foundation. Economy boundary: LR-0017 owns item categories, effects, availability and equip/reward plumbing; LR-0016 owns global base prices/income/resource-pressure targets, with LR-0020 providing final whole-system tuning."
+      "notes": "Blocked on LR-0006 so it extends rather than competes with the progression foundation. Economy boundary: LR-0017 owns item categories, effects, availability and equip/reward plumbing; LR-0016 owns global base prices/income/resource-pressure targets, with LR-0020 providing final whole-system tuning. Leader-roster boundary: consume LR-0103 before runtime implementation so the canonical active party is Leader + three companions rather than silently preserving the four-companion prototype."
     },
     {
       "id": "LR-0018",
@@ -539,7 +541,8 @@
         "LR-0010",
         "LR-0011",
         "LR-0013",
-        "LR-0016"
+        "LR-0016",
+        "LR-0103"
       ],
       "primary_agent": 3,
       "goal": "Turn the progression foundation's injury/condition hooks into memorable persistent consequences that affect expedition decisions.",
@@ -554,7 +557,7 @@
         "content.js",
         "game.js"
       ],
-      "notes": "Blocked on LR-0006. This is the full recovery loop, not a duplicate of LR-0006's foundational persistent-state hook. Economy boundary: recovery costs and resource drains must consume the target assumptions established by LR-0016; LR-0018 owns injury/recovery mechanics, not global economy rebalance."
+      "notes": "Blocked on LR-0006. This is the full recovery loop, not a duplicate of LR-0006's foundational persistent-state hook. Economy boundary: recovery costs and resource drains must consume the target assumptions established by LR-0016; LR-0018 owns injury/recovery mechanics, not global economy rebalance. Leader-roster boundary: consume LR-0103 before runtime implementation so the canonical active party is Leader + three companions rather than silently preserving the four-companion prototype."
     },
     {
       "id": "LR-0019",
@@ -615,7 +618,7 @@
         "game.js",
         "tests/"
       ],
-      "notes": "Mechanist capstone task. Blocked until its underlying systems exist."
+      "notes": "Mechanist capstone task. Blocked until its underlying systems exist. Leader-roster balance is transitively gated by LR-0103 through combat/equipment/injury runtime tasks; final representative campaigns must exercise Leader + three active companions and reserve rotation."
     },
     {
       "id": "LR-0021",
@@ -2448,7 +2451,8 @@
         "LR-0011",
         "LR-0013",
         "LR-0091",
-        "LR-0092"
+        "LR-0092",
+        "LR-0103"
       ],
       "primary_agent": 3,
       "goal": "Implement the leader/companion relationship mechanically so companions can meaningfully accept, resist or proactively respond to suggestions.",
@@ -2465,7 +2469,7 @@
         "game.js",
         "tests/"
       ],
-      "notes": "Mechanist integration after player-leader, authored social and progression/save foundations."
+      "notes": "Mechanist integration after player-leader, authored social and progression/save foundations. Leader-roster boundary: consume LR-0103 before runtime implementation so the canonical active party is Leader + three companions rather than silently preserving the four-companion prototype."
     },
     {
       "id": "LR-0094",
@@ -2580,7 +2584,8 @@
         "LR-0010",
         "LR-0011",
         "LR-0013",
-        "LR-0094"
+        "LR-0094",
+        "LR-0103"
       ],
       "primary_agent": 3,
       "goal": "Make action availability stateful and readable so combat and world interactions cannot be mindlessly repeated for unlimited benefit.",
@@ -2598,7 +2603,7 @@
         "content.js",
         "tests/"
       ],
-      "notes": "Mechanist implementation of LR-0094 across combat and non-combat repeatability."
+      "notes": "Mechanist implementation of LR-0094 across combat and non-combat repeatability. Leader-roster boundary: consume LR-0103 before runtime implementation so the canonical active party is Leader + three companions rather than silently preserving the four-companion prototype."
     },
     {
       "id": "LR-0099",
@@ -2781,5 +2786,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T17:12:00+11:00"
+  "updated_at": "2026-10-04T17:18:00+11:00"
 }
