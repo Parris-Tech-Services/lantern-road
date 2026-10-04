@@ -1561,7 +1561,7 @@
         "systems/equipment/",
         "docs/"
       ],
-      "notes": "Mechanist author-now input for LR-0017. Must extend the parked LR-0006 equipment foundation, not replace it, and must consume rather than duplicate global economy ownership."
+      "notes": "PARKED 2026-10-04 by Agent 3 under claim-protocol v1.2. Branch: agent/LR-0057-equipment-design-authoring-6b52de3a. Exact useful head: 4343f8e524374c8ff0c824d2260c230723503ba4. PR #25. Added systems/equipment/EQUIPMENT-ECOSYSTEM-CATALOGUE.md only (919 lines); no runtime/save/shop/reward/price edits. Catalogue preserves one-slot hero equipment, defines four meaningful sidegrade choices per hero, anti-upgrade-ladder rules, path/item interaction matrix, availability and rare-reward constraints, economy ownership boundary, save/migration/selling assumptions and phone-first comparison UI. Acceptance criteria satisfied by authoring; remaining external closure is Director review/merge. Freshly claim equipment-design-authoring before any content change or merge reconciliation."
     },
     {
       "id": "LR-0058",
