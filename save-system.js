@@ -29,6 +29,7 @@
   }
 
   function mergeDefaults(defaults, candidate) {
+    if (candidate === null) return null;
     if (Array.isArray(defaults)) return Array.isArray(candidate) ? clone(candidate) : clone(defaults);
     if (!isPlainObject(defaults)) return candidate === undefined ? clone(defaults) : clone(candidate);
     if (!isPlainObject(candidate)) return clone(defaults);
