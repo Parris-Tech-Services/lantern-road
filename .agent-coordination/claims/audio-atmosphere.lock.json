@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0003",
+  "exclusive_scope": "audio-atmosphere",
+  "agent_number": 4,
+  "agent": "The Lamplighter",
+  "session_id": "2a35e287-7705-4793-b582-a12058b9e89e",
+  "claim_token": "5f6b1535-2d45-4828-b9fd-3ae1f30fe3f6",
+  "claimed_at": "2026-10-04T14:46:00+11:00",
+  "expires_at": "2026-10-05T02:46:00+11:00",
+  "branch": "agent/LR-0003-audio-atmosphere-2a35e287",
+  "note": "Implementing only LR-0003."
+}
