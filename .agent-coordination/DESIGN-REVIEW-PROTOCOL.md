@@ -6,9 +6,41 @@ Josh remains the final creative director. The Director protects and interprets t
 
 ## What requires Director review
 
-Every implementation PR owned by Agents 1–5 requires a Director review before merge.
+Director review is **review-by-exception**.
 
-Agent 6 QA reports and Agent 7 governance/documentation work do not require a Director self-review.
+A task requires Director review only when its queue entry explicitly contains:
+
+```json
+"director_review": "REQUIRED"
+```
+
+Missing `director_review` or `"NOT_REQUIRED"` means no Director approval is required before merge.
+
+### Mark REQUIRED only when the task itself sets or changes design direction
+
+Use `REQUIRED` when the task materially changes one or more of:
+
+- `docs/VISION.md`, `docs/DECISIONS.md`, `docs/TERMINOLOGY.md`, protected map canon or another product-governance contract;
+- major player-facing story meaning, campaign/endings, companion identity/agency boundaries or faction consequence promises;
+- a new base progression/economy/combat/roster design contract that future implementation will consume;
+- a new interaction/accessibility contract that can materially alter a product pillar or phone-first promise;
+- another irreversible or cross-role design choice where two legitimate implementations would create meaningfully different Lantern Road experiences.
+
+### Default NOT_REQUIRED
+
+Err on the side of fewer reviews. These normally do **not** need Director review when they stay within an already-approved contract and claimed scope:
+
+- architecture extraction or behaviour-preserving refactors;
+- tests, validators, CI, QA evidence, diagnostics and tooling;
+- save/runtime hardening that does not change player-facing design;
+- asset generation, curation, compression, provenance and export against approved art/audio direction;
+- implementation of an already-reviewed design/specification/UX contract;
+- bug fixes and accessibility fixes that restore documented intended behaviour;
+- routine authored content that follows already-approved character/tone/campaign frameworks and does not alter canon or major choice meaning.
+
+Any agent may explicitly escalate a `NOT_REQUIRED` task to Agent 7 when it discovers a genuine design trade-off. That does not mean every implementation needs preventive review.
+
+Agent 6 QA, Agent 7 governance and Agent 8 operational work do not require Director self-review.
 
 ## What the Director checks
 
@@ -72,7 +104,7 @@ Use exactly one:
 
 ## Approval commit
 
-For an approved implementation PR, The Director appends **one final commit** to that feature branch.
+For a task marked `REQUIRED`, The Director appends **one final commit** to that feature branch when approving it.
 
 That commit may change only:
 
@@ -106,7 +138,7 @@ CI verifies that:
 - `reviewed_head_sha` is exactly the commit immediately before the approval commit;
 - the approval commit changes only that review JSON file.
 
-Therefore any later feature/code commit automatically invalidates the approval and requires a fresh Director review.
+Therefore any later feature/code/content/rebase commit automatically invalidates the approval and requires a fresh Director review. If the approved PR was parked/frozen and every merge gate is DONE, Agent 7 may merge it immediately without returning it to the owner; a fresh owner claim is required only if implementation/reconciliation must change.
 
 ## Changes requested
 
