@@ -173,26 +173,27 @@ if (!manifest || typeof manifest !== "object" || Array.isArray(manifest)) {
   }
 }
 
-const serviceWorkerRefs = parseServiceWorkerFiles(sw);
+const { name: serviceWorkerManifestName, files: serviceWorkerRefs } = parseServiceWorkerFiles(sw);
 const normalizedCacheRefs = new Set();
 
 for (const [index, raw] of serviceWorkerRefs.entries()) {
-  const local = normalizeLocalRef(raw, `sw.js FILES[${index}]`);
+  const sourceLabel = `sw.js ${serviceWorkerManifestName}[${index}]`;
+  const local = normalizeLocalRef(raw, sourceLabel);
   if (local !== null) {
     normalizedCacheRefs.add(local);
-    assertExists(local, `sw.js FILES[${index}]`);
+    assertExists(local, sourceLabel);
   }
 }
 
 for (const required of [".", "index.html"]) {
   if (!normalizedCacheRefs.has(required)) {
-    fail(`sw.js FILES: missing core offline shell entry "${required === "." ? "./" : "./" + required}".`);
+    fail(`sw.js ${serviceWorkerManifestName}: missing core offline shell entry "${required === "." ? "./" : "./" + required}".`);
   }
 }
 
 for (const ref of localHtmlRefs) {
   if (!normalizedCacheRefs.has(ref.local)) {
-    fail(`sw.js FILES: local ${ref.kind} "${ref.raw}" from index.html is not included in the offline cache manifest.`);
+    fail(`sw.js ${serviceWorkerManifestName}: local ${ref.kind} "${ref.raw}" from index.html is not included in the offline cache manifest.`);
   }
 }
 
