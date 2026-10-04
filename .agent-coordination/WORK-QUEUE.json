@@ -369,7 +369,7 @@
     {
       "id": "LR-0013",
       "title": "Automated gameplay regression harness",
-      "status": "READY",
+      "status": "DONE",
       "priority": 0,
       "exclusive_scope": "regression-testing",
       "depends_on": [],
@@ -390,7 +390,7 @@
         "README.md",
         ".github/workflows/"
       ],
-      "notes": "PARKED HANDOFF 5 Oct 2026: browser evidence publication defect fixed and merged via PR #113, merge commit 987257562094665f3766a3cce3faf673d9c7b2fa. Exact tested candidate head 7ee63b8f0e9814d7968180640c8f9fd0bc449fbb passed Browser regression run #27 / 37236544930 and Agent coordination #1120 / 37236544890. Successful browser run published live unexpired browser-regression-results artifact ID 11316215501 (expires 5 Oct 2026 21:33Z). The original harness implementation from PR #88 remains merged. parked_at=2026-10-05T08:36:00+11:00. Remaining gate: Steward verifies this fresh machine evidence, then LR-0013 can add its gate-evidence record and close DONE without CEO approval.agent-coordination/gate-evidence/LR-0013.json and mark LR-0013 DONE. Josh Android validation remains separate LR-0056.",
+      "notes": "DONE 5 Oct 2026 under Steward game/technical authority from LR-0151. The merged real-browser regression harness is machine-verified at exact candidate head 7ee63b8f0e9814d7968180640c8f9fd0bc449fbb. Browser regression workflow run #27 / 37236544930 completed successfully and published live required artifact browser-regression-results (artifact ID 11316215501). Required real-browser tests are present under tests/e2e/. Steward verified the exact-head evidence; Josh Android validation remains separate LR-0056 and was not inferred or completed.",
       "completion_evidence_required": {
         "evidence_file": ".agent-coordination/gate-evidence/LR-0013.json",
         "machine_requirements": [
@@ -4131,5 +4131,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-05T09:12:00+11:00"
+  "updated_at": "2026-10-05T09:14:00+11:00"
 }

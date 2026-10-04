@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0013",
+  "status": "VERIFIED",
+  "candidate_commit_sha": "7ee63b8f0e9814d7968180640c8f9fd0bc449fbb",
+  "ci": {
+    "workflow_run_id": 37236544930,
+    "conclusion": "success",
+    "artifact_names": [
+      "browser-regression-results"
+    ]
+  },
+  "steward_verification": {
+    "agent_number": 1,
+    "status": "VERIFIED",
+    "verified_at": "2026-10-05T09:14:00+11:00",
+    "notes": "Steward verified the exact candidate SHA, successful Browser regression run #27, live required browser-regression-results artifact, and committed real-browser test path. Josh-only LR-0056 remains separate."
+  }
+}
