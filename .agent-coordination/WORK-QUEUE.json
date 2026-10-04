@@ -2833,7 +2833,7 @@
         "systems/roster/",
         "systems/checks/"
       ],
-      "notes": "Mechanist author-now follow-up to DONE LR-0089 and parked LR-0103. This task performs the concrete live-content audit that LR-0103 only defines as an implementation requirement. Runtime changes remain downstream of architecture/save/browser gates."
+      "notes": "PARKED PARTIAL 2026-10-04 by Agent 3 under claim-protocol v1.2 to drain newly approved higher-priority Mechanist work. Fresh branch: agent/LR-0106-roster-check-viability-1a42c780. Initial live audit completed: 11 data-driven companion-specific checks and 8 direct hard-coded rollCheck calls identified, with additional dynamic actor cases still to classify. Key finding: some checks are optional flavour, but others gate core quest/site progress, so simply hiding options when a companion is reserve would soft-lock runs. Next action after higher-priority approved closeout: freshly claim LR-0106, complete dynamic actor inventory, classify each dependency and author the four-reserve fallback matrix. No deliverable PR yet."
     },
     {
       "id": "LR-0107",
