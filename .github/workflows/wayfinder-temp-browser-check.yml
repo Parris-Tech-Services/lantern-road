@@ -59,6 +59,16 @@ jobs:
             );
             assert.ok(await page.locator("#nearbyTravel [data-action='travel-hex']").count() >= 3, "Nearby travel choices should render");
 
+            const tabs = page.locator(".tabs");
+            assert.equal(await tabs.isVisible(), true, "Thumb tabs should be visible");
+            const tabsBox = await tabs.boundingBox();
+            assert.ok(tabsBox, "Thumb tabs should have a layout box");
+            assert.ok(tabsBox.y >= 0 && tabsBox.y + tabsBox.height <= 844, "Thumb tabs should stay inside the phone viewport");
+            await page.locator(".tab[data-tab='party']").click();
+            assert.equal(await page.locator(".tab[data-tab='party']").getAttribute("aria-selected"), "true", "Selected tab should expose its state");
+            await page.locator(".tab[data-tab='context']").click();
+            await page.screenshot({ path: "wayfinder-mobile-viewport.png" });
+
             await page.locator("#accessibilityBtn").click();
             await page.getByRole("heading", { name: "Accessibility & Phone" }).waitFor();
             await page.locator("[data-action='set-text-scale'][data-value='large']").click();
@@ -120,5 +130,5 @@ jobs:
         if: always()
         with:
           name: wayfinder-mobile-check
-          path: wayfinder-mobile.png
+          path: wayfinder-mobile*.png
           if-no-files-found: ignore
