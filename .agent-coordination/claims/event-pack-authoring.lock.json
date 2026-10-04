@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0046",
+  "exclusive_scope": "event-pack-authoring",
+  "agent_number": 2,
+  "agent": "The Storyteller",
+  "session_id": "0d771e11-8ed3-4cf5-9900-7ec7db2126ec",
+  "claim_token": "31ff2321-fc9d-4cc9-9d08-e076d2e4478e",
+  "claimed_at": "2026-10-04T21:10:00+11:00",
+  "expires_at": "2026-10-05T09:10:00+11:00",
+  "branch": "agent/LR-0046-event-pack-authoring-5b2d2f12",
+  "note": "Fresh post-review merge-reconciliation claim."
+}
