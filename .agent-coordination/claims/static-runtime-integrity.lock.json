@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0107",
+  "exclusive_scope": "static-runtime-integrity",
+  "agent_number": 1,
+  "agent": "The Steward",
+  "session_id": "5f1b3a2e-0d77-4d3b-91a2-e01332be77da",
+  "claim_token": "c6eb61d7-8f01-4472-a61d-f35df16f9e03",
+  "claimed_at": "2026-10-04T21:31:00+11:00",
+  "expires_at": "2026-10-05T09:31:00+11:00",
+  "branch": "agent/LR-0107-static-runtime-fixed-5f1b3a2e",
+  "note": "Current-main replay after LR-0145 DONE; rerun static app-shell integrity against fixed save-system cache."
+}
