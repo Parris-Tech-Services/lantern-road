@@ -188,14 +188,97 @@ if (startingCanonCount !== 1) {
   fail(`Exactly one CANON place must have starting_location=true; found ${startingCanonCount}.`);
 }
 
+const regionLabelIds = new Set();
+const regionLabelNames = new Set();
+const canonicalRegionById = new Map();
+
+if (!Array.isArray(canon.regional_labels)) {
+  fail("regional_labels must be an array.");
+} else {
+  for (const [index, regionLabel] of canon.regional_labels.entries()) {
+    const where = `regional_labels[${index}]`;
+    if (!isObject(regionLabel)) {
+      fail(`${where}: expected an object.`);
+      continue;
+    }
+
+    requiredString(regionLabel.id, `${where}.id`);
+    requiredString(regionLabel.name, `${where}.name`);
+    requiredString(regionLabel.description, `${where}.description`);
+    requiredString(regionLabel.source_task, `${where}.source_task`);
+
+    if (typeof regionLabel.id === "string") {
+      if (!/^[a-z0-9_]+$/.test(regionLabel.id)) fail(`${where}.id "${regionLabel.id}" must use lowercase snake_case.`);
+      if (regionLabelIds.has(regionLabel.id)) fail(`${where}: duplicate regional label id "${regionLabel.id}".`);
+      if (placeIds.has(regionLabel.id)) fail(`${where}.id "${regionLabel.id}" collides with an existing gameplay place id.`);
+      regionLabelIds.add(regionLabel.id);
+      canonicalRegionById.set(regionLabel.id, regionLabel);
+    }
+
+    if (typeof regionLabel.name === "string") {
+      if (regionLabelNames.has(regionLabel.name)) fail(`${where}: duplicate regional label name "${regionLabel.name}".`);
+      regionLabelNames.add(regionLabel.name);
+    }
+
+    if (!["CANON", "RETIRED"].includes(regionLabel.status)) {
+      fail(`${where}.status must be CANON or RETIRED.`);
+    }
+    if (regionLabel.place_type !== "region-label") {
+      fail(`${where}.place_type must be "region-label".`);
+    }
+    if (regionLabel.gameplay_node !== false) {
+      fail(`${where}.gameplay_node must be false; regional labels are non-node orientation data.`);
+    }
+    if (!Array.isArray(regionLabel.anchor_place_ids)) {
+      fail(`${where}.anchor_place_ids must be an array.`);
+    } else {
+      const seenAnchors = new Set();
+      for (const [anchorIndex, anchorId] of regionLabel.anchor_place_ids.entries()) {
+        requiredString(anchorId, `${where}.anchor_place_ids[${anchorIndex}]`);
+        if (seenAnchors.has(anchorId)) fail(`${where}: duplicate anchor_place_id "${anchorId}".`);
+        seenAnchors.add(anchorId);
+        const anchor = canonById.get(anchorId);
+        if (!anchor || anchor.status !== "CANON") {
+          fail(`${where}.anchor_place_ids references "${anchorId}", which is not an existing CANON gameplay place.`);
+        }
+      }
+    }
+    if (!/^LR-[0-9]{4}$/.test(regionLabel.source_task || "")) {
+      fail(`${where}.source_task must be an LR-xxxx task id.`);
+    }
+
+    for (const forbidden of ["q", "r", "grid_ref", "kind", "hidden", "starting_location"]) {
+      if (Object.hasOwn(regionLabel, forbidden)) {
+        fail(`${where} must not define ${forbidden}; canonical regional labels are not gameplay nodes or coordinates.`);
+      }
+    }
+  }
+}
+
+const conceptDispositions = new Set(["ADOPT", "RENAME", "REJECT", "DEFER"]);
 if (!Array.isArray(canon.concept_regional_labels)) {
   fail("concept_regional_labels must be an array.");
 } else {
   for (const [index, label] of canon.concept_regional_labels.entries()) {
-    requiredString(label?.name, `concept_regional_labels[${index}].name`);
-    requiredString(label?.source, `concept_regional_labels[${index}].source`);
+    const where = `concept_regional_labels[${index}]`;
+    requiredString(label?.name, `${where}.name`);
+    requiredString(label?.source, `${where}.source`);
     if (label?.status !== "PROPOSED") {
-      fail(`concept_regional_labels[${index}].status must remain PROPOSED until canonised through the map-canon workflow.`);
+      fail(`${where}.status must remain PROPOSED; disposition does not make the generated label itself canonical.`);
+    }
+    if (!conceptDispositions.has(label?.disposition)) {
+      fail(`${where}.disposition must be ADOPT, RENAME, REJECT or DEFER.`);
+      continue;
+    }
+
+    if (label.disposition === "ADOPT" || label.disposition === "RENAME") {
+      requiredString(label.canonical_region_id, `${where}.canonical_region_id`);
+      const canonicalRegion = canonicalRegionById.get(label.canonical_region_id);
+      if (!canonicalRegion || canonicalRegion.status !== "CANON") {
+        fail(`${where}.canonical_region_id "${label.canonical_region_id}" must reference an existing CANON regional label.`);
+      }
+    } else if (Object.hasOwn(label, "canonical_region_id")) {
+      fail(`${where}: ${label.disposition} labels must not carry canonical_region_id.`);
     }
   }
 }
@@ -290,6 +373,7 @@ if (failures.length) {
 }
 
 const canonPlaces = (canon.places || []).filter(place => place.status === "CANON");
+const canonRegions = (canon.regional_labels || []).filter(regionLabel => regionLabel.status === "CANON");
 console.log(
-  `Map canon OK: ${canon.canon_version}, ${canon.region.width}x${canon.region.height}, ${canonPlaces.length} canonical places, ${canon.concept_regional_labels.length} proposed regional labels, ${sharedHexes.length} shared hex(es).`
+  `Map canon OK: ${canon.canon_version}, ${canon.region.width}x${canon.region.height}, ${canonPlaces.length} canonical places, ${canonRegions.length} canonical regional labels, ${canon.concept_regional_labels.length} resolved concept labels, ${sharedHexes.length} shared hex(es).`
 );

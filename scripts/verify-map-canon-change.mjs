@@ -38,6 +38,19 @@ function canonicalPlaceProjection(place) {
   };
 }
 
+function canonicalRegionProjection(regionLabel) {
+  return {
+    id: regionLabel.id,
+    name: regionLabel.name,
+    status: regionLabel.status,
+    place_type: regionLabel.place_type,
+    gameplay_node: regionLabel.gameplay_node === true,
+    anchor_place_ids: [...(regionLabel.anchor_place_ids || [])].sort(),
+    description: regionLabel.description,
+    source_task: regionLabel.source_task
+  };
+}
+
 function protectedProjection(canon) {
   return {
     schema_version: canon.schema_version,
@@ -54,6 +67,10 @@ function protectedProjection(canon) {
     places: (canon.places || [])
       .filter(place => place.status === "CANON" || place.status === "RETIRED")
       .map(canonicalPlaceProjection)
+      .sort((a, b) => a.id.localeCompare(b.id)),
+    regional_labels: (canon.regional_labels || [])
+      .filter(regionLabel => regionLabel.status === "CANON" || regionLabel.status === "RETIRED")
+      .map(canonicalRegionProjection)
       .sort((a, b) => a.id.localeCompare(b.id))
   };
 }
@@ -66,6 +83,12 @@ function mapById(canon) {
   return new Map((canon.places || [])
     .filter(place => place.status === "CANON" || place.status === "RETIRED")
     .map(place => [place.id, canonicalPlaceProjection(place)]));
+}
+
+function regionsById(canon) {
+  return new Map((canon.regional_labels || [])
+    .filter(regionLabel => regionLabel.status === "CANON" || regionLabel.status === "RETIRED")
+    .map(regionLabel => [regionLabel.id, canonicalRegionProjection(regionLabel)]));
 }
 
 const before = readJsonAt(baseSha, "world/map-canon.json");
@@ -83,7 +106,7 @@ const changedPlaceIds = new Set();
 for (const [id, oldPlace] of beforePlaces) {
   const next = afterPlaces.get(id);
   if (!next) {
-    console.error(`Protected canonical id "${id}" disappeared. Retire it instead of deleting/reserving it implicitly.`);
+    console.error(`Protected canonical place id "${id}" disappeared. Retire it instead of deleting/reserving it implicitly.`);
     process.exit(1);
   }
   if (stable(oldPlace) !== stable(next)) changedPlaceIds.add(id);
@@ -93,25 +116,67 @@ for (const [id] of afterPlaces) {
   if (!beforePlaces.has(id)) changedPlaceIds.add(id);
 }
 
-const parentSha = git(["rev-parse", `${headSha}^`]);
-const finalChanges = git(["diff", "--name-only", parentSha, headSha])
+const beforeRegions = regionsById(before);
+const afterRegions = regionsById(after);
+const changedRegionIds = new Set();
+
+for (const [id, oldRegion] of beforeRegions) {
+  const next = afterRegions.get(id);
+  if (!next) {
+    console.error(`Protected canonical regional label id "${id}" disappeared. Retire it instead of deleting/reserving it implicitly.`);
+    process.exit(1);
+  }
+  if (stable(oldRegion) !== stable(next)) changedRegionIds.add(id);
+}
+
+for (const [id] of afterRegions) {
+  if (!beforeRegions.has(id)) changedRegionIds.add(id);
+}
+
+const finalParentSha = git(["rev-parse", `${headSha}^`]);
+const finalChanges = git(["diff", "--name-only", finalParentSha, headSha])
   .split("\n")
   .filter(Boolean);
 
-const reviewFiles = finalChanges.filter(file =>
+const designReviewMatch =
+  finalChanges.length === 1 &&
+  finalChanges[0].match(/^\.agent-coordination\/design-reviews\/(LR-\d{4})\.json$/);
+
+let mapReviewCommitSha = headSha;
+let reviewedFeatureSha = finalParentSha;
+let mapReviewChanges = finalChanges;
+
+if (designReviewMatch) {
+  mapReviewCommitSha = finalParentSha;
+  reviewedFeatureSha = git(["rev-parse", `${mapReviewCommitSha}^`]);
+  mapReviewChanges = git(["diff", "--name-only", reviewedFeatureSha, mapReviewCommitSha])
+    .split("\n")
+    .filter(Boolean);
+}
+
+const reviewFiles = mapReviewChanges.filter(file =>
   /^\.agent-coordination\/map-canon-reviews\/LR-\d{4}\.json$/.test(file)
 );
 
-if (reviewFiles.length !== 1 || finalChanges.length !== 1) {
+if (reviewFiles.length !== 1 || mapReviewChanges.length !== 1) {
   console.error(
-    "Protected map-canon changes require one final review-only commit. " +
-    `Expected exactly one .agent-coordination/map-canon-reviews/LR-xxxx.json file in the final commit; found: ${finalChanges.join(", ") || "nothing"}.`
+    "Protected map-canon changes require one map-canon review-only commit. " +
+    "For Agent 1–5 implementation PRs, an optional final Director design-review-only commit may follow it. " +
+    `Expected exactly one .agent-coordination/map-canon-reviews/LR-xxxx.json file in the map review commit; found: ${mapReviewChanges.join(", ") || "nothing"}.`
   );
   process.exit(1);
 }
 
 const reviewFile = reviewFiles[0];
 const fileTaskId = path.basename(reviewFile, ".json");
+
+if (designReviewMatch && designReviewMatch[1] !== fileTaskId) {
+  console.error(
+    `Final Director design review task ${designReviewMatch[1]} does not match map-canon review task ${fileTaskId}.`
+  );
+  process.exit(1);
+}
+
 const review = readJsonAt(headSha, reviewFile);
 
 const allowedTypes = new Set(["ADD", "MOVE", "RENAME", "RETIRE", "IDENTITY", "GRID", "PROJECTION"]);
@@ -128,9 +193,9 @@ if (review.reviewer_agent_number !== 7 || review.status !== "APPROVED") {
   console.error(`${reviewFile}: requires Agent 7 with status APPROVED.`);
   process.exit(1);
 }
-if (review.reviewed_head_sha !== parentSha) {
+if (review.reviewed_head_sha !== reviewedFeatureSha) {
   console.error(
-    `${reviewFile}: stale approval. reviewed_head_sha=${review.reviewed_head_sha || "missing"}, expected exact code/canon head ${parentSha}.`
+    `${reviewFile}: stale approval. reviewed_head_sha=${review.reviewed_head_sha || "missing"}, expected exact code/canon head ${reviewedFeatureSha}.`
   );
   process.exit(1);
 }
@@ -150,11 +215,27 @@ if (!Array.isArray(review.affected_place_ids)) {
   console.error(`${reviewFile}: affected_place_ids must be an array.`);
   process.exit(1);
 }
+if (review.affected_region_ids !== undefined && !Array.isArray(review.affected_region_ids)) {
+  console.error(`${reviewFile}: affected_region_ids must be an array when present.`);
+  process.exit(1);
+}
+if (changedRegionIds.size > 0 && !Array.isArray(review.affected_region_ids)) {
+  console.error(`${reviewFile}: protected regional-label changes require affected_region_ids.`);
+  process.exit(1);
+}
 
-const reviewedIds = new Set(review.affected_place_ids);
+const reviewedPlaceIds = new Set(review.affected_place_ids);
 for (const id of changedPlaceIds) {
-  if (!reviewedIds.has(id)) {
+  if (!reviewedPlaceIds.has(id)) {
     console.error(`${reviewFile}: changed canonical place "${id}" is missing from affected_place_ids.`);
+    process.exit(1);
+  }
+}
+
+const reviewedRegionIds = new Set(review.affected_region_ids || []);
+for (const id of changedRegionIds) {
+  if (!reviewedRegionIds.has(id)) {
+    console.error(`${reviewFile}: changed canonical regional label "${id}" is missing from affected_region_ids.`);
     process.exit(1);
   }
 }
@@ -172,5 +253,5 @@ if (!(queue.tasks || []).some(task => task.id === review.task_id)) {
 }
 
 console.log(
-  `Protected map-canon change approved for ${review.task_id}; ${changedPlaceIds.size} place id(s) changed, exact reviewed head ${parentSha}.`
+  `Protected map-canon change approved for ${review.task_id}; ${changedPlaceIds.size} place id(s) and ${changedRegionIds.size} regional label id(s) changed, exact reviewed feature head ${reviewedFeatureSha}${designReviewMatch ? ", followed by final Director design review" : ""}.`
 );

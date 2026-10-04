@@ -19,6 +19,9 @@ export function flowState(task) {
   const mergeNext = /(fresh(?:ly)?\s+(?:agent\s+\d+\s+)?claim|fresh claimant|reconcil|merge preparation|then merge|merge and mark done)/i.test(notes);
   const reviewNeeded = /(await(?:ing)?[^.]{0,80}(?:director|agent\s*7)[^.]{0,50}(?:review|approval)|missing\s+agent\s*7|director\s+review\s+requested|next action:\s*agent\s*7)/i.test(notes);
 
+  if (task.director_review !== "REQUIRED") {
+    return "PARKED_WAIT";
+  }
   if (approved && mergeNext) return "OWNER_MERGE";
   if (reviewNeeded) return "DIRECTOR_REVIEW";
   return "PARKED_WAIT";
@@ -261,13 +264,26 @@ export function buildReport(queue, locks = [], findings = [], options = {}) {
 
   const parked = tasks.filter(isParked).map(task => {
     const parkedAt = parkedAtFromNotes(task);
+    const incompleteGates = (task.merge_gate_depends_on ?? []).filter(
+      id => byId.get(id)?.status !== "DONE"
+    );
+    let state = flowState(task);
+
+    if (task.director_review !== "REQUIRED" && incompleteGates.length === 0) {
+      state = "OWNER_MERGE";
+    } else if (state === "OWNER_MERGE" && incompleteGates.length > 0) {
+      state = "PARKED_WAIT";
+    }
+
     return {
       id: task.id,
       title: task.title,
       agent: task.primary_agent,
       priority: task.priority,
-      review_ready: isReviewReady(task),
-      flow_state: flowState(task),
+      director_review: task.director_review ?? "NOT_REQUIRED",
+      review_ready: state === "DIRECTOR_REVIEW",
+      flow_state: state,
+      incomplete_merge_gates: incompleteGates,
       parked_at: parkedAt,
       parked_age_hours: parkedAt ? hoursBetween(parkedAt, snapshotTime) : null
     };
