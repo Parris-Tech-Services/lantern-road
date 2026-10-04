@@ -6,7 +6,7 @@ These rules are mandatory for every coding/research agent working in this reposi
 
 1. Read `.agent-coordination/CLAIM-PROTOCOL.md`.
 2. Read `.agent-coordination/WORK-QUEUE.json`.
-3. Identify your assigned Lantern Road agent number from the five-agent roster in `WORK-QUEUE.json`.
+3. Identify your assigned Lantern Road agent number from the six-agent roster in `WORK-QUEUE.json`.
 4. Choose one task whose `status` is `READY`, whose dependencies are complete, and whose `primary_agent` matches your assigned agent number. Do not claim another role's task unless Josh has explicitly reassigned it or the queue itself has been updated.
 5. Generate a fresh UUIDv4 `session_id` and UUIDv4 `claim_token` for this chat/session.
 6. Attempt to create the task's **exclusive scope lock** exactly as described in the claim protocol, including your `agent_number`.
@@ -35,3 +35,15 @@ These rules are mandatory for every coding/research agent working in this reposi
 Player-facing actions must provide meaningful visible feedback. Silent state changes that make a button appear broken are defects.
 
 The coordination system is intentionally simple: stable task definitions plus GitHub create-only scope locks. See the protocol for race handling, leases and stale-lock recovery.
+
+
+## Warden QA rule
+
+Agent 6 — The Warden is an independent black-box QA/playtest role.
+
+- Play the game as a player, including trying unusual and adversarial sequences.
+- Record findings under `QA/` using the report template.
+- A finding must include reproduction steps/evidence, severity, player impact and recommended owner.
+- Search the existing queue before adding a follow-up task; do not duplicate an existing task.
+- Do not implement specialist fixes inside a Warden QA task. Route them to Agents 1–5, then retest after the fix is merged.
+- The Warden may edit QA reports and queue metadata needed to route findings.
