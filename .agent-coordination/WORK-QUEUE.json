@@ -1401,7 +1401,7 @@
         "QA/",
         "docs/"
       ],
-      "notes": "Created from Claude Code feedback and verified against live main: sw.js is cache-first with hard-coded CACHE_NAME lantern-road-v4. This is an immediate stale-build defect, not a reason to unblock the broader LR-0040 PWA task."
+      "notes": "PARKED HANDOFF (4 Oct 2026): implementation complete on branch agent/LR-0050-service-worker-freshness-1b42d3c5 at head 6b973bf479b9bdbd6996c6f7182dad409dab42db, PR #18. Final diff is sw.js plus QA/LR-0050-SERVICE-WORKER-FRESHNESS.md. Real Chromium service-worker verification passed in Actions run 37178333685, artifact 11294280511: obsolete lantern-road-v4 cache cleanup, online old-shell -> new-shell refresh without cache-name bump, and offline reopen of the newly cached shell all passed. Coordination validation passes; PR check is currently red only because Agent 7 design approval .agent-coordination/design-reviews/LR-0050.json is not yet present. No legitimate Agent 5 implementation work remains. Under CLAIM-PROTOCOL v1.2 release service-worker-freshness while waiting. Before any code change or final merge preparation, acquire a fresh claim; after Agent 7 approves the exact implementation head, rerun/refresh merge verification as needed. LR-0009 PR #6 must later reconcile its sw.js edit under a fresh mobile-ux claim and preserve this network-first freshness behaviour."
     },
     {
       "id": "LR-0051",
@@ -1597,5 +1597,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T16:05:00+11:00"
+  "updated_at": "2026-10-04T16:00:00+11:00"
 }
