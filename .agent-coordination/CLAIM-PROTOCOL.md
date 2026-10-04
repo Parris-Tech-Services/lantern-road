@@ -1,6 +1,6 @@
 # Lantern Road multi-agent claim protocol
 
-Version: 1.1  
+Version: 1.2  
 Effective: 4 October 2026
 
 ## Goal
@@ -98,6 +98,26 @@ A feature PR should include:
 
 Do not put the full claim token in public PR prose.
 
+## Parking completed implementation behind external gates
+
+A task may be fully implemented but unable to merge because it is waiting only on `merge_gate_depends_on`, Josh's required device/sign-off evidence, or another external closure condition.
+
+Do **not** hold an active scope lock merely to wait.
+
+When there is no material work left that the current owner can legitimately perform:
+
+1. Re-fetch `WORK-QUEUE.json` and confirm the task itself is still `READY` and the remaining blocker is external to the implementation work.
+2. Record a precise handoff in the task `notes`: branch, exact useful head SHA, PR if any, tests/evidence already completed, remaining gates, and the next action after those gates clear.
+3. Leave the task `READY`; parking is neither `DONE` nor `BLOCKED` when its normal dependencies are satisfied.
+4. Re-fetch the lock and verify it still belongs to your `session_id` and `claim_token`.
+5. Delete **your own** scope lock.
+6. Keep the useful branch/PR. Do not discard tested work merely because it is waiting.
+7. The agent may immediately claim another eligible task assigned to its role.
+
+Before any later code/content change, rebase/reconciliation, final-PR refresh, or merge preparation on the parked task, a fresh claimant must acquire the normal create-only scope lock. A parked branch does not confer continuing ownership.
+
+This rule does not permit bypassing merge gates or human evidence. It only prevents waiting from consuming an active agent/lock slot.
+
 ## Completing work
 
 1. Finish and test the feature branch.
@@ -110,6 +130,8 @@ Do not put the full claim token in public PR prose.
 Marking `DONE` before deleting the lock makes the task non-claimable during the release transition.
 
 ## Abandoning work
+
+Abandoning is different from parking. Parking preserves completed/useful implementation that is waiting on an external gate; abandoning means the current attempt should no longer be treated as the active implementation path.
 
 If no merged change should count as completion:
 
