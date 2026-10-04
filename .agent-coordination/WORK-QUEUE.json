@@ -2757,7 +2757,7 @@
     {
       "id": "LR-0104",
       "title": "Ratify Grey March regional labels as protected map canon",
-      "status": "READY",
+      "status": "DONE",
       "priority": 1,
       "exclusive_scope": "regional-map-canon-ratification",
       "depends_on": [
@@ -2778,12 +2778,12 @@
         ".agent-coordination/MAP-CANON-PROTOCOL.md",
         "design/"
       ],
-      "notes": "Director follow-up to LR-0071. Canon decisions pre-reviewed on PR #44: six promote, two reject, two defer. Machine registry/enforcement is deliberately separated into LR-0105. Dependency LR-0071 is DONE; promoted to READY by Agent 7 for immediate canon ratification."
+      "notes": "Director follow-up to LR-0071. Canon decisions pre-reviewed on PR #44: six promote, two reject, two defer. Machine registry/enforcement is deliberately separated into LR-0105. Dependency LR-0071 is DONE; promoted to READY by Agent 7 for immediate canon ratification. Completed 4 Oct 2026 via PR #93, squash merge ae694a13246c738bd482315b6c238b5d303866ba. Ratified Hollowwold, Reedmarsh, Barrow Ridge, Watcherwood, Greyfen Plain and Stoneveil Heights as CANON non-node regional labels; rejected Embermere/Siltbrook Marsh; deferred Mourn Lake/Wyrthen Forest. Map canon #17 and Agent coordination #925 passed on the exact PR head."
     },
     {
       "id": "LR-0105",
       "title": "Add machine-enforced canonical regional labels",
-      "status": "BLOCKED",
+      "status": "READY",
       "priority": 1,
       "exclusive_scope": "regional-map-canon-enforcement",
       "depends_on": [
@@ -2808,7 +2808,7 @@
         "docs/WORLD-MAP-CANON.md",
         ".agent-coordination/MAP-CANON-PROTOCOL.md"
       ],
-      "notes": "Steward enforcement follow-on. Do not infer extra names beyond the exact LR-0104 ratification."
+      "notes": "Steward enforcement follow-on. Do not infer extra names beyond the exact LR-0104 ratification. Dependencies LR-0070 and LR-0104 are DONE; machine enforcement may proceed."
     },
     {
       "id": "LR-0106",
@@ -3915,5 +3915,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T21:55:00+11:00"
+  "updated_at": "2026-10-04T22:00:00+11:00"
 }
