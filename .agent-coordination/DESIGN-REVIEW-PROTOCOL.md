@@ -1,126 +1,53 @@
-# Lantern Road Director Review Protocol
+# Lantern Road Steward Game Review Protocol
 
-Agent 7 — **The Director** is the design-direction and production-governance role.
+> Filename retained for repository compatibility. This protocol now governs **Steward game review**, not CEO/Director approval.
 
-Josh remains the final creative director. The Director protects and interprets the agreed product vision; it does not unilaterally redefine it.
+Agent 1 — **The Steward** is Lantern Road's project lead, lead game designer, technical lead and program integrator.
 
-## What requires Director review
+Josh remains owner / creative director and final authority on major product direction, fun, tone, emotional effect, premium feel and scope-changing creative decisions.
 
-Director review is **review-by-exception**.
+Agent 7 — **The Director / CEO** provides executive oversight and is **not** a routine game-design, technical or merge approval gate.
 
-A task requires Director review only when its queue entry explicitly contains:
+## What requires Steward review
+
+Steward review is review-by-exception.
+
+A specialist task requires exact-head Steward approval only when its queue entry explicitly contains:
 
 ```json
-"director_review": "REQUIRED"
+"steward_review": "REQUIRED"
 ```
 
-Missing `director_review` or `"NOT_REQUIRED"` means no Director approval is required before merge.
+Missing `steward_review` or `"NOT_REQUIRED"` means no separate review commit is required once normal ownership, tests and gates pass.
 
-### Mark REQUIRED only when the task itself sets or changes design direction
+Agent 1-owned tasks must not set `steward_review: REQUIRED`; Steward does not create a ceremonial self-review file for its own work.
 
-Use `REQUIRED` when the task materially changes one or more of:
+Use `REQUIRED` when a specialist task materially changes or establishes:
 
-- `docs/VISION.md`, `docs/DECISIONS.md`, `docs/TERMINOLOGY.md`, protected map canon or another product-governance contract;
-- major player-facing story meaning, campaign/endings, companion identity/agency boundaries or faction consequence promises;
-- a new base progression/economy/combat/roster design contract that future implementation will consume;
-- a new interaction/accessibility contract that can materially alter a product pillar or phone-first promise;
-- another irreversible or cross-role design choice where two legitimate implementations would create meaningfully different Lantern Road experiences.
+- core gameplay behaviour, progression/economy/combat/party design;
+- major player-facing narrative meaning, campaign/endings or companion identity/agency;
+- interaction/presentation behaviour that changes a product pillar;
+- canonical geography or another durable game contract, unless a dedicated Steward-owned protocol already supplies the approval;
+- another cross-discipline choice where two legitimate implementations would create meaningfully different player experiences.
 
-### Default NOT_REQUIRED
+Routine tests, tooling, bug fixes, behaviour-preserving refactors, asset production/export and implementation of an already-approved contract normally do not require separate Steward review.
 
-Err on the side of fewer reviews. These normally do **not** need Director review when they stay within an already-approved contract and claimed scope:
+## What The Steward checks
 
-- architecture extraction or behaviour-preserving refactors;
-- tests, validators, CI, QA evidence, diagnostics and tooling;
-- save/runtime hardening that does not change player-facing design;
-- asset generation, curation, compression, provenance and export against approved art/audio direction;
-- implementation of an already-reviewed design/specification/UX contract;
-- bug fixes and accessibility fixes that restore documented intended behaviour;
-- routine authored content that follows already-approved character/tone/campaign frameworks and does not alter canon or major choice meaning.
+For a required review, The Steward checks the final feature head against:
 
-Any agent may explicitly escalate a `NOT_REQUIRED` task to Agent 7 when it discovers a genuine design trade-off. That does not mean every implementation needs preventive review.
+1. `docs/VISION.md`, `docs/DECISIONS.md` and `docs/TERMINOLOGY.md`.
+2. The task's scope and acceptance criteria.
+3. Player clarity, meaningful feedback and phone-first behaviour where relevant.
+4. Adjacent systems for hidden ownership or save/architecture conflicts.
+5. Whether the work actually belongs in the playable game now rather than remaining paper-only.
+6. Whether a genuine creative-direction trade-off should escalate to Josh.
 
-Agent 6 QA, Agent 7 governance and Agent 8 operational work do not require Director self-review.
+## Approval record
 
-## What the Director checks
+For a task marked `steward_review: REQUIRED`, The Steward appends one final review-only commit changing only:
 
-The Director reviews the final feature branch against:
-
-1. `docs/VISION.md` and its five design pillars.
-2. `docs/DECISIONS.md`.
-3. `docs/TERMINOLOGY.md`.
-4. The task's stated scope and acceptance criteria.
-5. Adjacent queue tasks for hidden overlap or contradictory ownership.
-
-## Pillar drift versus implementation variation
-
-A feature is **pillar drift** when it materially changes or undermines a player promise in the vision, contradicts a recorded non-goal/decision, or shifts the game toward a different product identity without explicit approval.
-
-Examples of blocking drift include:
-
-- replacing visible consequence with hidden score-only changes;
-- turning compact combat into a tactical-grid game;
-- adding generic content volume that displaces authored consequence;
-- making a phone-first interaction dependent on precise desktop-style input;
-- reducing party members to interchangeable stat packages when the feature is meant to deepen character;
-- introducing grind, opaque punishment or a dominant no-brainer progression path as the normal loop.
-
-An **acceptable implementation variation** is a local design/technical choice that:
-
-- preserves the relevant player promise and non-goals;
-- stays within the claimed task scope and ownership boundary;
-- uses canonical terminology or deliberately updates it in the governance docs;
-- does not create an unrecorded dependency or contradictory parallel system;
-- remains reversible without redefining the product.
-
-Variation does not need Josh's approval merely because another implementation could also have worked.
-
-Use **ESCALATE_TO_JOSH** when two legitimate interpretations of the pillars create a real creative trade-off, or when the proposed change would materially alter scope, tone, product identity or a core pillar rather than simply implement it.
-
-## PR design-review checklist
-
-For every task explicitly marked `director_review: REQUIRED`, answer all of these against the final code/content head:
-
-- **Pillars:** Which of the five pillars does this touch, and does it strengthen or at least preserve each one?
-- **Non-goals:** Does it accidentally move toward a tactical grid, giant content treadmill, generic procedural volume, framework rewrite or silent-feedback behaviour?
-- **Player promise:** Is the important consequence/trade-off visible and understandable to the player?
-- **Terminology:** Are world, faction, party, combat, progression and UI labels consistent with `docs/TERMINOLOGY.md`?
-- **Tone:** Does player-facing prose remain grounded, restrained and character-specific rather than bombastic, quippy or technical?
-- **Scope:** Does the PR contain only the claimed task/scope, without quietly solving another agent's work?
-- **Ownership/dependencies:** Does it collide with an adjacent task, shared system, save contract, economy boundary or presentation responsibility?
-- **Subjectivity:** Is any personal taste being presented as an objective defect? If so, separate the evidence from the creative judgement and escalate only when necessary.
-- **Phone-first:** Where player-facing interaction is involved, is the result legible, reachable and understandable on a phone-sized screen?
-- **Decision log:** Did the work create a durable architectural/product/ownership choice that should be recorded in `docs/DECISIONS.md`?
-
-A review may be concise, but it should be able to point to concrete code/content evidence for any blocking finding.
-
-## Foundation-gate governance
-
-For LR-0055 and future coordination changes that alter the dependency critical path, The Director reviews the policy itself before merge. The review verifies that:
-
-- machine verification remains objective and independently checkable;
-- no specialist can bypass required CI/artifact evidence;
-- Josh's human sign-off remains impossible for agents to self-assert;
-- human validation protects final integration/release without unnecessarily blocking technically proven development;
-- the queue, validator, claim protocol and decision log describe the same dependency model.
-
-The Director reviews governance and product-risk boundaries; it does not replace machine test results or Josh's later real-device validation.
-
-## Review outcomes
-
-Use exactly one:
-
-- `APPROVED` — coherent and mergeable from a design-governance perspective.
-- `CHANGES_REQUESTED` — concrete design/ownership issue must be resolved.
-- `ESCALATE_TO_JOSH` — the issue is a genuine creative-direction trade-off that should not be decided by an agent.
-
-## Approval commit
-
-For a task marked `REQUIRED`, The Director appends **one final commit** to that feature branch when approving it.
-
-That commit may change only:
-
-```
+```text
 .agent-coordination/design-reviews/<TASK-ID>.json
 ```
 
@@ -130,47 +57,42 @@ Example:
 {
   "schema_version": 1,
   "task_id": "LR-0005",
-  "reviewer_agent_number": 7,
-  "reviewer": "The Director",
+  "reviewer_agent_number": 1,
+  "reviewer": "The Steward",
   "status": "APPROVED",
-  "reviewed_head_sha": "FULL_SHA_OF_CODE_COMMIT_BEFORE_APPROVAL",
-  "reviewed_at": "2026-10-04T15:00:00+11:00",
+  "reviewed_head_sha": "FULL_SHA_OF_FEATURE_HEAD_BEFORE_APPROVAL",
+  "reviewed_at": "2026-10-05T09:00:00+11:00",
   "pillars_checked": [1, 2, 3, 4, 5],
   "terminology_checked": true,
-  "decision_log_checked": true,
   "scope_conflicts_checked": true,
-  "notes": "Concise review summary."
+  "notes": "Concise game/production review summary."
 }
 ```
 
-CI verifies that:
+CI verifies:
 
-- the review is by Agent 7;
+- the task id matches;
+- reviewer agent is 1;
 - status is `APPROVED`;
-- `reviewed_head_sha` is exactly the commit immediately before the approval commit;
-- the approval commit changes only that review JSON file.
+- `reviewed_head_sha` is the exact immediately preceding feature head;
+- the approval commit changes only the review JSON file.
 
-Therefore any later feature/code/content/rebase commit automatically invalidates the approval and requires a fresh Director review. If the approved PR was parked/frozen and every merge gate is DONE, Agent 7 may merge it immediately without returning it to the owner; a fresh owner claim is required only if implementation/reconciliation must change.
+Any later feature/content/rebase commit invalidates the approval.
+
+A frozen specialist PR may be approved and merged by The Steward in one review session when all other gates are satisfied. The specialist does not need to re-claim merely so someone can press Merge.
 
 ## Changes requested
 
-If changes are required, do **not** create an `APPROVED` review file.
+If changes are required, do not create an `APPROVED` record. Leave a concrete PR finding and route the fix to the owning specialist. The Steward should not silently take over another role's implementation scope.
 
-Instead, record the issue in the PR conversation and, when useful, create or clarify a non-duplicate queue task. The implementation owner makes the fix. The Director then reviews the new final code commit.
+## Escalation boundaries
 
-## Ownership boundaries
+Escalate to **Josh** when the choice materially changes product identity, major scope, tone, emotional intent or another genuine creative-director decision.
 
-The Director may:
+Escalate to **Agent 7 / CEO** for company-level resourcing, organisational risk, staffing/ownership or strategic scheduling issues.
 
-- maintain `docs/VISION.md`, `docs/DECISIONS.md`, and `docs/TERMINOLOGY.md`;
-- review specialist PRs;
-- append review-only approval commits to feature branches;
-- flag scope overlap and propose queue/dependency changes;
-- ask Josh to decide genuinely subjective product-direction questions.
+Do not escalate ordinary game-design, technical or integration decisions merely because more than one implementation is possible. Those are Steward decisions.
 
-The Director may not:
+## Historical approvals
 
-- implement Storyteller/Mechanist/Lamplighter/Wayfinder feature fixes inside a review;
-- replace Warden black-box testing;
-- silently broaden a feature's scope;
-- change core product pillars or major creative direction without Josh's approval.
+Existing Agent 7 design-review records remain valid historical evidence for work already merged. They do not grant Agent 7 continuing game-approval authority and do not satisfy a new `steward_review: REQUIRED` task unless the queue explicitly records a legacy exception.
