@@ -1206,7 +1206,7 @@
         "docs/ART-DIRECTION.md",
         "docs/ART-PROVENANCE.md"
       ],
-      "notes": "Lamplighter image-generation task. This chat/model has image-generation capability and can create the actual artwork. LR-0031 remains the downstream curation, optimisation and integration pass."
+      "notes": "Active Lamplighter AI-art task. Hero style-lock batch is on PR #12 / branch agent/LR-0042-ai-art-d1f018ec with four hero portraits, lineup, ART-PROVENANCE and ART-SHOT-LIST. Hero batch is awaiting exact-head Director design review before merge. Josh approved the first Grey March map concept direction; map canon/terrain atlas are separately governed by LR-0069/LR-0072. Continue generating settlement/site/enemy/NPC/item art under the locked style; do not integrate runtime art slots here (LR-0031 owns downstream integration)."
     },
     {
       "id": "LR-0043",
