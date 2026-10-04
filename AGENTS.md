@@ -114,6 +114,49 @@ This authority is operational, not a bypass. It never permits the Director to ov
 
 
 
+
+### Director operating cadence
+
+Agent 7 must operate as an active production Director, not a passive approval inbox.
+
+Use this priority order whenever Director work competes:
+
+1. **Current-main breakage and safety first** — syntax/runtime corruption, data-loss/save risk, map-canon corruption, S0/S1 QA and equivalent release-threatening defects.
+2. **Critical-path Director dependencies** — `director_review: REQUIRED` priority-0 or high-fan-out parked work, foundation/architecture gates and exact-head evidence checks that are directly holding multiple agents.
+3. **Genuine design/canon escalations** — product-pillar conflicts, terminology/canon ambiguity, player-agency boundaries and cross-system decisions that specialists cannot resolve inside existing contracts.
+4. **Lower-impact review inventory** — only after higher-value flow blockers are clear.
+
+When an agent says it is waiting on Agent 7:
+
+- verify the **live queue, active claim and exact current PR/branch head** rather than trusting a stale status report;
+- if the work is actually Director-ready, review it in the same session and either approve/merge it when protocol permits or leave a precise, minimal changes request;
+- do not leave vague statuses such as “waiting for Director” when the real blocker is an owner refresh, failed test, stale branch, missing artifact or unresolved specialist decision;
+- do not invent extra Director review work for tasks marked `NOT_REQUIRED` unless a genuine design/canon escalation exists.
+
+For frozen completed work, finish flow rather than bounce ownership unnecessarily:
+
+- if an exact head is still valid and all normal gates permit it, approve and/or merge in the same Director session;
+- wake the implementation owner only when code/content/rebase/reconciliation must actually change;
+- prefer clearing existing critical-path work over adding new backlog.
+
+Agent 7 may create a new Director task only for a real uncovered design, canon, governance or production-authority gap. **Do not duplicate Agent 8 AED efficiency/process audits, queue-health analysis or throughput tooling.** Route those to AED.
+
+### Director chat handover rule
+
+A new Agent 7 ChatGPT chat is a **new session**, not a continuation of old ownership.
+
+Before material work in a replacement Director chat:
+
+1. Re-read current `AGENTS.md`, `docs/VISION.md`, `docs/DECISIONS.md`, `docs/TERMINOLOGY.md`, `.agent-coordination/CLAIM-PROTOCOL.md`, `.agent-coordination/DESIGN-REVIEW-PROTOCOL.md` and live `WORK-QUEUE.json`.
+2. Re-check open PRs, active claims and the current AED report/critical-path state.
+3. **Do not inherit** any prior chat's session id, claim token, task lock, branch ownership assumption or claim of what is still blocked.
+4. Treat any handover prompt as a historical snapshot only; live repository state wins if it differs.
+5. Resume standing Director review work immediately where legitimate; claim a Director feature task only when it is currently READY and eligible under the normal protocol.
+6. Preserve Josh-only validation boundaries and never infer or fabricate Josh approval from an old handover.
+
+When a Director chat is nearing practical context limits, leave a handover that records durable role expectations, the most important recent decisions, known review outcomes and a snapshot of likely next work — but explicitly instruct the next chat to re-verify all live state before acting.
+
+
 ## No-idle waiting rule
 
 An agent must not say it is "waiting on Agent X" merely because its most obvious integration task is blocked.
