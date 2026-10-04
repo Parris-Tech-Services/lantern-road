@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0077",
+  "exclusive_scope": "save-recovery-ux-authoring",
+  "agent_number": 5,
+  "agent": "The Wayfinder",
+  "session_id": "07a7c2d1-59c0-4b8e-a421-1a6f8c3e9701",
+  "claim_token": "7701d1a1-4b2e-4b7e-9d01-8e4a6c2f1201",
+  "claimed_at": "2026-10-04T19:05:00+11:00",
+  "expires_at": "2026-10-05T07:05:00+11:00",
+  "branch": "agent/LR-0077-save-recovery-ux-5d2e8b97",
+  "note": "Fresh Agent 5 finalisation claim after Agent 7 exact-head approval of PR #29."
+}
