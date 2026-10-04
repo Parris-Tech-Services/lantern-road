@@ -456,7 +456,8 @@
         "LR-0010",
         "LR-0011",
         "LR-0013",
-        "LR-0094"
+        "LR-0094",
+        "LR-0103"
       ],
       "primary_agent": 3,
       "goal": "Make combat decisions substantially more interesting without turning Lantern Road into a grid tactics game.",
@@ -472,7 +473,7 @@
         "game.js",
         "content.js"
       ],
-      "notes": "Mechanist-owned. Preserve Lantern Road's compact card/target combat identity; deepen decisions rather than adding a tactical grid."
+      "notes": "Mechanist-owned. Preserve Lantern Road's compact card/target combat identity; deepen decisions rather than adding a tactical grid. Leader-roster boundary: consume LR-0103 before runtime implementation so the canonical active party is Leader + three companions rather than silently preserving the four-companion prototype."
     },
     {
       "id": "LR-0016",
@@ -511,7 +512,8 @@
         "LR-0006",
         "LR-0010",
         "LR-0011",
-        "LR-0013"
+        "LR-0013",
+        "LR-0103"
       ],
       "primary_agent": 3,
       "goal": "Expand LR-0006's equipment/build foundation into a small but expressive item ecosystem with meaningful trade-offs.",
@@ -526,7 +528,7 @@
         "content.js",
         "game.js"
       ],
-      "notes": "Blocked on LR-0006 so it extends rather than competes with the progression foundation. Economy boundary: LR-0017 owns item categories, effects, availability and equip/reward plumbing; LR-0016 owns global base prices/income/resource-pressure targets, with LR-0020 providing final whole-system tuning."
+      "notes": "Blocked on LR-0006 so it extends rather than competes with the progression foundation. Economy boundary: LR-0017 owns item categories, effects, availability and equip/reward plumbing; LR-0016 owns global base prices/income/resource-pressure targets, with LR-0020 providing final whole-system tuning. Leader-roster boundary: consume LR-0103 before runtime implementation so the canonical active party is Leader + three companions rather than silently preserving the four-companion prototype."
     },
     {
       "id": "LR-0018",
@@ -539,7 +541,8 @@
         "LR-0010",
         "LR-0011",
         "LR-0013",
-        "LR-0016"
+        "LR-0016",
+        "LR-0103"
       ],
       "primary_agent": 3,
       "goal": "Turn the progression foundation's injury/condition hooks into memorable persistent consequences that affect expedition decisions.",
@@ -554,7 +557,7 @@
         "content.js",
         "game.js"
       ],
-      "notes": "Blocked on LR-0006. This is the full recovery loop, not a duplicate of LR-0006's foundational persistent-state hook. Economy boundary: recovery costs and resource drains must consume the target assumptions established by LR-0016; LR-0018 owns injury/recovery mechanics, not global economy rebalance."
+      "notes": "Blocked on LR-0006. This is the full recovery loop, not a duplicate of LR-0006's foundational persistent-state hook. Economy boundary: recovery costs and resource drains must consume the target assumptions established by LR-0016; LR-0018 owns injury/recovery mechanics, not global economy rebalance. Leader-roster boundary: consume LR-0103 before runtime implementation so the canonical active party is Leader + three companions rather than silently preserving the four-companion prototype."
     },
     {
       "id": "LR-0019",
@@ -615,7 +618,7 @@
         "game.js",
         "tests/"
       ],
-      "notes": "Mechanist capstone task. Blocked until its underlying systems exist."
+      "notes": "Mechanist capstone task. Blocked until its underlying systems exist. Leader-roster balance is transitively gated by LR-0103 through combat/equipment/injury runtime tasks; final representative campaigns must exercise Leader + three active companions and reserve rotation."
     },
     {
       "id": "LR-0021",
@@ -1976,7 +1979,8 @@
         "LR-0010",
         "LR-0069",
         "LR-0070",
-        "LR-0072"
+        "LR-0072",
+        "LR-0105"
       ],
       "primary_agent": 1,
       "goal": "Render the canonical axial gameplay map over the authored Grey March terrain atlas while keeping game logic/data independent from raster artwork.",
@@ -1995,7 +1999,7 @@
         "assets/art/maps/",
         "tests/"
       ],
-      "notes": "Steward rendering architecture. The painting is never authoritative game data."
+      "notes": "Steward rendering architecture. The painting is never authoritative game data. Regional-label boundary: wait for LR-0105 so dynamic atlas overlays consume machine-protected canonical regions rather than Storyteller proposal files."
     },
     {
       "id": "LR-0074",
@@ -2448,7 +2452,8 @@
         "LR-0011",
         "LR-0013",
         "LR-0091",
-        "LR-0092"
+        "LR-0092",
+        "LR-0103"
       ],
       "primary_agent": 3,
       "goal": "Implement the leader/companion relationship mechanically so companions can meaningfully accept, resist or proactively respond to suggestions.",
@@ -2465,7 +2470,7 @@
         "game.js",
         "tests/"
       ],
-      "notes": "Mechanist integration after player-leader, authored social and progression/save foundations."
+      "notes": "Mechanist integration after player-leader, authored social and progression/save foundations. Leader-roster boundary: consume LR-0103 before runtime implementation so the canonical active party is Leader + three companions rather than silently preserving the four-companion prototype."
     },
     {
       "id": "LR-0094",
@@ -2580,7 +2585,8 @@
         "LR-0010",
         "LR-0011",
         "LR-0013",
-        "LR-0094"
+        "LR-0094",
+        "LR-0103"
       ],
       "primary_agent": 3,
       "goal": "Make action availability stateful and readable so combat and world interactions cannot be mindlessly repeated for unlimited benefit.",
@@ -2598,7 +2604,7 @@
         "content.js",
         "tests/"
       ],
-      "notes": "Mechanist implementation of LR-0094 across combat and non-combat repeatability."
+      "notes": "Mechanist implementation of LR-0094 across combat and non-combat repeatability. Leader-roster boundary: consume LR-0103 before runtime implementation so the canonical active party is Leader + three companions rather than silently preserving the four-companion prototype."
     },
     {
       "id": "LR-0099",
@@ -2724,6 +2730,62 @@
         "design/PLAYER-LEADER-PARTY-CONTRACT.md"
       ],
       "notes": "Director-routed gap after LR-0089. Social/player-agency canon is settled, but existing combat/progression/equipment/injury systems were authored around Garrick, Mira, Oren and Brindle as the active four. This task supplies the missing Mechanist design contract before runtime integration and must preserve the compact premium-indie scope."
+    },
+    {
+      "id": "LR-0104",
+      "title": "Ratify Grey March regional labels as protected map canon",
+      "status": "BLOCKED",
+      "priority": 1,
+      "exclusive_scope": "regional-map-canon-ratification",
+      "depends_on": [
+        "LR-0071"
+      ],
+      "primary_agent": 7,
+      "goal": "Convert the approved LR-0071 regional-name recommendations into an explicit Director-owned canon specification without inventing new gameplay nodes or changing place coordinates.",
+      "acceptance_criteria": [
+        "Ratify Hollowwold, Reedmarsh, Barrow Ridge, Watcherwood, Greyfen Plain and Stoneveil Heights as the first canonical non-node regional labels.",
+        "Record Embermere and Siltbrook Marsh as rejected generated labels so they are not reintroduced accidentally.",
+        "Keep Mourn Lake and Wyrthen Forest explicitly deferred/non-canon until atlas/topology evidence supports a controlled geography decision.",
+        "Define each canonical region by existing-map relationship/description rather than inventing a new settlement, route or coordinate solely to justify the label.",
+        "Specify the machine-readable regional-label record shape and hierarchy relative to canonical places, ready for LR-0105 enforcement.",
+        "Do not move any CANON place, alter q/r semantics, add lake terrain or expand the playable grid."
+      ],
+      "likely_files": [
+        "docs/WORLD-MAP-CANON.md",
+        ".agent-coordination/MAP-CANON-PROTOCOL.md",
+        "design/"
+      ],
+      "notes": "Director follow-up to LR-0071. Canon decisions pre-reviewed on PR #44: six promote, two reject, two defer. Machine registry/enforcement is deliberately separated into LR-0105."
+    },
+    {
+      "id": "LR-0105",
+      "title": "Add machine-enforced canonical regional labels",
+      "status": "BLOCKED",
+      "priority": 1,
+      "exclusive_scope": "regional-map-canon-enforcement",
+      "depends_on": [
+        "LR-0070",
+        "LR-0104"
+      ],
+      "primary_agent": 1,
+      "goal": "Extend Map Canon so approved regional labels are machine-readable and protected by schema/CI without turning regions into fake gameplay locations.",
+      "acceptance_criteria": [
+        "Add a canonical regional-label collection/shape to world/map-canon.json that implements the exact LR-0104 Director ratification.",
+        "Extend world/map-canon.schema.json and map-canon validation to distinguish protected non-node regions from settlements/sites and from still-PROPOSED generated labels.",
+        "Extend protected-change verification so add/rename/retire/identity changes to canonical regional labels require fresh Agent 7 exact-head map-canon approval.",
+        "Keep regional labels non-clickable/non-node data unless a separate future task explicitly creates gameplay geography.",
+        "Preserve all 16 existing canonical place ids/names/q/r/grid refs exactly.",
+        "Document how LR-0073 dynamic overlays consume canonical regional labels without baking them into the terrain atlas."
+      ],
+      "likely_files": [
+        "world/map-canon.json",
+        "world/map-canon.schema.json",
+        "scripts/validate-map-canon.mjs",
+        "scripts/verify-map-canon-change.mjs",
+        "docs/WORLD-MAP-CANON.md",
+        ".agent-coordination/MAP-CANON-PROTOCOL.md"
+      ],
+      "notes": "Steward enforcement follow-on. Do not infer extra names beyond the exact LR-0104 ratification."
     }
   ],
   "agent_roster": [
@@ -2781,5 +2843,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T17:12:00+11:00"
+  "updated_at": "2026-10-04T17:24:00+11:00"
 }
