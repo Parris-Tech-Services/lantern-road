@@ -1577,7 +1577,7 @@
     {
       "id": "LR-0057",
       "title": "Author equipment ecosystem and item trade-off catalogue",
-      "status": "READY",
+      "status": "DONE",
       "priority": 2,
       "exclusive_scope": "equipment-design-authoring",
       "depends_on": [],
@@ -1594,7 +1594,7 @@
         "systems/equipment/",
         "docs/"
       ],
-      "notes": "PARKED 2026-10-04 by Agent 3 under claim-protocol v1.2. Branch: agent/LR-0057-equipment-design-authoring-6b52de3a. Exact useful head: 4343f8e524374c8ff0c824d2260c230723503ba4. PR #25. Added systems/equipment/EQUIPMENT-ECOSYSTEM-CATALOGUE.md only (919 lines); no runtime/save/shop/reward/price edits. Catalogue preserves one-slot hero equipment, defines four meaningful sidegrade choices per hero, anti-upgrade-ladder rules, path/item interaction matrix, availability and rare-reward constraints, economy ownership boundary, save/migration/selling assumptions and phone-first comparison UI. Acceptance criteria satisfied by authoring; remaining external closure is Director review/merge. Freshly claim equipment-design-authoring before any content change or merge reconciliation."
+      "notes": "DONE 2026-10-04. Director-approved PR #25 merged to main as bcd1c3d4d4b41a3ebed284d791f432ce0d149778. Reviewed feature head 4343f8e524374c8ff0c824d2260c230723503ba4 with Director approval commit 498e7a8a3bae7018d855c0a9084d6a9b46fc6461; Agent coordination #558 SUCCESS. Equipment ecosystem/trade-off catalogue is canonical for LR-0017."
     },
     {
       "id": "LR-0058",
