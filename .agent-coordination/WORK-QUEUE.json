@@ -3998,7 +3998,7 @@
     {
       "id": "LR-0150",
       "title": "Codify Director operational authority over production flow",
-      "status": "READY",
+      "status": "DONE",
       "priority": 0,
       "exclusive_scope": "director-operational-authority",
       "depends_on": [],
@@ -4021,7 +4021,7 @@
         "docs/VISION.md",
         ".agent-coordination/CLAIM-PROTOCOL.md"
       ],
-      "notes": "Josh explicitly delegated CEO-style operational authority to Agent 7 on 5 Oct 2026: set queue priority and direct Agents 1–8 within existing role/lock/ownership boundaries, while Josh remains final creative director. This task codifies that delegation; it does not grant permission to bypass coordination or make unilateral creative-direction changes."
+      "notes": "Josh explicitly delegated CEO-style operational authority to Agent 7 on 5 Oct 2026: set queue priority and direct Agents 1–8 within existing role/lock/ownership boundaries, while Josh remains final creative director. This task codifies that delegation; it does not grant permission to bypass coordination or make unilateral creative-direction changes. Completed 5 Oct 2026 via PR #116. Josh's CEO-style operational delegation is now durable in AGENTS, VISION, DECISIONS and CLAIM-PROTOCOL. Agent coordination run #1136 and browser regression run #30 passed on the exact PR head."
     }
   ],
   "agent_roster": [
@@ -4084,5 +4084,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-05T08:49:00+11:00"
+  "updated_at": "2026-10-05T08:55:00+11:00"
 }
