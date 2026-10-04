@@ -37,6 +37,36 @@
   let state = null;
   let hexLayout = [];
   let feedbackTimer = null;
+  let visualFxTimer = null;
+
+  const ART_GLYPHS = {
+    settlement: "◆",
+    site: "✦",
+    enemy: "⚔",
+    item: "◇"
+  };
+
+  function artSlot(kind, id, label, wide = false) {
+    const safeLabel = String(label || id || "").replace(/[<>&"]/g, "");
+    const glyph = ART_GLYPHS[kind] || safeLabel.trim().charAt(0).toUpperCase() || "•";
+    return `
+      <div class="art-slot art-${kind} ${wide ? "art-wide" : ""}" data-art-kind="${kind}" data-art-id="${id}" role="img" aria-label="${safeLabel}">
+        <span class="art-sigil" aria-hidden="true">${glyph}</span>
+        <span class="art-caption">${safeLabel}</span>
+      </div>
+    `;
+  }
+
+  function signalVisualEffect(type) {
+    const root = document.getElementById("app");
+    if (!root || window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    const classes = ["fx-hit", "fx-heal", "fx-status", "fx-travel"];
+    classes.forEach(name => root.classList.remove(name));
+    void root.offsetWidth;
+    root.classList.add(`fx-${type}`);
+    if (visualFxTimer) clearTimeout(visualFxTimer);
+    visualFxTimer = setTimeout(() => root.classList.remove(`fx-${type}`), type === "travel" ? 520 : 360);
+  }
 
   function showFeedback(title, text = "", tone = "") {
     if (!dom.feedbackRoot) return;
@@ -225,7 +255,9 @@
 
   function healMember(memberId, amount) {
     const m = getPartyMember(memberId);
+    const before = m.hp;
     m.hp = Math.min(getMaxHp(memberId), m.hp + amount);
+    if (m.hp > before) signalVisualEffect("heal");
   }
 
   function healAll(amount) {
@@ -234,7 +266,9 @@
 
   function damageMember(memberId, amount) {
     const m = getPartyMember(memberId);
+    const before = m.hp;
     m.hp = Math.max(0, m.hp - amount);
+    if (m.hp < before) signalVisualEffect("hit");
   }
 
   function damageAll(amount) {
@@ -620,6 +654,7 @@
     } else {
       addLog(`You travel into ${terrain.name.toLowerCase()}.`);
     }
+    signalVisualEffect("travel");
     renderAll();
     const eventOpened = (!loc || loc.type !== "settlement") ? maybeTravelEvent(tile) : false;
     if (!eventOpened && !hasBlockingFeedback()) {
@@ -904,7 +939,8 @@
     const s = SETTLEMENT_MAP[settlementId];
     const here = isAtLocation(settlementId);
     return `
-      <div class="card">
+      <div class="card location-card">
+        ${artSlot("settlement", s.id, s.name, true)}
         <div class="entry-head">
           <div>
             <h3>${s.name}</h3>
@@ -930,17 +966,20 @@
         ${s.npcs.map(id => {
           const npc = NPC_MAP[id];
           return `
-            <div class="npc-entry">
-              <div class="entry-head">
-                <div>
-                  <strong>${npc.name}</strong>
-                  <div>${npc.role}</div>
+            <div class="npc-entry art-entry">
+              ${artSlot("npc", npc.id, npc.name)}
+              <div class="art-entry-body">
+                <div class="entry-head">
+                  <div>
+                    <strong>${npc.name}</strong>
+                    <div>${npc.role}</div>
+                  </div>
+                  <span class="tag" style="background:${FACTION_MAP[npc.faction].color}33">${FACTION_MAP[npc.faction].name}</span>
                 </div>
-                <span class="tag" style="background:${FACTION_MAP[npc.faction].color}33">${FACTION_MAP[npc.faction].name}</span>
-              </div>
-              <p>${npc.description}</p>
-              <div class="row">
-                <button class="small" ${here ? "" : "disabled"} data-action="talk-npc" data-npc="${npc.id}">Talk</button>
+                <p>${npc.description}</p>
+                <div class="row">
+                  <button class="small" ${here ? "" : "disabled"} data-action="talk-npc" data-npc="${npc.id}">Talk</button>
+                </div>
               </div>
             </div>
           `;
@@ -954,7 +993,8 @@
     const actions = getSiteActions(siteId);
     const here = isAtLocation(siteId);
     return `
-      <div class="card">
+      <div class="card location-card">
+        ${artSlot("site", site.id, site.name, true)}
         <div class="entry-head">
           <div>
             <h3>${site.name}</h3>
@@ -1049,25 +1089,28 @@
       `<button class="small" data-action="use-item" data-item="${id}" data-member="${memberId}">Use ${ITEM_MAP[id].name}</button>`
     ).join("");
     return `
-      <div class="party-card">
-        <div class="entry-head">
-          <div>
-            <strong>${base.name}</strong>
-            <div>${base.role}</div>
+      <div class="party-card art-card">
+        ${artSlot("party", memberId, base.name)}
+        <div class="art-card-body">
+          <div class="entry-head">
+            <div>
+              <strong>${base.name}</strong>
+              <div>${base.role}</div>
+            </div>
+            <span class="tag">${member.hp}/${getMaxHp(memberId)} HP</span>
           </div>
-          <span class="tag">${member.hp}/${getMaxHp(memberId)} HP</span>
+          <div class="hp-bar"><div class="hp-fill" style="width:${hpPct}%"></div></div>
+          <p>${base.description}</p>
+          <div class="mini-grid">
+            <div>Might +${getSkill(memberId,"might")}</div>
+            <div>Scout +${getSkill(memberId,"scout")}</div>
+            <div>Wits +${getSkill(memberId,"wits")}</div>
+            <div>Spirit +${getSkill(memberId,"spirit")}</div>
+            <div>Guile +${getSkill(memberId,"guile")}</div>
+          </div>
+          <p><strong>${base.ability.name}:</strong> ${base.ability.text}</p>
+          <div class="row">${itemButtons}</div>
         </div>
-        <div class="hp-bar"><div class="hp-fill" style="width:${hpPct}%"></div></div>
-        <p>${base.description}</p>
-        <div class="mini-grid">
-          <div>Might +${getSkill(memberId,"might")}</div>
-          <div>Scout +${getSkill(memberId,"scout")}</div>
-          <div>Wits +${getSkill(memberId,"wits")}</div>
-          <div>Spirit +${getSkill(memberId,"spirit")}</div>
-          <div>Guile +${getSkill(memberId,"guile")}</div>
-        </div>
-        <p><strong>${base.ability.name}:</strong> ${base.ability.text}</p>
-        <div class="row">${itemButtons}</div>
       </div>
     `;
   }
@@ -1076,12 +1119,15 @@
     const inventory = Object.entries(state.inventory).map(([id, qty]) => {
       const item = ITEM_MAP[id];
       return `
-        <div class="item-entry">
-          <div class="entry-head">
-            <strong>${item.name}</strong>
-            <span class="tag">${qty}</span>
+        <div class="item-entry art-entry">
+          ${artSlot("item", id, item.name)}
+          <div class="art-entry-body">
+            <div class="entry-head">
+              <strong>${item.name}</strong>
+              <span class="tag">${qty}</span>
+            </div>
+            <p>${item.description}</p>
           </div>
-          <p>${item.description}</p>
         </div>
       `;
     }).join("") || "<p>No items carried.</p>";
@@ -2198,6 +2244,7 @@
       if (hit) {
         const enemy = state.combat.enemies.find(e => e.uid === targetId);
         if (enemy) enemy.statuses.exposed = 1;
+        signalVisualEffect("status");
         addCombatLog(`${enemy.name} is exposed.`);
       }
     }
@@ -2209,6 +2256,7 @@
       if (hit) {
         const enemy = state.combat.enemies.find(e => e.uid === targetId);
         if (enemy) enemy.statuses.weakened = 2;
+        signalVisualEffect("status");
         addCombatLog(`${enemy.name}'s next attack is weakened.`);
       }
     }
@@ -2218,6 +2266,7 @@
     if (actionKey === "guard") {
       const ally = getPartyMember(targetId);
       ally.guard = 1;
+      signalVisualEffect("status");
       addCombatLog(`${hero.name} guards ${getPartyBase(targetId).name}.`);
     }
     if (actionKey === "mend") {
@@ -2228,6 +2277,7 @@
     if (actionKey === "bless") {
       const ally = getPartyMember(targetId);
       ally.bless = 2;
+      signalVisualEffect("status");
       addCombatLog(`${hero.name} blesses ${getPartyBase(targetId).name}'s next strike.`);
     }
     state.combat.pendingAction = null;
@@ -2242,6 +2292,7 @@
     if (attack >= enemy.armor) {
       let dmg = randInt(damageRange[0], damageRange[1]);
       enemy.hp = Math.max(0, enemy.hp - dmg);
+      signalVisualEffect("hit");
       addCombatLog(`${verb} ${enemy.name} for ${dmg}.`);
       actor.bless = 0;
       enemy.statuses.exposed = 0;
@@ -2439,19 +2490,25 @@
     const heroActions = token && token.kind === "party" ? getHeroActions(token.id) : [];
     const neededTarget = heroActions.find(a => a.key === pending);
     const enemyButtons = combat.enemies.map(enemy => `
-      <div class="unit-card ${enemy.hp <= 0 ? "dead" : ""} ${token && token.kind === "enemy" && token.id === enemy.uid ? "active" : ""}">
-        <strong>${enemy.name}</strong>
-        <div>${Math.max(0, enemy.hp)}/${enemy.maxHp} HP • Armor ${enemy.armor}</div>
-        <div>${enemy.statuses.exposed ? "Exposed " : ""}${enemy.statuses.weakened ? "Weakened" : ""}</div>
-        ${neededTarget && neededTarget.target === "enemy" ? `<button class="small" ${enemy.hp <= 0 ? "disabled" : ""} data-action="combat-target" data-target="${enemy.uid}">${pending ? "Target" : "Select"}</button>` : ""}
+      <div class="unit-card art-card ${enemy.hp <= 0 ? "dead" : ""} ${token && token.kind === "enemy" && token.id === enemy.uid ? "active" : ""}">
+        ${artSlot("enemy", enemy.archetypeId, enemy.name)}
+        <div class="art-card-body">
+          <strong>${enemy.name}</strong>
+          <div>${Math.max(0, enemy.hp)}/${enemy.maxHp} HP • Armor ${enemy.armor}</div>
+          <div class="status-line">${enemy.statuses.exposed ? '<span class="status-badge bad">Exposed</span>' : ""}${enemy.statuses.weakened ? '<span class="status-badge bad">Weakened</span>' : ""}</div>
+          ${neededTarget && neededTarget.target === "enemy" ? `<button class="small" ${enemy.hp <= 0 ? "disabled" : ""} data-action="combat-target" data-target="${enemy.uid}">${pending ? "Target" : "Select"}</button>` : ""}
+        </div>
       </div>
     `).join("");
     const allyButtons = state.party.map(member => `
-      <div class="unit-card ${member.hp <= 0 ? "dead" : ""} ${token && token.kind === "party" && token.id === member.id ? "active" : ""}">
-        <strong>${getPartyBase(member.id).name}</strong>
-        <div>${member.hp}/${getMaxHp(member.id)} HP • Def ${heroDefense(member.id)}</div>
-        <div>${member.guard ? "Guarded " : ""}${member.bless ? "Blessed" : ""}</div>
-        ${neededTarget && neededTarget.target === "ally" ? `<button class="small" ${member.hp <= 0 ? "disabled" : ""} data-action="combat-target" data-target="${member.id}">${pending ? "Target" : "Select"}</button>` : ""}
+      <div class="unit-card art-card ${member.hp <= 0 ? "dead" : ""} ${token && token.kind === "party" && token.id === member.id ? "active" : ""}">
+        ${artSlot("party", member.id, getPartyBase(member.id).name)}
+        <div class="art-card-body">
+          <strong>${getPartyBase(member.id).name}</strong>
+          <div>${member.hp}/${getMaxHp(member.id)} HP • Def ${heroDefense(member.id)}</div>
+          <div class="status-line">${member.guard ? '<span class="status-badge good">Guarded</span>' : ""}${member.bless ? '<span class="status-badge good">Blessed</span>' : ""}</div>
+          ${neededTarget && neededTarget.target === "ally" ? `<button class="small" ${member.hp <= 0 ? "disabled" : ""} data-action="combat-target" data-target="${member.id}">${pending ? "Target" : "Select"}</button>` : ""}
+        </div>
       </div>
     `).join("");
 
@@ -2525,7 +2582,7 @@
         drawHex(q, r, x, y, size);
       }
     }
-    dom.mapHint.textContent = "Tap a neighbouring hex to travel. Tap the current hex or a marked site to focus it.";
+    dom.mapHint.textContent = "Gold-edged hexes are one step away. ◆ marks settlements, ✦ marks discovered sites, and the lantern ring marks your party.";
   }
 
   function hexPoints(cx, cy, size) {
@@ -2588,42 +2645,79 @@
       ctx.stroke();
     }
 
+    const reachable = hexDistance(state.position, { q, r }) === 1;
+    if (reachable) {
+      ctx.strokeStyle = "rgba(232, 190, 91, .82)";
+      ctx.lineWidth = 2.4;
+      ctx.beginPath();
+      points.forEach((p, idx) => idx === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y));
+      ctx.closePath();
+      ctx.stroke();
+    }
+
     const loc = getLocationAt(q, r);
     if (loc) {
+      ctx.save();
+      ctx.textAlign = "center";
+      ctx.shadowColor = "rgba(22,17,13,.48)";
+      ctx.shadowBlur = 4;
       if (loc.type === "settlement") {
         ctx.fillStyle = "#2f241c";
+        ctx.strokeStyle = "#e8be5b";
+        ctx.lineWidth = 2;
         ctx.beginPath();
-        ctx.arc(cx, cy, size * 0.28, 0, Math.PI * 2);
+        ctx.arc(cx, cy, size * 0.29, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = "#eadfc6";
-        ctx.font = `bold ${Math.max(11, size * 0.28)}px serif`;
-        ctx.textAlign = "center";
-        ctx.fillText(loc.data.name, cx, cy - size * 0.45);
+        ctx.stroke();
+        ctx.fillStyle = "#f1d17a";
+        ctx.font = `bold ${Math.max(11, size * 0.34)}px serif`;
+        ctx.fillText("◆", cx, cy + size * 0.12);
+        ctx.fillStyle = "#f8f0dc";
+        ctx.font = `bold ${Math.max(11, size * 0.27)}px serif`;
+        ctx.fillText(loc.data.name, cx, cy - size * 0.46);
       } else if (state.discoveredSites[loc.data.id]) {
         ctx.fillStyle = "#eadfc6";
-        ctx.beginPath();
-        ctx.rect(cx - size * 0.18, cy - size * 0.18, size * 0.36, size * 0.36);
-        ctx.fill();
         ctx.strokeStyle = "#2f241c";
         ctx.lineWidth = 2;
-        ctx.strokeRect(cx - size * 0.18, cy - size * 0.18, size * 0.36, size * 0.36);
+        ctx.beginPath();
+        ctx.moveTo(cx, cy - size * 0.25);
+        ctx.lineTo(cx + size * 0.25, cy);
+        ctx.lineTo(cx, cy + size * 0.25);
+        ctx.lineTo(cx - size * 0.25, cy);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
         ctx.fillStyle = "#2f241c";
         ctx.font = `bold ${Math.max(10, size * 0.24)}px serif`;
-        ctx.textAlign = "center";
-        ctx.fillText(loc.data.name, cx, cy - size * 0.45);
+        ctx.fillText("✦", cx, cy + size * 0.09);
+        ctx.fillStyle = "#f8f0dc";
+        ctx.font = `bold ${Math.max(10, size * 0.24)}px serif`;
+        ctx.fillText(loc.data.name, cx, cy - size * 0.46);
       }
+      ctx.restore();
     }
 
     if (state.position.q === q && state.position.r === r) {
-      ctx.strokeStyle = "#f8f3e0";
+      ctx.save();
+      ctx.strokeStyle = "#f4c968";
       ctx.lineWidth = 4;
+      ctx.setLineDash([Math.max(3, size * .12), Math.max(2, size * .08)]);
       ctx.beginPath();
-      ctx.arc(cx, cy, size * 0.38, 0, Math.PI * 2);
+      ctx.arc(cx, cy, size * 0.4, 0, Math.PI * 2);
       ctx.stroke();
-      ctx.fillStyle = "#f7eed0";
+      ctx.setLineDash([]);
+      ctx.fillStyle = "#fff1b8";
+      ctx.strokeStyle = "#2f241c";
+      ctx.lineWidth = 2;
       ctx.beginPath();
-      ctx.arc(cx, cy, size * 0.14, 0, Math.PI * 2);
+      ctx.arc(cx, cy, size * 0.15, 0, Math.PI * 2);
       ctx.fill();
+      ctx.stroke();
+      ctx.fillStyle = "#5a3b19";
+      ctx.font = `bold ${Math.max(9, size * .22)}px serif`;
+      ctx.textAlign = "center";
+      ctx.fillText("✦", cx, cy + size * .075);
+      ctx.restore();
     }
   }
 
