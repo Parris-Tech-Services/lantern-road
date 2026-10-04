@@ -4,15 +4,13 @@ const path = require("path");
 
 const OUT = path.join("QA", "evidence", "LR-0021");
 fs.mkdirSync(OUT, { recursive: true });
-
+let browser;
 const errors = [];
 const consoleErrors = [];
-const journey = [];
-let browser;
+const steps = [];
+const events = [];
 
-function compact(text) {
-  return String(text || "").replace(/\s+/g, " ").trim();
-}
+const clean = s => String(s || "").replace(/\s+/g, " ").trim();
 
 (async () => {
   browser = await chromium.launch({ headless: true });
@@ -20,210 +18,163 @@ function compact(text) {
     viewport: { width: 390, height: 844 },
     deviceScaleFactor: 1,
     hasTouch: true,
-    isMobile: true,
+    isMobile: true
   });
   const page = await context.newPage();
-  page.setDefaultTimeout(6000);
-  page.on("pageerror", err => errors.push(String(err)));
-  page.on("console", msg => {
-    if (msg.type() === "error") consoleErrors.push(msg.text());
-  });
+  page.setDefaultTimeout(5000);
+  page.on("pageerror", e => errors.push(String(e)));
+  page.on("console", m => { if (m.type() === "error") consoleErrors.push(m.text()); });
 
   await page.goto("http://127.0.0.1:4173/", { waitUntil: "networkidle" });
   await page.evaluate(() => { localStorage.clear(); sessionStorage.clear(); });
   await page.reload({ waitUntil: "networkidle" });
 
-  async function bodyText() {
-    return await page.locator("body").innerText();
+  async function timeState() {
+    const chips = page.locator(".stat-chip");
+    const texts = [];
+    for (let i = 0; i < await chips.count(); i++) texts.push(clean(await chips.nth(i).innerText()));
+    const t = texts.find(x => /^TIME\s/i.test(x)) || "";
+    const m = t.match(/Day\s+(\d+),\s*([^•]+)\s*•\s*(.+)$/i);
+    const loc = (texts.find(x => /^LOCATION\s/i.test(x)) || "").replace(/^LOCATION\s*/i,"");
+    const res = (texts.find(x => /^RESOURCES\s/i.test(x)) || "").replace(/^RESOURCES\s*/i,"");
+    const pressure = (texts.find(x => /^PRESSURE\s/i.test(x)) || "").replace(/^PRESSURE\s*/i,"");
+    return { day: m ? Number(m[1]) : null, clock: m ? clean(m[2]) : null, weather: m ? clean(m[3]) : null, location: loc, resources: res, pressure };
   }
 
-  function visibleState(text) {
-    const one = compact(text);
-    const day = one.match(/Day\s+(\d+),\s*([^•]+)\s*•\s*([^A-Z]+?)(?= LOCATION|$)/i);
-    const location = one.match(/LOCATION\s+(.+?)(?= RESOURCES|$)/i);
-    const resources = one.match(/RESOURCES\s+(.+?)(?= PRESSURE|$)/i);
-    const pressure = one.match(/PRESSURE\s+(.+?)(?= GOAL|$)/i);
-    return {
-      day: day ? Number(day[1]) : null,
-      clock: day ? compact(day[2]) : null,
-      weather: day ? compact(day[3]) : null,
-      location: location ? compact(location[1]) : null,
-      resources: resources ? compact(resources[1]) : null,
-      pressure: pressure ? compact(pressure[1]) : null,
-    };
-  }
-
-  async function record(action, extra = {}) {
-    const text = await bodyText();
-    const state = visibleState(text);
-    journey.push({ action, ...state, ...extra });
-    console.log("WARDEN_STEP", JSON.stringify(journey[journey.length - 1]));
-  }
-
-  async function screenshot(label) {
-    await page.screenshot({ path: path.join(OUT, label + ".png"), fullPage: true });
+  async function record(action, extra={}) {
+    const s = await timeState();
+    const row = { action, ...s, ...extra };
+    steps.push(row);
+    console.log("WARDEN_STEP", JSON.stringify(row));
+    return row;
   }
 
   async function modalVisible() {
     return await page.locator("#modalRoot").evaluate(el => !el.hidden && getComputedStyle(el).display !== "none");
   }
 
-  async function dismissOrAdvanceModal(tag = "modal") {
-    let steps = 0;
-    let last = "";
-    let stagnant = 0;
-    while (await modalVisible() && steps < 30) {
-      steps++;
-      const modal = page.locator("#modalRoot");
-      const text = compact(await modal.innerText());
-      if (text === last) stagnant++; else stagnant = 0;
-      last = text;
-      console.log("WARDEN_MODAL", JSON.stringify({tag, steps, text: text.slice(0, 1200)}));
-
-      const buttons = modal.getByRole("button").filter({ visible: true });
-      const count = await buttons.count();
-      if (!count) break;
-
-      const labels = [];
-      for (let i = 0; i < count; i++) {
-        const b = buttons.nth(i);
-        labels.push({ i, text: compact(await b.innerText()), disabled: await b.isDisabled() });
-      }
-      console.log("WARDEN_MODAL_BUTTONS", JSON.stringify(labels));
-
-      let chosen = null;
-      const preferred = [
-        /set out/i, /continue/i, /accept/i, /agree/i, /investigate/i, /help/i,
-        /attack/i, /strike/i, /guard/i, /heal/i, /use/i, /take/i, /leave/i,
-        /close/i
-      ];
-      for (const re of preferred) {
-        for (const x of labels) {
-          if (!x.disabled && re.test(x.text)) { chosen = x; break; }
-        }
-        if (chosen) break;
-      }
-      if (!chosen) chosen = labels.find(x => !x.disabled) || null;
-      if (!chosen) break;
-
-      // If a modal is visibly stuck on one choice, try a different enabled button.
-      if (stagnant >= 2) {
-        const alt = labels.find(x => !x.disabled && x.i !== chosen.i);
-        if (alt) chosen = alt;
-      }
-
-      await buttons.nth(chosen.i).click();
-      await page.waitForTimeout(180);
-    }
-    await record(tag + "-resolved", { modal_steps: steps });
+  async function modalTitle() {
+    const root = page.locator("#modalRoot");
+    const h = root.locator("h1,h2,h3").first();
+    return await h.count() ? clean(await h.innerText()) : clean((await root.innerText()).split("\n")[0]);
   }
 
-  await screenshot("00-intro");
+  async function resolveModal(tag) {
+    let guard = 0;
+    while (await modalVisible() && guard++ < 12) {
+      const root = page.locator("#modalRoot");
+      const title = await modalTitle();
+      const text = clean(await root.innerText());
+      events.push({ tag, title, text: text.slice(0, 700), state: await timeState() });
+      console.log("WARDEN_EVENT", JSON.stringify(events[events.length - 1]));
+
+      const btns = root.getByRole("button");
+      const choices = [];
+      for (let i = 0; i < await btns.count(); i++) {
+        const b = btns.nth(i);
+        if (await b.isVisible() && !(await b.isDisabled())) choices.push({ i, label: clean(await b.innerText()) });
+      }
+      if (!choices.length) break;
+
+      // Prefer a substantive player choice. Fall back to Set out/Continue, then Close/Leave.
+      let chosen = choices.find(x => !/^(close|leave\.?|cancel)$/i.test(x.label) && !/^×$/.test(x.label));
+      if (!chosen) chosen = choices.find(x => /set out|continue/i.test(x.label));
+      if (!chosen) chosen = choices[choices.length - 1];
+
+      await btns.nth(chosen.i).click();
+      await page.waitForTimeout(90);
+    }
+  }
+
+  await page.screenshot({ path: path.join(OUT, "00-historical-start.png"), fullPage: true });
   await record("fresh-campaign");
-  if (await modalVisible()) await dismissOrAdvanceModal("intro");
-  await screenshot("01-after-intro");
+  if (await modalVisible()) await resolveModal("intro");
 
-  // Baseline information tabs as a normal curious first-time player.
-  for (const tab of ["Context", "Journal", "Party", "Log"]) {
-    const b = page.getByRole("button", { name: tab, exact: true });
-    if (await b.count()) {
-      await b.click();
-      await page.waitForTimeout(120);
-      await record("view-" + tab.toLowerCase());
-    }
-  }
-  await page.getByRole("button", { name: "Context", exact: true }).click();
-
-  // Try the obvious starting-town actions before setting off.
-  for (const action of ["Hear rumours", "Talk", "Visit the market"]) {
-    const b = page.getByRole("button", { name: action, exact: true }).first();
-    if (await b.count() && await b.isVisible() && await b.isEnabled()) {
-      await b.click();
-      await page.waitForTimeout(150);
-      await record("click-" + action.toLowerCase().replace(/\s+/g, "-"));
-      if (await modalVisible()) await dismissOrAdvanceModal(action);
-    }
+  // Opening player actions.
+  const rumour = page.getByRole("button", { name: "Hear rumours", exact: true });
+  if (await rumour.count()) {
+    await rumour.click();
+    await page.waitForTimeout(90);
+    if (await modalVisible()) await resolveModal("rumour");
+    await record("heard-rumours");
   }
 
-  // Save once as a normal player before travelling.
+  const talk = page.getByRole("button", { name: "Talk", exact: true }).first();
+  if (await talk.count()) {
+    await talk.click();
+    await page.waitForTimeout(90);
+    if (await modalVisible()) await resolveModal("opening-dialogue");
+    await record("opening-dialogue");
+  }
+
   const save = page.getByRole("button", { name: "Save", exact: true });
   if (await save.count()) {
     await save.click();
-    await page.waitForTimeout(120);
+    await page.waitForTimeout(90);
+    if (await modalVisible()) await resolveModal("save");
     await record("manual-save");
   }
 
-  async function tryCanvasTravel() {
-    const canvas = page.locator("#mapCanvas");
-    const box = await canvas.boundingBox();
-    if (!box) return false;
-    const before = visibleState(await bodyText());
+  // Historical baseline endurance path: a plausible but intentionally low-agency player
+  // repeatedly camps to expose pacing, repetition, resource-pressure and campaign-end behaviour.
+  let camps = 0;
+  while (camps < 70) {
+    const s = await timeState();
+    if (s.day !== null && s.day >= 19) break;
 
-    // A human taps the highlighted neighbour. The probe searches visible canvas positions,
-    // never game internals, until one behaves as a legal adjacent move.
-    const xs = [0.22,0.34,0.46,0.58,0.70,0.82];
-    const ys = [0.18,0.30,0.42,0.54,0.66,0.78,0.88];
-    for (const yf of ys) {
-      for (const xf of xs) {
-        await page.mouse.click(box.x + box.width * xf, box.y + box.height * yf);
-        await page.waitForTimeout(120);
-        if (await modalVisible()) await dismissOrAdvanceModal("travel-event");
-        const after = visibleState(await bodyText());
-        if (after.location && (after.location !== before.location || after.day !== before.day || after.clock !== before.clock)) {
-          await record("travel-by-map", { from: before.location });
-          return true;
-        }
-      }
+    const camp = page.getByRole("button", { name: "Camp", exact: true });
+    if (!(await camp.count()) || !(await camp.isVisible()) || await camp.isDisabled()) {
+      await record("camp-unavailable");
+      break;
     }
-    await record("map-travel-attempt-no-move");
-    return false;
+
+    camps++;
+    await camp.click();
+    await page.waitForTimeout(90);
+    if (await modalVisible()) await resolveModal("camp");
+    const after = await record("camp-" + camps);
+
+    if (camps % 8 === 0) {
+      await page.screenshot({ path: path.join(OUT, "camp-" + String(camps).padStart(2,"0") + ".png"), fullPage: true });
+    }
+    if (after.day !== null && after.day >= 18 && camps >= 2) {
+      // One more camp may be needed for the campaign end to surface.
+      if (await modalVisible()) await resolveModal("late-campaign");
+      if (after.day >= 19) break;
+    }
   }
 
-  let loops = 0;
-  while (loops < 55) {
-    loops++;
-    if (await modalVisible()) await dismissOrAdvanceModal("ambient-modal");
+  if (await modalVisible()) await resolveModal("final-modal");
+  await page.screenshot({ path: path.join(OUT, "99-historical-final.png"), fullPage: true });
+  const final = await record("final", { camps });
 
-    const state = visibleState(await bodyText());
-    if (state.day && state.day >= 18) break;
-
-    // At settlements, interact lightly rather than rushing straight through.
-    const rumour = page.getByRole("button", { name: "Hear rumours", exact: true });
-    if (await rumour.count() && await rumour.first().isVisible() && await rumour.first().isEnabled() && loops % 4 === 0) {
-      await rumour.first().click();
-      await page.waitForTimeout(120);
-      await record("hear-rumour-during-run");
-      if (await modalVisible()) await dismissOrAdvanceModal("rumour");
-    }
-
-    const moved = await tryCanvasTravel();
-    if (!moved) {
-      const camp = page.getByRole("button", { name: "Camp", exact: true });
-      if (await camp.count() && await camp.isVisible() && await camp.isEnabled()) {
-        await camp.click();
-        await page.waitForTimeout(140);
-        await record("camp");
-        if (await modalVisible()) await dismissOrAdvanceModal("camp-event");
-      } else {
-        break;
-      }
-    }
-
-    if (loops % 10 === 0) await screenshot("progress-" + String(loops).padStart(2,"0"));
-  }
-
-  await screenshot("99-final");
-  await record("final");
-
-  const result = { journey, errors, consoleErrors };
-  fs.writeFileSync(path.join(OUT, "journey.json"), JSON.stringify(result, null, 2));
-  console.log("\n=== WARDEN_RESULT ===\n" + JSON.stringify(result, null, 2));
+  const titleCounts = {};
+  for (const e of events) titleCounts[e.title] = (titleCounts[e.title] || 0) + 1;
+  const repeatedEvents = Object.entries(titleCounts).filter(([,n]) => n > 1).sort((a,b)=>b[1]-a[1]);
+  const result = {
+    tested_game_base_sha: "70056f6a323b8df3c36f854988dc2cc036fbf88d",
+    qa_branch_head: process.env.GITHUB_SHA || null,
+    viewport: "390x844 mobile Chromium",
+    camps,
+    final,
+    repeatedEvents,
+    steps,
+    events,
+    errors,
+    consoleErrors
+  };
+  fs.writeFileSync(path.join(OUT, "historical-endurance.json"), JSON.stringify(result, null, 2));
+  console.log("WARDEN_RESULT", JSON.stringify({
+    tested_game_base_sha: result.tested_game_base_sha,
+    camps,
+    final,
+    repeatedEvents,
+    errors,
+    consoleErrors
+  }));
 })().catch(err => {
   errors.push(String(err && err.stack || err));
   console.error("WARDEN_PROBE_FATAL", err);
-  try {
-    fs.writeFileSync(path.join(OUT, "fatal.json"), JSON.stringify({ errors, consoleErrors, journey }, null, 2));
-  } catch {}
   process.exitCode = 1;
 }).finally(async () => {
   if (browser) await browser.close().catch(() => {});
