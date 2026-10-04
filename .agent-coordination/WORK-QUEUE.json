@@ -318,6 +318,12 @@
           "Josh loads a legacy/pre-gate save on his Android phone after the candidate build is deployed or otherwise accessible.",
           "Josh confirms the campaign opens and core state is intact enough to continue play.",
           "The evidence record contains Josh's explicit phone-check confirmation; agents must not self-assert this field."
+        ],
+        "required_ci_artifact_names": [
+          "save-migration-results"
+        ],
+        "required_repository_paths": [
+          "tests/fixtures/saves/legacy/"
         ]
       }
     },
@@ -385,6 +391,12 @@
           "Josh opens the candidate build on his Android phone and performs a short smoke test covering launch, starting/resuming play, one map/action interaction, and save/reload.",
           "Josh confirms the tested build behaves correctly enough to close the foundation gate.",
           "The evidence record contains Josh's explicit phone-check confirmation; agents must not self-assert this field."
+        ],
+        "required_ci_artifact_names": [
+          "browser-regression-results"
+        ],
+        "required_repository_paths": [
+          "tests/e2e/"
         ]
       }
     },
