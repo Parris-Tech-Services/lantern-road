@@ -195,13 +195,42 @@ if (branchLocks.length === 0) {
   }
 
   const notes = String(task.notes || "");
-  const parkedMarker = /(parked|parking|fresh(?:ly)?\s+(?:re-)?claim|re-claim|release(?:d)?\s+(?:the\s+)?(?:own\s+)?lock|partial\s+handoff)/i;
+  const parkedMarker = /(parked|parking|fresh(?:ly)?\s+(?:re-)?claim|re-claim|release(?:d)?\s+(?:the\s+)?(?:own\s+)?lock|partial\s+handoff|frozen)/i;
   if (!parkedMarker.test(notes)) {
     fail(`${task.id}: queue notes do not identify this work as parked/frozen under the claim protocol.`);
   }
   if (!notes.includes(branch)) {
     fail(`${task.id}: parked queue notes do not name this PR branch "${branch}".`);
   }
+
+  assertMergeGatesComplete();
+
+  if (!needsDirectorReview) {
+    // Legacy optional approval is accepted, but never required for NOT_REQUIRED tasks.
+    if (director?.valid && notes.includes(director.reviewedHead)) {
+      console.log(
+        `Parked NOT_REQUIRED-review PR with optional legacy Director approval verified for direct merge: ${task.id} / ${task.exclusive_scope} / ${branch} / reviewed ${director.reviewedHead}`
+      );
+      process.exit(0);
+    }
+
+    if (!prHead) {
+      fail(`${task.id}: PR_HEAD_SHA is unavailable; cannot verify frozen parked no-review head.`);
+    }
+    if (!notes.includes(prHead)) {
+      fail(`${task.id}: parked queue notes do not name exact current PR head ${prHead}; fresh ownership is required before reconciliation/rebase changes.`);
+    }
+
+    console.log(
+      `Parked NOT_REQUIRED-review PR verified for direct merge without owner re-claim: ${task.id} / ${task.exclusive_scope} / ${branch} / head ${prHead}`
+    );
+    process.exit(0);
+  }
+
+  if (!director?.valid) {
+    fail(director?.error || `${task.id}: missing valid Director approval.`);
+  }
+
   const parkedUsefulHeads = [director.reviewedHead];
   try {
     const reviewParent = git(["rev-parse", `${director.reviewedHead}^`]);
@@ -224,39 +253,8 @@ if (branchLocks.length === 0) {
     );
   }
 
-  assertMergeGatesComplete();
-
-  if (needsDirectorReview) {
-    if (!director?.valid) {
-      fail(director?.error || `${task.id}: missing valid Director approval.`);
-    }
-    if (!notes.includes(director.reviewedHead)) {
-      fail(`${task.id}: parked queue notes do not name the exact reviewed useful head ${director.reviewedHead}.`);
-    }
-
-    console.log(
-      `Parked REQUIRED-review PR verified for direct merge without owner re-claim: ${task.id} / ${task.exclusive_scope} / ${branch} / reviewed ${director.reviewedHead}`
-    );
-    process.exit(0);
-  }
-
-  if (director?.valid && notes.includes(director.reviewedHead)) {
-    console.log(
-      `Parked NOT_REQUIRED-review PR with optional legacy Director approval verified for direct merge: ${task.id} / ${task.exclusive_scope} / ${branch} / reviewed ${director.reviewedHead}`
-    );
-    process.exit(0);
-  }
-
-  if (!prHead) {
-    fail(`${task.id}: PR_HEAD_SHA is unavailable; cannot verify frozen parked no-review head.`);
-  }
-  if (!notes.includes(prHead)) {
-    fail(`${task.id}: parked queue notes do not name exact current PR head ${prHead}; fresh ownership is required before reconciliation/rebase changes.`);
-  }
-
   console.log(
-    `Parked PR Director approval verified without idle lock: ${task.id} / ${task.exclusive_scope} / ${branch} / reviewed ${director.reviewedHead} / parked useful head ${parkedHead}`
-    `Parked NOT_REQUIRED-review PR verified for direct merge without owner re-claim: ${task.id} / ${task.exclusive_scope} / ${branch} / head ${prHead}`
+    `Parked REQUIRED-review PR verified for direct merge without owner re-claim: ${task.id} / ${task.exclusive_scope} / ${branch} / reviewed ${director.reviewedHead} / parked useful head ${parkedHead}`
   );
   process.exit(0);
 }
