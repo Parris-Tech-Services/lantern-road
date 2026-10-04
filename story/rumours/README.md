@@ -180,6 +180,13 @@ Later integration may map each rumour to:
 
 Do not create a separate persistence system. LR-0090/LR-0005/LR-0008 should consume shared state.
 
+## Integration handoff
+
+- **LR-0038** consumes settlement/NPC rumour state when recurring conversations are integrated.
+- **LR-0005** supplies visible world/faction consequence state that selects changed rumours.
+- **LR-0008** supplies campaign phase and major ending-pressure context.
+- **LR-0090** supplies the reusable conversation/topic-memory runtime so heard rumours do not replay as first-time information.
+
 ## Files
 
 - `HEARTHWICK.md`
