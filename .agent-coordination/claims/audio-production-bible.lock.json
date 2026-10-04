@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0126",
+  "exclusive_scope": "audio-production-bible",
+  "agent_number": 4,
+  "agent": "The Lamplighter",
+  "session_id": "cd558e92-75d4-46e1-a37d-f54cb098a51f",
+  "claim_token": "95a6c0f6-d54e-4cab-bf64-2594fab5c76b",
+  "claimed_at": "2026-10-04T19:36:00+11:00",
+  "expires_at": "2026-10-05T07:36:00+11:00",
+  "branch": "agent/LR-0126-audio-bible-8a9f34a9",
+  "note": "Fresh post-Director-review claim to merge approved LR-0126."
+}
