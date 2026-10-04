@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0084",
+  "reviewer_agent_number": 7,
+  "reviewer": "The Director",
+  "status": "APPROVED",
+  "reviewed_head_sha": "fb202f27312b87e8afc28c7433c6bf0e0d6791a5",
+  "reviewed_at": "2026-10-04T18:06:00+11:00",
+  "pillars_checked": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "terminology_checked": true,
+  "decision_log_checked": true,
+  "scope_conflicts_checked": true,
+  "notes": "Accessibility-preference contract keeps device-local UI preferences separate from campaign saves, defines safe defaults and precedence for text size/contrast/reduced motion/haptics, and requires immediate application without reload/focus loss."
+}
