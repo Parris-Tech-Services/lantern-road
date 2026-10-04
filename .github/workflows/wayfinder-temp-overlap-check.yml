@@ -121,6 +121,11 @@ jobs:
 
               await page.locator("[data-action='set-text-scale'][data-value='xlarge']").click();
               assert.equal(await page.locator("html").getAttribute("data-text-scale"), "xlarge");
+              assert.equal(
+                await page.locator("#feedbackRoot").evaluate(el => el.classList.contains("visible")),
+                false,
+                "Settings state changes should not create a floating toast over Settings controls"
+              );
 
               const modal = page.locator(".settings-modal");
               const close = page.locator("[data-action='close-accessibility']");
@@ -130,7 +135,9 @@ jobs:
               const closeBox = await close.boundingBox();
               assert.ok(modalBox && closeBox);
               assert.ok(closeBox.x >= modalBox.x && closeBox.x + closeBox.width <= modalBox.x + modalBox.width,
-                `Settings close button must stay inside modal at ${size.width}px with extra-large text`);
+                `Settings close button must stay inside modal horizontally at ${size.width}px with extra-large text`);
+              assert.ok(closeBox.y >= 0 && closeBox.y + closeBox.height <= size.height,
+                `Settings close button must stay inside the visible phone viewport at ${size.width}px with extra-large text`);
 
               const actionButtons = page.locator(".settings-modal button");
               const count = await actionButtons.count();
@@ -141,7 +148,9 @@ jobs:
                   `Settings action ${i} must stay inside viewport at ${size.width}px`);
               }
 
-              await page.screenshot({ path: `wayfinder-${size.width}.png`, fullPage: true });
+              await page.screenshot({ path: `wayfinder-settings-${size.width}.png`, fullPage: false });
+              await page.locator("[data-action='close-accessibility']").click();
+              await page.screenshot({ path: `wayfinder-page-${size.width}.png`, fullPage: false });
               assert.deepEqual(pageErrors, [], `no uncaught errors expected at ${size.width}px`);
               await context.close();
             }
