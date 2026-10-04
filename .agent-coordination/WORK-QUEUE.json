@@ -4022,6 +4022,36 @@
         ".agent-coordination/CLAIM-PROTOCOL.md"
       ],
       "notes": "Josh explicitly delegated CEO-style operational authority to Agent 7 on 5 Oct 2026: set queue priority and direct Agents 1–8 within existing role/lock/ownership boundaries, while Josh remains final creative director. This task codifies that delegation; it does not grant permission to bypass coordination or make unilateral creative-direction changes. Completed 5 Oct 2026 via PR #116. Josh's CEO-style operational delegation is now durable in AGENTS, VISION, DECISIONS and CLAIM-PROTOCOL. Agent coordination run #1136 and browser regression run #30 passed on the exact PR head."
+    },
+    {
+      "id": "LR-0151",
+      "title": "Establish Steward as project lead and lead game designer",
+      "status": "READY",
+      "priority": 0,
+      "exclusive_scope": "steward-game-production-authority",
+      "depends_on": [],
+      "primary_agent": 1,
+      "goal": "Make Agent 1 the project lead, lead game designer, technical lead and program integrator with final internal game-production approval, while Agent 7 remains CEO/executive oversight rather than a routine game-design or merge gate.",
+      "acceptance_criteria": [
+        "AGENTS and VISION clearly distinguish Josh as owner/creative director, Agent 7 as CEO/executive oversight, and Agent 1 as project lead/lead game designer/technical lead/program integrator.",
+        "Routine game-design, implementation and integration approval is owned by Agent 1 rather than Agent 7.",
+        "Existing REQUIRED design-review tasks use Steward exact-head review or are otherwise converted so Agent 7 is no longer a game-production approval gate.",
+        "LR-0011/LR-0013 technical closure uses real machine evidence plus Steward verification; Josh-only LR-0056 remains untouched.",
+        "Agent 7 retains executive powers such as company-level priority/resourcing/risk oversight but cannot override a live specialist lock or replace Josh's creative authority.",
+        "Coordination validators and claim/parking rules agree with the new authority model and remain green."
+      ],
+      "likely_files": [
+        "AGENTS.md",
+        "docs/VISION.md",
+        "docs/DECISIONS.md",
+        ".agent-coordination/CLAIM-PROTOCOL.md",
+        ".agent-coordination/DESIGN-REVIEW-PROTOCOL.md",
+        ".agent-coordination/gate-evidence/README.md",
+        ".agent-coordination/WORK-QUEUE.json",
+        "scripts/validate-agent-coordination.mjs",
+        "scripts/verify-pr-claim.mjs"
+      ],
+      "notes": "Josh explicitly directed on 5 Oct 2026 that Agent 7 is CEO, not lead game designer; Agent 1 is project lead and lead game designer as well as technical lead/program integrator. This task supersedes the game-production/design-approval portions of LR-0150 while preserving Agent 7 executive oversight."
     }
   ],
   "agent_roster": [
