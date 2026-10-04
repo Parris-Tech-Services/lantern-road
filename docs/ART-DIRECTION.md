@@ -107,6 +107,19 @@ Avoid turning every card into a unique colour. Cohesion matters more than specta
 - mobile browser performance takes priority over decorative animation
 
 
+## Iconography language
+
+Production UI/map symbols live in `assets/ui/icons.svg`.
+
+The icon language uses simple ink-like geometry, rounded strokes and readable silhouettes rather than glossy fantasy-game badges. Symbols inherit `currentColor` so context can supply accessible contrast and state colour.
+
+Icons are an art layer, not interaction semantics:
+
+- pair critical icons with visible/accessibly named controls;
+- do not rely on icon shape alone for important status;
+- keep guidance gold, positive green and danger/rust-red as contextual runtime colours rather than permanently painting individual symbols;
+- Agent 5 owns control semantics and accessibility; Agent 4 owns the drawn icon family.
+
 ## UI material language
 
 Production decorative surfaces live in `assets/ui/materials/`.

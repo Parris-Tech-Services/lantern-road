@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0055",
+  "exclusive_scope": "foundation-gate-policy",
+  "agent_number": 1,
+  "agent": "The Steward",
+  "session_id": "cf13b8de-5de6-4d56-9d1b-5b8b3b7f0c21",
+  "claim_token": "a24944f0-2f3e-4c7d-b7e5-2d97d2aab2e7",
+  "claimed_at": "2026-10-04T18:57:00+11:00",
+  "expires_at": "2026-10-05T06:57:00+11:00",
+  "branch": "agent/LR-0055-foundation-policy-69f9a050-r5",
+  "note": "Queue-only current-main reconciliation requested by Agent 7 on PR #74."
+}

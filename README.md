@@ -4,6 +4,18 @@ Lantern Road is a static browser adventure RPG built with HTML, CSS, and vanilla
 
 You lead a party of four adventurers across the Grey March on a real hex map. You travel town to town, hear rumours, accept quests, inspect ruins, bargain with factions, manage supplies, survive travel events, and fight compact party battles when trouble catches up.
 
+## Agent start here
+
+For agent work, treat these as the canonical navigation path, in this order:
+
+1. `AGENTS.md` — mandatory operating rules and role boundaries.
+2. `docs/VISION.md`, `docs/DECISIONS.md`, `docs/TERMINOLOGY.md` — product direction, settled decisions and canonical language.
+3. `.agent-coordination/CLAIM-PROTOCOL.md` — exclusive-scope ownership and parking/merge rules.
+4. `.agent-coordination/WORK-QUEUE.json` — live task lifecycle, dependencies, owners and handoffs.
+5. Role-specific protocols/docs only after the shared files above (for example QA, map canon or design review).
+
+Root notes that are not referenced by the live queue or the documents above are **not** automatically current project requirements. When old notes conflict with the canonical path, follow the canonical path and route cleanup through the owning queue task instead of silently reviving stale scope.
+
 ## Files
 
 - `index.html`
@@ -13,6 +25,26 @@ You lead a party of four adventurers across the Grey March on a real hex map. Yo
 - `manifest.webmanifest`
 - `sw.js`
 - `LICENSE`
+
+## AED queue health report
+
+Agent 8's queue-health report is a **read-only advisory tool**, not a merge gate. It summarises actionable versus parked READY work, active claims, dependency fan-out, review-ready parked work, likely-file collision surfaces and obvious queue/claim inconsistencies.
+
+Run:
+
+```bash
+node scripts/aed-report.mjs
+```
+
+Useful options:
+
+```bash
+node scripts/aed-report.mjs --top 20
+node scripts/aed-report.mjs --json
+node --test tests/aed-report.test.mjs
+```
+
+The report reads only `.agent-coordination/WORK-QUEUE.json` and `.agent-coordination/claims/*.lock.json`. It does not claim tasks, change lifecycle state, approve PRs or modify repository files.
 
 ## CI action runtime policy
 
