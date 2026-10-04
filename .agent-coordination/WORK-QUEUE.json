@@ -2884,6 +2884,29 @@
         "README.md"
       ],
       "notes": "Created after GitHub Actions run #420 warned that actions/checkout@v4 targets deprecated Node 20 and is being forced onto Node 24. Official actions/checkout and actions/setup-node currently provide v7; minimum policy should protect Node-24-compatible majors rather than force every patch update."
+    },
+    {
+      "id": "LR-0110",
+      "title": "Author mobile Back-navigation and exit-safety contract",
+      "status": "READY",
+      "priority": 0,
+      "exclusive_scope": "mobile-back-navigation-authoring",
+      "depends_on": [],
+      "primary_agent": 5,
+      "goal": "Define predictable Android/browser Back, Escape and exit behaviour for Lantern Road's modal, responsive-shell and installed/PWA states without trapping the user or accidentally abandoning play.",
+      "acceptance_criteria": [
+        "Define a priority order for Back/Escape across active modal, FULL_DETAIL, MAP_EXPANDED, expanded sheet/detail, tab/detail navigation and normal core play.",
+        "Distinguish browser/system Back, browser history gestures/buttons and keyboard Escape; do not assume every browser exposes or allows interception of all forms.",
+        "Define when shell/detail states may participate in history and explicitly avoid inflating browser history for every sheet snap or routine tab change.",
+        "Define safe behaviour when leaving/reloading with unconfirmed progress, consuming LR-0077 save-recovery rules without abusive or unreliable unload prompting.",
+        "Define focus, announcement and state-restoration behaviour after Back closes a layer.",
+        "Provide browser/PWA real-device acceptance cases for LR-0040 and LR-0096 without editing runtime files."
+      ],
+      "likely_files": [
+        "docs/MOBILE-BACK-NAVIGATION-CONTRACT.md",
+        "QA/"
+      ],
+      "notes": "Author-now Wayfinder gap discovered after LR-0108. Owns player-facing Back/history/exit behaviour only; browser routing implementation remains downstream."
     }
   ],
   "agent_roster": [
@@ -2941,5 +2964,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T18:03:00+11:00"
+  "updated_at": "2026-10-04T18:10:00+11:00"
 }
