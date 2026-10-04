@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0108",
+  "exclusive_scope": "responsive-shell-contract",
+  "agent_number": 5,
+  "agent": "The Wayfinder",
+  "session_id": "c7b2419a-6fd4-4e1c-b8b0-7b3f52cf1a6e",
+  "claim_token": "f19b7c84-2e6a-44a1-973e-8d5f6b0ac341",
+  "claimed_at": "2026-10-04T18:00:00+11:00",
+  "expires_at": "2026-10-05T06:00:00+11:00",
+  "branch": "agent/LR-0108-responsive-shell-c7b2419a",
+  "note": "Authoring only LR-0108 persistent responsive play-shell state machine and acceptance matrix; no runtime edits."
+}
