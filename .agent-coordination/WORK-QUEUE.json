@@ -3707,7 +3707,7 @@
         ".agent-coordination/WORK-QUEUE.json",
         "QA/FUN-LOOP-STATE.json"
       ],
-      "notes": "Standing Warden lane after LR-0021 and LR-0139. Between runs it intentionally remains READY and unclaimed. Claim only when current main/deployed gameplay has materially changed since QA/FUN-LOOP-STATE.json:last_tested_main_sha or when Agent 7/Josh requests a targeted retest. After each run, update QA/FUN-LOOP-STATE.json and structured findings, park/release the lock, and leave LR-0140 READY for the next meaningful change. Promoted to READY after LR-0021 completed; next Agent 6 run must use current main/current deployed and update QA/FUN-LOOP-STATE.json."
+      "notes": "Standing Warden lane after LR-0021 and LR-0139. Between runs it intentionally remains READY and unclaimed. Claim only when current main/deployed gameplay has materially changed since QA/FUN-LOOP-STATE.json:last_tested_main_sha or when Agent 7/Josh requests a targeted retest. After each run, update QA/FUN-LOOP-STATE.json and structured findings, park/release the lock, and leave LR-0140 READY for the next meaningful change. Promoted to READY after LR-0021 completed; next Agent 6 run must use current main/current deployed and update QA/FUN-LOOP-STATE.json. parked_at=2026-10-04T21:02:32+11:00; current-main micro-playtest merged via PR #94 at bbba1d486017db7172019b1908d2c7d19cc14678; exact game-under-test SHA 54ef2802e3a47e2f8cecfa77f7f7a8603e873dd4; real-browser run 37193714501 / artifact 11299079820; report QA/LR-0140-2026-10-04-CURRENT-MAIN.md; routed findings WFD-2026-001..004 to LR-0016, LR-0007, LR-0008 and LR-0009; next run only after meaningful player-facing main/deployed change or explicit targeted retest."
     },
     {
       "id": "LR-0141",
@@ -3915,5 +3915,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T22:00:00+11:00"
+  "updated_at": "2026-10-04T21:02:32+11:00"
 }
