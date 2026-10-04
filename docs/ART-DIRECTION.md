@@ -105,3 +105,19 @@ Avoid turning every card into a unique colour. Cohesion matters more than specta
 - retain CSS/sigil fallbacks
 - keep effects transform/filter/box-shadow based and short-lived
 - mobile browser performance takes priority over decorative animation
+
+
+## UI material language
+
+Production decorative surfaces live in `assets/ui/materials/`.
+
+The hierarchy is intentional:
+
+- **light parchment** for occasional focused reading/authored content;
+- **dark parchment / timber** for restrained shell framing;
+- **divider/corner ornament** only at major structural moments;
+- **lantern wash** as a subtle atmosphere accent.
+
+The game should never look as though every component has been individually decorated. Quiet surfaces protect reading speed and make the rare ornamental moments feel deliberate.
+
+Decorative assets do not own contrast, focus, touch behaviour or accessibility. Those remain runtime/Wayfinder responsibilities.
