@@ -2819,7 +2819,7 @@
         "docs/WORLD-MAP-CANON.md",
         ".agent-coordination/MAP-CANON-PROTOCOL.md"
       ],
-      "notes": "PARKED HANDOFF: implementation complete on branch agent/LR-0105-regional-canon-c12d0e41, exact useful feature head 3ab1792b557a701d3d9286285b8a74ecb0a8ca15, draft PR #95. Exact LR-0104 six-region registry, concept dispositions, schema/runtime validation, protected regional-label change enforcement, LR-0073 overlay documentation, and compatible map-canon→Director dual-review tail are implemented. Map Canon run #27 passed registry/gameplay validation and is red only for missing Agent 7 map-canon approval. Agent Coordination run #967 passed queue/runtime validation and all PR-claim regression tests and is red only for missing final Agent 7 design review. Next action: Agent 7 appends map-canon review-only commit for the feature head, then final design-review-only commit; fresh Agent 1 claim before merge preparation.",
+      "notes": "IMPLEMENTATION ALREADY PRESENT ON MAIN as of 4 Oct 2026; former PR #95 has zero commits/files ahead of main after later reconciliation. Task remains READY because the protected regional-label canon mutation still lacks the separate Agent 7 map-canon approval record required by MAP-CANON-PROTOCOL. Director design review is NOT_REQUIRED under LR-0146. Next action: Agent 7 records map-canon approval against the integrated canonical change/evidence, then close LR-0105.",
       "director_review": "NOT_REQUIRED"
     },
     {
@@ -3340,7 +3340,7 @@
     {
       "id": "LR-0127",
       "title": "Author motion, transition and atmospheric VFX production language",
-      "status": "READY",
+      "status": "DONE",
       "priority": 2,
       "exclusive_scope": "motion-vfx-production-language",
       "depends_on": [
@@ -3362,7 +3362,7 @@
         "assets/ui/effects/",
         "docs/ART-DIRECTION.md"
       ],
-      "notes": "PARKED pending Director exact-head review. PR #76, branch agent/LR-0127-motion-vfx-1c7b9d4f, useful head de9096fbce708b8176dbbab67a9d57870fcc10a7. Added motion/VFX production bible plus five decorative SVG effect sources (rain, fog, embers, lantern bloom, sacred halo). QA: required choreography/atmosphere/reduced-motion/discomfort sections present; ~2.7 KB SVG source total; no scripts, text or remote dependencies. Coordination checks pass; only remaining gate is .agent-coordination/design-reviews/LR-0127.json.",
+      "notes": "Integrated on main by 4 Oct 2026. Former PR #76 now has zero commits/files ahead of main after later reconciliations. Under review-by-exception this production-language/asset task is NOT_REQUIRED for Director review; acceptance content is present on main, so the stale PR is closed.",
       "director_review": "NOT_REQUIRED"
     },
     {
@@ -4003,5 +4003,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T21:52:00+11:00"
+  "updated_at": "2026-10-04T21:56:00+11:00"
 }
