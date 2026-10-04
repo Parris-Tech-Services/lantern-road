@@ -48,6 +48,8 @@ The difference should be visible in what institutions accepted.
 
 ## Common Road guardrail
 
+**The Common Road is not a golden ending.**
+
 The Common Road must include:
 
 - at least one explicit cost;
