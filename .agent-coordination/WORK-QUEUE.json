@@ -2645,6 +2645,34 @@
         "story/rumours/"
       ],
       "notes": "Pure author-now Storyteller work. Distinct from LR-0045 recurring NPC dialogue: this task owns settlement-level rumour/gossip content and its evolution. It complements LR-0001 feedback fixes by making Hear Rumours substantively worthwhile, not merely visibly responsive. Parked 4 Oct 2026 under the completed-work parking rule. Evolving rumour/gossip pack is complete on branch agent/LR-0100-rumour-authoring-7d9b59a7 at useful head 9aa80bac505ef1f4cd57c9ffbfca3f0f71e10d08, PR #48. Live acceptance criteria were rechecked: five settlements plus road/inn fallback, all six core quests have pre/post-state gossip, reliability/faction-bias metadata and repeat/exhausted-topic behaviour are authored, and branch changes only story/rumours/. Next action after Director approval: fresh Agent 2 claimant reacquires rumour-network-authoring, verifies approved head/CI, merges PR #48 if current, marks LR-0100 DONE, and releases the fresh lock."
+    },
+    {
+      "id": "LR-0101",
+      "title": "Make parked PR Director approvals compatible with claim validation",
+      "status": "READY",
+      "priority": 0,
+      "exclusive_scope": "parked-pr-review-validation",
+      "depends_on": [
+        "LR-0049"
+      ],
+      "primary_agent": 1,
+      "goal": "Align CI with the parked-work policy so a completed parked Agent 1–5 PR can receive the Director's review-only approval commit without requiring its implementation owner to hold an idle active lock.",
+      "acceptance_criteria": [
+        "Update PR-claim validation to recognise a valid final Director approval commit that changes only .agent-coordination/design-reviews/<TASK-ID>.json and whose reviewed_head_sha is exactly the immediately preceding feature commit.",
+        "For that review-only case, allow the implementation scope lock to be absent only when the live task is still READY and its queue notes record a parked handoff for the same branch/useful feature head.",
+        "Continue requiring a normal active create-only scope lock for feature/code/content commits, rebases, reconciliation changes and merge-preparation changes made by the implementation owner.",
+        "Do not allow a missing lock to excuse arbitrary commits, stale approvals, mismatched branches/tasks/agents, DONE/BLOCKED task misuse, or a Director review whose predecessor is not the parked useful head.",
+        "Add automated validator coverage for valid parked review approval, rejected unlocked feature commit, rejected stale/mismatched approval, and accepted ordinary active-claim PR.",
+        "Document the validator behaviour so CLAIM-PROTOCOL v1.2's parking rule and CI enforce the same ownership model."
+      ],
+      "likely_files": [
+        "scripts/verify-pr-claim.mjs",
+        "scripts/validate-agent-coordination.mjs",
+        ".github/workflows/",
+        ".agent-coordination/CLAIM-PROTOCOL.md",
+        "tests/"
+      ],
+      "notes": "Director-routed process bug discovered on LR-0044 approval: Agent coordination run 360 passed queue validation but failed PR claim verification because the task was correctly parked with zero active locks. CI must support review-only approval of parked work without weakening normal claim enforcement."
     }
   ],
   "agent_roster": [
@@ -2702,5 +2730,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T16:50:00+11:00"
+  "updated_at": "2026-10-04T17:04:00+11:00"
 }
