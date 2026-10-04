@@ -23,7 +23,8 @@
     "All black-box Warden QA must drive a real browser (Playwright, agent-browser or equivalent). Reading source/DOM alone is not a playtest.",
     "Agent 7 — The Director owns design governance, not specialist implementation. It reviews work against docs/VISION.md, docs/DECISIONS.md and canonical terminology, flags cross-task conflicts, and proposes queue/dependency corrections.",
     "Josh remains final creative director. The Director may protect and interpret established pillars but must not materially change product direction without Josh's approval.",
-    "Before a specialist feature PR is treated as merge-ready, The Director should perform a design-coherence review and record any blocking conflict or terminology/tone issue in the PR or queue."
+    "Before a specialist feature PR is treated as merge-ready, The Director should perform a design-coherence review and record any blocking conflict or terminology/tone issue in the PR or queue.",
+    "Narrative authoring may proceed ahead of runtime/save integration when it is isolated to story/docs assets. Blocking engine integration must not unnecessarily idle the Storyteller."
   ],
   "tasks": [
     {
@@ -179,7 +180,8 @@
         "LR-0006",
         "LR-0010",
         "LR-0011",
-        "LR-0013"
+        "LR-0013",
+        "LR-0046"
       ],
       "goal": "Build memorable conditional travel/camp events that react to the party and prior choices.",
       "acceptance_criteria": [
@@ -207,7 +209,8 @@
         "LR-0010",
         "LR-0011",
         "LR-0013",
-        "LR-0005"
+        "LR-0005",
+        "LR-0043"
       ],
       "goal": "Turn the existing 18-day renown frame into a clearer escalating dramatic arc with substantially different endings.",
       "acceptance_criteria": [
@@ -1034,7 +1037,8 @@
         "LR-0008",
         "LR-0010",
         "LR-0011",
-        "LR-0013"
+        "LR-0013",
+        "LR-0044"
       ],
       "goal": "Turn the personal-story hooks for Garrick, Mira, Oren and Brindle into authored side arcs that deepen attachment without bloating the main campaign.",
       "acceptance_criteria": [
@@ -1063,7 +1067,8 @@
         "LR-0008",
         "LR-0010",
         "LR-0011",
-        "LR-0013"
+        "LR-0013",
+        "LR-0045"
       ],
       "goal": "Make the Grey March's recurring NPCs feel like people who notice history, faction shifts and the player's reputation rather than static quest dispensers.",
       "acceptance_criteria": [
@@ -1188,6 +1193,99 @@
         "docs/ART-PROVENANCE.md"
       ],
       "notes": "Lamplighter image-generation task. This chat/model has image-generation capability and can create the actual artwork. LR-0031 remains the downstream curation, optimisation and integration pass."
+    },
+    {
+      "id": "LR-0043",
+      "title": "Author the 18-day campaign beat sheet and ending matrix",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "campaign-authoring",
+      "depends_on": [
+        "LR-0004"
+      ],
+      "primary_agent": 2,
+      "goal": "Write the complete narrative blueprint for the stronger 18-day campaign arc now, without touching runtime/save implementation that is still gated.",
+      "acceptance_criteria": [
+        "Author early, mid and late campaign beats with clear escalation while preserving route freedom.",
+        "Define the mid-campaign revelation, faction-pressure turns and late hard choice in player-facing narrative terms.",
+        "Create an ending matrix showing which named choices, relationships and faction/world outcomes each ending should acknowledge.",
+        "Identify required state/condition hooks as declarative integration notes rather than implementing them in game.js/content.js.",
+        "Keep tone and terminology aligned with docs/VISION.md and docs/TERMINOLOGY.md."
+      ],
+      "likely_files": [
+        "story/campaign/",
+        "docs/"
+      ],
+      "notes": "Pure Storyteller authoring. No runtime/save changes. LR-0008 later integrates this material after foundation gates."
+    },
+    {
+      "id": "LR-0044",
+      "title": "Author the four hero personal arcs",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "personal-arc-authoring",
+      "depends_on": [
+        "LR-0004"
+      ],
+      "primary_agent": 2,
+      "goal": "Write Garrick, Mira, Oren and Brindle's personal quest arcs in full before engine integration is available.",
+      "acceptance_criteria": [
+        "Author a distinct multi-step personal arc for each of the four heroes.",
+        "Each arc reveals character through a real trade-off rather than a generic fetch structure.",
+        "Each arc includes at least one remembered choice and at least one later callback or consequence.",
+        "Mira's arc must explicitly carry at least one player choice forward into later dialogue, relationship state, world response, or ending material.",
+        "Document trigger/state requirements declaratively for later integration without editing runtime/save code."
+      ],
+      "likely_files": [
+        "story/personal-quests/"
+      ],
+      "notes": "Author-now, integrate-later split of LR-0037. Produces real game narrative content while save/runtime foundations are blocked."
+    },
+    {
+      "id": "LR-0045",
+      "title": "Author recurring NPC dialogue and relationship callbacks",
+      "status": "READY",
+      "priority": 2,
+      "exclusive_scope": "npc-dialogue-authoring",
+      "depends_on": [
+        "LR-0004"
+      ],
+      "primary_agent": 2,
+      "goal": "Write recurring NPC dialogue that makes the Grey March feel socially persistent before its gated stateful integration work begins.",
+      "acceptance_criteria": [
+        "Write recurring/callback dialogue for the most important named NPCs across at least two materially different player states each.",
+        "Dialogue responds to prior encounters, faction posture, party relationships or major decisions without duplicating the main campaign plot.",
+        "Avoid interchangeable exposition; recurring NPCs should have recognisable voice, motive and memory.",
+        "Mark required conditions and consequence hooks declaratively for later implementation.",
+        "Keep all wording aligned with the canonical terminology and grounded frontier-fantasy tone."
+      ],
+      "likely_files": [
+        "story/npcs/"
+      ],
+      "notes": "Author-now counterpart to LR-0038. No game.js/content.js integration in this task."
+    },
+    {
+      "id": "LR-0046",
+      "title": "Author conditional travel and camp event pack",
+      "status": "READY",
+      "priority": 2,
+      "exclusive_scope": "event-pack-authoring",
+      "depends_on": [
+        "LR-0004"
+      ],
+      "primary_agent": 2,
+      "goal": "Create the authored event material LR-0007 will later integrate, without waiting for the condition/runtime framework to be finished.",
+      "acceptance_criteria": [
+        "Write a curated first pack of memorable travel and camp events with distinct narrative purposes.",
+        "Each event declares intended conditions such as party member, relationship, weather, faction, item, injury, earlier choice, time or quest outcome.",
+        "Events should primarily reveal character, force trade-offs, foreshadow consequences or make the road feel specific; avoid generic resource-roll filler.",
+        "Include alternate branches or callbacks where the event meaningfully changes under different conditions.",
+        "Do not implement event-engine condition logic in this authoring task."
+      ],
+      "likely_files": [
+        "story/events/"
+      ],
+      "notes": "Pure authored-content task. LR-0007 remains the later gated engine/content integration pass."
     }
   ],
   "agent_roster": [
