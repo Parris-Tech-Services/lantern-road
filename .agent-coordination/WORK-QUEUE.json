@@ -2333,7 +2333,7 @@
     {
       "id": "LR-0089",
       "title": "Ratify player-led party roster and companion-agency boundaries",
-      "status": "READY",
+      "status": "DONE",
       "priority": 0,
       "exclusive_scope": "player-leader-party-governance",
       "depends_on": [],
@@ -2353,7 +2353,7 @@
         "docs/TERMINOLOGY.md",
         "design/"
       ],
-      "notes": "Director governance counterpart to LR-0088. Josh's intended active party is four total: player leader + three companions."
+      "notes": "Director governance counterpart to LR-0088. Josh's intended active party is four total: player leader + three companions. Completed 4 Oct 2026 via PR #47. Ratified Leader + three active companions, reserve rotation, minimal Leader identity and bounded companion autonomy; Agent coordination run 350 passed on the exact PR head."
     },
     {
       "id": "LR-0090",
@@ -2415,7 +2415,7 @@
     {
       "id": "LR-0092",
       "title": "Author companion willingness, autonomy and suggestion-resolution specification",
-      "status": "BLOCKED",
+      "status": "READY",
       "priority": 0,
       "exclusive_scope": "companion-autonomy-design",
       "depends_on": [
@@ -2702,5 +2702,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T16:47:00+11:00"
+  "updated_at": "2026-10-04T16:52:00+11:00"
 }
