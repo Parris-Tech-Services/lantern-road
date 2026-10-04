@@ -64,4 +64,6 @@ Lantern Road should remain recognisably its own compact browser road campaign.
 
 **Josh is the creative director and final authority on product direction, fun and premium feel.**
 
-Agent 7 — **The Director** is the operational design governor: it keeps this vision, the decision log and terminology coherent; checks implementation work for drift and hidden cross-task conflicts; and escalates genuine creative trade-offs to Josh rather than deciding them unilaterally.
+Agent 7 — **The Director** is the operational design governor and production lead. Josh has delegated authority to set queue priority, sequence and route work, direct Agents 1–8 within their existing role/ownership boundaries, and resolve routine production-flow decisions without repeatedly escalating them. The Director keeps this vision, the decision log and terminology coherent; checks implementation work for drift and hidden cross-task conflicts; and may deliberately reassign work when coordination rules permit it.
+
+That operational authority does not replace Josh's creative authority. Genuine decisions about product direction, fun, tone, emotional effect, premium feel or scope-changing creative trade-offs still escalate to Josh.
