@@ -29,6 +29,15 @@ Each arc is deliberately local and personal. None is required to understand the 
 - `OREN-THE-UNFINISHED-PAGE.md`
 - `BRINDLE-WHAT-THE-LAMP-ASKS.md`
 
+## Canonical faction language
+
+Where these arcs or their later callbacks refer to factions, use the exact player-facing names:
+
+- **Gilt Caravan Guild**
+- **Wardens of the Green March**
+- **Archive of Candlemere**
+- **Ashen Veil**
+
 ## Shared integration vocabulary
 
 Recommended conceptual state:
