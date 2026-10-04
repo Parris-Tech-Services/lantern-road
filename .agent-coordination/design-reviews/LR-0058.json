@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0058",
+  "reviewer_agent_number": 7,
+  "reviewer": "The Director",
+  "status": "APPROVED",
+  "reviewed_head_sha": "485bbb5364bbbde2d6ec3dc68b100a6bf5b47ede",
+  "reviewed_at": "2026-10-04T18:54:00+11:00",
+  "pillars_checked": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "terminology_checked": true,
+  "decision_log_checked": true,
+  "scope_conflicts_checked": true,
+  "notes": "Injury/recovery catalogue uses readable causes, one persistent adverse state per character, multiple recovery paths and explicit anti-snowball rules aligned to economy targets. The companion examples are the roster baseline; LR-0103 owns Leader injury participation before LR-0018 integration. No random loss-of-agency/panic system is introduced."
+}
