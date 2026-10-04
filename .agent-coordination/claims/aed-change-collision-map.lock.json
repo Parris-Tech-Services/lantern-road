@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0116",
+  "exclusive_scope": "aed-change-collision-map",
+  "agent_number": 8,
+  "agent": "AED (Agent Efficiency Department)",
+  "session_id": "b2d49d71-5c0f-4f9c-a8cb-6349a1a44622",
+  "claim_token": "508ca8de-4bf9-4f23-b4b9-26e1fd5d1ac8",
+  "claimed_at": "2026-10-04T19:17:00+11:00",
+  "expires_at": "2026-10-05T07:17:00+11:00",
+  "branch": "agent/LR-0116-collision-map-b2d49d71",
+  "note": "Executing only LR-0116 code hotspot and collision-risk audit."
+}
