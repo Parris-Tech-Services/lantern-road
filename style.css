@@ -390,3 +390,52 @@ footer.note{
     grid-template-columns:1fr;
   }
 }
+
+
+/* Immediate player feedback for actions that do not open a full modal. */
+.feedback-root{
+  position:fixed;
+  left:50%;
+  bottom:calc(18px + env(safe-area-inset-bottom, 0px));
+  transform:translate(-50%, 18px);
+  width:min(620px, calc(100% - 24px));
+  z-index:70;
+  pointer-events:none;
+  opacity:0;
+  transition:opacity .18s ease, transform .18s ease;
+}
+.feedback-root.visible{
+  opacity:1;
+  transform:translate(-50%, 0);
+}
+.feedback-card{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  padding:12px 14px;
+  border:1px solid rgba(255,255,255,.22);
+  border-radius:14px;
+  background:rgba(35,27,22,.96);
+  color:var(--paper);
+  box-shadow:0 14px 36px rgba(0,0,0,.35);
+  backdrop-filter:blur(8px);
+}
+.feedback-card strong{
+  font-size:1rem;
+}
+.feedback-card span{
+  color:#eadfc6;
+  line-height:1.35;
+}
+.feedback-card.good{
+  border-color:rgba(184,208,169,.65);
+}
+.feedback-card.bad{
+  border-color:rgba(212,161,142,.7);
+}
+@media (max-width:640px){
+  .feedback-root{
+    bottom:calc(12px + env(safe-area-inset-bottom, 0px));
+    width:calc(100% - 16px);
+  }
+}
