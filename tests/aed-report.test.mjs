@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { buildReport, flowState, formatReport, isParked, isReviewReady } from "../scripts/aed-report.mjs";
+import { buildFindingMetrics, buildReport, findingIsHighImpact, flowState, formatReport, isParked, isReviewReady, parkedAtFromNotes } from "../scripts/aed-report.mjs";
 
 function queue(tasks) {
   return {
@@ -116,4 +116,67 @@ test("summarises active claims and collision surfaces deterministically", () => 
   assert.equal(first.agents.find(a => a.number === 1).active_claims, 1);
   assert.deepEqual(first.collisions[0], { file: "game.js", count: 2, agent_count: 2, agents: [1, 2] });
   assert.match(formatReport(first), /advisory only; not a merge gate/);
+});
+
+
+test("computes player-impact resolution, retest and rework metrics", () => {
+  const findings = [
+    {
+      finding_id: "WFD-2026-001", status: "RESOLVED", severity: "S1", player_impact: "HIGH",
+      tested_source: "CURRENT_MAIN", observed_at: "2026-10-04T00:00:00Z", resolved_at: "2026-10-04T06:00:00Z",
+      reopen_count: 0
+    },
+    {
+      finding_id: "WFD-2026-002", status: "FIXED_PENDING_RETEST", severity: "S2", player_impact: "HIGH",
+      tested_source: "CURRENT_DEPLOYED", observed_at: "2026-10-04T01:00:00Z", resolved_at: null,
+      reopen_count: 1
+    },
+    {
+      finding_id: "WFD-2026-003", status: "OPEN", severity: "S3", player_impact: "LOW",
+      tested_source: "HISTORICAL_BASELINE", observed_at: "2026-10-04T02:00:00Z", resolved_at: null,
+      reopen_count: 0
+    }
+  ];
+  const metrics = buildFindingMetrics(findings);
+  assert.equal(findingIsHighImpact(findings[0]), true);
+  assert.equal(findingIsHighImpact(findings[2]), false);
+  assert.equal(metrics.total, 3);
+  assert.equal(metrics.current_build, 2);
+  assert.equal(metrics.unresolved_high_impact, 1);
+  assert.equal(metrics.resolved_high_impact, 1);
+  assert.equal(metrics.pending_retest, 1);
+  assert.equal(metrics.high_impact_resolution_rate_percent, 50);
+  assert.equal(metrics.median_time_to_playable_improvement_hours, 6);
+  assert.equal(metrics.reopened_findings, 1);
+  assert(Math.abs(metrics.rework_rate_percent - (100 / 3)) < 1e-9);
+});
+
+test("derives parked-review age when parking timestamps exist", () => {
+  assert.equal(
+    parkedAtFromNotes({ notes: "PARKED HANDOFF parked_at=2026-10-04T06:00:00Z branch x" }),
+    "2026-10-04T06:00:00.000Z"
+  );
+  assert.equal(
+    parkedAtFromNotes({ notes: "PARKED 2026-10-04 by Agent 3" }),
+    "2026-10-04T00:00:00.000Z"
+  );
+
+  const report = buildReport(
+    {
+      project: "Fixture",
+      updated_at: "2026-10-04T12:00:00Z",
+      agent_roster: [{ number: 1, name: "One" }],
+      tasks: [{
+        id: "LR-0001", title: "Parked", status: "READY", primary_agent: 1, priority: 0,
+        depends_on: [], exclusive_scope: "a",
+        notes: "PARKED HANDOFF parked_at=2026-10-04T06:00:00Z awaiting Director review"
+      }]
+    },
+    [],
+    [],
+    { funLoopState: { last_tested_main_sha: null } }
+  );
+  assert.equal(report.flow_metrics.oldest_parked_review_age_hours, 6);
+  assert.match(formatReport(report), /oldest parked review age: 6\.0h/);
+  assert.match(formatReport(report), /last current-main playtest: none recorded/);
 });

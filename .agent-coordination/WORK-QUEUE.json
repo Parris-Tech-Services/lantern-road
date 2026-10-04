@@ -654,7 +654,7 @@
         "QA/",
         ".agent-coordination/WORK-QUEUE.json"
       ],
-      "notes": "The single intentional early QA pass. Establish a baseline before the foundations change; findings may become stale and must be retested later. Real-browser execution is required."
+      "notes": "The single intentional early QA pass. Establish a baseline before the foundations change; findings may become stale and must be retested later. Real-browser execution is required. HISTORICAL BASELINE clarification from LR-0139: record the exact old branch/build actually tested. Findings are useful before-state evidence but must not be treated as current-main defects without a current-build LR-0140 retest."
     },
     {
       "id": "LR-0022",
@@ -3674,7 +3674,8 @@
         ".agent-coordination/WORK-QUEUE.json",
         "scripts/aed-report.mjs",
         "tests/aed-report.test.mjs",
-        ".github/workflows/aed-report.yml"
+        ".github/workflows/aed-report.yml",
+        ".agent-coordination/CLAIM-PROTOCOL.md"
       ],
       "notes": "Josh explicitly asked AED to implement continuous current-build playtesting, fun/friction priority and measurable flow/finding resolution. Preserve LR-0021 as the intentional historical baseline; do not modify its live claimed branch."
     },
@@ -3701,9 +3702,10 @@
       "likely_files": [
         "QA/",
         "QA/findings/",
-        ".agent-coordination/WORK-QUEUE.json"
+        ".agent-coordination/WORK-QUEUE.json",
+        "QA/FUN-LOOP-STATE.json"
       ],
-      "notes": "Becomes READY after LR-0021 is completed/parked and LR-0139 installs the finding/metrics workflow. This lane exists to test the current game repeatedly, not the Warden tooling branch itself."
+      "notes": "Standing Warden lane after LR-0021 and LR-0139. Between runs it intentionally remains READY and unclaimed. Claim only when current main/deployed gameplay has materially changed since QA/FUN-LOOP-STATE.json:last_tested_main_sha or when Agent 7/Josh requests a targeted retest. After each run, update QA/FUN-LOOP-STATE.json and structured findings, park/release the lock, and leave LR-0140 READY for the next meaningful change."
     },
     {
       "id": "LR-0141",
@@ -3801,5 +3803,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T20:26:00+11:00"
+  "updated_at": "2026-10-04T20:44:00+11:00"
 }
