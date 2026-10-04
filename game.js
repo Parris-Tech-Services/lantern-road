@@ -1324,64 +1324,6 @@
     if (!state && !storageHas(AUTOSAVE_KEY) && !storageHas(SAVE_KEY)) {
       startNewGame();
       return;
-    try {
-      const result = SaveSystem.decode(raw, createInitialState(123456789));
-
-      if (result.migrated) {
-        try {
-          if (!localStorage.getItem(LEGACY_BACKUP_KEY)) localStorage.setItem(LEGACY_BACKUP_KEY, raw);
-        } catch (backupError) {
-          console.warn("Lantern Road could not preserve a legacy save backup.", backupError);
-        }
-      }
-
-      state = result.state;
-      ensureCharacterState();
-      ensureProgressionState();
-      clampPartyHp();
-
-      if (result.migrated || result.warnings.length) {
-        try {
-          localStorage.setItem(SAVE_KEY, serializeState());
-        } catch (upgradeError) {
-          console.warn("Lantern Road loaded the campaign but could not persist the upgraded save.", upgradeError);
-        }
-      }
-
-      renderAll();
-      addLog("Campaign loaded.");
-      renderAll();
-
-      const loc = currentLocation();
-      const locationLabel = loc ? loc.data.name : getTerrainDef(currentTile()).name;
-      if (result.migrated) {
-        showFeedback(
-          "Campaign upgraded",
-          `Legacy save schema v${result.sourceVersion} was migrated to v${SaveSystem.CURRENT_SCHEMA_VERSION}. ${timeLabel()} • ${locationLabel}`,
-          "good"
-        );
-      } else if (result.warnings.length) {
-        showFeedback(
-          "Campaign repaired",
-          `${result.warnings.length} invalid or missing save field${result.warnings.length === 1 ? "" : "s"} were restored safely. ${timeLabel()} • ${locationLabel}`,
-          "good"
-        );
-      } else {
-        showFeedback("Campaign loaded", `${timeLabel()} • ${locationLabel}`, "good");
-      }
-    } catch (err) {
-      console.error(err);
-      if (err && err.code === "SAVE_VERSION_NEWER") {
-        openMessage(
-          "Save From Newer Version",
-          "This campaign was created by a newer Lantern Road save format. It has not been overwritten. Update the game before trying to load it again."
-        );
-        return;
-      }
-      openMessage(
-        "Load Failed",
-        "The saved campaign could not be migrated or repaired safely. The stored save was left untouched so it can be recovered or inspected later."
-      );
     }
     openDialogue({
       title: "Start New Campaign?",
@@ -4363,7 +4305,6 @@
     } else {
       showFeedback("Autosave resumed", `${timeLabel()} • continue where you left off`, "good");
     }
-    startNewGame();
     installE2ETestHooks();
     window.render_game_to_text = renderGameToText;
     window.advanceTime = () => {
