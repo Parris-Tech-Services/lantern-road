@@ -3889,6 +3889,38 @@
         "scripts/validate-agent-coordination.mjs"
       ],
       "notes": "Josh explicitly directed the system to err on the side of fewer reviews. Review remains available for real creative/design risk; routine specialist work should flow without a universal Agent 7 tollbooth."
+    },
+    {
+      "id": "LR-0147",
+      "title": "Author runtime integration index for merged narrative content",
+      "status": "READY",
+      "priority": 0,
+      "exclusive_scope": "narrative-integration-index",
+      "depends_on": [
+        "LR-0043",
+        "LR-0044",
+        "LR-0045",
+        "LR-0046",
+        "LR-0047",
+        "LR-0076",
+        "LR-0088",
+        "LR-0100",
+        "LR-0102"
+      ],
+      "primary_agent": 2,
+      "goal": "Give runtime owners a concise content-side map from Lantern Road's merged Storyteller assets to their existing integration tasks, state inputs, trigger families and smallest playable slices so authored work can reach the game without rereading or re-authoring the source packs.",
+      "acceptance_criteria": [
+        "Inventory each merged Storyteller content pack with exact source paths and the existing runtime/integration task that should consume it.",
+        "For each pack, list required state/trigger inputs and the smallest player-visible slice that can ship first without changing the authored contract.",
+        "Define an implementation order that prioritises immediate player-visible value and high-fan-out dependencies.",
+        "Identify explicit non-overlap boundaries so Agent 2 does not redefine LR-0138 architecture, LR-0090 dialogue runtime, LR-0093 autonomy mechanics or Mechanist tuning.",
+        "Include a concise verification checklist showing how QA can prove each authored pack is actually reachable in-game rather than merely present in the repository.",
+        "Do not edit game.js, content.js, save code or architecture modules."
+      ],
+      "likely_files": [
+        "story/integration/"
+      ],
+      "notes": "Acceleration task created after Josh explicitly asked to get merged Storyteller work into the playable game ASAP. Content-side handoff/index only; does not duplicate LR-0138 data-seam architecture or runtime ownership. LR-0091 can be appended after it reaches DONE, but LR-0147 does not depend on unapproved content."
     }
   ],
   "agent_roster": [
@@ -3951,5 +3983,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T21:29:00+11:00"
+  "updated_at": "2026-10-04T21:33:00+11:00"
 }
