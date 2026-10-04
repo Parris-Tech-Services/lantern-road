@@ -3411,6 +3411,32 @@
         "QA/ICONOGRAPHY-PHONE-MATRIX.md"
       ],
       "notes": "PARKED HANDOFF (4 Oct 2026): audit complete on branch agent/LR-0130-icon-semantics-d4e3b2a1 at useful head 378adc5a438869198f3e9ce796c152d55425c8bc, PR #78. Final diff adds docs/ICONOGRAPHY-INTERACTION-AUDIT.md and QA/ICONOGRAPHY-PHONE-MATRIX.md only. Source audit: 40 unique 24×24 symbols, currentColor inheritance, no hard-coded semantic colours, documented 1.8/1.35 stroke families. Result PASS WITH INTEGRATION CONSTRAINTS: critical icons remain reinforced by text/state, interactive glyphs sit inside ~44px phone targets, Renown stays distinct from faction standing, hidden map sites never leak through icons/accessibility nodes, and confusable pairs Warden/Defend/Guarded, Health/Heal, Settlement/Inn, Site/Renown, Save/Load, Bridge/Ford/Ferry, Shrine/Blessed and Travel/Trade require contextual/visible disambiguation. No Agent 4 artwork/runtime files changed. Remaining external condition is Agent 7 approval; fresh icon-semantics-audit claim required before later edits or final merge preparation."
+    },
+    {
+      "id": "LR-0131",
+      "title": "Audit mobile audio controls and sensory-accessibility UX",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "mobile-audio-controls-audit",
+      "depends_on": [
+        "LR-0003",
+        "LR-0126"
+      ],
+      "primary_agent": 5,
+      "goal": "Audit Lantern Road's existing sound, ambience and volume controls against phone reachability, browser autoplay rules, sensory accessibility, backgrounding and truthful feedback without changing Agent 4's audio direction.",
+      "acceptance_criteria": [
+        "Audit the current Sound, Ambience and Volume controls, preference defaults, persistence, disabled states and user-gesture unlock behaviour against the approved audio production bible.",
+        "Define phone placement, touch-target, range-control, keyboard/screen-reader and state-announcement requirements for audio controls.",
+        "Protect the distinction between master sound, ambience-only suppression and future cue/ambience separation so sound-off play remains fully viable.",
+        "Define autoplay failure, unsupported Web Audio, background/suspend/resume and audio-focus recovery behaviour using LR-0086/LR-0119 without requiring audio to play.",
+        "Require visible equivalents for every semantic cue and forbid sound-only gameplay information, including save/combat warnings.",
+        "Produce an implementation checklist and real-browser QA matrix for LR-0032/LR-0040/Agent 6; no runtime or audio-asset edits."
+      ],
+      "likely_files": [
+        "docs/MOBILE-AUDIO-CONTROLS-AUDIT.md",
+        "QA/MOBILE-AUDIO-CONTROLS-MATRIX.md"
+      ],
+      "notes": "Author-now Wayfinder audit unlocked by LR-0126 and the existing LR-0003 runtime controls. Agent 4 retains sound design/assets; this task owns player-facing control semantics/accessibility/phone integration only."
     }
   ],
   "agent_roster": [
@@ -3473,5 +3499,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T19:20:00+11:00"
+  "updated_at": "2026-10-04T19:24:00+11:00"
 }
