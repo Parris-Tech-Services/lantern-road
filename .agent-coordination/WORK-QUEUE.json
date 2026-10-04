@@ -254,7 +254,7 @@
         "game.js",
         "manifest.webmanifest"
       ],
-      "notes": "Premium-gap area: mobile experience. Save boundary: LR-0009 owns autosave/save UX and may call the shared persistence API; LR-0011 owns save schema versioning, migration, validation and compatibility policy. LR-0009 must not introduce a parallel save format. PARKED HANDOFF (4 Oct 2026): implementation is preserved on branch agent/LR-0009-mobile-ux-7da5e33e at useful head 0d8c19c796f3cdebf1c742413f2c9bfc73015aa7 in draft PR #6. Browser evidence already completed: run 37175710168 / artifact 11293685694 and final overlap/build-ID run 37177028374 / artifact 11293324084, covering 320x700, 360x780, 390x844 and 430x900 touch/mobile contexts with no uncaught browser errors. Remaining external gates: LR-0011 and LR-0013 must clear. Next action after those gates: acquire a fresh mobile-ux claim, reconcile Manual Save/Autosave with LR-0011's shared LanternRoadSave persistence API and reconcile sw.js with any independently merged freshness hotfix, rerun Wayfinder mobile/save checks, then obtain fresh Agent 7 approval on the exact final head before merge. Under CLAIM-PROTOCOL v1.2 this parked branch/PR confers no active ownership.",
+      "notes": "PARKED HANDOFF refreshed 4 Oct 2026: the obsolete PR #6 was closed and replaced by draft PR #85 on branch agent/LR-0009-mobile-ux-64c3f2a1, current useful head 8af907283e602214b24a1f286f444ded3ff10080. This is a clean rebuild from then-current main, not a 500-commit stale rebase. It includes phone map pan/zoom/centre, six large neighbouring Travel buttons, bottom-thumb tabs, Settings/Accessibility, Standard/Large/Extra Large text, High Contrast, optional haptics, separate Manual Save + Autosave, New Campaign Manual Save protection, Manual/Autosave load chooser, visible Version 1.0.0 / Build 2026.10.04-lr0009-v7, floating/safe-area overlap handling, and schema-v2 persistence through merged LR-0011 window.LanternRoadSave. LR-0050 network-first sw.js is preserved unchanged. Real Chromium run 37191895794 passed at 320x700, 360x780, 390x844 and 430x900; artifact 11299491815; QA record QA/LR-0009-CURRENT-MAIN-MOBILE-RECONCILIATION.md. DOM contract and node --check game.js also passed. Remaining external merge gates: LR-0011 and LR-0013 must be formally DONE. After they clear, acquire a fresh mobile-ux claim, reconcile with then-current main, run the permanent LR-0013 browser harness, obtain fresh Agent 7 exact-head approval, then merge/close. Deeper keyboard/screen-reader, PWA lifecycle, canonical map UX and persistent-map shell remain separate LR-0039/LR-0040/LR-0074/LR-0096 tasks.",
       "primary_agent": 5,
       "merge_gate_depends_on": [
         "LR-0011",
@@ -3887,5 +3887,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T20:58:00+11:00"
+  "updated_at": "2026-10-04T20:27:00+11:00"
 }
