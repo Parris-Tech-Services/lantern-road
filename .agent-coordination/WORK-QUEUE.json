@@ -2835,6 +2835,29 @@
         "README.md"
       ],
       "notes": "Independent Steward safety net. Does not redesign PWA lifecycle, visible version UI, accessibility, or app architecture."
+    },
+    {
+      "id": "LR-0108",
+      "title": "Author persistent responsive play-shell state machine",
+      "status": "READY",
+      "priority": 0,
+      "exclusive_scope": "responsive-shell-contract",
+      "depends_on": [],
+      "primary_agent": 5,
+      "goal": "Convert LR-0095's responsive-shell research into an implementation-ready state machine for LR-0096, including phone sheet states, desktop split-pane behaviour, scroll ownership, focus restoration and breakpoint transitions.",
+      "acceptance_criteria": [
+        "Define phone map/sheet states such as peek, standard, expanded and full-detail, including allowed transitions and when each state is entered automatically versus by player choice.",
+        "Define desktop/tablet split-pane behaviour and a content-fit breakpoint rule that does not rely on device-name assumptions.",
+        "Define scroll ownership so map, sheet/pane and document scrolling cannot create nested-scroll traps or recreate the map-to-result shuttle.",
+        "Define preservation/restoration rules for map camera, selected tab, sheet position, content scroll and keyboard/assistive focus across travel, dialogue, combat, tab changes and map expansion.",
+        "Define how Context, Journal, Party and Log inhabit the persistent shell and how modal-only surfaces coexist without obscuring map/action controls.",
+        "Provide implementation and real-browser acceptance matrices for LR-0096 without editing runtime files."
+      ],
+      "likely_files": [
+        "docs/RESPONSIVE-PLAY-SHELL-CONTRACT.md",
+        "QA/"
+      ],
+      "notes": "Author-now Wayfinder bridge from LR-0095 research to LR-0096 implementation. It formalises shell state/transition behaviour without touching blocked runtime integration."
     }
   ],
   "agent_roster": [
@@ -2892,5 +2915,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T17:24:00+11:00"
+  "updated_at": "2026-10-04T17:58:00+11:00"
 }
