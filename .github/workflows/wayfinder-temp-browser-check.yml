@@ -1,0 +1,124 @@
+name: Wayfinder temporary browser check
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  mobile-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install temporary browser runner
+        run: |
+          npm install --no-save --package-lock=false playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Start static server
+        run: |
+          python3 -m http.server 4173 >/tmp/lantern-road-http.log 2>&1 &
+          for i in {1..20}; do
+            curl -fsS http://127.0.0.1:4173/index.html >/dev/null && exit 0
+            sleep 1
+          done
+          cat /tmp/lantern-road-http.log
+          exit 1
+      - name: Mobile touch and save smoke
+        run: |
+          node <<'NODE'
+          const assert = require("node:assert/strict");
+          const { chromium } = require("playwright");
+
+          (async () => {
+            const browser = await chromium.launch({ headless: true });
+            const context = await browser.newContext({
+              viewport: { width: 390, height: 844 },
+              isMobile: true,
+              hasTouch: true
+            });
+            const page = await context.newPage();
+            const pageErrors = [];
+            page.on("pageerror", error => pageErrors.push(String(error)));
+            await page.route("**/portal-adapter.js*", route => route.fulfill({
+              status: 200,
+              contentType: "application/javascript",
+              body: "window.PortalAdapter={init(){}};"
+            }));
+
+            await page.goto("http://127.0.0.1:4173/index.html", { waitUntil: "networkidle" });
+            await page.getByRole("button", { name: "Set out from Hearthwick." }).click();
+
+            assert.equal(await page.locator("#accessibilityBtn").isVisible(), true, "Accessibility button should be visible");
+            assert.equal(
+              await page.locator("#nearbyTravel").evaluate(el => getComputedStyle(el).display !== "none"),
+              true,
+              "Phone-sized viewport should expose large nearby-travel buttons"
+            );
+            assert.ok(await page.locator("#nearbyTravel [data-action='travel-hex']").count() >= 3, "Nearby travel choices should render");
+
+            await page.locator("#accessibilityBtn").click();
+            await page.getByRole("heading", { name: "Accessibility & Phone" }).waitFor();
+            await page.locator("[data-action='set-text-scale'][data-value='large']").click();
+            assert.equal(await page.locator("html").getAttribute("data-text-scale"), "large");
+            await page.locator("[data-action='toggle-contrast']").click();
+            assert.equal(await page.locator("html").evaluate(el => el.classList.contains("high-contrast")), true);
+            await page.locator("[data-action='close-accessibility']").click();
+
+            await page.locator("#mapZoomInBtn").click();
+            await page.getByText("Map zoom", { exact: true }).waitFor();
+
+            const canvas = page.locator("#mapCanvas");
+            const box = await canvas.boundingBox();
+            assert.ok(box, "Map canvas should be measurable");
+            await page.mouse.move(box.x + box.width * 0.55, box.y + box.height * 0.55);
+            await page.mouse.down();
+            await page.mouse.move(box.x + box.width * 0.38, box.y + box.height * 0.42, { steps: 5 });
+            await page.mouse.up();
+
+            await page.locator("#saveBtn").click();
+            await page.getByRole("heading", { name: "Manual Save Updated" }).waitFor();
+            const manualBefore = await page.evaluate(() => localStorage.getItem("lantern-road-save-v1"));
+            assert.ok(manualBefore, "Manual save slot should exist");
+            await page.locator("[data-action='dialogue-choice'][data-key='close']").click();
+            await page.waitForTimeout(500);
+            assert.ok(await page.evaluate(() => localStorage.getItem("lantern-road-autosave-v1")), "Autosave slot should exist");
+
+            await page.locator("#newGameBtn").click();
+            await page.getByRole("heading", { name: "Start New Campaign?" }).waitFor();
+            await page.locator("[data-action='dialogue-choice'][data-key='newCampaignConfirm']").click();
+            await page.getByRole("heading", { name: "The Grey March" }).waitFor();
+            await page.getByRole("button", { name: "Set out from Hearthwick." }).click();
+            assert.equal(
+              await page.evaluate(() => localStorage.getItem("lantern-road-save-v1")),
+              manualBefore,
+              "Starting a new campaign must not overwrite the manual save"
+            );
+
+            const before = JSON.parse(await page.evaluate(() => window.render_game_to_text())).campaign.position;
+            await page.locator("#nearbyTravel [data-action='travel-hex']").first().click();
+            const after = JSON.parse(await page.evaluate(() => window.render_game_to_text())).campaign.position;
+            assert.notDeepEqual(after, before, "Large nearby-travel button should move the party");
+
+            await page.waitForTimeout(500);
+            const savedPosition = JSON.parse(await page.evaluate(() => window.render_game_to_text())).campaign.position;
+            await page.reload({ waitUntil: "networkidle" });
+            const resumedPosition = JSON.parse(await page.evaluate(() => window.render_game_to_text())).campaign.position;
+            assert.deepEqual(resumedPosition, savedPosition, "Reload should resume the latest autosave position");
+
+            await page.screenshot({ path: "wayfinder-mobile.png", fullPage: true });
+            assert.deepEqual(pageErrors, [], "No uncaught page errors expected");
+            await browser.close();
+          })().catch(error => {
+            console.error(error);
+            process.exit(1);
+          });
+          NODE
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: wayfinder-mobile-check
+          path: wayfinder-mobile.png
+          if-no-files-found: ignore
