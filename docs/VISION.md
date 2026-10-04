@@ -27,6 +27,9 @@ Travel, supplies, combat, equipment, injuries and time pressure should create in
 ### 5. Phone-first atmosphere
 The game should be comfortable one-handed, readable, responsive and evocative through coherent 2D art, restrained animation, sound and strong feedback.
 
+### World map identity
+The Grey March should feel like a physical campaign map worth learning. Use an authored illustrated terrain atlas, but keep canonical geography and interaction in data: the hex grid, place names, roads, party position, discoveries/fog and world changes are dynamic overlays. The map should become more legible and memorable as the player learns it, not larger merely for spectacle.
+
 ## Non-goals
 
 - No tactical-grid conversion.
