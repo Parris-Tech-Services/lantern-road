@@ -71,7 +71,7 @@ Recommended shape:
   "reviewer_agent_number": 7,
   "status": "APPROVED",
   "reviewed_head_sha": "FULL_SHA",
-  "change_type": "ADD|MOVE|RENAME|RETIRE|GRID|PROJECTION",
+  "change_type": "ADD|MOVE|RENAME|RETIRE|IDENTITY|GRID|PROJECTION",
   "affected_place_ids": ["example_id"],
   "josh_approval_required": false,
   "notes": "Why this change preserves Grey March coherence."
@@ -122,3 +122,50 @@ Validators must therefore enforce:
 - agreement with gameplay data;
 
 but must **not** blindly enforce one place per hex.
+
+
+## Automated enforcement
+
+LR-0070 adds two independent checks.
+
+### Registry/gameplay validator
+
+`node scripts/validate-map-canon.mjs` verifies:
+
+- the canonical coordinate model and bounds;
+- unique stable place ids;
+- recognised CANON / PROPOSED / RETIRED statuses;
+- derived human grid references;
+- settlement/site place types;
+- registry agreement with `content.js` ids, names, kinds and q/r coordinates;
+- the canonical starting location;
+- that PROPOSED/RETIRED places are not active gameplay geography.
+
+Multiple canonical places in the same q/r hex are explicitly allowed.
+
+### Protected-change approval guard
+
+On pull requests, `node scripts/verify-map-canon-change.mjs` compares the PR base and head.
+
+Changes to PROPOSED concept labels or explanatory text do not by themselves count as protected geography mutation.
+
+A change to protected canonical identity requires a **final review-only commit** containing exactly:
+
+```text
+.agent-coordination/map-canon-reviews/<TASK-ID>.json
+```
+
+That record must:
+
+- be authored/reviewed by Agent 7;
+- have `status: "APPROVED"`;
+- name the exact preceding commit in `reviewed_head_sha`;
+- use an allowed `change_type`: `ADD`, `MOVE`, `RENAME`, `RETIRE`, `IDENTITY`, `GRID` or `PROJECTION`;
+- list every changed canonical place id in `affected_place_ids`;
+- explicitly state whether Josh approval was required.
+
+If `josh_approval_required` is true, the record must also contain `josh_approved: true`.
+
+Any later code/canon commit after approval makes that approval stale.
+
+Deleting an existing protected id outright is rejected. Retire it so ids remain reserved for saves and historical references.
