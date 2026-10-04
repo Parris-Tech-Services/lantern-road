@@ -106,6 +106,50 @@ test("accepts exact final Director approval for a parked READY task without an i
   assert.match(result.stdout, /Parked PR Director approval verified without idle lock/);
 });
 
+test("accepts parked map-canon review followed by final Director approval while notes retain the feature head", () => {
+  const branch = "agent/LR-0105-regional-canon-test";
+  const cwd = setupRepo(parkedTask("LR-0105", branch));
+
+  const featureHead = commitFile(cwd, "world/map-canon.json", "{\"regional_labels\":[]}\n", "map canon feature work");
+
+  writeJson(cwd, ".agent-coordination/WORK-QUEUE.json", {
+    schema_version: 1,
+    tasks: [parkedTask(
+      "LR-0105",
+      branch,
+      `PARKED HANDOFF: implementation complete on branch ${branch}, exact useful head ${featureHead}. Fresh claim required before later edits or merge preparation.`
+    )]
+  });
+
+  writeJson(cwd, ".agent-coordination/map-canon-reviews/LR-0105.json", {
+    schema_version: 1,
+    task_id: "LR-0105",
+    reviewer_agent_number: 7,
+    status: "APPROVED",
+    reviewed_head_sha: featureHead
+  });
+  git(cwd, ["add", ".agent-coordination/map-canon-reviews/LR-0105.json"]);
+  git(cwd, ["commit", "-m", "map canon approval"]);
+  const mapReviewHead = git(cwd, ["rev-parse", "HEAD"]);
+
+  writeJson(cwd, ".agent-coordination/design-reviews/LR-0105.json", {
+    schema_version: 1,
+    task_id: "LR-0105",
+    reviewer_agent_number: 7,
+    reviewer: "The Director",
+    status: "APPROVED",
+    reviewed_head_sha: mapReviewHead,
+    reviewed_at: "2026-10-04T21:30:00+11:00"
+  });
+  git(cwd, ["add", ".agent-coordination/design-reviews/LR-0105.json"]);
+  git(cwd, ["commit", "-m", "Director approval"]);
+  const approvalHead = git(cwd, ["rev-parse", "HEAD"]);
+
+  const result = runVerifier(cwd, branch, approvalHead);
+  assert.equal(result.status, 0, result.stderr);
+  assert.match(result.stdout, /parked useful head/);
+});
+
 test("rejects an unlocked feature commit", () => {
   const branch = "agent/LR-0044-personal-arc-test";
   const cwd = setupRepo(parkedTask("LR-0044", branch));
