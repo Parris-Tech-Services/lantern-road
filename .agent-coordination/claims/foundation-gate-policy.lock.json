@@ -8,6 +8,6 @@
   "claim_token": "6bcb6c7d-5147-4a65-b9c5-5f25e8e054ef",
   "claimed_at": "2026-10-04T16:02:00+11:00",
   "expires_at": "2026-10-05T04:02:00+11:00",
-  "branch": "agent/LR-0055-foundation-gate-policy-a1f55c62",
-  "note": "Decoupling machine foundation verification from Josh's human release validation."
+  "branch": "agent/LR-0055-foundation-gate-policy-a1f55c62-r2",
+  "note": "Decoupling machine foundation verification from Josh's human release validation. Rebased onto current main via r2 branch; original branch retained as backup."
 }
