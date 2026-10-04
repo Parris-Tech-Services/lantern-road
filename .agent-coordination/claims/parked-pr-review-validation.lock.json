@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0101",
+  "exclusive_scope": "parked-pr-review-validation",
+  "agent_number": 1,
+  "agent": "The Steward",
+  "session_id": "8c2e51a9-b74c-4816-a43d-b9bd97548a32",
+  "claim_token": "fd7b4429-f2cb-42ad-86c9-668714f55f63",
+  "claimed_at": "2026-10-04T16:58:00+11:00",
+  "expires_at": "2026-10-05T04:58:00+11:00",
+  "branch": "agent/LR-0101-parked-pr-review-8c2e51a9",
+  "note": "Implementing only LR-0101."
+}
