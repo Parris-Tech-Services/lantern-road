@@ -22,10 +22,11 @@ try {
 const allowedStatuses = new Set(["READY", "BLOCKED", "DONE", "CANCELLED"]);
 const roster = Array.isArray(queue.agent_roster) ? queue.agent_roster : [];
 const rosterNumbers = new Set(roster.map(agent => agent.number));
-if (roster.length !== 7) fail(`agent_roster must contain exactly 7 agents; found ${roster.length}.`);
+if (![7, 8].includes(roster.length)) fail(`agent_roster must contain 7 or 8 agents during the Agent 8 bootstrap; found ${roster.length}.`);
 for (const required of [1, 2, 3, 4, 5, 6, 7]) {
   if (!rosterNumbers.has(required)) fail(`agent_roster is missing agent ${required}.`);
 }
+if (roster.length === 8 && !rosterNumbers.has(8)) fail("8-agent roster is missing agent 8.");
 const tasks = Array.isArray(queue.tasks) ? queue.tasks : [];
 const byId = new Map();
 const scopeToTasks = new Map();
@@ -41,7 +42,7 @@ for (const task of tasks) {
   }
   if (!Array.isArray(task.depends_on)) fail(`${task.id}: depends_on must be an array.`);
   if (task.merge_gate_depends_on !== undefined && !Array.isArray(task.merge_gate_depends_on)) fail(`${task.id}: merge_gate_depends_on must be an array when present.`);
-  if (!rosterNumbers.has(task.primary_agent)) fail(`${task.id}: primary_agent must be one of the seven roster agent numbers.`);
+  if (!rosterNumbers.has(task.primary_agent)) fail(`${task.id}: primary_agent must be one of the roster agent numbers.`);
   if (task.supporting_agents !== undefined) {
     if (!Array.isArray(task.supporting_agents)) fail(`${task.id}: supporting_agents must be an array when present.`);
     else for (const agentNumber of task.supporting_agents) {
