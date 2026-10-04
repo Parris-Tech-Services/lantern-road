@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0009",
+  "exclusive_scope": "mobile-ux",
+  "agent_number": 5,
+  "agent": "The Wayfinder",
+  "session_id": "7da5e33e-1005-4f72-be8b-cc72d5505269",
+  "claim_token": "732d124b-30a9-4959-8e0c-31efd2fd47c8",
+  "claimed_at": "2026-10-04T14:39:39+11:00",
+  "expires_at": "2026-10-05T02:39:39+11:00",
+  "branch": "agent/LR-0009-mobile-ux-7da5e33e",
+  "note": "Implementing only LR-0009."
+}
