@@ -13,6 +13,7 @@ if (!branch.startsWith("agent/")) {
 }
 
 const claimsDir = path.join(process.cwd(), ".agent-coordination", "claims");
+const queuePath = path.join(process.cwd(), ".agent-coordination", "WORK-QUEUE.json");
 const files = fs.existsSync(claimsDir)
   ? fs.readdirSync(claimsDir).filter(name => name.endsWith(".lock.json"))
   : [];
@@ -37,6 +38,30 @@ if (matches.length !== 1) {
 const { file, lock } = matches[0];
 if (!branch.startsWith(`agent/${lock.task_id}-`)) {
   console.error(`${file}: branch does not match task id ${lock.task_id}.`);
+  process.exit(1);
+}
+
+let queue;
+try {
+  queue = JSON.parse(fs.readFileSync(queuePath, "utf8"));
+} catch (error) {
+  console.error(`Cannot read WORK-QUEUE.json: ${error.message}`);
+  process.exit(1);
+}
+
+const task = (queue.tasks ?? []).find(item => item.id === lock.task_id);
+if (!task) {
+  console.error(`${file}: claimed task ${lock.task_id} is missing from the queue.`);
+  process.exit(1);
+}
+
+const incompleteGates = (task.merge_gate_depends_on ?? []).filter(
+  id => (queue.tasks ?? []).find(item => item.id === id)?.status !== "DONE"
+);
+if (incompleteGates.length) {
+  console.error(
+    `${lock.task_id}: PR cannot merge until merge gates are DONE: ${incompleteGates.join(", ")}`
+  );
   process.exit(1);
 }
 
