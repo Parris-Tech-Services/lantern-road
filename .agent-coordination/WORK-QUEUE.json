@@ -2127,7 +2127,7 @@
     {
       "id": "LR-0079",
       "title": "Author phone interaction performance budget",
-      "status": "READY",
+      "status": "DONE",
       "priority": 1,
       "exclusive_scope": "mobile-interaction-performance-authoring",
       "depends_on": [],
@@ -2143,7 +2143,7 @@
       "likely_files": [
         "docs/MOBILE-INTERACTION-PERFORMANCE-BUDGET.md"
       ],
-      "notes": "PARKED HANDOFF (4 Oct 2026): authoring complete on branch agent/LR-0079-mobile-performance-2c4f8d91 at head 04c9480dee8ee6d89ff298d2ffaac204fbe10f02, PR #34. Final diff adds docs/MOBILE-INTERACTION-PERFORMANCE-BUDGET.md only, defining measurable tap/modal/tab/map/reflow responsiveness targets, degraded-device priorities and manual measurement scenarios. LR-0012 retains runtime profiling/optimisation; LR-0074 consumes map targets. Remaining external condition is Agent 7 approval; fresh claim required before later edits or final merge preparation."
+      "notes": "Completed 4 Oct 2026 via PR #34, squash merge cafa5ac41b57ed3fa5b4dd92d20a24846cdb30cc. Agent 7 approved exact useful head 04c9480dee8ee6d89ff298d2ffaac204fbe10f02; final approval-head validation was green."
     },
     {
       "id": "LR-0080",
@@ -3363,5 +3363,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T19:05:00+11:00"
+  "updated_at": "2026-10-04T19:10:00+11:00"
 }
