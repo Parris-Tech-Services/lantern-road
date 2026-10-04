@@ -2659,7 +2659,14 @@
     if (loc && state.discoveredSites[loc.data.id]) {
       state.ui.focus = { type: loc.type, id: loc.data.id };
       renderAll();
+      showFeedback("Map focus", `${loc.data.name} is too far to travel to directly. Choose neighbouring hexes to move toward it.`);
+      return;
     }
+    showFeedback(
+      "Too far to travel",
+      "Choose one of the six neighbouring hexes around the party, then continue from there.",
+      "bad"
+    );
   }
 
   function renderAll() {
@@ -2789,6 +2796,14 @@
         break;
       case "camp":
         campParty();
+        break;
+      default:
+        console.warn(`Unhandled player action: ${action}`, button);
+        showFeedback(
+          "Action unavailable",
+          "That control is not connected correctly yet. The game state was not changed.",
+          "bad"
+        );
         break;
     }
   }
