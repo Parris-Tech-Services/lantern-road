@@ -26,6 +26,26 @@ Root notes that are not referenced by the live queue or the documents above are 
 - `sw.js`
 - `LICENSE`
 
+## AED queue health report
+
+Agent 8's queue-health report is a **read-only advisory tool**, not a merge gate. It summarises actionable versus parked READY work, active claims, dependency fan-out, review-ready parked work, likely-file collision surfaces and obvious queue/claim inconsistencies.
+
+Run:
+
+```bash
+node scripts/aed-report.mjs
+```
+
+Useful options:
+
+```bash
+node scripts/aed-report.mjs --top 20
+node scripts/aed-report.mjs --json
+node --test tests/aed-report.test.mjs
+```
+
+The report reads only `.agent-coordination/WORK-QUEUE.json` and `.agent-coordination/claims/*.lock.json`. It does not claim tasks, change lifecycle state, approve PRs or modify repository files.
+
 ## CI action runtime policy
 
 Lantern Road's GitHub Actions workflows must use Node-24-compatible majors for the core JavaScript actions:
