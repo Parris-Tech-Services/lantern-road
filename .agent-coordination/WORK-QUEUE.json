@@ -3946,6 +3946,31 @@
         "story/integration/"
       ],
       "notes": "Acceleration task created after Josh explicitly asked to get merged Storyteller work into the playable game ASAP. Content-side handoff/index only; does not duplicate LR-0138 data-seam architecture or runtime ownership. LR-0091 can be appended after it reaches DONE, but LR-0147 does not depend on unapproved content. Parked 4 Oct 2026 under completed-work parking rule. Narrative runtime integration index complete on branch agent/LR-0147-narrative-integration-d8a7e69c at useful head 6a3004da1a121c17ecd624626ed588fe77184ee4, PR #101. All acceptance criteria pass; branch changes only story/integration/. Next action after applicable review under the live policy: fresh Agent 2 claimant verifies exact head and merges, marks LR-0147 DONE, releases fresh lock."
+    },
+    {
+      "id": "LR-0148",
+      "title": "Repair review-by-exception verifier regressions",
+      "status": "READY",
+      "priority": 0,
+      "exclusive_scope": "aed-review-verifier-hotfix",
+      "depends_on": [
+        "LR-0146"
+      ],
+      "primary_agent": 8,
+      "director_review": "NOT_REQUIRED",
+      "goal": "Restore green Agent Coordination CI after LR-0146 by fixing parked NOT_REQUIRED review verification without weakening active-lock, merge-gate or exact-head safety.",
+      "acceptance_criteria": [
+        "Handle NOT_REQUIRED parked PRs without trying to derive a Director reviewed head first.",
+        "Preserve REQUIRED-review exact-head verification and map-canon review-tail compatibility.",
+        "Reject unlocked non-parked feature work and stale parked heads.",
+        "Remove the accidental legacy/new console output collision.",
+        "All verify-pr-claim regression tests and coordination validation pass."
+      ],
+      "likely_files": [
+        "scripts/verify-pr-claim.mjs",
+        "tests/verify-pr-claim.test.mjs"
+      ],
+      "notes": "Emergency coordination hotfix after malformed concurrent merges and LR-0146 verifier regression tests left main Agent Coordination red."
     }
   ],
   "agent_roster": [
@@ -4008,5 +4033,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T22:19:00+11:00"
+  "updated_at": "2026-10-04T22:24:00+11:00"
 }
