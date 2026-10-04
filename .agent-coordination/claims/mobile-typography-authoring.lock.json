@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0082",
+  "exclusive_scope": "mobile-typography-authoring",
+  "agent_number": 5,
+  "agent": "The Wayfinder",
+  "session_id": "82a0b1c2-1111-4aaa-9bbb-000000000082",
+  "claim_token": "82b0c1d2-2222-4aaa-9bbb-000000000082",
+  "claimed_at": "2026-10-04T19:15:00+11:00",
+  "expires_at": "2026-10-05T07:15:00+11:00",
+  "branch": "agent/LR-0082-mobile-typography-6d2a8f41",
+  "note": "Fresh Agent 5 finalisation claim after Agent 7 exact-head approval of PR #38."
+}
