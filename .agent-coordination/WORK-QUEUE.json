@@ -2413,7 +2413,7 @@
     {
       "id": "LR-0091",
       "title": "Author full direct-companion conversation and advice pack",
-      "status": "BLOCKED",
+      "status": "READY",
       "priority": 1,
       "exclusive_scope": "companion-direct-dialogue-authoring",
       "depends_on": [
@@ -2434,7 +2434,7 @@
         "story/companions/",
         "story/dialogue/"
       ],
-      "notes": "Full authored companion-social layer following LR-0088's framework."
+      "notes": "Full authored companion-social layer following LR-0088's framework. Lifecycle refreshed 4 Oct 2026 after LR-0044, LR-0088 and LR-0089 all reached DONE; task is now eligible for Agent 2 authoring."
     },
     {
       "id": "LR-0092",
@@ -3915,5 +3915,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T21:36:00+11:00"
+  "updated_at": "2026-10-04T21:41:00+11:00"
 }
