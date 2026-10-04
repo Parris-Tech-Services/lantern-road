@@ -1467,7 +1467,7 @@
         "systems/combat/",
         "docs/"
       ],
-      "notes": "Mechanist design-now counterpart to LR-0015/LR-0019. Keeps the role productive without colliding in game.js/content.js."
+      "notes": "PARKED 2026-10-04 by Agent 3 under claim-protocol v1.2. Branch: agent/LR-0053-combat-design-authoring-4f6d9ab8. Exact useful head: cb6069b8f41b0ec485a4aed829ed57de23d03662. PR #19. Added systems/combat/COMPACT-COMBAT-DEPTH-SPEC.md only (570 lines); no runtime/save/economy edits. Spec covers all 7 current enemy archetypes with visible intent/counterplay, five party decision axes, dominant-action risks, five signature encounter patterns, LR-0006 progression assumptions/reconciliation, and a staged LR-0015 implementation slice. Acceptance criteria satisfied by authoring; remaining external closure is Director review/merge. Before any content change or merge reconciliation, freshly claim combat-design-authoring."
     },
     {
       "id": "LR-0054",
