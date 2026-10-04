@@ -94,6 +94,20 @@ For every task explicitly marked `director_review: REQUIRED`, answer all of thes
 
 A review may be concise, but it should be able to point to concrete code/content evidence for any blocking finding.
 
+## Foundation-gate governance
+
+LR-0055 is explicitly `director_review: REQUIRED` because it changes repository governance, the dependency critical path and the decision log.
+
+The Director verifies that:
+
+- machine verification remains objective and independently checkable;
+- no specialist can bypass required CI/artifact evidence;
+- Josh's human sign-off remains impossible for agents to self-assert;
+- human validation protects final integration/release without unnecessarily blocking technically proven development;
+- the queue, validator, claim protocol and decision log describe the same dependency model.
+
+This does not restore universal Director review. LR-0146 review-by-exception remains authoritative for all other tasks.
+
 ## Review outcomes
 
 Use exactly one:
