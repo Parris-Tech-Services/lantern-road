@@ -3920,7 +3920,7 @@
       "likely_files": [
         "story/integration/"
       ],
-      "notes": "Acceleration task created after Josh explicitly asked to get merged Storyteller work into the playable game ASAP. Content-side handoff/index only; does not duplicate LR-0138 data-seam architecture or runtime ownership. LR-0091 can be appended after it reaches DONE, but LR-0147 does not depend on unapproved content."
+      "notes": "Acceleration task created after Josh explicitly asked to get merged Storyteller work into the playable game ASAP. Content-side handoff/index only; does not duplicate LR-0138 data-seam architecture or runtime ownership. LR-0091 can be appended after it reaches DONE, but LR-0147 does not depend on unapproved content. Parked 4 Oct 2026 under completed-work parking rule. Narrative runtime integration index complete on branch agent/LR-0147-narrative-integration-d8a7e69c at useful head 6a3004da1a121c17ecd624626ed588fe77184ee4, PR #101. All acceptance criteria pass; branch changes only story/integration/. Next action after applicable review under the live policy: fresh Agent 2 claimant verifies exact head and merges, marks LR-0147 DONE, releases fresh lock."
     }
   ],
   "agent_roster": [
@@ -3983,5 +3983,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T21:33:00+11:00"
+  "updated_at": "2026-10-04T21:37:00+11:00"
 }
