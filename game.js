@@ -885,7 +885,7 @@
     state.progression.builds[memberId] = buildId;
     clampPartyHp();
     addLog(`${hero.name} commits to the ${choice.name} path.`);
-    playUiCue("confirm");
+    playCue("ui");
     renderAll();
     showFeedback("Path chosen", `${hero.name}: ${choice.name}. This choice is permanent for this campaign.`, "good");
   }
@@ -912,7 +912,7 @@
     state.progression.equipment[item.hero] = itemId;
     clampPartyHp();
     addLog(`${hero.name} equips ${item.name}${previous ? `, replacing ${previous.name}` : ""}.`);
-    playUiCue("confirm");
+    playCue("ui");
     renderAll();
     showFeedback("Gear equipped", `${hero.name} now uses ${item.name}.`, "good");
   }
