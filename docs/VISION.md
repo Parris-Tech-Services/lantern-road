@@ -21,6 +21,8 @@ Important decisions should change dialogue, relationships, services, danger, rou
 ### 3. The party are people, not stat blocks
 Garrick, Mira, Oren and Brindle should remember events, react differently, form relationships, suffer consequences and become people the player cares about.
 
+The player is not an external controller. The player is the in-world **Leader** of the active four-person adventuring party: Leader + three active companions. Companions can advise, object, refuse personal requests and remember how they were led, but the Leader remains responsible for irreversible party-level story choices.
+
 ### 4. Tense systems with readable trade-offs
 Travel, supplies, combat, equipment, injuries and time pressure should create interesting decisions without grind, opaque punishment or dominant no-brainer choices.
 
