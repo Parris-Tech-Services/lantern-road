@@ -2730,7 +2730,7 @@
     {
       "id": "LR-0103",
       "title": "Author the Leader mechanical role and four-person roster transition",
-      "status": "READY",
+      "status": "DONE",
       "priority": 0,
       "exclusive_scope": "leader-mechanical-role-design",
       "depends_on": [
@@ -2752,7 +2752,7 @@
         "systems/leader/",
         "design/PLAYER-LEADER-PARTY-CONTRACT.md"
       ],
-      "notes": "PARKED 2026-10-04 after Director-requested revisions. Branch: agent/LR-0103-leader-mechanical-role-4a327f6b. Exact current review head: bd5449e8c3ddbeccda05329a1b5611734b1221a2. PR #54. All four requested decisions are now settled in the spec: Leader knockout uses ordinary party-member knockout with combat continuing while any active companion stands; reserve companion is the safe camp/support reserve with no field benefit and rotation only at settlements/established safe camps; Leader focuses are Lead From the Front and Steady Hand; one Renown-2 binary focus remains permanent. PR comment 5978604651 requests exact-head Director approval. No runtime/save/content edits. Freshly claim leader-mechanical-role-design before any further change or final merge closeout."
+      "notes": "DONE 2026-10-04. Director-approved PR #54 merged to main as bf4f840b3a825cf9f3643cadc71a58f4b47ee2d2. Reviewed feature head bd5449e8c3ddbeccda05329a1b5611734b1221a2 with Director approval commit 704a4f5960afb89614bdd18529d7d1d4fbb5b352; Agent coordination #904 SUCCESS. Canon now includes ordinary Leader knockout, camp/support reserve, Lead From the Front / Steady Hand, and one permanent Renown-2 focus."
     },
     {
       "id": "LR-0104",
