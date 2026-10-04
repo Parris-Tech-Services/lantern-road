@@ -3079,6 +3079,29 @@
         "README.md"
       ],
       "notes": "Blocked until the baseline, critical-path and lifecycle audits define stable metrics worth automating."
+    },
+    {
+      "id": "LR-0119",
+      "title": "Author mobile suspend, resume and interruption contract",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "mobile-resume-authoring",
+      "depends_on": [],
+      "primary_agent": 5,
+      "goal": "Define how Lantern Road behaves when a phone browser/PWA is backgrounded, screen-locked, suspended, process-evicted and later resumed without inventing real-time game progress or falsely claiming saves succeeded.",
+      "acceptance_criteria": [
+        "Define foreground→background and background→foreground behaviour for map/dialogue/combat/settings states, including audio/haptic pause and focus restoration.",
+        "Define best-effort autosave behaviour around visibility/page lifecycle signals while explicitly not relying on unload/pagehide for guaranteed persistence.",
+        "Distinguish same-session resume from cold restart after process eviction; define truthful recovery when in-memory progress was not persisted.",
+        "Specify that campaign time/events do not advance merely because real-world wall-clock time passed while the app was backgrounded unless a future gameplay task explicitly changes that rule.",
+        "Define stale-build/update checks on resume without interrupting required choices/combat.",
+        "Provide Android browser/PWA interruption acceptance cases for LR-0040, LR-0009 and LR-0023 without editing runtime files."
+      ],
+      "likely_files": [
+        "docs/MOBILE-SUSPEND-RESUME-CONTRACT.md",
+        "QA/"
+      ],
+      "notes": "Author-now Wayfinder lifecycle input. Distinct from LR-0078 install/offline/update states: this task owns foreground/background/process-interruption player behaviour."
     }
   ],
   "agent_roster": [
@@ -3141,5 +3164,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T18:15:00+11:00"
+  "updated_at": "2026-10-04T18:22:00+11:00"
 }
