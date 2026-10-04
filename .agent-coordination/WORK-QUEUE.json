@@ -3349,7 +3349,7 @@
     {
       "id": "LR-0128",
       "title": "Streamline critical-path review flow and staged architecture gates",
-      "status": "READY",
+      "status": "DONE",
       "priority": 0,
       "exclusive_scope": "aed-critical-path-flow-reform",
       "depends_on": [
@@ -3376,7 +3376,7 @@
         "docs/ARCHITECTURE-MODULARISATION-PLAN.md",
         ".github/workflows/aed-report.yml"
       ],
-      "notes": "ACTIVE v3 LR-0128: conflict-free rebuild from current main. PR pending. Staged IDs LR-0132–LR-0138 are live-reserved; this branch adds drain rules, ranked flow inbox, LR-0010 parent conversion and narrow architecture dependencies."
+      "notes": "Completed 4 Oct 2026 via PR #82, merge commit 6d4731a143098df6d3bfa2d7066817a8ad67fe94. Added critical-path drain rules, ranked AED flow inbox, path-scoped AED tests, live-reserved staged architecture tasks LR-0132–LR-0138, converted LR-0010 to the final architecture integration audit, and narrowed 21 specialist dependencies to the smallest sufficient architecture seam. PR exact-head Agent coordination run #792 and AED report tests run #4 both passed."
     },
     {
       "id": "LR-0129",
@@ -3705,5 +3705,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T20:14:00+11:00"
+  "updated_at": "2026-10-04T20:18:00+11:00"
 }
