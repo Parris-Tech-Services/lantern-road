@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0049",
+  "exclusive_scope": "parallel-work-policy",
+  "agent_number": 7,
+  "agent": "The Director",
+  "session_id": "4e0c1ef2-0f62-4c73-9f2d-58e7f46a1c70",
+  "claim_token": "0c0f1289-c550-4e61-a09b-3b91ab7c6d0d",
+  "claimed_at": "2026-10-04T15:49:00+11:00",
+  "expires_at": "2026-10-05T03:49:00+11:00",
+  "branch": "agent/LR-0049-parallel-work-policy-4e0c1ef2",
+  "note": "Implementing only LR-0049 coordination/queue parallelism policy."
+}
