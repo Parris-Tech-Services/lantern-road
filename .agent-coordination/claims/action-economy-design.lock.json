@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0094",
+  "exclusive_scope": "action-economy-design",
+  "agent_number": 3,
+  "agent": "The Mechanist",
+  "session_id": "7bf0d332-5d67-4f4e-bb40-978cf0b2aa44",
+  "claim_token": "d6e98c1d-fbde-49b5-bbb8-86629597fa3c",
+  "claimed_at": "2026-10-04T20:37:00+11:00",
+  "expires_at": "2026-10-05T08:37:00+11:00",
+  "branch": "agent/LR-0094-action-economy-design-a6c1e41d",
+  "note": "Fresh closeout claim for Director-approved LR-0094 PR #49."
+}
