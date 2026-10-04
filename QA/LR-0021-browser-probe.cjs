@@ -27,7 +27,8 @@ const consoleErrors = [];
     localStorage.clear();
     sessionStorage.clear();
   });
-  await page.reload({ waitUntil: "domcontentloaded", timeout: 15000 });\n  await page.waitForTimeout(1000);
+  await page.reload({ waitUntil: "domcontentloaded", timeout: 15000 });
+  await page.waitForTimeout(1000);
 
   async function snapshot(label) {
     await page.screenshot({ path: path.join(OUT, label + ".png"), fullPage: true });
