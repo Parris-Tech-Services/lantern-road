@@ -1,0 +1,171 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Parris-Tech-Services/lantern-road/QA/FINDING-SCHEMA.json",
+  "title": "Lantern Road Warden finding",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "finding_id",
+    "title",
+    "status",
+    "severity",
+    "player_impact",
+    "experience_tags",
+    "tested_commit",
+    "tested_source",
+    "observed_at",
+    "reproduction",
+    "recommended_owner_agent",
+    "evidence_refs",
+    "reopen_count"
+  ],
+  "properties": {
+    "finding_id": {
+      "type": "string",
+      "pattern": "^WFD-[0-9]{4}-[0-9]{3,}$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 5
+    },
+    "status": {
+      "enum": [
+        "OPEN",
+        "ROUTED",
+        "FIXED_PENDING_RETEST",
+        "RESOLVED",
+        "WONT_FIX",
+        "DUPLICATE"
+      ]
+    },
+    "severity": {
+      "enum": [
+        "S0",
+        "S1",
+        "S2",
+        "S3"
+      ]
+    },
+    "player_impact": {
+      "enum": [
+        "HIGH",
+        "MEDIUM",
+        "LOW"
+      ]
+    },
+    "experience_tags": {
+      "type": "array",
+      "uniqueItems": true,
+      "minItems": 1,
+      "items": {
+        "enum": [
+          "FUN",
+          "FRICTION",
+          "CLARITY",
+          "PACING",
+          "REPETITION",
+          "BALANCE",
+          "CONTINUITY",
+          "ACCESSIBILITY",
+          "RELIABILITY",
+          "EXPLOIT",
+          "OTHER"
+        ]
+      }
+    },
+    "tested_commit": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "tested_source": {
+      "enum": [
+        "CURRENT_MAIN",
+        "CURRENT_DEPLOYED",
+        "RELEASE_CANDIDATE",
+        "HISTORICAL_BASELINE"
+      ]
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "resolved_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "reproduction": {
+      "type": "string",
+      "minLength": 10
+    },
+    "player_impact_summary": {
+      "type": "string"
+    },
+    "recommended_owner_agent": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1,
+      "maximum": 7
+    },
+    "routed_task": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^LR-[0-9]{4}$"
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "retest": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "tested_commit": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "tested_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "outcome": {
+          "enum": [
+            "PENDING",
+            "PASS",
+            "FAIL",
+            "NOT_REQUIRED"
+          ]
+        }
+      },
+      "required": [
+        "tested_commit",
+        "tested_at",
+        "outcome"
+      ]
+    },
+    "reopen_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}
