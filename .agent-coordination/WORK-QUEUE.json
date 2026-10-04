@@ -3327,7 +3327,7 @@
         "assets/ui/effects/",
         "docs/ART-DIRECTION.md"
       ],
-      "notes": "Upstream presentation/source package only. Distinct from LR-0001 interaction feedback and LR-0009 mobile UX: this task defines how valid state changes look, not when they occur or how controls behave."
+      "notes": "PARKED pending Director exact-head review. PR #76, branch agent/LR-0127-motion-vfx-1c7b9d4f, useful head de9096fbce708b8176dbbab67a9d57870fcc10a7. Added motion/VFX production bible plus five decorative SVG effect sources (rain, fog, embers, lantern bloom, sacred halo). QA: required choreography/atmosphere/reduced-motion/discomfort sections present; ~2.7 KB SVG source total; no scripts, text or remote dependencies. Coordination checks pass; only remaining gate is .agent-coordination/design-reviews/LR-0127.json."
     }
   ],
   "agent_roster": [
