@@ -1,6 +1,7 @@
 ## Lantern Road change
 
 Task: `LR-____`  
+Primary agent: `#_ — __________`  
 Exclusive scope: `________`  
 Session ID: `________`  
 Claim token suffix: `________`
