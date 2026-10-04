@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0052",
+  "exclusive_scope": "economy-model-authoring",
+  "agent_number": 3,
+  "agent": "The Mechanist",
+  "session_id": "d87c6aad-7aef-4b63-a213-5e818c41f3a8",
+  "claim_token": "d04e4956-d14d-4724-8b6e-a825128f5e8d",
+  "claimed_at": "2026-10-04T21:35:00+11:00",
+  "expires_at": "2026-10-05T09:35:00+11:00",
+  "branch": "agent/LR-0052-economy-model-authoring-d3b244e9",
+  "note": "Fresh closeout claim for Director-approved LR-0052 PR #24."
+}
