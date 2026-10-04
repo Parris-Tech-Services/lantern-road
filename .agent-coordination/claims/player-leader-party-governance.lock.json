@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0089",
+  "exclusive_scope": "player-leader-party-governance",
+  "agent_number": 7,
+  "agent": "The Director",
+  "session_id": "82e7ee6b-6eac-4d03-91c3-b0a746859b99",
+  "claim_token": "f9826df5-41d6-4d92-97f5-7e5a936ed6f9",
+  "claimed_at": "2026-10-04T16:44:00+11:00",
+  "expires_at": "2026-10-05T04:44:00+11:00",
+  "branch": "agent/LR-0089-player-leader-governance-82e7ee6b",
+  "note": "Implementing only LR-0089."
+}
