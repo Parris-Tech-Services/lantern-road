@@ -79,3 +79,11 @@ test("repairs partial legacy state and rejects future versions", () => {
     error => error && error.code === "SAVE_VERSION_NEWER"
   );
 });
+
+
+test("rejects malformed JSON safely", () => {
+  assert.throws(
+    () => Save.decode("{", base()),
+    error => error && error.code === "SAVE_PARSE_FAILED"
+  );
+});
