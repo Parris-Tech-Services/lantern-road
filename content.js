@@ -943,9 +943,10 @@ window.CONTENT = {
       "kind": "gear",
       "value": 44,
       "stack": false,
-      "description": "Bandages, herbs, and tiny hooks. Brindle's healing restores +2 HP while this is equipped.",
+      "description": "Bandages, herbs, and tiny hooks. While Brindle has it equipped, Lantern Grace restores +2 HP and bandages restore +1 HP.",
       "hero": "brindle",
-      "healBonus": 2
+      "healBonus": 2,
+      "consumableHealBonus": 1
     },
     {
       "id": "trail_charms",
