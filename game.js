@@ -3771,21 +3771,18 @@
         applyPrefs();
         savePrefs();
         renderModal();
-        showFeedback("Text size updated", prefs.textScale === "normal" ? "Standard" : prefs.textScale === "large" ? "Large" : "Extra large", "good");
         break;
       case "toggle-contrast":
         prefs.highContrast = !prefs.highContrast;
         applyPrefs();
         savePrefs();
         renderModal();
-        showFeedback("High contrast", prefs.highContrast ? "On" : "Off", "good");
         break;
       case "toggle-haptics":
         prefs.haptics = !prefs.haptics;
         savePrefs();
         renderModal();
         if (prefs.haptics) pulseHaptic([15, 30, 15]);
-        showFeedback("Haptic taps", prefs.haptics ? "On" : "Off", "good");
         break;
       case "close-dialogue":
         closeDialogue();
