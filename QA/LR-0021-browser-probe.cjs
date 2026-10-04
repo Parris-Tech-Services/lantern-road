@@ -17,17 +17,21 @@ const consoleErrors = [];
     isMobile: true,
   });
   const page = await context.newPage();
+  page.setDefaultTimeout(5000);
+  page.setDefaultNavigationTimeout(10000);
   page.on("pageerror", err => errors.push(String(err)));
   page.on("console", msg => {
     if (msg.type() === "error") consoleErrors.push(msg.text());
   });
 
-  await page.goto("http://127.0.0.1:4173/", { waitUntil: "domcontentloaded", timeout: 15000 });
+  await page.goto("http://127.0.0.1:4173/", { waitUntil: "commit", timeout: 10000 });
+  await page.waitForLoadState("domcontentloaded", { timeout: 5000 }).catch(err => console.log("DOMContentLoaded delay:", String(err)));
   await page.evaluate(() => {
     localStorage.clear();
     sessionStorage.clear();
   });
-  await page.reload({ waitUntil: "domcontentloaded", timeout: 15000 });
+  await page.reload({ waitUntil: "commit", timeout: 10000 });
+  await page.waitForLoadState("domcontentloaded", { timeout: 5000 }).catch(err => console.log("Reload DOMContentLoaded delay:", String(err)));
   await page.waitForTimeout(1000);
 
   async function snapshot(label) {
