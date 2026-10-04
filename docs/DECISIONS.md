@@ -17,6 +17,8 @@ Keep this short. Record decisions that future agents would otherwise relitigate.
 
 | 2026-10-04 | Implementation PRs from Agents 1–5 require a final Director approval commit tied to the exact reviewed code head. | Prevents tone/terminology/scope drift and makes later code changes invalidate stale design approval. |
 
+| 2026-10-04 | LR-0011 and LR-0013 cannot close on owner assertion: they require verified GitHub Actions evidence/artifacts, Agent 7 evidence review, and Josh's explicit Android phone check. | These are foundation gates for later save-changing work; machine evidence plus a real-device human check is stronger than AI self-attestation. |
+
 ## How to add a decision
 
 Add one row when a task changes architecture, product direction, ownership boundaries, save compatibility, testing policy, or another choice that future agents are likely to revisit.

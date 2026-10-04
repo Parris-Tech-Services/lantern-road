@@ -23,7 +23,8 @@
     "All black-box Warden QA must drive a real browser (Playwright, agent-browser or equivalent). Reading source/DOM alone is not a playtest.",
     "Agent 7 — The Director owns design governance, not specialist implementation. It reviews work against docs/VISION.md, docs/DECISIONS.md and canonical terminology, flags cross-task conflicts, and proposes queue/dependency corrections.",
     "Josh remains final creative director. The Director may protect and interpret established pillars but must not materially change product direction without Josh's approval.",
-    "Before a specialist feature PR is treated as merge-ready, The Director should perform a design-coherence review and record any blocking conflict or terminology/tone issue in the PR or queue."
+    "Before a specialist feature PR is treated as merge-ready, The Director should perform a design-coherence review and record any blocking conflict or terminology/tone issue in the PR or queue.",
+    "Narrative authoring may proceed ahead of runtime/save integration when it is isolated to story/docs assets. Blocking engine integration must not unnecessarily idle the Storyteller."
   ],
   "tasks": [
     {
@@ -179,7 +180,8 @@
         "LR-0006",
         "LR-0010",
         "LR-0011",
-        "LR-0013"
+        "LR-0013",
+        "LR-0046"
       ],
       "goal": "Build memorable conditional travel/camp events that react to the party and prior choices.",
       "acceptance_criteria": [
@@ -207,7 +209,8 @@
         "LR-0010",
         "LR-0011",
         "LR-0013",
-        "LR-0005"
+        "LR-0005",
+        "LR-0043"
       ],
       "goal": "Turn the existing 18-day renown frame into a clearer escalating dramatic arc with substantially different endings.",
       "acceptance_criteria": [
@@ -236,7 +239,9 @@
         "Verify map panning/zooming/touch targeting.",
         "Add autosave and a clear save-slot direction without data loss.",
         "Provide adjustable text size and high-contrast/accessibility settings.",
-        "Consider optional haptic feedback where browser/device support allows it."
+        "Consider optional haptic feedback where browser/device support allows it.",
+        "The settings gear and any floating/mobile controls never overlap or obscure actionable buttons at supported phone widths, including enlarged text settings.",
+        "Expose a visible build/version identifier in an unobtrusive Settings/About surface so stale service-worker/cache builds can be identified during support and testing."
       ],
       "likely_files": [
         "index.html",
@@ -244,7 +249,7 @@
         "game.js",
         "manifest.webmanifest"
       ],
-      "notes": "Premium-gap area: mobile experience.",
+      "notes": "Premium-gap area: mobile experience. Also owns the reported settings-gear overlap and a visible player/support-facing build/version identifier so stale cached builds are obvious.",
       "primary_agent": 5,
       "merge_gate_depends_on": [
         "LR-0011",
@@ -295,13 +300,35 @@
         "Add a migration path for older saves rather than assuming the latest state shape.",
         "Validate malformed or partial saves and give the player a useful recovery message.",
         "Preserve current campaign data where safely possible.",
-        "Document compatibility expectations for future feature agents."
+        "Document compatibility expectations for future feature agents.",
+        "Gate closure evidence: .agent-coordination/gate-evidence/LR-0011.json must be present, VERIFIED, tied to the exact tested commit and successful CI run, and include Josh's explicit Android phone confirmation before this task may be marked DONE."
       ],
       "likely_files": [
         "game.js",
         "README.md"
       ],
-      "notes": "Priority-0 safety gate. Current save-changing feature branches may work in parallel but must not merge until this foundation is DONE."
+      "notes": "Priority-0 safety gate. Current save-changing feature branches may work in parallel but must not merge until this foundation is DONE. Gate completion is evidence-driven: owner implementation alone is insufficient to mark DONE.",
+      "completion_evidence_required": {
+        "evidence_file": ".agent-coordination/gate-evidence/LR-0011.json",
+        "machine_requirements": [
+          "Commit representative pre-versioning/legacy save fixtures that exercise real older save shapes rather than synthetic empty objects.",
+          "Automated migration tests load every committed legacy fixture and verify successful migration into the current schema.",
+          "Automated current-version round-trip verifies save -> reload/reopen -> restored campaign state without silent data loss.",
+          "Malformed/partial/incompatible save cases fail safely with a player-visible recovery path.",
+          "A successful CI workflow run on the exact candidate commit publishes the save/migration test report as an artifact."
+        ],
+        "human_requirements": [
+          "Josh loads a legacy/pre-gate save on his Android phone after the candidate build is deployed or otherwise accessible.",
+          "Josh confirms the campaign opens and core state is intact enough to continue play.",
+          "The evidence record contains Josh's explicit phone-check confirmation; agents must not self-assert this field."
+        ],
+        "required_ci_artifact_names": [
+          "save-migration-results"
+        ],
+        "required_repository_paths": [
+          "tests/fixtures/saves/legacy/"
+        ]
+      }
     },
     {
       "id": "LR-0012",
@@ -343,7 +370,8 @@
         "Automate new campaign creation, representative travel/action flows, and checks for uncaught browser/runtime errors.",
         "Cover save/load round-trip behaviour through browser storage and a page reload/reopen.",
         "Cover at least one combat flow and one quest/site interaction.",
-        "Run the browser suite in CI where practical and document the local command every feature agent should run before PR completion."
+        "Run the browser suite in CI where practical and document the local command every feature agent should run before PR completion.",
+        "Gate closure evidence: .agent-coordination/gate-evidence/LR-0013.json must be present, VERIFIED, tied to the exact tested commit and successful CI run, and include Josh's explicit Android phone confirmation before this task may be marked DONE."
       ],
       "likely_files": [
         "tests/",
@@ -352,7 +380,28 @@
         "README.md",
         ".github/workflows/"
       ],
-      "notes": "Priority-0 safety gate. Keep tooling light, but the test must drive a real browser."
+      "notes": "Priority-0 safety gate. Keep tooling light, but the test must drive a real browser. Gate completion is evidence-driven: owner implementation alone is insufficient to mark DONE.",
+      "completion_evidence_required": {
+        "evidence_file": ".agent-coordination/gate-evidence/LR-0013.json",
+        "machine_requirements": [
+          "Playwright or equivalent launches Lantern Road in a real browser; source inspection alone does not count.",
+          "The automated suite exercises new campaign, representative travel/action flow, at least one combat flow, at least one quest/site interaction, and save/reload through browser storage.",
+          "The suite fails on uncaught page/runtime errors relevant to the tested flows.",
+          "A successful CI workflow run on the exact candidate commit publishes browser test results/artifacts.",
+          "The local and CI commands needed to reproduce the run are documented."
+        ],
+        "human_requirements": [
+          "Josh opens the candidate build on his Android phone and performs a short smoke test covering launch, starting/resuming play, one map/action interaction, and save/reload.",
+          "Josh confirms the tested build behaves correctly enough to close the foundation gate.",
+          "The evidence record contains Josh's explicit phone-check confirmation; agents must not self-assert this field."
+        ],
+        "required_ci_artifact_names": [
+          "browser-regression-results"
+        ],
+        "required_repository_paths": [
+          "tests/e2e/"
+        ]
+      }
     },
     {
       "id": "LR-0014",
@@ -822,28 +871,29 @@
     {
       "id": "LR-0031",
       "title": "Authored illustration and asset production pass",
-      "status": "READY",
+      "status": "BLOCKED",
       "priority": 2,
       "exclusive_scope": "authored-art-production",
       "depends_on": [
-        "LR-0002"
+        "LR-0002",
+        "LR-0042"
       ],
       "primary_agent": 4,
-      "goal": "Replace the visual foundation's fallback sigils with a coherent, production-ready illustrated asset set while keeping mobile download cost controlled.",
+      "goal": "Curate, optimise and integrate the approved illustration set into Lantern Road's existing visual slots while keeping mobile download cost controlled.",
       "acceptance_criteria": [
-        "Commit actual final image assets for all four party members and the most frequently encountered named NPCs; placeholder sigils/CSS-only stand-ins do not satisfy this task.",
-        "Commit one strong final illustration for each major settlement and adventure site.",
-        "Commit readable final art for all enemy archetypes and a prioritised item-icon set.",
-        "Use the existing reusable art-slot contract without changing gameplay logic.",
-        "Compress assets for phone browsers and retain graceful fallbacks when any asset is unavailable.",
-        "Perform a consistency pass for silhouette, palette, crop, contrast and small-screen legibility."
+        "Select the strongest approved images from LR-0042 and reject inconsistent generations rather than forcing full coverage.",
+        "Crop and prepare final party, NPC, settlement, site, enemy and item artwork for the existing art-slot contract.",
+        "Compress final assets for phone browsers and choose suitable browser-friendly raster formats.",
+        "Integrate assets without changing gameplay logic and retain graceful fallback sigils when any image is unavailable.",
+        "Perform a consistency pass for silhouette, palette, crop, contrast and small-screen legibility.",
+        "Record final asset filenames and provenance references in the art-direction documentation."
       ],
       "likely_files": [
         "assets/art/",
         "style.css",
         "docs/ART-DIRECTION.md"
       ],
-      "notes": "Requires actual illustration assets. If the current agent environment cannot generate/import approved images and commit them, do not fake completion with placeholders; report the capability gap and leave the task unfinished."
+      "notes": "Second-wave Lamplighter integration task. AI image generation itself is split into LR-0042 to avoid mixing generation with curation, optimisation and repo integration. Blocked until LR-0042 is DONE."
     },
     {
       "id": "LR-0032",
@@ -987,21 +1037,23 @@
         "LR-0008",
         "LR-0010",
         "LR-0011",
-        "LR-0013"
+        "LR-0013",
+        "LR-0044"
       ],
       "goal": "Turn the personal-story hooks for Garrick, Mira, Oren and Brindle into authored side arcs that deepen attachment without bloating the main campaign.",
       "acceptance_criteria": [
         "Each of the four heroes gets a distinct multi-step personal quest or substantial personal thread unlocked by trust, memories or prior choices.",
         "Each personal arc contains at least one meaningful decision that changes that hero, a party relationship, or a visible world consequence.",
         "Personal arcs reuse the existing character memory/bond system and do not duplicate the main 18-day campaign plot.",
-        "Avoid generic fetch-quest structure; each arc must reveal character, create a trade-off, and have a remembered outcome."
+        "Avoid generic fetch-quest structure; each arc must reveal character, create a trade-off, and have a remembered outcome.",
+        "Mira's personal arc includes at least one choice whose effect is remembered and surfaces later outside the immediate scene through dialogue, relationship state, world consequence, or ending/campaign callback."
       ],
       "likely_files": [
         "story/",
         "content.js",
         "game.js"
       ],
-      "notes": "Follow-up to LR-0004. Distinct from LR-0007 general travel/camp events and LR-0008 main campaign arc.",
+      "notes": "Follow-up to LR-0004. Distinct from LR-0007 general travel/camp events and LR-0008 main campaign arc. Explicitly tracks the earlier open question of whether Mira's choices carry weight later.",
       "primary_agent": 2
     },
     {
@@ -1015,7 +1067,8 @@
         "LR-0008",
         "LR-0010",
         "LR-0011",
-        "LR-0013"
+        "LR-0013",
+        "LR-0045"
       ],
       "goal": "Make the Grey March's recurring NPCs feel like people who notice history, faction shifts and the player's reputation rather than static quest dispensers.",
       "acceptance_criteria": [
@@ -1031,6 +1084,208 @@
       ],
       "notes": "Separate from LR-0005 consequence infrastructure: this is authored social depth using that infrastructure. Separate from LR-0007 event expansion.",
       "primary_agent": 2
+    },
+    {
+      "id": "LR-0039",
+      "title": "Keyboard and screen-reader interaction parity",
+      "status": "BLOCKED",
+      "priority": 2,
+      "exclusive_scope": "accessibility-navigation",
+      "depends_on": [
+        "LR-0009",
+        "LR-0010"
+      ],
+      "primary_agent": 5,
+      "goal": "Make every critical Lantern Road loop operable and understandable without precise pointer input, including keyboard and assistive-technology use.",
+      "acceptance_criteria": [
+        "Keyboard-only players can travel, switch information tabs, use shops, choose dialogue/site actions and complete combat without pointer-only dead ends.",
+        "Modal focus enters the active modal, cannot escape behind it unintentionally, and returns sensibly when the modal closes.",
+        "Map state, travel alternatives and important status changes expose useful semantic labels and announcements without excessive live-region noise.",
+        "Focus order, visible focus treatment and contrast remain clear at Standard, Large and Extra Large text settings.",
+        "Reduced-motion and platform accessibility preferences are respected without removing necessary feedback."
+      ],
+      "likely_files": [
+        "index.html",
+        "style.css",
+        "game.js"
+      ],
+      "notes": "Discovered during LR-0009 after queue de-duplication. This is deeper interaction parity, not a repeat of LR-0009's phone layout/settings work or Warden black-box QA."
+    },
+    {
+      "id": "LR-0040",
+      "title": "PWA install, offline and mobile lifecycle polish",
+      "status": "BLOCKED",
+      "priority": 2,
+      "exclusive_scope": "pwa-offline-mobile",
+      "depends_on": [
+        "LR-0009",
+        "LR-0011",
+        "LR-0012"
+      ],
+      "primary_agent": 5,
+      "goal": "Make installed and intermittent-connectivity phone play behave like a deliberate app rather than a cached webpage.",
+      "acceptance_criteria": [
+        "Verify installability and manifest/service-worker behaviour on supported Android browsers, including icon/name/theme presentation.",
+        "Provide a clear offline state and recovery path instead of silently serving stale or failed content.",
+        "Verify background/foreground, reload and interrupted-session behaviour preserves campaign safety through the versioned save layer.",
+        "Define cache-update behaviour so a new release does not strand players on an old shell or incompatible asset mix.",
+        "Document browser limitations and keep the experience graceful where install prompts or storage are unavailable."
+      ],
+      "likely_files": [
+        "manifest.webmanifest",
+        "sw.js",
+        "index.html",
+        "style.css",
+        "game.js"
+      ],
+      "notes": "Discovered during LR-0009 after queue de-duplication. Deliberately waits for save hardening and runtime baseline rather than duplicating those Steward tasks."
+    },
+    {
+      "id": "LR-0041",
+      "title": "Contextual onboarding and first-run mobile guidance",
+      "status": "BLOCKED",
+      "priority": 2,
+      "exclusive_scope": "mobile-onboarding",
+      "depends_on": [
+        "LR-0026"
+      ],
+      "primary_agent": 5,
+      "goal": "Turn fresh-player confusion found by Warden QA into lightweight, replayable phone-first onboarding without front-loading a tutorial wall.",
+      "acceptance_criteria": [
+        "Teach the campaign goal, neighbouring-hex travel, map pan/zoom, save model and primary information tabs through short contextual guidance.",
+        "Guidance appears at the moment a system becomes relevant rather than as a long opening manual.",
+        "Players can skip, dismiss and later replay help without affecting campaign progress.",
+        "Onboarding remains readable and operable with accessibility text sizes, keyboard input and touch.",
+        "Coordinate wording with Storyteller-owned narrative content without moving story ownership into this task."
+      ],
+      "likely_files": [
+        "index.html",
+        "style.css",
+        "game.js",
+        "content.js"
+      ],
+      "notes": "Discovered during LR-0009. Intentionally depends on LR-0026 fresh-player black-box evidence so implementation responds to observed confusion rather than guessing."
+    },
+    {
+      "id": "LR-0042",
+      "title": "Generate and style-lock the Lantern Road AI art set",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "ai-art-generation",
+      "depends_on": [
+        "LR-0002"
+      ],
+      "primary_agent": 4,
+      "goal": "Use ChatGPT image generation to create a coherent original illustration set for Lantern Road, locking a repeatable visual style before production integration.",
+      "acceptance_criteria": [
+        "Generate actual raster artwork, not SVG/CSS placeholders, for the four party heroes first and use them to lock the visual style.",
+        "Create a reusable master prompt/style specification covering medium, palette, lighting, framing, texture, mood and prohibited visual drift.",
+        "After style approval, generate the major settlements and adventure sites, then enemy archetypes, priority NPCs and priority items.",
+        "Keep characters and locations visually consistent across separate generations, regenerating outliers instead of accepting obvious style drift.",
+        "Prepare phone-friendly source compositions that remain recognisable at the art-slot sizes defined in docs/ART-DIRECTION.md.",
+        "Avoid copyrighted characters, logos or direct imitation of a living artist; keep the setting and visual language original to Lantern Road.",
+        "Record prompt/version/provenance metadata for every accepted generation so the art set is reproducible and auditable.",
+        "Hand the accepted source images and provenance manifest to LR-0031 for cropping, compression and repository integration."
+      ],
+      "likely_files": [
+        "assets/art/source/",
+        "docs/ART-DIRECTION.md",
+        "docs/ART-PROVENANCE.md"
+      ],
+      "notes": "Lamplighter image-generation task. This chat/model has image-generation capability and can create the actual artwork. LR-0031 remains the downstream curation, optimisation and integration pass."
+    },
+    {
+      "id": "LR-0043",
+      "title": "Author the 18-day campaign beat sheet and ending matrix",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "campaign-authoring",
+      "depends_on": [
+        "LR-0004"
+      ],
+      "primary_agent": 2,
+      "goal": "Write the complete narrative blueprint for the stronger 18-day campaign arc now, without touching runtime/save implementation that is still gated.",
+      "acceptance_criteria": [
+        "Author early, mid and late campaign beats with clear escalation while preserving route freedom.",
+        "Define the mid-campaign revelation, faction-pressure turns and late hard choice in player-facing narrative terms.",
+        "Create an ending matrix showing which named choices, relationships and faction/world outcomes each ending should acknowledge.",
+        "Identify required state/condition hooks as declarative integration notes rather than implementing them in game.js/content.js.",
+        "Keep tone and terminology aligned with docs/VISION.md and docs/TERMINOLOGY.md."
+      ],
+      "likely_files": [
+        "story/campaign/",
+        "docs/"
+      ],
+      "notes": "Pure Storyteller authoring. No runtime/save changes. LR-0008 later integrates this material after foundation gates."
+    },
+    {
+      "id": "LR-0044",
+      "title": "Author the four hero personal arcs",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "personal-arc-authoring",
+      "depends_on": [
+        "LR-0004"
+      ],
+      "primary_agent": 2,
+      "goal": "Write Garrick, Mira, Oren and Brindle's personal quest arcs in full before engine integration is available.",
+      "acceptance_criteria": [
+        "Author a distinct multi-step personal arc for each of the four heroes.",
+        "Each arc reveals character through a real trade-off rather than a generic fetch structure.",
+        "Each arc includes at least one remembered choice and at least one later callback or consequence.",
+        "Mira's arc must explicitly carry at least one player choice forward into later dialogue, relationship state, world response, or ending material.",
+        "Document trigger/state requirements declaratively for later integration without editing runtime/save code."
+      ],
+      "likely_files": [
+        "story/personal-quests/"
+      ],
+      "notes": "Author-now, integrate-later split of LR-0037. Produces real game narrative content while save/runtime foundations are blocked."
+    },
+    {
+      "id": "LR-0045",
+      "title": "Author recurring NPC dialogue and relationship callbacks",
+      "status": "READY",
+      "priority": 2,
+      "exclusive_scope": "npc-dialogue-authoring",
+      "depends_on": [
+        "LR-0004"
+      ],
+      "primary_agent": 2,
+      "goal": "Write recurring NPC dialogue that makes the Grey March feel socially persistent before its gated stateful integration work begins.",
+      "acceptance_criteria": [
+        "Write recurring/callback dialogue for the most important named NPCs across at least two materially different player states each.",
+        "Dialogue responds to prior encounters, faction posture, party relationships or major decisions without duplicating the main campaign plot.",
+        "Avoid interchangeable exposition; recurring NPCs should have recognisable voice, motive and memory.",
+        "Mark required conditions and consequence hooks declaratively for later implementation.",
+        "Keep all wording aligned with the canonical terminology and grounded frontier-fantasy tone."
+      ],
+      "likely_files": [
+        "story/npcs/"
+      ],
+      "notes": "Author-now counterpart to LR-0038. No game.js/content.js integration in this task."
+    },
+    {
+      "id": "LR-0046",
+      "title": "Author conditional travel and camp event pack",
+      "status": "READY",
+      "priority": 2,
+      "exclusive_scope": "event-pack-authoring",
+      "depends_on": [
+        "LR-0004"
+      ],
+      "primary_agent": 2,
+      "goal": "Create the authored event material LR-0007 will later integrate, without waiting for the condition/runtime framework to be finished.",
+      "acceptance_criteria": [
+        "Write a curated first pack of memorable travel and camp events with distinct narrative purposes.",
+        "Each event declares intended conditions such as party member, relationship, weather, faction, item, injury, earlier choice, time or quest outcome.",
+        "Events should primarily reveal character, force trade-offs, foreshadow consequences or make the road feel specific; avoid generic resource-roll filler.",
+        "Include alternate branches or callbacks where the event meaningfully changes under different conditions.",
+        "Do not implement event-engine condition logic in this authoring task."
+      ],
+      "likely_files": [
+        "story/events/"
+      ],
+      "notes": "Pure authored-content task. LR-0007 remains the later gated engine/content integration pass."
     }
   ],
   "agent_roster": [

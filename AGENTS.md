@@ -31,6 +31,7 @@ These rules are mandatory for every coding/research agent working in this reposi
 - **Small PRs are mandatory:** one claimed task/scope per PR, no unrelated cleanup or opportunistic refactors. Split broad work into follow-up tasks.
 - If a task has `merge_gate_depends_on`, work may proceed while claimed but its PR must not merge until every merge-gate task is `DONE`.
 - Architectural/product/ownership decisions that future agents may relitigate must be surfaced to The Director and recorded briefly in `docs/DECISIONS.md`.
+- Re-fetch `WORK-QUEUE.json` immediately before declaring a task complete or opening its final PR; verify its current acceptance criteria, dependencies and merge gates have not changed while you were working.
 - Before merging, run `node scripts/validate-agent-coordination.mjs` plus relevant game checks.
 - After a successful merge, mark the queue task `DONE` **before** deleting its lock.
 - If abandoning work, leave the task `READY` and delete only your own lock.
@@ -69,3 +70,17 @@ Agent 7 — **The Director** owns design coherence and production governance.
 - Genuine creative-direction trade-offs must be marked `ESCALATE_TO_JOSH`; Josh remains final creative director.
 - The Director must not implement specialist features as part of review or use governance to expand the product beyond the agreed vision.
 - Routine PR reviews are standing governance work and do not require a separate feature claim. Substantive Director projects still use its LR-0033+ queue tasks and normal claim locks.
+
+
+## Evidence-gated foundation completion
+
+LR-0011 and LR-0013 are priority-zero foundation gates and have stricter completion rules.
+
+- Their implementation may merge while the queue task remains `READY`.
+- They may be changed to `DONE` only in a later closure change that also adds the required `.agent-coordination/gate-evidence/<TASK-ID>.json`.
+- The candidate commit must have a genuinely successful GitHub Actions run with the task-specific required artifact; CI independently queries GitHub to verify the run, exact SHA and artifact.
+- Required legacy-save fixtures/browser tests must exist in the repository as specified by the task.
+- **Josh must personally complete the task's Android phone check.**
+- Agents must never invent, infer or self-assert Josh's phone confirmation. `josh_phone_check.confirmed: true` may be recorded only after Josh explicitly says the check passed.
+- Agent 7 verifies that the evidence is coherent and corresponds to the task before closure.
+- If any required evidence is absent, the task stays `READY` even if its implementation code is already merged.

@@ -76,6 +76,38 @@ for (const task of tasks) {
     if (incompleteGates.length) {
       fail(`${task.id}: DONE but merge gates are not DONE: ${incompleteGates.join(", ")}`);
     }
+
+    if (task.completion_evidence_required?.evidence_file) {
+      const evidencePath = path.join(root, task.completion_evidence_required.evidence_file);
+      if (!fs.existsSync(evidencePath)) {
+        fail(`${task.id}: DONE but required completion evidence is missing at ${task.completion_evidence_required.evidence_file}`);
+      } else {
+        let evidence;
+        try {
+          evidence = JSON.parse(fs.readFileSync(evidencePath, "utf8"));
+        } catch (error) {
+          fail(`${task.id}: invalid completion evidence JSON (${error.message})`);
+        }
+
+        if (evidence) {
+          if (evidence.schema_version !== 1) fail(`${task.id}: completion evidence schema_version must be 1.`);
+          if (evidence.task_id !== task.id) fail(`${task.id}: completion evidence task_id mismatch.`);
+          if (evidence.status !== "VERIFIED") fail(`${task.id}: completion evidence status must be VERIFIED.`);
+          if (!/^[0-9a-f]{40}$/i.test(evidence.candidate_commit_sha ?? "")) fail(`${task.id}: candidate_commit_sha must be a full 40-character SHA.`);
+          if (!Number.isInteger(evidence.ci?.workflow_run_id) || evidence.ci.workflow_run_id <= 0) fail(`${task.id}: ci.workflow_run_id must be a positive integer.`);
+          if (evidence.ci?.conclusion !== "success") fail(`${task.id}: ci.conclusion must be success.`);
+          if (!Array.isArray(evidence.ci?.artifact_names) || evidence.ci.artifact_names.length === 0) fail(`${task.id}: at least one CI artifact name is required.`);
+          if (evidence.josh_phone_check?.confirmed !== true) fail(`${task.id}: Josh Android phone check has not been explicitly confirmed.`);
+          if (evidence.josh_phone_check?.confirmed_by !== "Josh") fail(`${task.id}: phone check must be confirmed_by Josh.`);
+          if (!Number.isFinite(Date.parse(evidence.josh_phone_check?.confirmed_at ?? ""))) fail(`${task.id}: phone check confirmed_at is invalid.`);
+          if (!String(evidence.josh_phone_check?.device ?? "").toLowerCase().includes("android")) fail(`${task.id}: phone check device must identify Android.`);
+          if (evidence.director_verification?.agent_number !== 7 || evidence.director_verification?.status !== "VERIFIED") {
+            fail(`${task.id}: Agent 7 Director verification is required.`);
+          }
+          if (!Number.isFinite(Date.parse(evidence.director_verification?.verified_at ?? ""))) fail(`${task.id}: Director verified_at is invalid.`);
+        }
+      }
+    }
   }
 }
 
