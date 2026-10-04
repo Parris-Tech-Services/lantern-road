@@ -22,8 +22,8 @@ try {
 const allowedStatuses = new Set(["READY", "BLOCKED", "DONE", "CANCELLED"]);
 const roster = Array.isArray(queue.agent_roster) ? queue.agent_roster : [];
 const rosterNumbers = new Set(roster.map(agent => agent.number));
-if (roster.length !== 6) fail(`agent_roster must contain exactly 6 agents; found ${roster.length}.`);
-for (const required of [1, 2, 3, 4, 5, 6]) {
+if (roster.length !== 7) fail(`agent_roster must contain exactly 7 agents; found ${roster.length}.`);
+for (const required of [1, 2, 3, 4, 5, 6, 7]) {
   if (!rosterNumbers.has(required)) fail(`agent_roster is missing agent ${required}.`);
 }
 const tasks = Array.isArray(queue.tasks) ? queue.tasks : [];
@@ -40,7 +40,8 @@ for (const task of tasks) {
     fail(`${task.id}: invalid exclusive_scope.`);
   }
   if (!Array.isArray(task.depends_on)) fail(`${task.id}: depends_on must be an array.`);
-  if (!rosterNumbers.has(task.primary_agent)) fail(`${task.id}: primary_agent must be one of the six roster agent numbers.`);
+  if (task.merge_gate_depends_on !== undefined && !Array.isArray(task.merge_gate_depends_on)) fail(`${task.id}: merge_gate_depends_on must be an array when present.`);
+  if (!rosterNumbers.has(task.primary_agent)) fail(`${task.id}: primary_agent must be one of the seven roster agent numbers.`);
   if (task.supporting_agents !== undefined) {
     if (!Array.isArray(task.supporting_agents)) fail(`${task.id}: supporting_agents must be an array when present.`);
     else for (const agentNumber of task.supporting_agents) {
@@ -59,11 +60,21 @@ for (const task of tasks) {
     if (!byId.has(dependency)) fail(`${task.id}: unknown dependency ${dependency}`);
     if (dependency === task.id) fail(`${task.id}: cannot depend on itself.`);
   }
+  for (const gate of task.merge_gate_depends_on ?? []) {
+    if (!byId.has(gate)) fail(`${task.id}: unknown merge gate ${gate}`);
+    if (gate === task.id) fail(`${task.id}: cannot merge-gate itself.`);
+  }
 
   if (task.status === "READY") {
     const incomplete = (task.depends_on ?? []).filter(id => byId.get(id)?.status !== "DONE");
     if (incomplete.length) {
       fail(`${task.id}: READY but dependencies are not DONE: ${incomplete.join(", ")}`);
+    }
+  }
+  if (task.status === "DONE") {
+    const incompleteGates = (task.merge_gate_depends_on ?? []).filter(id => byId.get(id)?.status !== "DONE");
+    if (incompleteGates.length) {
+      fail(`${task.id}: DONE but merge gates are not DONE: ${incompleteGates.join(", ")}`);
     }
   }
 }

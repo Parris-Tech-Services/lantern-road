@@ -4,15 +4,16 @@ These rules are mandatory for every coding/research agent working in this reposi
 
 ## Before material work
 
-1. Read `.agent-coordination/CLAIM-PROTOCOL.md`.
-2. Read `.agent-coordination/WORK-QUEUE.json`.
-3. Identify your assigned Lantern Road agent number from the six-agent roster in `WORK-QUEUE.json`.
-4. Choose one task whose `status` is `READY`, whose dependencies are complete, and whose `primary_agent` matches your assigned agent number. Do not claim another role's task unless Josh has explicitly reassigned it or the queue itself has been updated.
-5. Generate a fresh UUIDv4 `session_id` and UUIDv4 `claim_token` for this chat/session.
-6. Attempt to create the task's **exclusive scope lock** exactly as described in the claim protocol, including your `agent_number`.
-7. If creation fails because that scope lock already exists, you **lost the race**. Do not edit, adopt or overwrite the other agent's lock. Re-read the queue and choose another eligible task assigned to your role.
-8. Re-fetch the lock and verify the task id, scope, agent number, session id and claim token all match your session.
-9. Only then create/work on a feature branch and begin material work.
+1. Read `docs/VISION.md`, `docs/DECISIONS.md`, and `docs/TERMINOLOGY.md` so product direction and language are shared rather than re-invented per agent.
+2. Read `.agent-coordination/CLAIM-PROTOCOL.md`.
+3. Read `.agent-coordination/WORK-QUEUE.json`.
+4. Identify your assigned Lantern Road agent number from the seven-agent roster in `WORK-QUEUE.json`.
+5. Choose one task whose `status` is `READY`, whose dependencies are complete, and whose `primary_agent` matches your assigned agent number. Do not claim another role's task unless Josh has explicitly reassigned it or the queue itself has been updated.
+6. Generate a fresh UUIDv4 `session_id` and UUIDv4 `claim_token` for this chat/session.
+7. Attempt to create the task's **exclusive scope lock** exactly as described in the claim protocol, including your `agent_number`.
+8. If creation fails because that scope lock already exists, you **lost the race**. Do not edit, adopt or overwrite the other agent's lock. Re-read the queue and choose another eligible task assigned to your role.
+9. Re-fetch the lock and verify the task id, scope, agent number, session id and claim token all match your session.
+10. Only then create/work on a feature branch and begin material work.
 
 ## Non-negotiable coordination rules
 
@@ -26,6 +27,10 @@ These rules are mandatory for every coding/research agent working in this reposi
 - Keep the lock until the work is merged or deliberately abandoned.
 - Feature branches use: `agent/<task-id>-<short-slug>-<session8>`.
 - Pull requests must name the task id and exclusive scope.
+- Implementation PRs owned by Agents 1–5 require a final Agent 7 — The Director approval commit under `.agent-coordination/design-reviews/` before merge. CI rejects stale or missing approval.
+- **Small PRs are mandatory:** one claimed task/scope per PR, no unrelated cleanup or opportunistic refactors. Split broad work into follow-up tasks.
+- If a task has `merge_gate_depends_on`, work may proceed while claimed but its PR must not merge until every merge-gate task is `DONE`.
+- Architectural/product/ownership decisions that future agents may relitigate must be surfaced to The Director and recorded briefly in `docs/DECISIONS.md`.
 - Before merging, run `node scripts/validate-agent-coordination.mjs` plus relevant game checks.
 - After a successful merge, mark the queue task `DONE` **before** deleting its lock.
 - If abandoning work, leave the task `READY` and delete only your own lock.
@@ -42,8 +47,25 @@ The coordination system is intentionally simple: stable task definitions plus Gi
 Agent 6 — The Warden is an independent black-box QA/playtest role.
 
 - Play the game as a player, including trying unusual and adversarial sequences.
+- Drive a **real browser** using Playwright, agent-browser or equivalent. Source-code/DOM inspection alone is not a black-box playtest.
 - Record findings under `QA/` using the report template.
 - A finding must include reproduction steps/evidence, severity, player impact and recommended owner.
 - Search the existing queue before adding a follow-up task; do not duplicate an existing task.
-- Do not implement specialist fixes inside a Warden QA task. Route them to Agents 1–5, then retest after the fix is merged.
+- Do not implement specialist fixes inside a Warden QA task. Route implementation defects to Agents 1–5 and cross-role coherence/terminology conflicts to Agent 7, then retest after the fix is merged.
 - The Warden may edit QA reports and queue metadata needed to route findings.
+- Report evidence about confusion, repetition, pacing, friction and enjoyment signals, but do not present “fun” as an objective QA score. Josh remains the creative director and final creative sign-off.
+
+
+## Director governance rule
+
+Agent 7 — **The Director** owns design coherence and production governance.
+
+- Maintain `docs/VISION.md`, `docs/DECISIONS.md`, and `docs/TERMINOLOGY.md`.
+- Review implementation PRs from Agents 1–5 against the five pillars, non-goals, terminology, task scope and adjacent ownership.
+- Follow `.agent-coordination/DESIGN-REVIEW-PROTOCOL.md`.
+- The Director may append a review-only approval commit to another agent's feature branch without claiming that feature scope. That commit may modify only `.agent-coordination/design-reviews/<TASK-ID>.json`.
+- If code changes after approval, the approval is stale and must be repeated.
+- Concrete conflicts may be blocked and routed back to the owning specialist.
+- Genuine creative-direction trade-offs must be marked `ESCALATE_TO_JOSH`; Josh remains final creative director.
+- The Director must not implement specialist features as part of review or use governance to expand the product beyond the agreed vision.
+- Routine PR reviews are standing governance work and do not require a separate feature claim. Substantive Director projects still use its LR-0033+ queue tasks and normal claim locks.
