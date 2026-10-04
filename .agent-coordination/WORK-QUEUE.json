@@ -2845,7 +2845,7 @@
     {
       "id": "LR-0108",
       "title": "Author persistent responsive play-shell state machine",
-      "status": "READY",
+      "status": "DONE",
       "priority": 0,
       "exclusive_scope": "responsive-shell-contract",
       "depends_on": [],
@@ -2863,7 +2863,7 @@
         "docs/RESPONSIVE-PLAY-SHELL-CONTRACT.md",
         "QA/"
       ],
-      "notes": "PARKED HANDOFF (4 Oct 2026): authoring complete on branch agent/LR-0108-responsive-shell-c7b2419a at useful head 1ccbe736ab7a0cbdfa8165cef3dca6f34ab75c0e, PR #56. Final diff adds docs/RESPONSIVE-PLAY-SHELL-CONTRACT.md and QA/RESPONSIVE-PLAY-SHELL-MATRIX.md only. It defines phone PEEK/STANDARD/EXPANDED/FULL_DETAIL/MAP_EXPANDED transitions, desktop split pane, content-fit breakpoints, single-scroll-owner rules, map camera/mode/scroll/focus preservation, Context/Journal/Party/Log behaviour, modal coexistence, resize/orientation transitions and a real-browser acceptance matrix. No runtime files changed. Remaining external condition is Agent 7 approval; fresh responsive-shell-contract claim required before later edits or final merge preparation."
+      "notes": "Completed 4 Oct 2026 via PR #56, squash merge 6eccb53850cd269770fa3d9f9401f39a200ff26a. Agent 7 approved exact useful head 1ccbe736ab7a0cbdfa8165cef3dca6f34ab75c0e; final approval-head validation was green."
     },
     {
       "id": "LR-0109",
@@ -3363,5 +3363,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T19:22:00+11:00"
+  "updated_at": "2026-10-04T19:25:00+11:00"
 }
