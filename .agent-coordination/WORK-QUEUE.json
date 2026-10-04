@@ -3643,6 +3643,65 @@
         "index.html"
       ],
       "notes": "Reserved by LR-0128 staged architecture reform. Architecture-only: preserve player-visible behaviour and specialist ownership. Do not claim until declared dependencies are DONE."
+    },
+    {
+      "id": "LR-0139",
+      "title": "Install continuous fun-loop and player-impact flow metrics",
+      "status": "READY",
+      "priority": 0,
+      "exclusive_scope": "aed-continuous-fun-loop",
+      "depends_on": [
+        "LR-0128"
+      ],
+      "primary_agent": 8,
+      "goal": "Make Lantern Road optimise for playable fun and player-impact resolution as explicitly as it optimises for safe throughput: establish current-build micro-playtesting, high-impact fun/friction triage, structured Warden findings and AED flow metrics without creating a new approval gate.",
+      "acceptance_criteria": [
+        "Add a mandatory current-build fun-loop rule: after meaningful gameplay/system/UX/narrative merges, affected loops receive a short real-browser Warden retest against current main or the current deployed build rather than a stale QA branch checkout.",
+        "Define a lightweight machine-readable Warden finding format capturing tested build, severity, player impact, fun/friction category, owner, routed task, timestamps/status and retest outcome.",
+        "Add a reusable Agent 6 queue lane for current-build micro-playtests after LR-0021; the lane must not let Agent 6 implement specialist fixes.",
+        "Define triage so confirmed S0/S1 findings and high-impact fun/friction findings normally outrank filler/new polish work until routed/resolved, while Josh remains final judge of creative fun.",
+        "Extend AED reporting with player-impact finding counts, unresolved high-impact findings, resolution/retest metrics, and review/merge flow indicators where data exists; report unavailable timing metrics honestly rather than inventing them.",
+        "Add focused automated tests and keep the AED report advisory rather than a required merge gate.",
+        "Do not edit Agent 6's active LR-0021 branch or claim."
+      ],
+      "likely_files": [
+        "AGENTS.md",
+        "QA/README.md",
+        "QA/FINDING-SCHEMA.json",
+        "QA/findings/README.md",
+        ".agent-coordination/WORK-QUEUE.json",
+        "scripts/aed-report.mjs",
+        "tests/aed-report.test.mjs",
+        ".github/workflows/aed-report.yml"
+      ],
+      "notes": "Josh explicitly asked AED to implement continuous current-build playtesting, fun/friction priority and measurable flow/finding resolution. Preserve LR-0021 as the intentional historical baseline; do not modify its live claimed branch."
+    },
+    {
+      "id": "LR-0140",
+      "title": "Continuous current-build fun and friction micro-playtests",
+      "status": "BLOCKED",
+      "priority": 0,
+      "exclusive_scope": "qa-current-build-fun-loop",
+      "depends_on": [
+        "LR-0021",
+        "LR-0139"
+      ],
+      "primary_agent": 6,
+      "goal": "Repeatedly sample the current playable build after meaningful merged gameplay changes so high-impact fun, pacing, clarity, repetition and friction regressions are discovered quickly instead of waiting for late full-system QA.",
+      "acceptance_criteria": [
+        "Always test the current main commit or current deployed build and record the exact tested SHA/build identity; never use an old QA branch checkout as the game-under-test unless explicitly documenting historical comparison.",
+        "Use a real browser and run short player-driven scenarios for only the loops materially changed since the previous micro-playtest.",
+        "Record confirmed findings in the structured QA finding format with severity, player impact, fun/friction category, owner and routed queue task where needed.",
+        "S0/S1 and high-player-impact fun/friction findings are routed immediately and retested after the owning fix merges.",
+        "Do not implement specialist fixes or broaden into full-campaign regression; this is a rapid feedback loop complementary to the larger Warden passes.",
+        "If no meaningful gameplay-facing change has landed since the last current-build micro-playtest, do not manufacture findings or extra work."
+      ],
+      "likely_files": [
+        "QA/",
+        "QA/findings/",
+        ".agent-coordination/WORK-QUEUE.json"
+      ],
+      "notes": "Becomes READY after LR-0021 is completed/parked and LR-0139 installs the finding/metrics workflow. This lane exists to test the current game repeatedly, not the Warden tooling branch itself."
     }
   ],
   "agent_roster": [
@@ -3705,5 +3764,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T20:18:00+11:00"
+  "updated_at": "2026-10-04T20:26:00+11:00"
 }
