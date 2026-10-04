@@ -2218,7 +2218,7 @@
       "likely_files": [
         "docs/SYSTEM-FEEDBACK-MICROCOPY.md"
       ],
-      "notes": "System/interaction copy only; not narrative authoring."
+      "notes": "PARKED HANDOFF (4 Oct 2026): authoring complete on branch agent/LR-0083-system-feedback-copy-1e7b4c93 at head 2b934aa9332735e730b56ca6293a09e3d07df9f9, PR #39. Final diff adds docs/SYSTEM-FEEDBACK-MICROCOPY.md only, covering save/load, offline/reconnect, storage, stale/update, unavailable optional browser features and blocked-action messages with severity/recovery rules and no browser jargon. Storyteller narrative ownership is untouched. Remaining external condition is Agent 7 approval; fresh claim required before later edits or final merge preparation."
     },
     {
       "id": "LR-0084",
@@ -2655,5 +2655,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T17:46:00+11:00"
+  "updated_at": "2026-10-04T17:50:00+11:00"
 }
