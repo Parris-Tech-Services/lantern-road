@@ -2294,7 +2294,7 @@
         "systems/balance/",
         "docs/"
       ],
-      "notes": "Mechanist author-now input for LR-0020. This is a design/measurement matrix, not independent black-box QA and not a substitute for Warden playtesting or Agent 1 automation."
+      "notes": "PARKED 2026-10-04 by Agent 3 under claim-protocol v1.2. Branch: agent/LR-0087-systems-balance-authoring-719b9b52. Exact useful head: b4ddf398f1f3426a341d8459770542b02b0024cd. PR #33. Added systems/balance/BUILD-VIABILITY-SCENARIO-MATRIX.md only (1108 lines); no runtime/test-harness/black-box-QA edits. Matrix defines 8 representative build combinations, equipment/economy/recovery overlays, 10 core balance scenarios, 4 full-campaign profiles, early/mid/late checkpoints, dominance/trap/non-functional/spiral diagnostics, and final assumption reconciliation for LR-0020. Acceptance criteria satisfied by authoring; remaining external closure is Director review/merge. Freshly claim systems-balance-authoring before any content change or merge reconciliation."
     }
   ],
   "agent_roster": [
