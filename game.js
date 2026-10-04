@@ -2149,6 +2149,7 @@
         }
         state.renown += 1;
         openMessage("Road Restored", "Wagons will risk the road again. In a frontier village, that matters more than speeches.");
+        reactToDecision((state.worldFlags.lanternOutcome || "") === "bargained" ? "lantern_bargained" : "lantern_fought_clear");
         break;
       case "pilgrim_reliquary:elira":
         if (!hasItem("saint_bone")) return;
@@ -2157,6 +2158,7 @@
         state.gold += 18;
         changeFaction("wardens", 2);
         openMessage("A Small Holy Thing", "Sister Elira receives the reliquary like someone greeting a traveller home.");
+        reactToDecision("reliquary_shrine");
         break;
       case "pilgrim_reliquary:archive":
         if (!hasItem("saint_bone")) return;
@@ -2166,6 +2168,7 @@
         changeFaction("archive", 2);
         changeFaction("wardens", -1);
         openMessage("Catalogued", "The Archive records and secures the reliquary. Whether that is the same as honouring it depends on who you ask.");
+        reactToDecision("reliquary_archive");
         break;
       case "missing_ledger:oswin":
         if (!hasItem("guild_ledger")) return;
@@ -2175,6 +2178,7 @@
         changeFaction("guild", 2);
         changeFaction("veil", -1);
         openMessage("Paid Quietly", "Oswin pays fast and asks for no copy. That, perhaps, is its own answer.");
+        reactToDecision("ledger_guild");
         break;
       case "missing_ledger:nera":
         if (!hasItem("guild_ledger")) return;
@@ -2184,6 +2188,7 @@
         changeFaction("veil", 2);
         changeFaction("guild", -2);
         openMessage("Gone to Ground", "Nera disappears the ledger into channels where accountability goes to be argued about later.");
+        reactToDecision("ledger_veil");
         break;
       case "missing_ledger:holt":
         if (!hasItem("guild_ledger")) return;
@@ -2194,6 +2199,7 @@
         changeFaction("guild", -1);
         changeFaction("wardens", 1);
         openMessage("Recorded", "Holt stores the ledger as evidence, which is a more dangerous burial than fire.");
+        reactToDecision("ledger_archive");
         break;
       case "sealed_medicine:yor":
         if (!hasItem("sealed_crate")) return;
@@ -2204,6 +2210,7 @@
         changeFaction("guild", 1);
         healAll(3);
         openMessage("Crate Delivered", "The quartermaster nearly snatches the crate out of your hands. Whatever else the road is, today it carried help.");
+        reactToDecision("medicine_delivered");
         break;
       case "silent_tower:sen":
         if (!hasItem("moon_chart")) return;
@@ -2212,6 +2219,7 @@
         state.gold += 26;
         changeFaction("archive", 2);
         openMessage("A Record Recovered", "Sen is already thinking ahead to what the chart will prove and whom it will annoy.");
+        reactToDecision("chart_archive");
         break;
       case "ash_in_marsh:edda":
         completeQuest("ash_in_marsh", "exposed_to_wardens");
@@ -2220,6 +2228,7 @@
         changeFaction("wardens", 2);
         changeFaction("veil", -1);
         openMessage("Wardens Move In", "Edda takes the report with grim clarity. Mosslight will not stay quiet for long now.");
+        reactToDecision("marsh_exposed");
         break;
       case "ash_in_marsh:nera":
         completeQuest("ash_in_marsh", "brokered_with_veil");
@@ -2227,6 +2236,7 @@
         changeFaction("veil", 2);
         changeFaction("wardens", -1);
         openMessage("Brokered Peace", "Nera promises the Mosslight routes will avoid warden stores and medicine lines. That is not law, but it may be enough.");
+        reactToDecision("marsh_brokered");
         break;
       case "ash_in_marsh:holt":
         if (!hasItem("ashen_sigil")) return;
@@ -2236,6 +2246,7 @@
         changeFaction("archive", 2);
         changeFaction("veil", -1);
         openMessage("Entered into Record", "Holt receives the sigil with a look best described as professionally delighted.");
+        reactToDecision("marsh_recorded");
         break;
     }
   }
