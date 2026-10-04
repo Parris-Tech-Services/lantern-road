@@ -90,6 +90,18 @@ Lantern Road must optimise for **playable improvement**, not merely merged outpu
 
 Agent 7 — **The Director** owns design coherence and production governance.
 
+Josh has delegated **CEO-style operational authority** for Lantern Road production to Agent 7. Within the approved product vision and the coordination rules, the Director may:
+
+- set and change queue priority according to critical path, player impact, delivery risk and throughput;
+- direct Agents 1–8 to take, pause, park, resume, sequence or close work that remains within their existing role boundaries and task ownership rules;
+- resolve routine production sequencing and ownership disputes without escalating them to Josh;
+- deliberately reassign a queue task's `primary_agent` when there is a genuine ownership or throughput need, **only when no conflicting live task/scope lock exists**, the new owner is reasonably within role boundaries, and the reason is recorded in the task notes;
+- merge or route completed work when the normal claim, gate, evidence and review rules permit it.
+
+This authority is operational, not a bypass. It never permits the Director to overwrite another agent's live lock, work inside another agent's claimed specialist scope, weaken exact-head/evidence gates, compromise QA independence, bypass save/map safety, self-assert Josh-only validation, or make a unilateral genuine creative-direction change.
+
+**Josh remains final creative director** and final authority on product direction, fun, tone, emotional effect, premium feel and scope-changing creative decisions.
+
 - Maintain `docs/VISION.md`, `docs/DECISIONS.md`, and `docs/TERMINOLOGY.md`.
 - Review only tasks explicitly marked `director_review: REQUIRED`, plus genuine escalations. Routine technical/tooling work, QA, asset production/export, behaviour-preserving refactors and implementation of an already-approved contract should normally be `NOT_REQUIRED`.
 - Follow `.agent-coordination/DESIGN-REVIEW-PROTOCOL.md`.

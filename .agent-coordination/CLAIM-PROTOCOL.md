@@ -72,7 +72,7 @@ Every queue task has a `primary_agent`. The claim lock must contain the same int
 
 A `supporting_agents` entry permits consultation, review or coordination only. It does not grant a second implementation claim on the primary task or its exclusive scope.
 
-If work genuinely needs to move to another role, change the queue deliberately first or receive an explicit reassignment from Josh; do not simply claim across roles.
+If work genuinely needs to move to another role, change the queue deliberately first. Josh may explicitly reassign work, and Agent 7 may do so under the Director's delegated operational authority when there is **no conflicting live task/scope lock**, the new owner is reasonably within role boundaries, and the task notes record why the reassignment was made. Never simply claim across roles.
 
 ## What counts as the same feature
 
@@ -227,7 +227,10 @@ Queue edits are limited to:
 - dependencies,
 - priority,
 - acceptance criteria,
-- notes.
+- notes,
+- deliberate `primary_agent` reassignment by Josh or Agent 7 under the Director operational-authority rule.
+
+Agent 7 may also direct production sequencing across Agents 1–8 and change priorities without taking over the underlying specialist implementation scope. A `primary_agent` reassignment must never be used to steal an actively locked task: verify there is no conflicting live task/scope lock first, keep the new owner within a reasonable role boundary, and record the reason in task notes.
 
 If an update to `WORK-QUEUE.json` conflicts with another concurrent update, fetch the newest version, reconcile both changes, then retry. Do not force-overwrite someone else's queue edit.
 
