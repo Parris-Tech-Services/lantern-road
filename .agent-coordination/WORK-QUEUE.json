@@ -1216,7 +1216,7 @@
         "docs/ART-DIRECTION.md",
         "docs/ART-PROVENANCE.md"
       ],
-      "notes": "Active Lamplighter AI-art task. Hero style-lock batch is on PR #12 / branch agent/LR-0042-ai-art-d1f018ec with four hero portraits, lineup, ART-PROVENANCE and ART-SHOT-LIST. Hero batch is awaiting exact-head Director design review before merge. Josh approved the first Grey March map concept direction; map canon/terrain atlas are separately governed by LR-0069/LR-0072. Continue generating settlement/site/enemy/NPC/item art under the locked style; do not integrate runtime art slots here (LR-0031 owns downstream integration)."
+      "notes": "Active Lamplighter AI-art task. PR #12 / branch agent/LR-0042-ai-art-d1f018ec now contains the accepted hero style-lock set, Josh-approved non-canonical Grey March visual reference, ART-PROVENANCE.md, ART-SHOT-LIST.md and ART-MANIFEST.json. Latest working head requested for Director exact-head review: f8e4c35c66d7ab007e75a0c5a28d21725b7dbce9 (PR comment #5977073142). Recent settlement/NPC generation attempts were rejected because the image generator drifted into cartography; rejection IDs/reasons are recorded in ART-MANIFEST rather than lowering the quality bar. Continue clean settlement/site/enemy/NPC/item generation under the locked style; LR-0031 owns downstream runtime integration and LR-0069/LR-0072 own canonical map architecture/atlas."
     },
     {
       "id": "LR-0043",
