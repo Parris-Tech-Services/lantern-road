@@ -1,0 +1,35 @@
+name: Wayfinder temporary LR-0050 service-worker freshness
+
+on:
+  push:
+    branches:
+      - agent/LR-0050-service-worker-freshness-1b42d3c5
+  workflow_dispatch:
+
+jobs:
+  sw-freshness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Playwright
+        run: |
+          npm init -y
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Run LR-0050 real-browser service-worker scenario
+        run: |
+          node .github/tmp/lr0050-sw-freshness.mjs | tee lr0050-sw-freshness-result.txt
+
+      - name: Upload result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lr0050-sw-freshness-result
+          path: lr0050-sw-freshness-result.txt
