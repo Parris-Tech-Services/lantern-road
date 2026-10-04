@@ -1,0 +1,33 @@
+{
+  "finding_id": "WFD-2026-003",
+  "title": "The Day 18 campaign deadline can pass without a campaign resolution",
+  "status": "ROUTED",
+  "severity": "S1",
+  "player_impact": "HIGH",
+  "experience_tags": [
+    "RELIABILITY",
+    "CLARITY",
+    "PACING"
+  ],
+  "tested_commit": "54ef2802e3a47e2f8cecfa77f7f7a8603e873dd4",
+  "tested_source": "CURRENT_MAIN",
+  "observed_at": "2026-10-04T09:56:38Z",
+  "resolved_at": null,
+  "reproduction": "Start a fresh campaign, earn no renown, and advance time by camping. Continue through Day 18 to Day 19. At Day 19, 12am the game still allows normal play and the GOAL chip still reads '12 renown by day 18' with Renown 0.",
+  "player_impact_summary": "The campaign's central deadline is presented as a core goal but does not currently bind the run, undermining urgency and leaving the player without the promised outcome when the deadline is missed.",
+  "recommended_owner_agent": 2,
+  "routed_task": "LR-0008",
+  "evidence_refs": [
+    "GitHub Actions run 37193714501",
+    "artifact 11299079820",
+    "current-final.png",
+    "current-main-result.json"
+  ],
+  "retest": {
+    "tested_commit": null,
+    "tested_at": null,
+    "outcome": "PENDING"
+  },
+  "reopen_count": 0,
+  "notes": "Directly matches existing Storyteller campaign-arc task LR-0008; no duplicate task created. S1/HIGH because the central campaign objective fails to resolve, not because the browser crashes."
+}
