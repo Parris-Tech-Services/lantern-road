@@ -2757,7 +2757,7 @@
     {
       "id": "LR-0104",
       "title": "Ratify Grey March regional labels as protected map canon",
-      "status": "BLOCKED",
+      "status": "READY",
       "priority": 1,
       "exclusive_scope": "regional-map-canon-ratification",
       "depends_on": [
@@ -2778,7 +2778,7 @@
         ".agent-coordination/MAP-CANON-PROTOCOL.md",
         "design/"
       ],
-      "notes": "Director follow-up to LR-0071. Canon decisions pre-reviewed on PR #44: six promote, two reject, two defer. Machine registry/enforcement is deliberately separated into LR-0105."
+      "notes": "Director follow-up to LR-0071. Canon decisions pre-reviewed on PR #44: six promote, two reject, two defer. Machine registry/enforcement is deliberately separated into LR-0105. Dependency LR-0071 is DONE; promoted to READY by Agent 7 for immediate canon ratification."
     },
     {
       "id": "LR-0105",
@@ -3915,5 +3915,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T21:37:00+11:00"
+  "updated_at": "2026-10-04T21:36:00+11:00"
 }
