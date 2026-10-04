@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0109",
+  "exclusive_scope": "actions-runtime-maintenance",
+  "agent_number": 1,
+  "agent": "The Steward",
+  "session_id": "f275a9ae-88d2-4a5c-ae93-d3dc49a91f5c",
+  "claim_token": "06ce2650-114c-4b27-b58c-a9c07f3ecab7",
+  "claimed_at": "2026-10-04T18:33:00+11:00",
+  "expires_at": "2026-10-05T06:33:00+11:00",
+  "branch": "agent/LR-0109-actions-runtime-77a2c468-r3",
+  "note": "Fresh merge-preparation claim for approved PR #62."
+}
