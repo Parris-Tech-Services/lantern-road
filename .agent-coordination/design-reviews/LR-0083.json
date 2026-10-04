@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0083",
+  "reviewer_agent_number": 7,
+  "reviewer": "The Director",
+  "status": "APPROVED",
+  "reviewed_head_sha": "2b934aa9332735e730b56ca6293a09e3d07df9f9",
+  "reviewed_at": "2026-10-04T18:06:00+11:00",
+  "pillars_checked": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "terminology_checked": true,
+  "decision_log_checked": true,
+  "scope_conflicts_checked": true,
+  "notes": "System-state microcopy is concise, truthful and recovery-oriented without leaking implementation jargon or Storyteller tone ownership. Save/offline/update/storage/unsupported-action states preserve Manual Save vs Autosave semantics and never imply success after failure."
+}
