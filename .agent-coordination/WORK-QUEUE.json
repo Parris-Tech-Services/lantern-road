@@ -2697,6 +2697,33 @@
         "story/leader/"
       ],
       "notes": "Pure author-now Storyteller follow-up to DONE LR-0089 and authored LR-0088. Must stay within the Director's explicit light-identity rule: player-chosen name, at most one small background tag, emergent behaviour. No large character creator. Parked 4 Oct 2026 under the completed-work parking rule. Minimal Leader identity/background authoring is complete on branch agent/LR-0102-leader-identity-6ac9c59b at useful head 5740f2ceea2b2ad7e62b797531d203ae8f85f6e9, PR #52. All live criteria pass: optional No Stated Background + four small tags, hard no-character-creator/faction/biography/stat guardrails, companion + named-NPC reactions, emergent leadership behaviour, reserve continuity and LR-0090/LR-0091/UI handoff; branch changes only story/leader/. Next action after Director approval: fresh Agent 2 claimant reacquires leader-identity-authoring, verifies approved head/CI, merges PR #52 if current, marks LR-0102 DONE, then releases the fresh lock."
+    },
+    {
+      "id": "LR-0103",
+      "title": "Author the Leader mechanical role and four-person roster transition",
+      "status": "READY",
+      "priority": 0,
+      "exclusive_scope": "leader-mechanical-role-design",
+      "depends_on": [
+        "LR-0089"
+      ],
+      "primary_agent": 3,
+      "goal": "Define how the player Leader participates mechanically in Lantern Road so the canonical four-person active party (Leader + three companions) works in combat, progression, equipment, injury and rotation without erasing companion identity or expanding into a large class system.",
+      "acceptance_criteria": [
+        "Define the Leader's mechanical participation in the four-person active party, including whether and how the Leader takes combat turns, makes skill checks, receives damage/conditions and contributes to travel/system checks.",
+        "Define a compact Leader progression identity that is meaningfully playable but lighter than a full character-class creator, and explain how it coexists with Garrick, Mira, Oren and Brindle's stronger authored niches.",
+        "Define Leader action/ability expectations in terms compatible with LR-0094's compact action-economy design and LR-0006's progression/equipment foundations, without silently rewriting either parked task.",
+        "Define equipment, injury/recovery and scarce-resource rules for the Leader, including what is shared with companion systems and what should remain distinct.",
+        "Define reserve/rotation mechanics for the four authored companions: when rotation may occur, what persistent gear/injury/Trust state follows each companion, and how the active combat roster remains exactly four people total.",
+        "Provide a migration/integration plan from the current prototype's four-active-companion state to Leader + three active companions, preserving existing companion state and avoiding save-data loss; implementation remains downstream Steward/Mechanist work.",
+        "Identify any decisions that require Josh/Director creative approval rather than presenting an arbitrary mechanical choice as settled canon.",
+        "Author specification only; do not edit game.js, content.js, save runtime or current parked feature branches."
+      ],
+      "likely_files": [
+        "systems/leader/",
+        "design/PLAYER-LEADER-PARTY-CONTRACT.md"
+      ],
+      "notes": "Director-routed gap after LR-0089. Social/player-agency canon is settled, but existing combat/progression/equipment/injury systems were authored around Garrick, Mira, Oren and Brindle as the active four. This task supplies the missing Mechanist design contract before runtime integration and must preserve the compact premium-indie scope."
     }
   ],
   "agent_roster": [
@@ -2754,5 +2781,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T17:01:00+11:00"
+  "updated_at": "2026-10-04T17:12:00+11:00"
 }
