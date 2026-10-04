@@ -2496,7 +2496,7 @@
     {
       "id": "LR-0094",
       "title": "Author BG3-inspired compact action-economy and repeatability specification",
-      "status": "READY",
+      "status": "DONE",
       "priority": 0,
       "exclusive_scope": "action-economy-design",
       "depends_on": [],
@@ -2514,7 +2514,7 @@
         "systems/combat/",
         "systems/actions/"
       ],
-      "notes": "PARKED 2026-10-04 by Agent 3 under claim-protocol v1.2. Branch: agent/LR-0094-action-economy-design-a6c1e41d. Exact useful head: e41d66a2f11813b627ae0a55b67b9b9a1278d7e2. PR #49. Added systems/actions/COMPACT-ACTION-ECONOMY-AND-REPEATABILITY.md only; no runtime/save/reward edits. Spec defines actor-agnostic Leader + active-companion Action/Quick Action/Reaction resources, per-ability recharge rhythms, limited signatures, triggered reactions, situational action visibility, explicit world repeat policies, live repeatability exploit audit, idempotency/save/test requirements, and LR-0098 staged implementation. Reconciled with LR-0089 Leader governance. Acceptance criteria satisfied by authoring; remaining external closure is Director review/merge. Freshly claim action-economy-design before any content change or merge reconciliation."
+      "notes": "DONE 2026-10-04. Director-approved PR #49 merged to main as f897667a89715e9b20f7c2801b720995c9e53af3. Final approved feature head e41d66a2f11813b627ae0a55b67b9b9a1278d7e2 with Director approval commit db4c86c8ad5d33af1036e37be93a73e770834179; Agent coordination #448 SUCCESS. Action/Quick Action/Reaction and repeatability design is now canonical for downstream LR-0098/LR-0015."
     },
     {
       "id": "LR-0095",
