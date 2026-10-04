@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0057",
+  "exclusive_scope": "equipment-design-authoring",
+  "agent_number": 3,
+  "agent": "The Mechanist",
+  "session_id": "6b52de3a-930f-49f8-88ab-ef13b74bb615",
+  "claim_token": "7d1fa126-e246-46d6-8e17-46f08a2a6c13",
+  "claimed_at": "2026-10-04T16:08:00+11:00",
+  "expires_at": "2026-10-05T04:08:00+11:00",
+  "branch": "agent/LR-0057-equipment-design-authoring-6b52de3a",
+  "note": "Implementing only LR-0057."
+}
