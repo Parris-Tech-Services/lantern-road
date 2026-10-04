@@ -207,11 +207,30 @@ if (branchLocks.length === 0) {
 
   if (!needsDirectorReview) {
     // Legacy optional approval is accepted, but never required for NOT_REQUIRED tasks.
-    if (director?.valid && notes.includes(director.reviewedHead)) {
-      console.log(
-        `Parked NOT_REQUIRED-review PR with optional legacy Director approval verified for direct merge: ${task.id} / ${task.exclusive_scope} / ${branch} / reviewed ${director.reviewedHead}`
-      );
-      process.exit(0);
+    // If that approval reviewed a map-canon review-only commit, also accept the
+    // underlying feature head recorded in the parked handoff.
+    if (director?.valid) {
+      const legacyUsefulHeads = [director.reviewedHead];
+      try {
+        const reviewParent = git(["rev-parse", `${director.reviewedHead}^`]);
+        const reviewChanges = git(["diff", "--name-only", reviewParent, director.reviewedHead])
+          .split("\n")
+          .filter(Boolean);
+        const expectedMapCanonReview = `.agent-coordination/map-canon-reviews/${task.id}.json`;
+        if (reviewChanges.length === 1 && reviewChanges[0] === expectedMapCanonReview) {
+          legacyUsefulHeads.push(reviewParent);
+        }
+      } catch {
+        // A normal optional approval needs only its reviewed head.
+      }
+
+      const recordedLegacyHead = legacyUsefulHeads.find(candidate => notes.includes(candidate));
+      if (recordedLegacyHead) {
+        console.log(
+          `Parked NOT_REQUIRED-review PR with optional legacy approval verified for direct merge: ${task.id} / ${task.exclusive_scope} / ${branch} / useful ${recordedLegacyHead}`
+        );
+        process.exit(0);
+      }
     }
 
     if (!prHead) {
