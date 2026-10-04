@@ -1896,7 +1896,7 @@
     {
       "id": "LR-0070",
       "title": "Enforce map canon schema and protected geography in CI",
-      "status": "READY",
+      "status": "DONE",
       "priority": 0,
       "exclusive_scope": "map-canon-enforcement",
       "depends_on": [
@@ -1918,7 +1918,7 @@
         ".github/workflows/",
         ".agent-coordination/"
       ],
-      "notes": "Implementation complete on branch agent/LR-0070-map-canon-enforcement-1d7f63e2-r2, exact useful head b9c6e3d9cdf218a96a3728861e0128118bf6e604, draft PR #50. Adds world/map-canon.schema.json, registry↔gameplay validator, exact-head protected-change approval guard, map-canon CI workflow and automated-enforcement documentation. Independent live reconciliation found 16 canonical gameplay places matching 16 gameplay places and 10 regional labels remaining PROPOSED. Map canon Actions run 37181187464 passed both registry validation and protected-change guard. Agent coordination validation also passed; only failing step is the intentional missing Agent 7 exact-head Director design review. Next action: after Director approval, freshly claim LR-0070, verify current queue/CI, merge PR #50, mark DONE, release fresh claim."
+      "notes": "Completed 4 Oct 2026 via PR #50, merge commit 2e3dc51531e2f66447b7f56419ed8866a152e2a5. Added machine-readable map-canon schema, registry↔gameplay validator, exact-head protected geography approval guard, map-canon CI and enforcement documentation. Map canon run #6 and Agent coordination run #419 passed on the approved head."
     },
     {
       "id": "LR-0071",
