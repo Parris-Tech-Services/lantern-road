@@ -517,6 +517,14 @@
     }, 3400);
   }
 
+  function clearFeedback() {
+    if (!dom.feedbackRoot) return;
+    if (feedbackTimer) clearTimeout(feedbackTimer);
+    feedbackTimer = null;
+    dom.feedbackRoot.classList.remove("visible");
+    dom.feedbackRoot.innerHTML = "";
+  }
+
   function hasBlockingFeedback() {
     return !!(state && (state.combat || state.activeScene || state.ui?.dialogue || state.ui?.shop));
   }
@@ -1119,6 +1127,7 @@
   }
 
   function openAccessibility() {
+    clearFeedback();
     settingsOpen = true;
     renderModal();
   }
