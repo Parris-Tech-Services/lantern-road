@@ -2061,7 +2061,7 @@
       "likely_files": [
         "story/endings/"
       ],
-      "notes": "Pure author-now follow-up to LR-0043. LR-0043 defines the structure/matrix; LR-0076 supplies finished modular epilogue copy. LR-0008 later integrates both after its foundation dependencies clear."
+      "notes": "Pure author-now follow-up to LR-0043. LR-0043 defines the structure/matrix; LR-0076 supplies finished modular epilogue copy. LR-0008 later integrates both after its foundation dependencies clear. Parked 4 Oct 2026 under the completed-work parking rule. Modular ending prose is complete on branch agent/LR-0076-ending-prose-authoring-db16c112 at useful head 94fde76323d570a47e3d80a4a4cc625205cb554c, PR #30. Live acceptance criteria were rechecked: six regional ending families, high/low legitimacy variants, all six quest callback families, four party epilogues with personal-arc variants, unresolved states, explicit Common Road non-golden guardrail, and Fractured March local-success handling; branch changes only story/endings/. Next action after Director approval: fresh Agent 2 claimant reacquires ending-prose-authoring, verifies approved head/CI, merges PR #30 if current, marks LR-0076 DONE, and releases the fresh lock."
     },
     {
       "id": "LR-0077",
@@ -2352,5 +2352,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T17:22:00+11:00"
+  "updated_at": "2026-10-04T16:05:00+11:00"
 }
