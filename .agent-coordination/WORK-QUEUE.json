@@ -3021,7 +3021,7 @@
     {
       "id": "LR-0116",
       "title": "Map code hotspots and cross-agent collision risk",
-      "status": "READY",
+      "status": "DONE",
       "priority": 1,
       "exclusive_scope": "aed-change-collision-map",
       "depends_on": [],
@@ -3036,7 +3036,7 @@
       "likely_files": [
         "audit/AED-COLLISION-MAP.md"
       ],
-      "notes": "AED task. Operational efficiency work only; do not take over a live specialist claim or create a new product/design approval gate."
+      "notes": "Merged via PR #71 at feb7699fc077c9a4be9336d5fcb1e006c124d606. audit/AED-COLLISION-MAP.md quantifies likely-file collision, validates LR-0099/LR-0010 priorities and defines collision-oriented success metrics without implementing architecture."
     },
     {
       "id": "LR-0117",
@@ -3335,5 +3335,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T19:16:00+11:00"
+  "updated_at": "2026-10-04T19:20:00+11:00"
 }
