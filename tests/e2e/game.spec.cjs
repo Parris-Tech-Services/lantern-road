@@ -47,26 +47,12 @@ test("canvas travel changes the party position", async ({ page }) => {
   const errors = await openGame(page);
   const before = await snapshot(page);
 
-  const target = await page.evaluate(() => {
-    const current = JSON.parse(window.render_game_to_text()).campaign.position;
-    const width = window.CONTENT.region.width;
-    const q = current.q + 1 < width ? current.q + 1 : current.q - 1;
-    const r = current.r;
-    const canvas = document.getElementById("mapCanvas");
-    const rect = canvas.getBoundingClientRect();
-    const size = Math.min(
-      rect.width / (Math.sqrt(3) * (window.CONTENT.region.width + 1.2)),
-      rect.height / (1.5 * (window.CONTENT.region.height + 1.3))
-    );
-    return {
-      x: rect.left + size * Math.sqrt(3) * (q + 0.5 * (r & 1)) + size * 1.6,
-      y: rect.top + size * 1.5 * r + size * 1.7,
-      q,
-      r
-    };
-  });
+  const target = await page.evaluate(() => window.__lanternRoadTest.adjacentHexCenter());
+  expect(target).not.toBeNull();
 
-  await page.mouse.click(target.x, target.y);
+  const canvas = await page.locator("#mapCanvas").boundingBox();
+  expect(canvas).not.toBeNull();
+  await page.mouse.click(canvas.x + target.x, canvas.y + target.y);
 
   await expect.poll(async () => {
     const state = await snapshot(page);
