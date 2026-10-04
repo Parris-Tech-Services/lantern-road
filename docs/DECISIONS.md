@@ -24,6 +24,8 @@ Keep this short. Record decisions that future agents would otherwise relitigate.
 | 2026-10-04 | LR-0011 owns save schema/version/migration policy and LR-0016 owns global economy targets; specialist tasks consume those contracts rather than creating parallel persistence or pricing systems. | Keeps save compatibility and balance assumptions coherent across mobile, progression, equipment, injury and encounter work. |
 | 2026-10-04 | Final release-candidate Warden QA must be downstream of all targeted specialist QA passes, not only narrative/combat/mobile checks. | Prevents the final gate from running before interaction, persistence, exploit, quest-state and onboarding risks have been exercised. |
 
+| 2026-10-04 | Manual Save and Autosave are separate device-local slots; starting a new campaign may replace Autosave but never overwrites Manual Save unless the player presses Save Manual. | Makes phone resume convenient without turning autosave into a destructive or ambiguous checkpoint. |
+
 ## How to add a decision
 
 Add one row when a task changes architecture, product direction, ownership boundaries, save compatibility, testing policy, or another choice that future agents are likely to revisit.
