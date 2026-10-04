@@ -25,7 +25,7 @@ The scorched page comes from an Archive field report concerning **Hollowglass Ca
 
 Years earlier, Oren was part of a small survey team studying unstable mineral panes that held old route markings.
 
-A local guide named **Mara Pell** warned that the cavern's ringing changed before a collapse.
+A local guide named **Mara Kett** warned that the cavern's ringing changed before a collapse.
 
 The senior archivist dismissed the warning as folklore.
 
@@ -89,7 +89,7 @@ This should establish that the arc is not solved by absolution.
 
 ---
 
-# Beat 2 — Mara Pell
+# Beat 2 — Mara Kett
 
 Mara now repairs fine instruments and ferry hardware around Greyfen.
 
