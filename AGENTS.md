@@ -43,6 +43,21 @@ Player-facing actions must provide meaningful visible feedback. Silent state cha
 The coordination system is intentionally simple: stable task definitions plus GitHub create-only scope locks. See the protocol for race handling, leases and stale-lock recovery.
 
 
+
+## Map canon rule
+
+Grey March geography is protected product canon.
+
+- Read `world/map-canon.json`, `docs/WORLD-MAP-CANON.md`, and `.agent-coordination/MAP-CANON-PROTOCOL.md` before adding, renaming, relocating or retiring any named settlement/site/region or before changing map coordinate meaning.
+- Existing canonical place ids, names, `q/r` values and derived grid references must not be changed opportunistically inside unrelated feature work.
+- The current `q/r` implementation is a pointy-top **odd-r offset** grid; do not reinterpret it as pure axial coordinates.
+- Human grid references are derived from the canonical coordinates: q 0–8 = A–I and r 0–7 = 1–8.
+- Text or labels generated inside concept art are **PROPOSED**, not canon, until the controlled map-canon workflow approves them.
+- The terrain atlas is visual presentation only. Gameplay-critical labels, roads, site markers, party position, reachable hexes, discovery/fog, quests and mutable world-state overlays are drawn dynamically from canonical data.
+- Storyteller, Lamplighter, Mechanist, Wayfinder and Warden may propose or consume geography within their roles, but Agent 7 governs canon and Agent 1 owns technical enforcement/rendering architecture.
+- If a task genuinely needs a new canonical place or a canonical move/rename, queue a dedicated map-canon change instead of silently altering the world.
+
+
 ## Warden QA rule
 
 Agent 6 — The Warden is an independent black-box QA/playtest role.
