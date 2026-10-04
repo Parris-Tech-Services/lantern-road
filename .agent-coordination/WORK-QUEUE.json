@@ -2295,6 +2295,30 @@
         "docs/"
       ],
       "notes": "PARKED 2026-10-04 by Agent 3 under claim-protocol v1.2. Branch: agent/LR-0087-systems-balance-authoring-719b9b52. Exact useful head: b4ddf398f1f3426a341d8459770542b02b0024cd. PR #33. Added systems/balance/BUILD-VIABILITY-SCENARIO-MATRIX.md only (1108 lines); no runtime/test-harness/black-box-QA edits. Matrix defines 8 representative build combinations, equipment/economy/recovery overlays, 10 core balance scenarios, 4 full-campaign profiles, early/mid/late checkpoints, dominance/trap/non-functional/spiral diagnostics, and final assumption reconciliation for LR-0020. Acceptance criteria satisfied by authoring; remaining external closure is Director review/merge. Freshly claim systems-balance-authoring before any content change or merge reconciliation."
+    },
+    {
+      "id": "LR-0088",
+      "title": "Author player-leader and consequential dialogue framework",
+      "status": "READY",
+      "priority": 2,
+      "exclusive_scope": "player-leader-dialogue-authoring",
+      "depends_on": [
+        "LR-0004"
+      ],
+      "primary_agent": 2,
+      "goal": "Define Lantern Road's player as an in-world party leader and author a deep conversation framework where dialogue choices, companion autonomy, disagreement and remembered topics create meaningful social consequence without touching blocked runtime code.",
+      "acceptance_criteria": [
+        "Define the player-facing role as the party leader inside the fiction rather than a disembodied controller, including what the leader may suggest, ask, promise, challenge, refuse or order.",
+        "Define a reusable dialogue-choice grammar with materially different intent, tone and consequence, avoiding cosmetic choices that collapse to the same response.",
+        "Define how Garrick, Mira, Oren and Brindle can agree, hesitate, refuse, reinterpret or remember the leader's suggestions based on Trust, relationships, prior choices, fatigue/injury or personal values.",
+        "Define conversation memory and repeat-conversation behaviour so NPCs and party members do not replay first-meeting exposition or identical topic text after it has already been discussed.",
+        "Author representative player-leader conversations with each party member and at least four important NPCs, including at least one delayed callback for each party member.",
+        "Document declarative conditions and handoff requirements for later LR-0037/LR-0038/LR-0048 integration; do not edit game.js, content.js or persisted state."
+      ],
+      "likely_files": [
+        "story/dialogue/"
+      ],
+      "notes": "Pure author-now Storyteller work responding to Josh's playtest feedback that the player feels disassociated from the four-person party and dialogue lacks BG3-like depth/memory. Distinct from LR-0045 NPC callback prose: this task defines the player-leader role, choice grammar, companion autonomy and conversation-state authoring contract. Later implementation should be consumed by the existing character/NPC/core-quest integration lanes rather than creating a parallel dialogue engine."
     }
   ],
   "agent_roster": [
@@ -2352,5 +2376,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T17:38:00+11:00"
+  "updated_at": "2026-10-04T16:27:00+11:00"
 }
