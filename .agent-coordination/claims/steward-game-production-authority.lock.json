@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0151",
+  "exclusive_scope": "steward-game-production-authority",
+  "agent_number": 1,
+  "agent": "The Steward",
+  "session_id": "9b9ba7c7-0d67-4c9b-a969-78e7c53e5eb4",
+  "claim_token": "7feaad92-91d5-4cbf-89ce-a57a7b891bbb",
+  "claimed_at": "2026-10-05T08:54:00+11:00",
+  "expires_at": "2026-10-05T20:54:00+11:00",
+  "branch": "agent/LR-0151-steward-game-lead-9b9ba7c7",
+  "note": "Josh-directed company/game authority restructure: CEO remains Agent 7 executive oversight; Steward becomes project lead, lead game designer, technical lead and program integrator with final internal game approval."
+}
