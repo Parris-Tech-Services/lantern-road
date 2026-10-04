@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0080",
+  "exclusive_scope": "touch-gesture-authoring",
+  "agent_number": 5,
+  "agent": "The Wayfinder",
+  "session_id": "7a31c5e8-2d64-4f90-a1b7-6c5e2d8f3941",
+  "claim_token": "1d6b9a43-5e27-4c81-b2f0-7a39e4d6c158",
+  "claimed_at": "2026-10-04T17:36:00+11:00",
+  "expires_at": "2026-10-05T05:36:00+11:00",
+  "branch": "agent/LR-0080-touch-gestures-7a31c5e8",
+  "note": "Authoring only LR-0080 touch gesture arbitration contract; no runtime map implementation."
+}
