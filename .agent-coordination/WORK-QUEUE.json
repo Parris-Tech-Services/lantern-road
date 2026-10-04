@@ -924,7 +924,7 @@
     {
       "id": "LR-0033",
       "title": "Design governance baseline and terminology bible",
-      "status": "READY",
+      "status": "DONE",
       "priority": 0,
       "exclusive_scope": "design-governance-baseline",
       "depends_on": [],
@@ -943,7 +943,7 @@
         "docs/TERMINOLOGY.md",
         ".agent-coordination/DESIGN-REVIEW-PROTOCOL.md"
       ],
-      "notes": "Priority-0 Director foundation. Establishes the shared language and review standard; does not implement gameplay features."
+      "notes": "Completed 4 Oct 2026 via PR #8: canonical terminology/tone guide expanded across world, party, factions, UI, combat and progression; pillar-drift vs implementation-variation criteria and a reusable Director PR checklist were added; governance boundaries were recorded in the decision log. Agent coordination CI run 84 passed on the exact PR head."
     },
     {
       "id": "LR-0034",
@@ -1343,5 +1343,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T14:52:00+11:00"
+  "updated_at": "2026-10-04T15:20:00+11:00"
 }
