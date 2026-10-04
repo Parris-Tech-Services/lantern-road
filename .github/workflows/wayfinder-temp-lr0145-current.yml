@@ -1,0 +1,33 @@
+name: Wayfinder LR-0145 current-main verification
+
+on:
+  push:
+    branches:
+      - agent/LR-0145-save-shell-current-c2d86f51
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+      - name: Replay exact LR-0107 static validator
+        run: node .github/tmp/lr0145-current-validator.mjs
+      - name: Install Playwright Chromium
+        run: |
+          npm init -y
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Run current-main offline startup scenario
+        run: |
+          node .github/tmp/lr0145-current-offline.mjs | tee lr0145-current-result.txt
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lr0145-current-main-verification
+          path: lr0145-current-result.txt
