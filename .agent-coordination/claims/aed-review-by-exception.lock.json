@@ -8,6 +8,6 @@
   "claim_token": "3f5e2c77-6b8a-4c51-9f0a-a2b7e9d4c631",
   "claimed_at": "2026-10-04T21:29:00+11:00",
   "expires_at": "2026-10-05T09:29:00+11:00",
-  "branch": "agent/LR-0146-review-exception-v3-8f9e1a4c",
-  "note": "LR-0146 v3 conflict-free rebuild from latest main; review-by-exception reform only."
+  "branch": "agent/LR-0146-review-exception-v4-8f9e1a4c",
+  "note": "LR-0146 v4 atomic conflict-free rebuild from newest main; review-by-exception reform only."
 }
