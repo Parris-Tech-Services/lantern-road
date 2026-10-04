@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0047",
+  "exclusive_scope": "core-quest-authoring",
+  "agent_number": 2,
+  "agent": "The Storyteller",
+  "session_id": "7c46fd77-a0be-48bf-b40b-9952efec84f0",
+  "claim_token": "7f86fb52-2ba4-4c4d-a338-e271f076df76",
+  "claimed_at": "2026-10-04T21:14:00+11:00",
+  "expires_at": "2026-10-05T09:14:00+11:00",
+  "branch": "agent/LR-0047-core-quest-authoring-8aa7e61c",
+  "note": "Fresh post-review merge-reconciliation claim."
+}
