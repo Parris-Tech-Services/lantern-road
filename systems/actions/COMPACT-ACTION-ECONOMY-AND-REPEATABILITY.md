@@ -1411,7 +1411,7 @@ Run real-browser combat and world-action cases, including rapid-tap attempts.
 
 ### Compact primary/secondary/reactive economy
 
-Sections 3–5 define **Action**, **Quick Action**, **Reaction** without movement-grid complexity.
+Sections 3–6 define active-party compatibility plus **Action**, **Quick Action**, **Reaction** without movement-grid complexity.
 
 ### Every existing combat ability declares cost/recharge
 
@@ -1419,19 +1419,19 @@ Sections 7–9 provide the recharge vocabulary and the current companion-prototy
 
 ### Visible resource consumption / no unlimited same-turn repeat
 
-Sections 4, 11–17 and 34 define resource spend, refresh and feedback.
+Sections 5, 12–18 and 35 define resource spend, refresh and feedback.
 
 ### Situational actions do not clutter UI
 
-Sections 10, 15–16 and 31.
+Sections 11, 16–17 and 32.
 
 ### Non-combat repeatability policy
 
-Sections 20–26 define explicit repeat categories and audit current actions.
+Sections 21–27 define explicit repeat categories and audit current actions.
 
 ### Fast and phone-readable
 
-Sections 16, 31 and 36 constrain UI/rules complexity.
+Sections 17, 32 and 37 constrain UI/rules complexity.
 
 ## 40. Handoff to LR-0098
 
