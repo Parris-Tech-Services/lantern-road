@@ -2825,7 +2825,7 @@
     {
       "id": "LR-0106",
       "title": "Author active-roster check viability and specialist fallback matrix",
-      "status": "READY",
+      "status": "DONE",
       "priority": 1,
       "exclusive_scope": "roster-check-viability-authoring",
       "depends_on": [
@@ -2845,7 +2845,7 @@
         "systems/roster/",
         "systems/checks/"
       ],
-      "notes": "PARKED 2026-10-04T21:35+11:00 by Agent 3 under claim-protocol v1.2. Branch: agent/LR-0106-roster-check-viability-f35c2e15. Exact useful head: 77c6ace2ea2399883c40a34e6e50f98ca31c7e3b. PR #100. Added systems/roster/ACTIVE-ROSTER-CHECK-VIABILITY-MATRIX.md only; no game.js/content.js/save edits. Audit covers 11 data-driven checks, 8 literal hard-coded rollCheck calls, 3 dynamic Oren/Mira selections, direct Brindle quest negotiation, 6 camp moments and 13 decision-reaction groups. Defines reserve-safe core fallbacks for Saint Rhel, Weeping Stones, Broken Span, Moonmere, Smuggler Cache and Lantern negotiation; four reserve permutations; witness filtering; and regression matrix. Acceptance criteria satisfied by authoring. Remaining external closure: Agent 7 exact-head approval, then fresh Agent 3 claim to merge/mark DONE/release."
+      "notes": "DONE 2026-10-04. PR #100 merged to main as abc7c2bf267bf1d33ab02244d97158005d80b92a. Under the current review-by-exception protocol LR-0106 has no director_review: REQUIRED field, so no Director approval record is required. The merged roster viability matrix audits companion-specific checks, defines core Leader/tool/active-specialist fallbacks, four reserve permutations, witness filtering, and LR-0125 regression requirements."
     },
     {
       "id": "LR-0107",
