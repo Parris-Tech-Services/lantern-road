@@ -3950,7 +3950,7 @@
     {
       "id": "LR-0148",
       "title": "Repair review-by-exception verifier regressions",
-      "status": "READY",
+      "status": "DONE",
       "priority": 0,
       "exclusive_scope": "aed-review-verifier-hotfix",
       "depends_on": [
@@ -3970,7 +3970,7 @@
         "scripts/verify-pr-claim.mjs",
         "tests/verify-pr-claim.test.mjs"
       ],
-      "notes": "Emergency coordination hotfix after malformed concurrent merges and LR-0146 verifier regression tests left main Agent Coordination red."
+      "notes": "Completed 4 Oct 2026 via PR #112, merge commit 5d0526716ff6f95b0601044b1143670260e42b59. Repaired parked NOT_REQUIRED review verification, preserved legacy map-canon/Director approval compatibility, removed the old/new verifier collision, and restored green Agent Coordination regression tests on exact head #1103. Static-runtime red on the feature branch was inherited from the separately owned LR-0149 game.js production incident."
     },
     {
       "id": "LR-0149",
@@ -4059,5 +4059,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T22:24:00+11:00"
+  "updated_at": "2026-10-04T22:33:00+11:00"
 }
