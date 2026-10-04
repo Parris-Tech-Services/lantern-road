@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0107",
+  "exclusive_scope": "static-runtime-integrity",
+  "agent_number": 1,
+  "agent": "The Steward",
+  "session_id": "7e6b2f39-1f59-447a-8c8e-a560c7e7445c",
+  "claim_token": "47c018d5-7642-4ab2-bec8-672e679e2d91",
+  "claimed_at": "2026-10-04T20:25:00+11:00",
+  "expires_at": "2026-10-05T08:25:00+11:00",
+  "branch": "agent/LR-0107-static-runtime-current-7e6b2f39",
+  "note": "Current-main replay of already-reviewed static runtime validator; preserve all current service-worker/app-shell behaviour."
+}
