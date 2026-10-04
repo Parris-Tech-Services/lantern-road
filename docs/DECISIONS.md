@@ -28,6 +28,11 @@ Keep this short. Record decisions that future agents would otherwise relitigate.
 | 2026-10-04 | When runtime integration is blocked, specialist roles may do substantial authoring/design/QA-preparation work early if it produces durable inputs for an existing implementation task and does not edit the blocked shared runtime. | Keeps agents productively parallel without bypassing LR-0010/LR-0011/LR-0013 or inflating the queue with filler. |
 | 2026-10-04 | Keep seven agents for now; do not add Agent 8 merely to move LR-0013 because Agent 1 already owns and has claimed the regression-harness task. | The current bottleneck is queue sequencing/parking, not a missing specialist role; reassignment mid-claim would add coordination risk. |
 
+| 2026-10-04 | Grey March Map Canon v1 preserves the existing 9×8 pointy-top odd-r offset q/r grid and derives human references A–I / 1–8 directly from q/r. | Existing saves, travel logic and authored content already depend on those coordinates; a human grid layer can improve navigation without creating a competing coordinate system. |
+| 2026-10-04 | The illustrated Grey March terrain atlas is a visual layer only; gameplay-critical labels, roads, place markers, party position, discovery/fog, interaction affordances and mutable world changes are dynamic overlays driven by canonical data. | Allows premium illustrated map art without coupling gameplay correctness or save compatibility to raster pixels. |
+| 2026-10-04 | Text generated inside concept-map artwork is PROPOSED, not canon. Existing canonical settlements/sites win until a controlled map-canon change is approved. | Prevents image-generation accidents from silently rewriting geography and story continuity. |
+| 2026-10-04 | Agent 7 governs canonical geography; Agent 1 enforces it technically; Agents 2/4 may propose lore/visual geography but cannot silently canonise it; Agents 5/6 consume and verify it. | Gives one clear authority path while keeping specialist work parallel and reviewable. |
+
 ## How to add a decision
 
 Add one row when a task changes architecture, product direction, ownership boundaries, save compatibility, testing policy, or another choice that future agents are likely to revisit.
