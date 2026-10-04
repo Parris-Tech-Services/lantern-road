@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0094",
+  "exclusive_scope": "action-economy-design",
+  "agent_number": 3,
+  "agent": "The Mechanist",
+  "session_id": "a6c1e41d-b2d8-4cf0-bb7b-8a2cbdd5b8f4",
+  "claim_token": "94f930d1-9645-4a67-9c43-ef2c5f6e8a71",
+  "claimed_at": "2026-10-04T16:43:00+11:00",
+  "expires_at": "2026-10-05T04:43:00+11:00",
+  "branch": "agent/LR-0094-action-economy-design-a6c1e41d",
+  "note": "Implementing only LR-0094."
+}
