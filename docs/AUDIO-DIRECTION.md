@@ -126,3 +126,20 @@ Visual reduced-motion and audio are independent. A player may prefer reduced mot
 The dedicated Ambience control is the reduced-distraction audio path: continuous beds off, short meaningful cues still available.
 
 Future accessibility work may add separate cue and ambience volume sliders, but this task intentionally keeps the first control surface compact.
+
+
+## Authored production contract
+
+The detailed authored soundscape/score specification now lives in `docs/AUDIO-PRODUCTION-BIBLE.md`.
+
+That document defines:
+
+- environment and named-location ambience briefs;
+- restrained instrumentation and silence rules;
+- music-state/cue map;
+- semantic feedback cues;
+- transition/crossfade rules;
+- source-asset directory/codec/duration targets;
+- accessibility and sound-off requirements.
+
+LR-0032 should consume that production bible rather than inventing a second audio language during runtime integration.

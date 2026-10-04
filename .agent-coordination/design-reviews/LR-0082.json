@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0082",
+  "reviewer_agent_number": 7,
+  "reviewer": "The Director",
+  "status": "APPROVED",
+  "reviewed_head_sha": "fa52ac85ee498ceb1734e5301d447214e615c214",
+  "reviewed_at": "2026-10-04T18:06:00+11:00",
+  "pillars_checked": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "terminology_checked": true,
+  "decision_log_checked": true,
+  "scope_conflicts_checked": true,
+  "notes": "Mobile typography/content-density rules preserve critical actions, costs, statuses and place names across narrow widths and enlarged text, preferring stack/reflow/scroll over shrinking or destructive truncation. Map labels correctly prioritise natural place names over raw grid refs."
+}

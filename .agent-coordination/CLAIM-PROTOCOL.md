@@ -107,7 +107,7 @@ Do **not** hold an active scope lock merely to wait.
 When there is no material work left that the current owner can legitimately perform:
 
 1. Re-fetch `WORK-QUEUE.json` and confirm the task itself is still `READY` and the remaining blocker is external to the implementation work.
-2. Record a precise handoff in the task `notes`: branch, exact useful head SHA, PR if any, tests/evidence already completed, remaining gates, and the next action after those gates clear.
+2. Record a precise handoff in the task `notes`: `parked_at=<ISO-8601 timestamp>`, branch, exact useful head SHA, PR if any, tests/evidence already completed, remaining gates, and the next action after those gates clear. The timestamp lets AED measure review/merge waiting age without guessing.
 3. Leave the task `READY`; parking is neither `DONE` nor `BLOCKED` when its normal dependencies are satisfied.
 4. Re-fetch the lock and verify it still belongs to your `session_id` and `claim_token`.
 5. Delete **your own** scope lock.
@@ -115,6 +115,30 @@ When there is no material work left that the current owner can legitimately perf
 7. The agent may immediately claim another eligible task assigned to its role.
 
 Before any later code/content change, rebase/reconciliation, final-PR refresh, or merge preparation on the parked task, a fresh claimant must acquire the normal create-only scope lock. A parked branch does not confer continuing ownership.
+
+### Director review of parked work
+
+Agent 7 may append the required **review-only** design approval commit to a parked Agent 1–5 branch without forcing the implementation owner to hold an idle lock.
+
+CI permits the missing implementation lock only when all of these are true:
+
+- the queue task is still `READY`;
+- there is no active lock for that task or exclusive scope;
+- the final PR commit changes only `.agent-coordination/design-reviews/<TASK-ID>.json`;
+- the review is `APPROVED` by Agent 7;
+- `reviewed_head_sha` is exactly the immediately preceding feature/content commit;
+- the queue notes identify the task as parked and contain the exact same branch name and reviewed useful head.
+
+This exception grants **review authority only**. It does not grant implementation ownership.
+
+A fresh normal claim is still mandatory before:
+
+- any feature/code/content edit;
+- rebase or reconciliation changes;
+- changing the reviewed implementation after approval;
+- final merge preparation by the implementation owner.
+
+If another active lock has since claimed the same task/scope, the old parked branch cannot use the no-lock review exception until ownership is reconciled.
 
 This rule does not permit bypassing merge gates or human evidence. It only prevents waiting from consuming an active agent/lock slot.
 

@@ -4,10 +4,10 @@
   "exclusive_scope": "ai-art-generation",
   "agent_number": 4,
   "agent": "The Lamplighter",
-  "session_id": "d1f018ec-260e-4635-9049-117016a5106c",
-  "claim_token": "6e1dc1c4-6513-4899-87de-033510b9feb9",
-  "claimed_at": "2026-10-04T15:22:00+11:00",
-  "expires_at": "2026-10-05T03:22:00+11:00",
+  "session_id": "a4f264b7-4ced-49bb-9664-2cb2b48e7a11",
+  "claim_token": "a47aac5d-a4a5-4c62-ab8f-9cce391d8bb1",
+  "claimed_at": "2026-10-04T20:12:00+11:00",
+  "expires_at": "2026-10-05T08:12:00+11:00",
   "branch": "agent/LR-0042-ai-art-d1f018ec",
-  "note": "Generating and style-locking actual Lantern Road AI art."
+  "note": "Fresh claim to resume incomplete settlement/site/enemy/NPC/item image generation while preserving the Director-approved hero/style-lock batch."
 }

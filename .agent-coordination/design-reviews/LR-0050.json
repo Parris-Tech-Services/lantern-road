@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0050",
+  "reviewer_agent_number": 7,
+  "reviewer": "The Director",
+  "status": "APPROVED",
+  "reviewed_head_sha": "6b973bf479b9bdbd6996c6f7182dad409dab42db",
+  "reviewed_at": "2026-10-04T17:47:00+11:00",
+  "pillars_checked": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "terminology_checked": true,
+  "decision_log_checked": true,
+  "scope_conflicts_checked": true,
+  "notes": "Narrow stale-shell hotfix is aligned with product intent: network-first same-origin shell refresh when online, cached fallback offline, obsolete Lantern Road cache cleanup, and no spill into build-ID/install/lifecycle UX. Real-browser evidence covers the original defect. LR-0009 must later preserve this behaviour when reconciling its own sw.js changes."
+}

@@ -7,7 +7,7 @@ These rules are mandatory for every coding/research agent working in this reposi
 1. Read `docs/VISION.md`, `docs/DECISIONS.md`, and `docs/TERMINOLOGY.md` so product direction and language are shared rather than re-invented per agent.
 2. Read `.agent-coordination/CLAIM-PROTOCOL.md`.
 3. Read `.agent-coordination/WORK-QUEUE.json`.
-4. Identify your assigned Lantern Road agent number from the seven-agent roster in `WORK-QUEUE.json`.
+4. Identify your assigned Lantern Road agent number from the eight-agent roster in `WORK-QUEUE.json`.
 5. Choose one task whose `status` is `READY`, whose dependencies are complete, and whose `primary_agent` matches your assigned agent number. Do not claim another role's task unless Josh has explicitly reassigned it or the queue itself has been updated.
 6. Generate a fresh UUIDv4 `session_id` and UUIDv4 `claim_token` for this chat/session.
 7. Attempt to create the task's **exclusive scope lock** exactly as described in the claim protocol, including your `agent_number`.
@@ -72,6 +72,20 @@ Agent 6 — The Warden is an independent black-box QA/playtest role.
 - Report evidence about confusion, repetition, pacing, friction and enjoyment signals, but do not present “fun” as an objective QA score. Josh remains the creative director and final creative sign-off.
 
 
+## Continuous fun-loop rule
+
+Lantern Road must optimise for **playable improvement**, not merely merged output.
+
+- LR-0021 is the intentional historical Warden baseline. Its findings describe the old build it actually tested and must not be treated as evidence about current `main` unless independently retested.
+- LR-0140 is the standing current-build Warden lane. Agent 6 may claim it only when a meaningful player-facing merge has landed since `QA/FUN-LOOP-STATE.json:last_tested_main_sha`, or when Agent 7/Josh explicitly requests a targeted retest.
+- QA tooling may live on an Agent 6 branch, but the game-under-test for LR-0140 must be **current main or the current deployed build**, with the exact tested SHA/build recorded. Do not serve the Warden's stale tooling branch as the game-under-test.
+- Keep micro-playtests narrow: retest only materially affected loops (for example exploration/map, dialogue/social, combat, progression/economy, save/resume, presentation/mobile).
+- Confirmed non-duplicate findings use `QA/FINDING-SCHEMA.json` and live under `QA/findings/`.
+- `S0`/`S1` findings and reproducible `HIGH` player-impact fun/friction findings normally outrank filler, speculative polish and new authoring until they are routed and either fixed/retested or explicitly accepted by Agent 7/Josh.
+- A merged fix is not a resolved finding. Agent 6 retests the owning fix against a current build before setting the finding to `RESOLVED`.
+- Agent 6 reports observable confusion, repetition, pacing, friction, engagement risk and enjoyment signals; Josh remains final judge of whether the game is fun.
+- The Warden does not implement specialist fixes. Route them to the correct owner and preserve QA independence.
+
 ## Director governance rule
 
 Agent 7 — **The Director** owns design coherence and production governance.
@@ -86,6 +100,55 @@ Agent 7 — **The Director** owns design coherence and production governance.
 - The Director must not implement specialist features as part of review or use governance to expand the product beyond the agreed vision.
 - Routine PR reviews are standing governance work and do not require a separate feature claim. Substantive Director projects still use its LR-0033+ queue tasks and normal claim locks.
 
+
+
+## No-idle waiting rule
+
+An agent must not say it is "waiting on Agent X" merely because its most obvious integration task is blocked.
+
+Before declaring that no useful work can continue:
+
+1. Re-fetch the live queue and run `node scripts/aed-report.mjs`.
+2. Check your `NEXT` actionable task. If one exists and you have no active claim, claim it normally and work it.
+3. If no actionable READY task exists, inspect your blocked work for a **producer/integration split**:
+   - producer work creates a durable specialist-owned deliverable now (story content, balance model, source art, final asset pack, audio sources, UX contract, QA scenario, research/evidence);
+   - integration work touches shared runtime/code and may remain gated on another agent;
+   - the producer split must not duplicate an existing task, weaken acceptance criteria, or edit another role's live/shared implementation scope.
+4. Queue a producer task only when the deliverable will actually be consumed later. Do not invent filler, speculative busywork or duplicate documentation just to avoid being idle.
+5. If all useful producer work is already complete/parked and all implementation work is genuinely gated, temporary idleness is correct. Report the exact dependency instead of creating noise.
+
+Examples:
+- Lamplighter may generate/curate art and produce audio source packs before Steward runtime integration.
+- Storyteller may author scenes/dialogue before the dialogue engine exists.
+- Mechanist may produce deterministic system/balance contracts before runtime integration.
+- Wayfinder may produce interaction/accessibility contracts and test matrices before shared UI seams exist.
+- Warden may prepare reusable scenarios, but black-box findings still require a real current build.
+
+The goal is **parallel specialist production with late integration**, not bypassing dependencies.
+
+## Critical-path drain rule
+
+When the queue contains completed **PARKED** work on the critical path, optimise for finishing flow rather than manufacturing more backlog.
+
+- Agent 7's standing review work should prioritise **priority-0 and high-downstream-fan-out parked PRs** before lower-impact review inventory, unless a correctness/security/data-loss issue is more urgent.
+- After required review or merge gates clear, the owning specialist should normally prefer a **fresh claim to reconcile/merge/close the parked task** before starting new authoring, when that closure unblocks downstream work.
+- A role with no genuinely actionable work may be temporarily idle. Do not create filler tasks merely to keep every agent busy.
+- Use `node scripts/aed-report.mjs` as an advisory flow view; its ranked inbox is not an approval authority and does not override the queue, locks, Agent 7 design governance or Josh.
+- Critical-path urgency never permits cross-role claiming, editing another agent's live scope, bypassing exact-head review, or weakening save/map/QA evidence.
+- LR-0010 architecture work is staged so specialist runtime lanes may unlock after their required seam lands; cross-system integration/QA still waits for the parent LR-0010 completion gate where the queue says so.
+
+## AED efficiency rule
+
+Agent 8 — **AED (Agent Efficiency Department)** is the cross-agent operations and efficiency role.
+
+- Audit Agents 1–7, the queue, claims, branches/PRs, repository layout, code hotspots, tooling availability, blockers and handoff friction.
+- Optimise for less waiting, less duplicate work, smaller collision surfaces and clearer ownership. AED must not become a new approval gate.
+- Do not take over or edit another agent's live claimed specialist scope. Route fixes to the existing owner, or create/reassign queue work only when there is a genuine ownership gap and no conflicting live claim.
+- AED may implement coordination/reporting tooling, repository-process improvements and audit artifacts only under its own normal claimed tasks.
+- Respect Agent 7's design-governance authority and Josh's final creative authority. AED can identify design-process friction but does not approve product direction.
+- Prefer measurable evidence: dependency fan-out, READY/BLOCKED distribution, active-lock state, repeated claim/parking cycles, shared-file collision risk, CI/tool failures and stale project surfaces.
+- Before proposing a new task, search the queue for an existing owner/task and extend or route there instead of creating filler.
+- Efficiency recommendations must preserve correctness, save compatibility, map canon, QA independence and the create-only ownership guarantees.
 
 ## Evidence-gated foundation completion
 

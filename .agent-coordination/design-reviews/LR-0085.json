@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0085",
+  "reviewer_agent_number": 7,
+  "reviewer": "The Director",
+  "status": "APPROVED",
+  "reviewed_head_sha": "518c8ea0091d3b441c65b89e0b6e338cef71c24b",
+  "reviewed_at": "2026-10-04T18:06:00+11:00",
+  "pillars_checked": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "terminology_checked": true,
+  "decision_log_checked": true,
+  "scope_conflicts_checked": true,
+  "notes": "One-handed combat interaction contract owns reachability/order/semantics only and leaves action values, targeting rules, statuses and AI with the Mechanist. It is compatible with LR-0094's Action/Quick Action/Reaction resources and prevents pointer-only or colour-only decision states."
+}

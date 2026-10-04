@@ -4,6 +4,18 @@ Lantern Road is a static browser adventure RPG built with HTML, CSS, and vanilla
 
 You lead a party of four adventurers across the Grey March on a real hex map. You travel town to town, hear rumours, accept quests, inspect ruins, bargain with factions, manage supplies, survive travel events, and fight compact party battles when trouble catches up.
 
+## Agent start here
+
+For agent work, treat these as the canonical navigation path, in this order:
+
+1. `AGENTS.md` — mandatory operating rules and role boundaries.
+2. `docs/VISION.md`, `docs/DECISIONS.md`, `docs/TERMINOLOGY.md` — product direction, settled decisions and canonical language.
+3. `.agent-coordination/CLAIM-PROTOCOL.md` — exclusive-scope ownership and parking/merge rules.
+4. `.agent-coordination/WORK-QUEUE.json` — live task lifecycle, dependencies, owners and handoffs.
+5. Role-specific protocols/docs only after the shared files above (for example QA, map canon or design review).
+
+Root notes that are not referenced by the live queue or the documents above are **not** automatically current project requirements. When old notes conflict with the canonical path, follow the canonical path and route cleanup through the owning queue task instead of silently reviving stale scope.
+
 ## Files
 
 - `index.html`
@@ -13,6 +25,41 @@ You lead a party of four adventurers across the Grey March on a real hex map. Yo
 - `manifest.webmanifest`
 - `sw.js`
 - `LICENSE`
+
+## AED queue health report
+
+Agent 8's queue-health report is a **read-only advisory tool**, not a merge gate. It summarises actionable versus parked READY work, active claims, dependency fan-out, review-ready parked work, likely-file collision surfaces and obvious queue/claim inconsistencies.
+
+Run:
+
+```bash
+node scripts/aed-report.mjs
+```
+
+Useful options:
+
+```bash
+node scripts/aed-report.mjs --top 20
+node scripts/aed-report.mjs --json
+node --test tests/aed-report.test.mjs
+```
+
+The report reads the coordination queue/claims plus structured Warden findings under `QA/findings/`. It also shows an **agent work-state classification** (`ACTIVE`, `READY`, `REVIEW_DRAIN`, `BLOCKED_ONLY`, or `DONE`) and a concrete `NEXT` task for each agent, so an agent cannot mistake a blocked integration task for having no useful work. It prints a ranked **critical-path flow inbox** and **player-impact QA metrics**: unresolved/resolved high-impact findings, pending retests, parked-review age, a median time-to-playable-improvement proxy, and finding reopen/rework rate. Metrics are reported as unavailable when the repository does not contain enough timestamped evidence. The tool does not claim tasks, change lifecycle state, approve PRs or modify repository files.
+
+## CI action runtime policy
+
+Lantern Road's GitHub Actions workflows must use Node-24-compatible majors for the core JavaScript actions:
+
+- `actions/checkout@v5+`
+- `actions/setup-node@v5+`
+
+The repository currently uses newer supported majors where available. Run:
+
+```bash
+node scripts/validate-actions-runtime.mjs
+```
+
+The Agent coordination workflow runs the same check automatically so future workflow PRs cannot silently reintroduce deprecated Node-20 action majors.
 
 ## Running It
 
@@ -111,6 +158,16 @@ The world is deliberately small so choices can echo cleanly.
 
 The engine is intentionally data-driven where it matters, while keeping quest/site/NPC logic readable.
 
+### Content integrity checks
+
+Run the authored-content validator before merging changes to `content.js`:
+
+```bash
+node scripts/validate-content.mjs
+```
+
+It checks duplicate IDs, map bounds/coordinates, core cross-references between settlements/NPCs/factions/quests/rumours/items/enemies/encounters, event actor/effect references, and character reaction references. GitHub Actions runs the same validator automatically when the relevant files change.
+
 ## Quest System Overview
 
 Included questlines:
@@ -190,23 +247,16 @@ This keeps danger meaningful without turning the whole game into a tactics engin
 
 ## Save / Load Approach
 
-Save data is stored in `localStorage`.
+Campaign saves remain in the historical localStorage key `lantern-road-save-v1` so existing installs can find their old campaigns, while the stored payload uses an explicit **save schema v2 envelope** containing `schemaVersion`, `gameVersion`, `savedAt`, and `state`.
 
-It preserves:
+Raw pre-versioning saves are treated as legacy schema v1 and migrated through `save-system.js`. The migration layer fills newly introduced defaults without discarding recognised legacy fields, validates core campaign state, preserves intentional null UI state, and rejects saves from a newer unsupported schema.
 
-- seed and RNG state
-- day, hour, weather
-- position
-- discovered map and sites
-- inventory
-- gold, fatigue, renown
-- faction standings
-- quest state
-- party HP and statuses
-- combat state
-- logs
-- world flags
-- active data scenes
+On the first successful legacy migration, Lantern Road keeps the untouched raw payload at `lantern-road-save-v1-backup` where browser storage permits. A failed or unsupported load does not overwrite the stored campaign.
+
+The saved state preserves map/progress resources, faction and quest state, party HP/statuses, character trust memories/relationships, combat state, logs, world state, active scenes and UI state.
+
+Migration coverage lives in `tests/save-migrations.test.cjs` with representative legacy fixtures under `tests/fixtures/saves/legacy/`. CI publishes `save-migration-results` as machine gate evidence.
+
 
 ## Mobile / Touch Approach
 

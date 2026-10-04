@@ -1,0 +1,49 @@
+name: Map canon
+
+on:
+  push:
+    paths:
+      - "world/map-canon.json"
+      - "world/map-canon.schema.json"
+      - "content.js"
+      - "scripts/validate-map-canon.mjs"
+      - "scripts/verify-map-canon-change.mjs"
+      - "docs/WORLD-MAP-CANON.md"
+      - ".agent-coordination/MAP-CANON-PROTOCOL.md"
+      - ".agent-coordination/map-canon-reviews/**"
+      - ".github/workflows/map-canon.yml"
+  pull_request:
+    paths:
+      - "world/map-canon.json"
+      - "world/map-canon.schema.json"
+      - "content.js"
+      - "scripts/validate-map-canon.mjs"
+      - "scripts/verify-map-canon-change.mjs"
+      - "docs/WORLD-MAP-CANON.md"
+      - ".agent-coordination/MAP-CANON-PROTOCOL.md"
+      - ".agent-coordination/map-canon-reviews/**"
+      - ".github/workflows/map-canon.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate-map-canon:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Use Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+      - name: Validate registry and gameplay geography
+        run: node scripts/validate-map-canon.mjs
+      - name: Verify protected canon change approval
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: node scripts/verify-map-canon-change.mjs
