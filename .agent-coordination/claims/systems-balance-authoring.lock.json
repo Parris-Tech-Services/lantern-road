@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0087",
+  "exclusive_scope": "systems-balance-authoring",
+  "agent_number": 3,
+  "agent": "The Mechanist",
+  "session_id": "9ab4f38e-74d5-468c-8881-15b04c7db08f",
+  "claim_token": "736da16c-34b4-4b98-9f7a-93061a233a43",
+  "claimed_at": "2026-10-04T21:48:00+11:00",
+  "expires_at": "2026-10-05T09:48:00+11:00",
+  "branch": "agent/LR-0087-roster-reconcile-9ab4f38e",
+  "note": "Repairing the Director-requested Leader/reserve reconciliation addendum after PR #33 was merged before that review feedback was incorporated."
+}
