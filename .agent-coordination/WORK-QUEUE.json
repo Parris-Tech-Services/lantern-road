@@ -311,7 +311,7 @@
         "game.js",
         "README.md"
       ],
-      "notes": "Priority-0 safety gate. Current save-changing feature branches may work in parallel but must not merge until this foundation is DONE. Gate completion is evidence-driven: owner implementation alone is insufficient to mark DONE. Implementation complete and machine-tested on branch agent/LR-0011-save-versioning-3f2b1a6c-r2, head 483d0f1a5138ef3afe224ebfa86ea77ec7da016f, archived draft PR #11. Save migration Actions run 37177219667 succeeded; artifact save-migration-results id 11293508639 is unexpired. Still requires a fresh Agent 1 claim before merge, Agent 7 final approval on the rebased/final code head, and Josh's explicit Android legacy-save check before DONE. Current refresh is PR #21; save migration CI passed; awaiting Director review.",
+      "notes": "PARKED HANDOFF current refresh: branch agent/LR-0011-save-versioning-7c3e29a1, exact useful head 43981d91899817bb2fe62cce9f6e21f15b259669, PR #21. Save migration CI passed on the refresh; the earlier implementation history remains archived on agent/LR-0011-save-versioning-3f2b1a6c-r2 / head 483d0f1a5138ef3afe224ebfa86ea77ec7da016f / PR #11 with save-migration-results evidence. LR-0011 remains READY and parked awaiting Agent 7 exact-head approval on the current refresh branch, then a fresh Agent 1 claim before merge preparation. Gate completion remains evidence-driven under the current foundation/release policy.",
       "completion_evidence_required": {
         "evidence_file": ".agent-coordination/gate-evidence/LR-0011.json",
         "machine_requirements": [
@@ -384,7 +384,7 @@
         "README.md",
         ".github/workflows/"
       ],
-      "notes": "Priority-0 safety gate. Keep tooling light, but the test must drive a real browser. Gate completion is evidence-driven: owner implementation alone is insufficient to mark DONE. Implementation complete and machine-tested on branch agent/LR-0013-regression-testing-b7a4f2d1, head 19766fa6cdacb93de26de702578bbe4e8cae381f, draft PR #14. Browser regression Actions run 37177916987 passed all four Chromium phone-browser flows plus syntax checks; artifact browser-regression-results id 11293224022 is unexpired. Parked pending governance/merge reconciliation; under the forthcoming two-stage gate policy, Josh's Android smoke test belongs to release validation rather than technical foundation completion. Current refresh is PR #16; browser CI passed; awaiting Director review.",
+      "notes": "PARKED HANDOFF current refresh: branch agent/LR-0013-regression-testing-f4d7b301, exact useful head 7397003bf71e3f73cf4cee143629d77c4fffc6fb, PR #16. Browser regression CI passed on the refresh; the earlier implementation history remains archived on agent/LR-0013-regression-testing-b7a4f2d1 / head 19766fa6cdacb93de26de702578bbe4e8cae381f / PR #14 with browser-regression-results evidence. LR-0013 remains READY and parked awaiting Agent 7 exact-head approval on the current refresh branch, then a fresh Agent 1 claim before merge preparation. Gate completion remains evidence-driven under the current foundation/release policy.",
       "completion_evidence_required": {
         "evidence_file": ".agent-coordination/gate-evidence/LR-0013.json",
         "machine_requirements": [
