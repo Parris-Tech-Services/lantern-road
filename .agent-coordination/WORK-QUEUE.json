@@ -3852,7 +3852,7 @@
       "likely_files": [
         "sw.js"
       ],
-      "notes": "Created from LR-0107 current-main validation failure: index.html requires save-system.js but current APP_SHELL omits it. This is a current offline-startup defect in the Wayfinder-owned service-worker lane, not a reason to weaken the Steward validator."
+      "notes": "PARKED HANDOFF (4 Oct 2026): implementation complete on branch agent/LR-0145-save-shell-current-c2d86f51, useful head 566c3d5905f2d8bc427f070373657e72c62f836c, PR #92 (replaces closed stale PR #90). Production diff is one sw.js APP_SHELL entry adding ./save-system.js plus QA/LR-0145-SERVICE-WORKER-SAVE-SHELL.md. Exact LR-0107 validator replay and 390x844 Chromium first-install→offline→reload scenario both passed on current-main rebuild in Actions run 37193340901; artifact 11300176435. Validator result: 5 local HTML resources, 9 service-worker cache entries, 18 first-party JS files syntax-checked. Offline reload recreated LanternRoadSave and a playable Hearthwick campaign with no uncaught page errors. No network-first/cache-name/skipWaiting/clients.claim behaviour changed. Repo main is moving rapidly and PR #92 may require a fresh reconciliation claim before merge; do not weaken LR-0107 validator. Remaining external condition: Agent 7 exact-head approval, then fresh claim/reconcile if main has moved, merge, mark DONE, release."
     }
   ],
   "agent_roster": [
@@ -3915,5 +3915,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T21:41:00+11:00"
+  "updated_at": "2026-10-04T21:55:00+11:00"
 }
