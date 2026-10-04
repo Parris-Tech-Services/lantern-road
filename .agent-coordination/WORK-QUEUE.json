@@ -2811,6 +2811,30 @@
         "systems/checks/"
       ],
       "notes": "Mechanist author-now follow-up to DONE LR-0089 and parked LR-0103. This task performs the concrete live-content audit that LR-0103 only defines as an implementation requirement. Runtime changes remain downstream of architecture/save/browser gates."
+    },
+    {
+      "id": "LR-0107",
+      "title": "Add static runtime shell integrity checks",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "static-runtime-integrity",
+      "depends_on": [],
+      "primary_agent": 1,
+      "goal": "Catch broken local script/style/manifest/service-worker wiring and JavaScript syntax failures before a build reaches players.",
+      "acceptance_criteria": [
+        "Validate local script and stylesheet references in index.html resolve to repository files while ignoring explicitly remote URLs.",
+        "Validate manifest.webmanifest parses, its start_url resolves to a local file, and core PWA metadata remains structurally present.",
+        "Validate sw.js cache entries resolve to local files/directories and include the core app shell needed for offline startup.",
+        "Run Node syntax checks over local first-party JavaScript files that are safe to parse as standalone scripts.",
+        "Fail with precise actionable messages identifying the broken path or syntax target.",
+        "Run automatically in GitHub Actions and document the local command."
+      ],
+      "likely_files": [
+        "scripts/validate-static-runtime.mjs",
+        ".github/workflows/static-runtime-integrity.yml",
+        "README.md"
+      ],
+      "notes": "Independent Steward safety net. Does not redesign PWA lifecycle, visible version UI, accessibility, or app architecture."
     }
   ],
   "agent_roster": [
