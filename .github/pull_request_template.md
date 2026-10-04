@@ -10,10 +10,17 @@ Claim token suffix: `________`
 
 ### Player-visible effect
 
+### Vision/decision check
+
+- [ ] I read `docs/VISION.md` and did not contradict a recorded decision.
+- [ ] Any new architectural/product decision is recorded in `docs/DECISIONS.md`.
+- [ ] This PR contains one claimed task/scope and no unrelated refactor.
+
 ### Tests performed
 
 - [ ] `node scripts/validate-agent-coordination.mjs`
 - [ ] Relevant game behaviour tested
+- [ ] Real-browser check run when this changes player-visible behaviour
 - [ ] Mobile/touch behaviour checked when affected
 
 ### Follow-up tasks discovered
