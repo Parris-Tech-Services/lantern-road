@@ -8,5 +8,6 @@
   "claimed_at": "2026-10-04T14:31:17+11:00",
   "expires_at": "2026-10-05T02:31:17+11:00",
   "branch": "agent/LR-0004-character-relationships-e8c31875",
-  "note": "Implementing only LR-0004."
+  "note": "Implementing only LR-0004.",
+  "agent_number": 2
 }
