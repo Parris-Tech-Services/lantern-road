@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0004",
+  "exclusive_scope": "character-relationships",
+  "agent": "ChatGPT Agent 2 — The Storyteller",
+  "session_id": "e8c31875-a300-4229-8cc3-399b21fff93a",
+  "claim_token": "afcfddc0-0cc0-40fb-bf21-0b04bec7b39b",
+  "claimed_at": "2026-10-04T14:31:17+11:00",
+  "expires_at": "2026-10-05T02:31:17+11:00",
+  "branch": "agent/LR-0004-character-relationships-e8c31875",
+  "note": "Implementing only LR-0004."
+}
