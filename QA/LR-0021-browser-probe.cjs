@@ -98,8 +98,20 @@ fs.mkdirSync(OUT, { recursive: true });
 
     await clickExact("Context","tab: Context at destination");
     await snapshot("09-destination-context");
-    await clickExact("Journal","tab: Journal at destination");
-    await snapshot("10-destination-journal");
+    await clickExact("Inspect the mooring posts and tally marks","Redwater: inspect mooring");
+    await snapshot("10-redwater-inspection");
+    const redModal=page.locator("#modalRoot");
+    const redLabels=await redModal.getByRole("button").evaluateAll(bs=>bs.filter(b=>!b.disabled && (b.offsetWidth||b.offsetHeight||b.getClientRects().length)).map(b=>(b.innerText||"").trim()));
+    console.log("REDWATER_MODAL_BUTTONS",JSON.stringify(redLabels));
+    const redChoices=redLabels.filter(x=>x && x!=="Close" && x!=="⚙");
+    if(redChoices.length){
+      await clickExact(redChoices[0],"Redwater investigation: first visible choice");
+      await snapshot("11-redwater-investigation-result");
+    }
+    await closeModal();
+
+    await clickExact("Journal","tab: Journal after Redwater");
+    await snapshot("12-redwater-journal");
 
     console.log("\n=== BROWSER ERRORS ===");
     console.log(JSON.stringify({pageErrors,consoleErrors},null,2));
