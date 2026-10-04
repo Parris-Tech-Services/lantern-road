@@ -50,7 +50,30 @@ It should **not** add:
 - complex reactions for every possible trigger;
 - rules that require a tabletop manual to understand.
 
-## 3. Lantern Road combat economy
+## 3. Active-party compatibility
+
+The canonical active adventuring party is now:
+
+- the player **Leader**;
+- three **active companions**;
+- any fourth available authored companion remains in **reserve**.
+
+The action-economy engine must therefore be **actor-agnostic**.
+
+Every active combatant controlled through the party combat UI uses the same resource contract:
+
+- Action;
+- Quick Action;
+- Reaction;
+- any ability-specific encounter/rest/consumable charges.
+
+A reserve companion receives no combat turn/resources while in reserve.
+
+The current prototype ability table below covers Garrick, Mira, Oren and Brindle because those are the abilities that exist today. It must **not** be interpreted as a future four-companion active-party requirement.
+
+The Leader's final combat identity/ability kit is not yet canonical. LR-0094 deliberately does not invent a large player class here. A dedicated Mechanist follow-up should define a compact Leader kit; whatever abilities it authors must use this same cost/recharge contract.
+
+## 4. Lantern Road combat economy
 
 Use three clear resources:
 
@@ -108,7 +131,7 @@ Player-facing label: **Reaction**.
 
 Reaction controls should appear only when relevant. Do not permanently add a row of unavailable reaction buttons.
 
-## 4. Per-turn resource contract
+## 5. Per-turn resource contract
 
 At the start of a living party member's turn:
 
@@ -136,7 +159,7 @@ If Quick Actions exist, spending the main Action should not automatically advanc
 
 The current runtime advances immediately after any hero action. LR-0098 must change that only after the architecture gate allows it.
 
-## 5. No movement resource
+## 6. No movement resource
 
 Lantern Road is not a tactical-grid game.
 
@@ -157,7 +180,7 @@ Positioning is represented through:
 
 This preserves compact combat.
 
-## 6. Recharge vocabulary
+## 7. Recharge vocabulary
 
 Every combat ability must declare both:
 
@@ -210,7 +233,7 @@ Example if combat consumables are later allowed:
 
 Combat consumables are **not required** by LR-0094.
 
-## 7. Ability cost table — current hero kit
+## 8. Ability cost table — current companion prototype kit
 
 This is the recommended first mapping. Final numeric charge counts are balance inputs for LR-0098/LR-0020, but the cost/recharge identities should remain.
 
@@ -274,6 +297,19 @@ If later balance evidence shows 2 uses is too restrictive or too generous, adjus
 | Lantern Grace | Action | **2 uses / encounter** | combat healing becomes a meaningful reserve |
 | Bless | Quick Action | **2 uses / encounter** | creates Action + Quick combinations without becoming an every-turn tax |
 
+### Player Leader
+
+The Leader receives the same per-turn **Action / Quick Action / Reaction** resources, but their actual ability list is deliberately **TBD by a dedicated Mechanist Leader-combat task**.
+
+Until that task is ratified:
+
+- do not clone Garrick/Mira/Oren/Brindle abilities onto the Leader;
+- do not create a hidden “class” choice;
+- do not assume the Leader replaces whichever companion is in reserve mechanically;
+- do not make the Leader a passive non-combat observer.
+
+The Leader must ultimately have at least one reliable at-will Action so they can always participate in combat.
+
 Examples of Brindle turns:
 
 - Mace + Bless;
@@ -283,7 +319,7 @@ Examples of Brindle turns:
 
 This gives the player something BG3 does well: **resource sequencing**, without turning each turn into a menu puzzle.
 
-## 8. Basic actions vs signature actions
+## 9. Basic actions vs signature actions
 
 Every hero should have at least one **at-will Action**.
 
@@ -306,7 +342,7 @@ Signature actions may be limited.
 
 This avoids a failure state where limited charges turn the hero into a spectator.
 
-## 9. Extra Action rule
+## 10. Extra Action rule
 
 Extra Actions should be exceptional.
 
@@ -319,7 +355,7 @@ If a path, rare item or authored encounter grants an extra Action:
 
 Do not add an Extra Attack system by default.
 
-## 10. Conditional actions
+## 11. Conditional actions
 
 Situational actions should appear only while legal.
 
@@ -338,7 +374,7 @@ If the condition is false:
 - hide the action if it is context-specific; or
 - disable it with a short reason if knowing about the action matters.
 
-## 11. Action availability states
+## 12. Action availability states
 
 Every visible combat action should have one of four states.
 
@@ -370,7 +406,7 @@ Example:
 
 For pure reactions, prefer contextual appearance over permanent disabled display.
 
-## 12. Target selection safety
+## 13. Target selection safety
 
 Selecting an action must not spend the resource yet.
 
@@ -383,7 +419,7 @@ Cancelling target selection returns to the action choice without cost.
 
 This prevents phone mis-taps from consuming scarce resources.
 
-## 13. Misses still spend the action
+## 14. Misses still spend the action
 
 If an attack/check is attempted and misses:
 
@@ -394,7 +430,7 @@ The player paid for the attempt.
 
 Do not refund a charge because the random roll failed unless the ability explicitly says it is refunded.
 
-## 14. Reaction timing
+## 15. Reaction timing
 
 A Reaction:
 
@@ -410,7 +446,7 @@ If the same hero has multiple possible reactions:
 
 That is the trade-off.
 
-## 15. Reaction prompting
+## 16. Reaction prompting
 
 Phone-first rule:
 
@@ -441,7 +477,7 @@ Hold Fast can arm Intercept and clearly state:
 
 If LR-0098 chooses automatic Intercept, that exact rule must be visible before Hold Fast is confirmed.
 
-## 16. Phone combat presentation
+## 17. Phone combat presentation
 
 At the top of the active hero's action card:
 
@@ -473,7 +509,7 @@ Sigil Bolt
 Action
 ```
 
-## 17. Combat log feedback
+## 18. Combat log feedback
 
 After an action:
 
@@ -492,7 +528,7 @@ After reaction:
 
 Do not make the player inspect a hidden state object to understand why the button changed.
 
-## 18. Relationship with LR-0053 enemy intent
+## 19. Relationship with LR-0053 enemy intent
 
 The action economy and enemy-intent system should reinforce each other.
 
@@ -510,7 +546,7 @@ Without limited resources, visible intent can collapse into repeating the same c
 
 Both systems are needed.
 
-## 19. Relationship with LR-0006 paths/equipment
+## 20. Relationship with LR-0006 paths/equipment
 
 Progression may alter:
 
@@ -535,7 +571,7 @@ Bad examples:
 
 These erase the economy.
 
-## 20. Non-combat repeatability principle
+## 21. Non-combat repeatability principle
 
 Every consequential non-combat action must declare its repeat policy.
 
@@ -608,7 +644,7 @@ Flavour inspection may be repeated freely if it cannot farm:
 - quest progress;
 - new random reward rolls.
 
-## 21. Failed-check retry policy
+## 22. Failed-check retry policy
 
 A failed consequential check must not be instantly rerolled by clicking the same button again.
 
@@ -638,7 +674,7 @@ or:
 
 > **Nothing else can be learned here today.**
 
-## 22. Current live site-action repeatability audit
+## 23. Current live site-action repeatability audit
 
 The live runtime currently exposes several accidental loops.
 
@@ -977,7 +1013,7 @@ Policy:
 
 This is another good current model.
 
-## 23. Settlement/service policy
+## 24. Settlement/service policy
 
 ### Inn rest
 
@@ -1031,7 +1067,7 @@ Talking may be unlimited, but:
 
 LR-0090 owns the deep conversation-memory runtime.
 
-## 24. Travel-event recurrence policy
+## 25. Travel-event recurrence policy
 
 Scene choice buttons are naturally once per opened scene because the scene closes after resolution.
 
@@ -1057,7 +1093,7 @@ without a balancing time/resource/risk cost.
 
 This connects directly to the farming concern documented in LR-0052.
 
-## 25. Combat reward repeatability
+## 26. Combat reward repeatability
 
 Signature/site combats:
 
@@ -1076,7 +1112,7 @@ Do not allow an obviously repeatable random encounter to become an unlimited Ren
 
 If an encounter can recur indefinitely, repeated victories should not automatically imply repeated full campaign-progress reward.
 
-## 26. Declarative repeatability contract
+## 27. Declarative repeatability contract
 
 LR-0098 should prefer a declarative content rule rather than one-off `if (worldFlag)` patches everywhere.
 
@@ -1115,7 +1151,7 @@ repeatPolicy: {
 
 The exact schema belongs to LR-0098 after LR-0010 modularisation. The design contract is that the policy is explicit and testable.
 
-## 27. Declarative combat-action contract
+## 28. Declarative combat-action contract
 
 Likewise, ability definitions should eventually expose cost/recharge declaratively.
 
@@ -1145,7 +1181,7 @@ Bless:
 
 Do not hard-code the UI's button availability separately from the same cost/recharge contract.
 
-## 28. Save-state rules
+## 29. Save-state rules
 
 Persist only what must survive save/reload.
 
@@ -1182,7 +1218,7 @@ A disabled button is derived from:
 
 Persist the underlying state, not a redundant `buttonDisabled` flag.
 
-## 29. Migration rule
+## 30. Migration rule
 
 Adding repeatability metadata must not silently replay old one-time rewards when loading older saves.
 
@@ -1194,7 +1230,7 @@ For existing campaigns where historical use cannot be reconstructed perfectly:
 
 Specific migrations belong to LR-0098/LR-0011 reconciliation.
 
-## 30. Feedback requirements
+## 31. Feedback requirements
 
 Every unavailable action must explain why.
 
@@ -1212,7 +1248,7 @@ Examples:
 
 Never silently ignore a click.
 
-## 31. UI clutter rule
+## 32. UI clutter rule
 
 Do not solve action economy by placing ten resource counters and twenty buttons on screen.
 
@@ -1227,7 +1263,7 @@ Phone-first priority:
 
 Long explanations belong in inspect/help affordances, not every button.
 
-## 32. Anti-dominance checks
+## 33. Anti-dominance checks
 
 LR-0098/LR-0020 should test these specifically.
 
@@ -1267,7 +1303,7 @@ If Lantern Grace can erase all attrition every round:
 
 - limited encounter charges preserve tactical healing without infinite sustain.
 
-## 33. Repeatability exploit tests
+## 34. Repeatability exploit tests
 
 LR-0098 must add automated coverage for at least:
 
@@ -1282,7 +1318,7 @@ LR-0098 must add automated coverage for at least:
 9. a signature combat cannot be restarted for full reward after resolution.
 10. a repeatable random encounter does not create unlimited campaign progress solely through re-triggering.
 
-## 34. Combat resource tests
+## 35. Combat resource tests
 
 Automated coverage should include:
 
@@ -1301,7 +1337,7 @@ Automated coverage should include:
 13. save/reload preserves resources if combat saving is supported.
 14. no action can be double-fired through rapid taps.
 
-## 35. Rapid-tap/idempotency guard
+## 36. Rapid-tap/idempotency guard
 
 Phone users can double-tap.
 
@@ -1315,7 +1351,7 @@ When an action enters resolution:
 
 This is both a correctness and economy rule.
 
-## 36. What this system deliberately does not add
+## 37. What this system deliberately does not add
 
 Do not add in LR-0098 unless a later explicit task owns it:
 
@@ -1331,7 +1367,7 @@ Do not add in LR-0098 unless a later explicit task owns it:
 - animation-cancel mechanics;
 - per-frame combat timing.
 
-## 37. Recommended LR-0098 implementation order
+## 38. Recommended LR-0098 implementation order
 
 ### Slice 1 — explicit turn resources
 
@@ -1371,15 +1407,15 @@ Move remaining consequential site/service actions onto the reusable rule.
 
 Run real-browser combat and world-action cases, including rapid-tap attempts.
 
-## 38. Acceptance mapping for LR-0094
+## 39. Acceptance mapping for LR-0094
 
 ### Compact primary/secondary/reactive economy
 
 Sections 3–5 define **Action**, **Quick Action**, **Reaction** without movement-grid complexity.
 
-### Every ability declares cost/recharge
+### Every existing combat ability declares cost/recharge
 
-Sections 6–8 provide the recharge vocabulary and current hero ability table.
+Sections 7–9 provide the recharge vocabulary and the current companion-prototype ability table. Section 3 explicitly requires the future Leader kit to use the same contract rather than inventing a parallel system.
 
 ### Visible resource consumption / no unlimited same-turn repeat
 
@@ -1397,7 +1433,7 @@ Sections 20–26 define explicit repeat categories and audit current actions.
 
 Sections 16, 31 and 36 constrain UI/rules complexity.
 
-## 39. Handoff to LR-0098
+## 40. Handoff to LR-0098
 
 LR-0098 should reconcile this design against the final post-LR-0010 architecture and save contract, then implement it in small slices.
 
