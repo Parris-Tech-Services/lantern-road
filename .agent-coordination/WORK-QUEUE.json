@@ -2106,7 +2106,7 @@
     {
       "id": "LR-0078",
       "title": "Author PWA lifecycle and offline UX contract",
-      "status": "READY",
+      "status": "DONE",
       "priority": 1,
       "exclusive_scope": "pwa-lifecycle-ux-authoring",
       "depends_on": [],
@@ -2122,7 +2122,7 @@
       "likely_files": [
         "docs/PWA-LIFECYCLE-UX.md"
       ],
-      "notes": "PARKED HANDOFF (4 Oct 2026): authoring complete on branch agent/LR-0078-pwa-lifecycle-ux-b73a9f21 at head 16ea71f252f1f2a40b32d3bd8655f93822440751, PR #31. Final diff adds docs/PWA-LIFECYCLE-UX.md only. Contract covers install/installed/offline/reconnect/update/stale-build/cache-recovery UX, keeps connectivity separate from save safety, prevents update reloads during consequential choices/combat, and defines graceful fallback when PWA APIs are absent. No runtime/service-worker/release-rollback implementation changed. Remaining external condition is Agent 7 approval; fresh claim required before later edits or final merge preparation."
+      "notes": "Completed 4 Oct 2026 via PR #31, squash merge 279163f974e6a3e0d2a48c8801914757cc21ca94. Agent 7 approved exact useful head 16ea71f252f1f2a40b32d3bd8655f93822440751; final approval-head validation was green."
     },
     {
       "id": "LR-0079",
