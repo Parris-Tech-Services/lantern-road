@@ -1252,7 +1252,7 @@
       "likely_files": [
         "story/personal-quests/"
       ],
-      "notes": "Author-now, integrate-later split of LR-0037. Produces real game narrative content while save/runtime foundations are blocked."
+      "notes": "Author-now, integrate-later split of LR-0037. Produces real game narrative content while save/runtime foundations are blocked. Parked 4 Oct 2026 under the updated parking rule. Completed authored content is on branch agent/LR-0044-personal-arc-authoring-e2b8d7a1 at useful head 2c0917596890a45612a5167a2a7a765a4fa1fdf2, PR #13. Live acceptance criteria were rechecked and satisfied; branch changes only story/personal-quests/. Coordination validation passed and CI is waiting only on the required Agent 7 Director review file. Next action after review: fresh Agent 2 claimant reacquires personal-arc-authoring, verifies the approved head/CI, merges PR #13 if current, marks LR-0044 DONE, then releases the fresh lock."
     },
     {
       "id": "LR-0045",
