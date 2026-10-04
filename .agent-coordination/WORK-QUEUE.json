@@ -2858,6 +2858,32 @@
         "QA/"
       ],
       "notes": "Author-now Wayfinder bridge from LR-0095 research to LR-0096 implementation. It formalises shell state/transition behaviour without touching blocked runtime integration."
+    },
+    {
+      "id": "LR-0109",
+      "title": "Modernise and enforce GitHub Actions runtime versions",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "actions-runtime-maintenance",
+      "depends_on": [
+        "LR-0101"
+      ],
+      "primary_agent": 1,
+      "goal": "Remove deprecated Node-20 GitHub Action runtime warnings and prevent future parked workflows from reintroducing obsolete checkout/setup-node majors.",
+      "acceptance_criteria": [
+        "Upgrade the live coordination workflow to current supported actions/checkout and keep existing fetch-depth/auth behaviour intact.",
+        "Add a validator that scans repository workflow YAML for actions/checkout and actions/setup-node versions below their Node-24-compatible major baseline.",
+        "Run the action-version validator inside the Agent coordination workflow so future PR-added workflows are checked before merge.",
+        "Allow newer supported major versions without requiring every workflow to pin the exact latest patch.",
+        "Fail with the workflow path, action and unsupported major version.",
+        "Document why the minimum exists and keep this task limited to action-runtime maintenance rather than workflow redesign."
+      ],
+      "likely_files": [
+        ".github/workflows/agent-coordination.yml",
+        "scripts/validate-actions-runtime.mjs",
+        "README.md"
+      ],
+      "notes": "Created after GitHub Actions run #420 warned that actions/checkout@v4 targets deprecated Node 20 and is being forced onto Node 24. Official actions/checkout and actions/setup-node currently provide v7; minimum policy should protect Node-24-compatible majors rather than force every patch update."
     }
   ],
   "agent_roster": [
