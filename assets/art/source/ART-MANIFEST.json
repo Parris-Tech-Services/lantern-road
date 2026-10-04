@@ -4,7 +4,13 @@
   "style_lock_status": "approved-by-josh-awaiting-director-review",
   "house_style": {
     "medium": "painted low-fantasy illustration with subtle ink/gouache field-journal texture",
-    "palette": ["parchment", "earth brown", "weathered olive", "smoky slate blue", "lantern gold"],
+    "palette": [
+      "parchment",
+      "earth brown",
+      "weathered olive",
+      "smoky slate blue",
+      "lantern gold"
+    ],
     "lighting": "natural overcast/daylight with restrained warm practical light",
     "costume": "practical frontier clothing and gear with visible wear",
     "rendering": "semi-realistic, readable silhouette, restrained detail at phone scale",
@@ -75,18 +81,77 @@
     {
       "generation_id": "5e86892b-3733-4ed8-ba65-aa0c22d70aec",
       "reason": "Another full map generated instead of standalone settlement art."
+    },
+    {
+      "generation_id": "9737f6b2-0877-4aed-9ca0-ef794ae9df40",
+      "reason": "Map generated when the Tessa Reed standalone NPC portrait brief was requested; rejected for subject/type mismatch."
     }
   ],
   "production_queue": [
-    {"id": "tessa_reed", "kind": "npc-portrait", "priority": 1, "status": "next"},
-    {"id": "rowan_pike", "kind": "npc-portrait", "priority": 1, "status": "queued"},
-    {"id": "sen_marrow", "kind": "npc-portrait", "priority": 1, "status": "queued"},
-    {"id": "edda_briar", "kind": "npc-portrait", "priority": 1, "status": "queued"},
-    {"id": "nera_vale", "kind": "npc-portrait", "priority": 1, "status": "queued"},
-    {"id": "hearthwick", "kind": "settlement-environment", "priority": 1, "status": "retry-after-context-reset"},
-    {"id": "greyfen", "kind": "settlement-environment", "priority": 1, "status": "queued"},
-    {"id": "candlemere", "kind": "settlement-environment", "priority": 1, "status": "queued"},
-    {"id": "alderwatch", "kind": "settlement-environment", "priority": 1, "status": "queued"},
-    {"id": "blacksalt", "kind": "settlement-environment", "priority": 1, "status": "queued"}
+    {
+      "id": "tessa_reed",
+      "kind": "npc-portrait",
+      "priority": 1,
+      "status": "next"
+    },
+    {
+      "id": "rowan_pike",
+      "kind": "npc-portrait",
+      "priority": 1,
+      "status": "queued"
+    },
+    {
+      "id": "sen_marrow",
+      "kind": "npc-portrait",
+      "priority": 1,
+      "status": "queued"
+    },
+    {
+      "id": "edda_briar",
+      "kind": "npc-portrait",
+      "priority": 1,
+      "status": "queued"
+    },
+    {
+      "id": "nera_vale",
+      "kind": "npc-portrait",
+      "priority": 1,
+      "status": "queued"
+    },
+    {
+      "id": "hearthwick",
+      "kind": "settlement-environment",
+      "priority": 1,
+      "status": "retry-after-context-reset"
+    },
+    {
+      "id": "greyfen",
+      "kind": "settlement-environment",
+      "priority": 1,
+      "status": "queued"
+    },
+    {
+      "id": "candlemere",
+      "kind": "settlement-environment",
+      "priority": 1,
+      "status": "queued"
+    },
+    {
+      "id": "alderwatch",
+      "kind": "settlement-environment",
+      "priority": 1,
+      "status": "queued"
+    },
+    {
+      "id": "blacksalt",
+      "kind": "settlement-environment",
+      "priority": 1,
+      "status": "queued"
+    }
+  ],
+  "generation_notes": [
+    "Recent conversational context heavily biases generation toward cartography; do not accept off-brief map outputs as settlement or portrait assets.",
+    "Quality rule: reject wrong asset type even when visually strong.",
+    "Next clean generation session should begin from the portrait/location brief before discussing maps."
   ]
 }
