@@ -40,6 +40,8 @@ Keep this short. Record decisions that future agents would otherwise relitigate.
 
 | 2026-10-04 | Ratify Hollowwold, Reedmarsh, Barrow Ridge, Watcherwood, Greyfen Plain and Stoneveil Heights as CANON non-node regional labels; reject Embermere/Siltbrook Marsh and defer Mourn Lake/Wyrthen Forest. | Gives the approved Grey March painting memorable landscape vocabulary without adding gameplay nodes, moving places or expanding the compact 9×8 campaign. |
 
+| 2026-10-04 | **Supersede universal Agent 1–5 Director review with review-by-exception:** only tasks explicitly marked `director_review: REQUIRED` need Agent 7 approval; missing/`NOT_REQUIRED` defaults to no review. Frozen parked PRs may merge without waking the owner, and Agent 7 may approve+merge a frozen REQUIRED-review PR in one session. | Josh explicitly chose to err on the side of fewer reviews. Review the design-setting contract once, then let routine implementation/tooling/asset production flow; keep exact-head review only for genuine creative/canon/player-promise risk. |
+
 ## How to add a decision
 
 Add one row when a task changes architecture, product direction, ownership boundaries, save compatibility, testing policy, or another choice that future agents are likely to revisit.
