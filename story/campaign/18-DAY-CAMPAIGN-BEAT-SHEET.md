@@ -188,9 +188,11 @@ Good material:
 - a returning NPC;
 - one of the heroes noticing how many local stories now involve who can move where.
 
-Foreshadow Moonmere:
+Foreshadow both **The Silent Tower** and **Ash in the Marsh**:
 
 > Somebody in Candlemere has an old map that does not agree with the roads people currently call inevitable.
+
+> Down south, the Mosslight rumours are starting to sound less like ghost stories and more like a route network somebody depends on.
 
 ---
 
