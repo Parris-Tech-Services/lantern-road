@@ -44,7 +44,7 @@ node scripts/aed-report.mjs --json
 node --test tests/aed-report.test.mjs
 ```
 
-The report reads only `.agent-coordination/WORK-QUEUE.json` and `.agent-coordination/claims/*.lock.json`. It also prints a ranked **critical-path flow inbox**: high-priority/high-fan-out parked work is classified as `DIRECTOR_REVIEW`, `OWNER_MERGE`, or `PARKED_WAIT` so the team can drain finished work before creating more backlog. It does not claim tasks, change lifecycle state, approve PRs or modify repository files.
+The report reads the coordination queue/claims plus structured Warden findings under `QA/findings/`. It prints a ranked **critical-path flow inbox** and **player-impact QA metrics**: unresolved/resolved high-impact findings, pending retests, parked-review age, a median time-to-playable-improvement proxy, and finding reopen/rework rate. Metrics are reported as unavailable when the repository does not contain enough timestamped evidence. The tool does not claim tasks, change lifecycle state, approve PRs or modify repository files.
 
 ## CI action runtime policy
 
