@@ -83,6 +83,7 @@ test("save survives a page reload and load restores campaign progress", async ({
   if (await introButton.isVisible()) await introButton.click();
 
   await page.locator("#loadBtn").click();
+  await page.getByRole("button", { name: "Load manual save" }).click();
   await expect(page.locator("#feedbackRoot")).toContainText("Campaign loaded");
 
   const restored = await snapshot(page);
