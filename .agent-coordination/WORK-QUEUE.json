@@ -2167,7 +2167,7 @@
       "likely_files": [
         "docs/MOBILE-SAFE-AREA-CONTRACT.md"
       ],
-      "notes": "Formalises the collision problem found during LR-0009 so future surfaces do not regress it."
+      "notes": "PARKED HANDOFF (4 Oct 2026): authoring complete on branch agent/LR-0081-mobile-safe-area-3f9c2a71 at head 0ac9d7be4f2ae5e6266a9f5419c868ffa4057c3e, PR #37. Final diff adds docs/MOBILE-SAFE-AREA-CONTRACT.md only, defining reserved edge zones, layer priority, modal/tab/map-control collision rules, external launcher/dock yielding, safe-area fallback and enlarged-text checks for LR-0009/LR-0040/LR-0074. No runtime CSS changed. Remaining external condition is Agent 7 approval; fresh claim required before later edits or final merge preparation."
     },
     {
       "id": "LR-0082",
@@ -2376,5 +2376,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T16:12:00+11:00"
+  "updated_at": "2026-10-04T17:42:00+11:00"
 }
