@@ -1354,6 +1354,31 @@
         "tests/"
       ],
       "notes": "Integration counterpart to LR-0047. Distinct from LR-0008, which owns the regional 18-day campaign beats/endings, and LR-0025, which independently QA-tests quest-state integrity."
+    },
+    {
+      "id": "LR-0049",
+      "title": "Parallel work lanes and parked-claim policy",
+      "status": "READY",
+      "priority": 0,
+      "exclusive_scope": "parallel-work-policy",
+      "depends_on": [],
+      "primary_agent": 7,
+      "goal": "Remove avoidable swarm idle time without bypassing safety gates by distinguishing active work from safely parked branches and by creating real non-conflicting authoring/design/test-prep lanes.",
+      "acceptance_criteria": [
+        "Update coordination rules so a task that is fully implemented but only waiting on external merge gates or human sign-off is parked with a clear handoff and releases its active scope lock rather than monopolising the agent session.",
+        "Preserve create-only ownership: parked work must be freshly re-claimed before any later code changes or merge reconciliation.",
+        "Audit the live queue for tasks whose dependencies are already DONE but whose lifecycle status is still BLOCKED, and correct concrete lifecycle errors.",
+        "Add only substantive independent work lanes that produce durable assets/specifications/tests and feed existing blocked implementation tasks; do not create filler merely to keep agents busy.",
+        "Address the verified service-worker stale-cache defect with an appropriately scoped specialist task without duplicating LR-0009's visible build identifier or the broader LR-0040 PWA lifecycle work.",
+        "Record the parallelism/parked-claim governance decision in docs/DECISIONS.md and keep foundation merge/evidence gates intact."
+      ],
+      "likely_files": [
+        ".agent-coordination/CLAIM-PROTOCOL.md",
+        "AGENTS.md",
+        ".agent-coordination/WORK-QUEUE.json",
+        "docs/DECISIONS.md"
+      ],
+      "notes": "Director coordination task created from Josh's explicit request to reduce idle agents after reviewing Claude Code's queue feedback against the current live repository."
     }
   ],
   "agent_roster": [
@@ -1411,5 +1436,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T15:36:00+11:00"
+  "updated_at": "2026-10-04T15:48:00+11:00"
 }
