@@ -7,7 +7,7 @@ These rules are mandatory for every coding/research agent working in this reposi
 1. Read `docs/VISION.md`, `docs/DECISIONS.md`, and `docs/TERMINOLOGY.md` so product direction and language are shared rather than re-invented per agent.
 2. Read `.agent-coordination/CLAIM-PROTOCOL.md`.
 3. Read `.agent-coordination/WORK-QUEUE.json`.
-4. Identify your assigned Lantern Road agent number from the seven-agent roster in `WORK-QUEUE.json`.
+4. Identify your assigned Lantern Road agent number from the eight-agent roster in `WORK-QUEUE.json`.
 5. Choose one task whose `status` is `READY`, whose dependencies are complete, and whose `primary_agent` matches your assigned agent number. Do not claim another role's task unless Josh has explicitly reassigned it or the queue itself has been updated.
 6. Generate a fresh UUIDv4 `session_id` and UUIDv4 `claim_token` for this chat/session.
 7. Attempt to create the task's **exclusive scope lock** exactly as described in the claim protocol, including your `agent_number`.
@@ -86,6 +86,20 @@ Agent 7 — **The Director** owns design coherence and production governance.
 - The Director must not implement specialist features as part of review or use governance to expand the product beyond the agreed vision.
 - Routine PR reviews are standing governance work and do not require a separate feature claim. Substantive Director projects still use its LR-0033+ queue tasks and normal claim locks.
 
+
+
+## AED efficiency rule
+
+Agent 8 — **AED (Agent Efficiency Department)** is the cross-agent operations and efficiency role.
+
+- Audit Agents 1–7, the queue, claims, branches/PRs, repository layout, code hotspots, tooling availability, blockers and handoff friction.
+- Optimise for less waiting, less duplicate work, smaller collision surfaces and clearer ownership. AED must not become a new approval gate.
+- Do not take over or edit another agent's live claimed specialist scope. Route fixes to the existing owner, or create/reassign queue work only when there is a genuine ownership gap and no conflicting live claim.
+- AED may implement coordination/reporting tooling, repository-process improvements and audit artifacts only under its own normal claimed tasks.
+- Respect Agent 7's design-governance authority and Josh's final creative authority. AED can identify design-process friction but does not approve product direction.
+- Prefer measurable evidence: dependency fan-out, READY/BLOCKED distribution, active-lock state, repeated claim/parking cycles, shared-file collision risk, CI/tool failures and stale project surfaces.
+- Before proposing a new task, search the queue for an existing owner/task and extend or route there instead of creating filler.
+- Efficiency recommendations must preserve correctness, save compatibility, map canon, QA independence and the create-only ownership guarantees.
 
 ## Evidence-gated foundation completion
 
