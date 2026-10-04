@@ -4069,6 +4069,27 @@
       ],
       "director_review": "NOT_REQUIRED",
       "notes": "Created at Josh's explicit request when the current Agent 7 chat reached practical context length. This is Director-role durability, not an AED efficiency audit and not a specialist feature task. Completed 5 Oct 2026 via PR #117, squash merge d67934572aca37ddd1e7a6994c5960c7ebd8d793. Durable Director cadence and chat-handover rules added to AGENTS/DECISIONS. Agent coordination run #1149 and browser regression run #31 passed on the exact PR head."
+    },
+    {
+      "id": "LR-0153",
+      "title": "Record Map Canon v2 expansion decision",
+      "status": "READY",
+      "priority": 0,
+      "primary_agent": 1,
+      "exclusive_scope": "map-canon-v2-decision",
+      "depends_on": [],
+      "goal": "Record Josh-approved Map Canon v2 direction in the durable decision log without yet mutating protected map data.",
+      "acceptance_criteria": [
+        "Record the target Grey March size as 24×18 (432 hexes), preserving pointy-top odd-r coordinates.",
+        "Record that the existing 16 canonical places remain and the current 9×8 world becomes the developed core province inside the larger map.",
+        "Record save-safe migration requirements for position, discovered hexes/sites and stable existing ids.",
+        "Record the larger atlas/zoom direction, regional/location density targets and travel-pacing principles.",
+        "Record staged rollout ownership while stating that actual grid resize/projection/canon mutation requires a later dedicated map-canon change under MAP-CANON-PROTOCOL."
+      ],
+      "likely_files": [
+        "docs/DECISIONS.md"
+      ],
+      "notes": "Josh explicitly approved the 24×18 Map Canon v2 direction on 5 Oct 2026. This task records the durable product decision only; it does not mutate world/map-canon.json, content.js, saves or projection."
     }
   ],
   "agent_roster": [
@@ -4131,5 +4152,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-05T09:14:00+11:00"
+  "updated_at": "2026-10-05T10:07:00+11:00"
 }
