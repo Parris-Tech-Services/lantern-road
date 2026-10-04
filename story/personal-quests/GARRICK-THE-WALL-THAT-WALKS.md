@@ -162,6 +162,10 @@ The player backs Perrin's rotating local plan.
 
 Garrick must train people, assign responsibility, and leave before everything is perfect.
 
+**Benefit:** the crossing gains more than one capable protector and can remain useful after the party leaves.
+
+**Cost:** inexperienced locals accept real risk, and Garrick has to walk away before he can personally guarantee the result.
+
 He hates this.
 
 That is why it matters.
@@ -205,6 +209,10 @@ The player backs Garrick's instinct to stay.
 
 The party spends meaningful time while he personally secures the crossing and trains nobody beyond immediate instructions.
 
+**Benefit:** the crossing is safer immediately under the party's strongest defender.
+
+**Cost:** the campaign loses time, local capability barely improves, and the route still depends on somebody like Garrick being present.
+
 The crossing is safer **now**.
 
 That is a legitimate result.
@@ -234,6 +242,10 @@ He is more comfortable with **The Guarded Road** or another model with explicit 
 ### Outcome C — **Close the Crossing**
 
 The player decides the crossing is not worth the present risk.
+
+**Benefit:** nobody is asked to absorb an open-ended danger simply because the route would be convenient.
+
+**Cost:** travellers walk farther, supplies take longer, and some people lose practical access they previously relied on.
 
 This is not framed as cowardice.
 
