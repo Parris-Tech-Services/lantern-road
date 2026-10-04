@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0034",
+  "exclusive_scope": "design-conflict-audit",
+  "agent_number": 7,
+  "agent": "The Director",
+  "session_id": "99d6f441-35bc-40ee-ad2c-b20364e7c729",
+  "claim_token": "dea7a868-bbe9-444e-8db2-42225d4900f4",
+  "claimed_at": "2026-10-04T15:22:00+11:00",
+  "expires_at": "2026-10-05T03:22:00+11:00",
+  "branch": "agent/LR-0034-design-conflict-audit-99d6f441",
+  "note": "Implementing only LR-0034."
+}
