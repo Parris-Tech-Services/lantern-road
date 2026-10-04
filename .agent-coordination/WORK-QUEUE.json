@@ -145,7 +145,8 @@
       "merge_gate_depends_on": [
         "LR-0011",
         "LR-0013"
-      ]
+      ],
+      "director_review": "REQUIRED"
     },
     {
       "id": "LR-0006",
@@ -170,7 +171,8 @@
       "merge_gate_depends_on": [
         "LR-0011",
         "LR-0013"
-      ]
+      ],
+      "director_review": "REQUIRED"
     },
     {
       "id": "LR-0007",
@@ -229,7 +231,8 @@
         "game.js"
       ],
       "notes": "Premium-gap area: campaign arc/replayability. Architecture dependency narrowed by LR-0128: replaces all-or-nothing LR-0010 wait with stage(s) LR-0138; final integration remains governed by LR-0010 where separately applicable.",
-      "primary_agent": 2
+      "primary_agent": 2,
+      "director_review": "REQUIRED"
     },
     {
       "id": "LR-0009",
@@ -339,7 +342,8 @@
         "required_repository_paths": [
           "tests/fixtures/saves/legacy/"
         ]
-      }
+      },
+      "director_review": "NOT_REQUIRED"
     },
     {
       "id": "LR-0012",
@@ -412,7 +416,8 @@
         "required_repository_paths": [
           "tests/e2e/"
         ]
-      }
+      },
+      "director_review": "NOT_REQUIRED"
     },
     {
       "id": "LR-0014",
@@ -1478,7 +1483,8 @@
         "systems/economy/",
         "docs/"
       ],
-      "notes": "DONE 2026-10-04. Director-approved PR #24 merged to main as 1368193bc17c7bd04a4ed53e3f722313241adf3f. Reviewed feature head 6f2d2c21fd424e77897e73c61c9896bf0a856654 with Director approval commit 2e9563d1c178b2ab3c58cb2d9fdaaae39be6de18; Agent coordination #547 SUCCESS. Economy baseline model and target ranges are canonical inputs for LR-0016/LR-0020."
+      "notes": "DONE 2026-10-04. Director-approved PR #24 merged to main as 1368193bc17c7bd04a4ed53e3f722313241adf3f. Reviewed feature head 6f2d2c21fd424e77897e73c61c9896bf0a856654 with Director approval commit 2e9563d1c178b2ab3c58cb2d9fdaaae39be6de18; Agent coordination #547 SUCCESS. Economy baseline model and target ranges are canonical inputs for LR-0016/LR-0020.",
+      "director_review": "REQUIRED"
     },
     {
       "id": "LR-0053",
@@ -1500,7 +1506,8 @@
         "systems/combat/",
         "docs/"
       ],
-      "notes": "DONE 2026-10-04. Director-approved PR #19 merged to main as 6cf2eeda190c00d22383fdc4e0b75105fcec918e. Reviewed feature head cb6069b8f41b0ec485a4aed829ed57de23d03662 with Director approval commit e0e1c1f63a1841c4b937c1b7155377366a9021c7; Agent coordination #555 SUCCESS. Compact-combat depth and enemy-intent specification is canonical for LR-0015/LR-0019."
+      "notes": "DONE 2026-10-04. Director-approved PR #19 merged to main as 6cf2eeda190c00d22383fdc4e0b75105fcec918e. Reviewed feature head cb6069b8f41b0ec485a4aed829ed57de23d03662 with Director approval commit e0e1c1f63a1841c4b937c1b7155377366a9021c7; Agent coordination #555 SUCCESS. Compact-combat depth and enemy-intent specification is canonical for LR-0015/LR-0019.",
+      "director_review": "REQUIRED"
     },
     {
       "id": "LR-0054",
@@ -1549,7 +1556,8 @@
         ".agent-coordination/gate-evidence/README.md",
         ".agent-coordination/DESIGN-REVIEW-PROTOCOL.md"
       ],
-      "notes": "PARKED HANDOFF: current-main reconciliation complete on branch agent/LR-0055-foundation-policy-69f9a050-r5, exact useful head e4f1ccbb154c2dd690b2d7e0a00a08c83776640c, draft PR #74 (supersedes closed stale PR #17). Mechanical queue comparison confirmed every non-policy task and top-level queue metadata match live main; only LR-0011/LR-0013/LR-0014/LR-0055/LR-0056 carry intended policy deltas. Agent coordination run #689 (37187380586) passed every step. Next action: Agent 7 exact-head approval, then fresh Agent 1 claim before merge."
+      "notes": "PARKED HANDOFF: current-main reconciliation complete on branch agent/LR-0055-foundation-policy-69f9a050-r5, exact useful head e4f1ccbb154c2dd690b2d7e0a00a08c83776640c, draft PR #74 (supersedes closed stale PR #17). Mechanical queue comparison confirmed every non-policy task and top-level queue metadata match live main; only LR-0011/LR-0013/LR-0014/LR-0055/LR-0056 carry intended policy deltas. Agent coordination run #689 (37187380586) passed every step. Next action: Agent 7 exact-head approval, then fresh Agent 1 claim before merge.",
+      "director_review": "NOT_REQUIRED"
     },
     {
       "id": "LR-0056",
@@ -1594,7 +1602,8 @@
         "systems/equipment/",
         "docs/"
       ],
-      "notes": "DONE 2026-10-04. Director-approved PR #25 merged to main as bcd1c3d4d4b41a3ebed284d791f432ce0d149778. Reviewed feature head 4343f8e524374c8ff0c824d2260c230723503ba4 with Director approval commit 498e7a8a3bae7018d855c0a9084d6a9b46fc6461; Agent coordination #558 SUCCESS. Equipment ecosystem/trade-off catalogue is canonical for LR-0017."
+      "notes": "DONE 2026-10-04. Director-approved PR #25 merged to main as bcd1c3d4d4b41a3ebed284d791f432ce0d149778. Reviewed feature head 4343f8e524374c8ff0c824d2260c230723503ba4 with Director approval commit 498e7a8a3bae7018d855c0a9084d6a9b46fc6461; Agent coordination #558 SUCCESS. Equipment ecosystem/trade-off catalogue is canonical for LR-0017.",
+      "director_review": "REQUIRED"
     },
     {
       "id": "LR-0058",
@@ -1616,7 +1625,8 @@
         "systems/injuries/",
         "docs/"
       ],
-      "notes": "DONE 2026-10-04. Director-approved PR #28 merged to main as 77967abedd1c421cd25759bb52c2f19cc6836254. Reviewed feature head 485bbb5364bbbde2d6ec3dc68b100a6bf5b47ede with Director approval commit f81cbabc9fc3ac5766dc417a13938115ad571246; Agent coordination #560 SUCCESS. Injury/condition/recovery catalogue is canonical for LR-0018."
+      "notes": "DONE 2026-10-04. Director-approved PR #28 merged to main as 77967abedd1c421cd25759bb52c2f19cc6836254. Reviewed feature head 485bbb5364bbbde2d6ec3dc68b100a6bf5b47ede with Director approval commit f81cbabc9fc3ac5766dc417a13938115ad571246; Agent coordination #560 SUCCESS. Injury/condition/recovery catalogue is canonical for LR-0018.",
+      "director_review": "REQUIRED"
     },
     {
       "id": "LR-0059",
@@ -2752,7 +2762,8 @@
         "systems/leader/",
         "design/PLAYER-LEADER-PARTY-CONTRACT.md"
       ],
-      "notes": "DONE 2026-10-04. Director-approved PR #54 merged to main as bf4f840b3a825cf9f3643cadc71a58f4b47ee2d2. Reviewed feature head bd5449e8c3ddbeccda05329a1b5611734b1221a2 with Director approval commit 704a4f5960afb89614bdd18529d7d1d4fbb5b352; Agent coordination #904 SUCCESS. Canon now includes ordinary Leader knockout, camp/support reserve, Lead From the Front / Steady Hand, and one permanent Renown-2 focus."
+      "notes": "DONE 2026-10-04. Director-approved PR #54 merged to main as bf4f840b3a825cf9f3643cadc71a58f4b47ee2d2. Reviewed feature head bd5449e8c3ddbeccda05329a1b5611734b1221a2 with Director approval commit 704a4f5960afb89614bdd18529d7d1d4fbb5b352; Agent coordination #904 SUCCESS. Canon now includes ordinary Leader knockout, camp/support reserve, Lead From the Front / Steady Hand, and one permanent Renown-2 focus.",
+      "director_review": "REQUIRED"
     },
     {
       "id": "LR-0104",
@@ -2808,7 +2819,8 @@
         "docs/WORLD-MAP-CANON.md",
         ".agent-coordination/MAP-CANON-PROTOCOL.md"
       ],
-      "notes": "PARKED HANDOFF: implementation complete on branch agent/LR-0105-regional-canon-c12d0e41, exact useful feature head 3ab1792b557a701d3d9286285b8a74ecb0a8ca15, draft PR #95. Exact LR-0104 six-region registry, concept dispositions, schema/runtime validation, protected regional-label change enforcement, LR-0073 overlay documentation, and compatible map-canon→Director dual-review tail are implemented. Map Canon run #27 passed registry/gameplay validation and is red only for missing Agent 7 map-canon approval. Agent Coordination run #967 passed queue/runtime validation and all PR-claim regression tests and is red only for missing final Agent 7 design review. Next action: Agent 7 appends map-canon review-only commit for the feature head, then final design-review-only commit; fresh Agent 1 claim before merge preparation."
+      "notes": "PARKED HANDOFF: implementation complete on branch agent/LR-0105-regional-canon-c12d0e41, exact useful feature head 3ab1792b557a701d3d9286285b8a74ecb0a8ca15, draft PR #95. Exact LR-0104 six-region registry, concept dispositions, schema/runtime validation, protected regional-label change enforcement, LR-0073 overlay documentation, and compatible map-canon→Director dual-review tail are implemented. Map Canon run #27 passed registry/gameplay validation and is red only for missing Agent 7 map-canon approval. Agent Coordination run #967 passed queue/runtime validation and all PR-claim regression tests and is red only for missing final Agent 7 design review. Next action: Agent 7 appends map-canon review-only commit for the feature head, then final design-review-only commit; fresh Agent 1 claim before merge preparation.",
+      "director_review": "NOT_REQUIRED"
     },
     {
       "id": "LR-0106",
@@ -2860,7 +2872,8 @@
       "notes": "PARKED HANDOFF post-LR-0145 current-main replay: branch agent/LR-0107-static-runtime-fixed-5f1b3a2e, exact useful head 68492a68dbbdad61ab8eafcda7016c435ed65f22, draft PR #97 (supersedes closed #89/#55). Changes only validator/workflow/README. Static runtime integrity run #12 / 37195510540 passed against main with LR-0145's save-system.js APP_SHELL fix. Agent coordination passes queue/runtime/regression steps and is red only for missing Agent 7 exact-head review. Next action: Agent 7 approval; fresh Agent 1 claim before merge preparation.",
       "merge_gate_depends_on": [
         "LR-0145"
-      ]
+      ],
+      "director_review": "NOT_REQUIRED"
     },
     {
       "id": "LR-0108",
@@ -3252,7 +3265,8 @@
         "assets/ui/materials/README.md",
         "docs/ART-DIRECTION.md"
       ],
-      "notes": "PARKED pending refreshed Director exact-head review after merge-conflict resolution. PR #66 branch agent/LR-0124-ui-materials-3d6fcf41 now at e09800eb898226a7c0fa4fb92128380ea1ef7bfe. The prior feature approval was valid, but LR-0121 landed first and both appended docs/ART-DIRECTION.md; conflict was resolved by preserving both approved iconography and UI-material sections without changing the six material SVG assets. Fresh Agent 7 review is required for the resolved head before merge."
+      "notes": "PARKED pending refreshed Director exact-head review after merge-conflict resolution. PR #66 branch agent/LR-0124-ui-materials-3d6fcf41 now at e09800eb898226a7c0fa4fb92128380ea1ef7bfe. The prior feature approval was valid, but LR-0121 landed first and both appended docs/ART-DIRECTION.md; conflict was resolved by preserving both approved iconography and UI-material sections without changing the six material SVG assets. Fresh Agent 7 review is required for the resolved head before merge.",
+      "director_review": "NOT_REQUIRED"
     },
     {
       "id": "LR-0125",
@@ -3348,7 +3362,8 @@
         "assets/ui/effects/",
         "docs/ART-DIRECTION.md"
       ],
-      "notes": "PARKED pending Director exact-head review. PR #76, branch agent/LR-0127-motion-vfx-1c7b9d4f, useful head de9096fbce708b8176dbbab67a9d57870fcc10a7. Added motion/VFX production bible plus five decorative SVG effect sources (rain, fog, embers, lantern bloom, sacred halo). QA: required choreography/atmosphere/reduced-motion/discomfort sections present; ~2.7 KB SVG source total; no scripts, text or remote dependencies. Coordination checks pass; only remaining gate is .agent-coordination/design-reviews/LR-0127.json."
+      "notes": "PARKED pending Director exact-head review. PR #76, branch agent/LR-0127-motion-vfx-1c7b9d4f, useful head de9096fbce708b8176dbbab67a9d57870fcc10a7. Added motion/VFX production bible plus five decorative SVG effect sources (rain, fog, embers, lantern bloom, sacred halo). QA: required choreography/atmosphere/reduced-motion/discomfort sections present; ~2.7 KB SVG source total; no scripts, text or remote dependencies. Coordination checks pass; only remaining gate is .agent-coordination/design-reviews/LR-0127.json.",
+      "director_review": "NOT_REQUIRED"
     },
     {
       "id": "LR-0128",
@@ -3407,7 +3422,8 @@
         "assets/art/ASSET-SPECS.json",
         "docs/ART-DIRECTION.md"
       ],
-      "notes": "PARKED pending Director exact-head review. PR #77, branch agent/LR-0129-art-production-contract-5a2b7347, useful head 778f1e4d41cbe4a4091c4cb260d576afbb3664ff. Added exact composition/crop/export contract and machine-readable ASSET-SPECS.json grounded in 58 px entry, 76–92 px card and ~112 px wide-phone art cases. QA: all category/crop/export/provenance sections present and JSON parses across eight asset categories. Coordination checks pass; only remaining gate is .agent-coordination/design-reviews/LR-0129.json."
+      "notes": "PARKED pending Director exact-head review. PR #77, branch agent/LR-0129-art-production-contract-5a2b7347, useful head 778f1e4d41cbe4a4091c4cb260d576afbb3664ff. Added exact composition/crop/export contract and machine-readable ASSET-SPECS.json grounded in 58 px entry, 76–92 px card and ~112 px wide-phone art cases. QA: all category/crop/export/provenance sections present and JSON parses across eight asset categories. Coordination checks pass; only remaining gate is .agent-coordination/design-reviews/LR-0129.json.",
+      "director_review": "REQUIRED"
     },
     {
       "id": "LR-0130",
@@ -3800,7 +3816,8 @@
         "docs/AUDIO-DIRECTION.md",
         "docs/AUDIO-PROVENANCE.md"
       ],
-      "notes": "Producer-only Lamplighter task split from LR-0032 so audio creation does not wait for Agent 1's UI/render seam. LR-0032 consumes this pack later."
+      "notes": "Producer-only Lamplighter task split from LR-0032 so audio creation does not wait for Agent 1's UI/render seam. LR-0032 consumes this pack later.",
+      "director_review": "NOT_REQUIRED"
     },
     {
       "id": "LR-0144",
@@ -3828,7 +3845,8 @@
         "docs/ART-PROVENANCE.md",
         "docs/ART-DIRECTION.md"
       ],
-      "notes": "Producer-only Lamplighter task split from LR-0031. It becomes READY once LR-0042 source generation and LR-0129 production contract are DONE; it does not depend on Agent 1 architecture."
+      "notes": "Producer-only Lamplighter task split from LR-0031. It becomes READY once LR-0042 source generation and LR-0129 production contract are DONE; it does not depend on Agent 1 architecture.",
+      "director_review": "NOT_REQUIRED"
     },
     {
       "id": "LR-0145",
@@ -3852,12 +3870,13 @@
       "likely_files": [
         "sw.js"
       ],
-      "notes": "Completed 4 Oct 2026 via PR #92, squash merge e78f8c7400cc73fa447e1894e0b1ca778e4f9675. Production change adds ./save-system.js to sw.js APP_SHELL and preserves existing network-first/cache/skipWaiting/clients.claim behaviour. Current-main reconstruction had already passed exact LR-0107 static runtime validation and 390x844 Chromium first-install→offline→reload in Actions run 37193340901 / artifact 11300176435. Agent 7 approved useful head 566c3d5905f2d8bc427f070373657e72c62f836c; approval head a1adca8a799c58b7e2477adada23cce339b4bfc1 had green coordination validation."
+      "notes": "Completed 4 Oct 2026 via PR #92, squash merge e78f8c7400cc73fa447e1894e0b1ca778e4f9675. Production change adds ./save-system.js to sw.js APP_SHELL and preserves existing network-first/cache/skipWaiting/clients.claim behaviour. Current-main reconstruction had already passed exact LR-0107 static runtime validation and 390x844 Chromium first-install→offline→reload in Actions run 37193340901 / artifact 11300176435. Agent 7 approved useful head 566c3d5905f2d8bc427f070373657e72c62f836c; approval head a1adca8a799c58b7e2477adada23cce339b4bfc1 had green coordination validation.",
+      "director_review": "NOT_REQUIRED"
     },
     {
       "id": "LR-0146",
       "title": "Replace universal Director review with review-by-exception",
-      "status": "READY",
+      "status": "DONE",
       "priority": 0,
       "exclusive_scope": "aed-review-by-exception",
       "depends_on": [
@@ -3888,7 +3907,8 @@
         "tests/verify-pr-claim.test.mjs",
         "scripts/validate-agent-coordination.mjs"
       ],
-      "notes": "Josh explicitly directed the system to err on the side of fewer reviews. Review remains available for real creative/design risk; routine specialist work should flow without a universal Agent 7 tollbooth."
+      "notes": "Completed 4 Oct 2026 via PR #102, merge commit 27896880a95965350dee4e9a3ecbcad7660dcddf. Josh directed the project to err on the side of fewer reviews. Director review is now review-by-exception: only explicit director_review=REQUIRED tasks need Agent 7; missing/NOT_REQUIRED defaults to no review. Frozen parked NOT_REQUIRED PRs may merge at exact recorded head without owner re-claim; frozen REQUIRED PRs may be approved+merged by Agent 7 in one session if gates are DONE. Exact-head Agent coordination and AED report tests both passed.",
+      "director_review": "NOT_REQUIRED"
     },
     {
       "id": "LR-0147",
@@ -3983,5 +4003,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T21:37:00+11:00"
+  "updated_at": "2026-10-04T21:52:00+11:00"
 }
