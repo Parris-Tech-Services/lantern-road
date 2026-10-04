@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0110",
+  "exclusive_scope": "mobile-back-navigation-authoring",
+  "agent_number": 5,
+  "agent": "The Wayfinder",
+  "session_id": "1100b1c2-3333-4aaa-9bbb-000000001100",
+  "claim_token": "1100c1d2-4444-4aaa-9bbb-000000001100",
+  "claimed_at": "2026-10-04T19:25:00+11:00",
+  "expires_at": "2026-10-05T07:25:00+11:00",
+  "branch": "agent/LR-0110-mobile-back-a4f96d3c",
+  "note": "Fresh Agent 5 finalisation claim after Agent 7 exact-head approval of PR #58."
+}
