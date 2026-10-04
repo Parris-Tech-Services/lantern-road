@@ -129,6 +129,37 @@ fs.mkdirSync(OUT, { recursive: true });
       console.log("EXPLORE_MODAL_BUTTONS",JSON.stringify(eLabels));
     }
 
+    await clickExact("Make camp here","camp on the plains at 2am");
+    await snapshot("14-plains-camp");
+    const campModal=page.locator("#modalRoot");
+    const campLabels=await campModal.getByRole("button").evaluateAll(bs=>bs.filter(b=>!b.disabled && (b.offsetWidth||b.offsetHeight||b.getClientRects().length)).map(b=>(b.innerText||"").trim()));
+    console.log("PLAINS_CAMP_BUTTONS",JSON.stringify(campLabels));
+    const campChoices=campLabels.filter(x=>x && x!=="Close" && x!=="⚙");
+    if(campChoices.length){
+      await clickExact(campChoices[0],"plains camp: first visible choice");
+      await snapshot("15-plains-camp-result");
+    }
+    await closeModal();
+
+    async function tapMap(x,y,label,snap){
+      const cv=page.locator("#mapCanvas");
+      await cv.scrollIntoViewIfNeeded();
+      const bx=await cv.boundingBox();
+      console.log("ACTION "+label,JSON.stringify({x,y,box:bx}));
+      await page.touchscreen.tap(bx.x+x,bx.y+y);
+      await settle();
+      await snapshot(snap);
+      const md=page.locator("#modalRoot");
+      const txt=(await md.innerText()).trim();
+      if(txt){
+        const labs=await md.getByRole("button").evaluateAll(bs=>bs.filter(b=>!b.disabled && (b.offsetWidth||b.offsetHeight||b.getClientRects().length)).map(b=>(b.innerText||"").trim()));
+        console.log("TRAVEL_MODAL_BUTTONS",JSON.stringify(labs));
+      }
+    }
+
+    await tapMap(170,212,"continue east across the plains","16-east-step-2");
+    await tapMap(204,212,"continue east again","17-east-step-3");
+
     console.log("\n=== BROWSER ERRORS ===");
     console.log(JSON.stringify({pageErrors,consoleErrors},null,2));
   } finally { await browser.close(); }
