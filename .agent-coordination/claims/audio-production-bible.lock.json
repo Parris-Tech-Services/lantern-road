@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0126",
+  "exclusive_scope": "audio-production-bible",
+  "agent_number": 4,
+  "agent": "The Lamplighter",
+  "session_id": "8a9f34a9-3a95-47b2-b2a9-0d16c4f1a623",
+  "claim_token": "caa8c88f-5f22-4f93-8de0-25b0384f6b47",
+  "claimed_at": "2026-10-04T18:50:00+11:00",
+  "expires_at": "2026-10-05T06:50:00+11:00",
+  "branch": "agent/LR-0126-audio-bible-8a9f34a9",
+  "note": "Authoring the Grey March audio production bible only; no runtime edits."
+}
