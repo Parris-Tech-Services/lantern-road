@@ -18,6 +18,8 @@
   C.region.tiles.forEach(t => TILE_MAP[`${t.q},${t.r}`] = t);
 
   const SAVE_KEY = "lantern-road-save-v1";
+  const AUTOSAVE_KEY = "lantern-road-autosave-v1";
+  const PREFS_KEY = "lantern-road-ui-prefs-v1";
   const dom = {
     statusStrip: document.getElementById("statusStrip"),
     tabContent: document.getElementById("tabContent"),
@@ -28,19 +30,152 @@
     newGameBtn: document.getElementById("newGameBtn"),
     saveBtn: document.getElementById("saveBtn"),
     loadBtn: document.getElementById("loadBtn"),
+    accessibilityBtn: document.getElementById("accessibilityBtn"),
     fullscreenBtn: document.getElementById("fullscreenBtn"),
+    saveStatus: document.getElementById("saveStatus"),
     soundToggleBtn: document.getElementById("soundToggleBtn"),
     ambienceToggleBtn: document.getElementById("ambienceToggleBtn"),
     volumeSlider: document.getElementById("volumeSlider"),
     campBtn: document.getElementById("campBtn"),
     focusHereBtn: document.getElementById("focusHereBtn"),
-    mapHint: document.getElementById("mapHint")
+    mapZoomOutBtn: document.getElementById("mapZoomOutBtn"),
+    mapResetBtn: document.getElementById("mapResetBtn"),
+    mapZoomInBtn: document.getElementById("mapZoomInBtn"),
+    mapHint: document.getElementById("mapHint"),
+    nearbyTravel: document.getElementById("nearbyTravel"),
+    sidePanel: document.getElementById("sidePanel")
   };
   const ctx = dom.mapCanvas.getContext("2d");
   let state = null;
   let hexLayout = [];
   let feedbackTimer = null;
   let visualFxTimer = null;
+  let autosaveTimer = null;
+  let settingsOpen = false;
+  let prefs = {
+    textScale: "normal",
+    highContrast: false,
+    haptics: false
+  };
+  let mapView = {
+    zoom: 1,
+    panX: 0,
+    panY: 0,
+    initialized: false
+  };
+  let mapPointer = null;
+
+  function setSaveStatus(text) {
+    if (dom.saveStatus) dom.saveStatus.textContent = text;
+  }
+
+  function loadPrefs() {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(PREFS_KEY) || "null");
+      if (parsed && typeof parsed === "object") prefs = { ...prefs, ...parsed };
+    } catch (err) {
+      console.warn("Could not read Lantern Road UI preferences.", err);
+    }
+    if (!["normal", "large", "xlarge"].includes(prefs.textScale)) prefs.textScale = "normal";
+    prefs.highContrast = !!prefs.highContrast;
+    prefs.haptics = !!prefs.haptics;
+    applyPrefs();
+  }
+
+  function savePrefs() {
+    try {
+      localStorage.setItem(PREFS_KEY, JSON.stringify(prefs));
+    } catch (err) {
+      console.warn("Could not save Lantern Road UI preferences.", err);
+      showFeedback("Preference not saved", "This browser blocked local preference storage.", "bad");
+    }
+  }
+
+  function applyPrefs() {
+    document.documentElement.dataset.textScale = prefs.textScale;
+    document.documentElement.classList.toggle("high-contrast", prefs.highContrast);
+  }
+
+  function pulseHaptic(pattern = 10) {
+    if (!prefs.haptics || typeof navigator.vibrate !== "function") return;
+    try {
+      navigator.vibrate(pattern);
+    } catch {
+      // Optional haptics must never block play.
+    }
+  }
+
+  function storageHas(key) {
+    try {
+      return !!localStorage.getItem(key);
+    } catch {
+      return false;
+    }
+  }
+
+  function writeStoredState(key) {
+    if (!state) return false;
+    try {
+      localStorage.setItem(key, serializeState());
+      return true;
+    } catch (err) {
+      console.error(err);
+      return false;
+    }
+  }
+
+  function scheduleAutosave() {
+    if (!state) return;
+    if (autosaveTimer) clearTimeout(autosaveTimer);
+    autosaveTimer = setTimeout(() => {
+      if (writeStoredState(AUTOSAVE_KEY)) {
+        setSaveStatus("Autosaved · manual save separate");
+      } else {
+        setSaveStatus("Autosave unavailable · use Save Manual");
+      }
+    }, 350);
+  }
+
+  function normaliseLoadedState(next) {
+    if (!next || typeof next !== "object" || !next.position || !Array.isArray(next.party)) {
+      throw new Error("Saved campaign is missing required state.");
+    }
+    state = next;
+    if (!state.ui) state.ui = { tab: "context", focus: null, dialogue: null, shop: null };
+    state.ui.dialogue = null;
+    state.ui.shop = null;
+    settingsOpen = false;
+    mapView.initialized = false;
+    ensureCharacterState();
+    clampPartyHp();
+  }
+
+  function loadStoredState(key, label, { silent = false, recordLog = true } = {}) {
+    let raw = null;
+    try {
+      raw = localStorage.getItem(key);
+    } catch (err) {
+      console.error(err);
+    }
+    if (!raw) {
+      if (!silent && state) openMessage("No Save Found", `There is no ${label.toLowerCase()} on this device.`);
+      return false;
+    }
+    try {
+      normaliseLoadedState(JSON.parse(raw));
+      if (recordLog) addLog(`${label} loaded.`);
+      renderAll();
+      if (!silent) {
+        const loc = currentLocation();
+        showFeedback(`${label} loaded`, `${timeLabel()} • ${loc ? loc.data.name : getTerrainDef(currentTile()).name}`, "good");
+      }
+      return true;
+    } catch (err) {
+      console.error(err);
+      if (!silent && state) openMessage("Load Failed", `The ${label.toLowerCase()} could not be read cleanly. Your other save slot was not changed.`);
+      return false;
+    }
+  }
 
   const ART_GLYPHS = {
     settlement: "◆",
@@ -824,6 +959,8 @@
   }
 
   function startNewGame() {
+    settingsOpen = false;
+    mapView = { zoom: 1, panX: 0, panY: 0, initialized: false };
     const seed = (Date.now() >>> 0) || 123456789;
     state = {
       seed,
@@ -883,32 +1020,48 @@
 
   function saveGame() {
     if (!state) return;
-    localStorage.setItem(SAVE_KEY, serializeState());
-    addLog("Campaign saved.");
+    if (!writeStoredState(SAVE_KEY)) {
+      openMessage("Manual Save Failed", "The browser could not write the manual save slot. Autosave may still be available.");
+      return;
+    }
+    addLog("Manual save updated.");
     renderAll();
-    openMessage("Saved", "Your campaign was saved to local storage on this device.");
+    setSaveStatus("Manual save updated · autosave on");
+    pulseHaptic(20);
+    openMessage("Manual Save Updated", "Your manual save slot is safe and separate from autosave. Starting a new campaign will not overwrite this manual slot.");
   }
 
   function loadGame() {
-    const raw = localStorage.getItem(SAVE_KEY);
-    if (!raw) {
-      openMessage("No Save Found", "There is no saved Lantern Road campaign on this device yet.");
+    const manual = storageHas(SAVE_KEY);
+    const auto = storageHas(AUTOSAVE_KEY);
+    if (!manual && !auto) {
+      openMessage("No Save Found", "There is no manual save or autosave on this device yet.");
       return;
     }
-    try {
-      state = JSON.parse(raw);
-      if (!state.ui) state.ui = { tab: "context", focus: null, dialogue: null, shop: null };
-      ensureCharacterState();
-      clampPartyHp();
-      renderAll();
-      addLog("Campaign loaded.");
-      renderAll();
-      const loc = currentLocation();
-      showFeedback("Campaign loaded", `${timeLabel()} • ${loc ? loc.data.name : getTerrainDef(currentTile()).name}`, "good");
-    } catch (err) {
-      console.error(err);
-      openMessage("Load Failed", "The saved data could not be read cleanly.");
+    const choices = [];
+    if (manual) choices.push({ key: "loadManual", label: "Load manual save" });
+    if (auto) choices.push({ key: "loadAutosave", label: "Load autosave" });
+    choices.push({ key: "close", label: "Keep current campaign" });
+    openDialogue({
+      title: "Load Campaign",
+      text: "Manual Save is the checkpoint you choose. Autosave follows your latest play. Loading either one leaves the Manual Save slot untouched until you press Save Manual again.",
+      choices
+    });
+  }
+
+  function confirmNewCampaign() {
+    if (!state || !storageHas(AUTOSAVE_KEY)) {
+      startNewGame();
+      return;
     }
+    openDialogue({
+      title: "Start New Campaign?",
+      text: "The new campaign will become the current autosave. Your Manual Save slot will not be changed.",
+      choices: [
+        { key: "newCampaignConfirm", label: "Start new campaign" },
+        { key: "close", label: "Keep current campaign" }
+      ]
+    });
   }
 
   function openMessage(title, text) {
@@ -962,6 +1115,58 @@
   function closeShop() {
     state.ui.shop = null;
     renderModal();
+  }
+
+  function openAccessibility() {
+    settingsOpen = true;
+    renderModal();
+  }
+
+  function closeAccessibility() {
+    settingsOpen = false;
+    renderModal();
+  }
+
+  function renderAccessibilityModal() {
+    const hapticsSupported = typeof navigator.vibrate === "function";
+    return `
+      <div class="modal">
+        <div class="modal-header">
+          <div>
+            <h2>Accessibility & Phone</h2>
+            <p class="subtle">These settings stay on this device and are separate from campaign saves.</p>
+          </div>
+          <button class="close-btn" data-action="close-accessibility">Close</button>
+        </div>
+        <div class="accessibility-options">
+          <div class="setting-row">
+            <div>
+              <strong>Text size</strong>
+              <p class="subtle">Increase interface and story text together.</p>
+            </div>
+            <div class="setting-actions" aria-label="Text size">
+              <button class="small" data-action="set-text-scale" data-value="normal" aria-pressed="${prefs.textScale === "normal"}">Standard</button>
+              <button class="small" data-action="set-text-scale" data-value="large" aria-pressed="${prefs.textScale === "large"}">Large</button>
+              <button class="small" data-action="set-text-scale" data-value="xlarge" aria-pressed="${prefs.textScale === "xlarge"}">Extra large</button>
+            </div>
+          </div>
+          <div class="setting-row">
+            <div>
+              <strong>High contrast</strong>
+              <p class="subtle">Use stronger borders, brighter text and simpler surfaces.</p>
+            </div>
+            <button data-action="toggle-contrast" aria-pressed="${prefs.highContrast}">${prefs.highContrast ? "On" : "Off"}</button>
+          </div>
+          <div class="setting-row">
+            <div>
+              <strong>Haptic taps</strong>
+              <p class="subtle">${hapticsSupported ? "Optional short vibration on supported phones." : "This browser does not expose vibration controls."}</p>
+            </div>
+            <button data-action="toggle-haptics" aria-pressed="${prefs.haptics}" ${hapticsSupported ? "" : "disabled"}>${prefs.haptics ? "On" : "Off"}</button>
+          </div>
+        </div>
+      </div>
+    `;
   }
 
   function getVisibleRumoursForSettlement(settlementId) {
@@ -1103,6 +1308,7 @@
     const weather = C.weatherDefs[state.weather];
     const moveHours = Math.max(4, terrain.move - (tile.road ? 2 : 0) + weather.move);
     state.position = { q, r };
+    mapView.initialized = false;
     revealAround(q, r);
     state.ui.focus = null;
     advanceTime(moveHours);
@@ -1657,7 +1863,11 @@
   }
 
   function renderTabs() {
-    dom.tabs.forEach(tab => tab.classList.toggle("active", tab.dataset.tab === state.ui.tab));
+    dom.tabs.forEach(tab => {
+      const active = tab.dataset.tab === state.ui.tab;
+      tab.classList.toggle("active", active);
+      tab.setAttribute("aria-selected", active ? "true" : "false");
+    });
   }
 
   function renderTabContent() {
@@ -2382,6 +2592,20 @@
       closeDialogue();
       return;
     }
+    if (key === "loadManual") {
+      loadStoredState(SAVE_KEY, "Manual save");
+      return;
+    }
+    if (key === "loadAutosave") {
+      loadStoredState(AUTOSAVE_KEY, "Autosave");
+      return;
+    }
+    if (key === "newCampaignConfirm") {
+      closeDialogue();
+      startNewGame();
+      showFeedback("New campaign started", "Autosave now follows this campaign. Your Manual Save slot is unchanged.", "good");
+      return;
+    }
     if (key.startsWith("characterMoment:")) {
       const [, momentId, choiceIndex] = key.split(":");
       resolveCharacterCampMoment(momentId, Number(choiceIndex));
@@ -3082,6 +3306,7 @@
     else if (state && state.activeScene) html = renderSceneModal();
     else if (state && state.ui.shop) html = renderShopModal();
     else if (state && state.ui.dialogue) html = renderDialogueModal();
+    else if (state && settingsOpen) html = renderAccessibilityModal();
     if (html) {
       dom.modalRoot.classList.remove("hidden");
       dom.modalRoot.innerHTML = html;
@@ -3089,6 +3314,83 @@
       dom.modalRoot.classList.add("hidden");
       dom.modalRoot.innerHTML = "";
     }
+    if (state) scheduleAutosave();
+  }
+
+  function defaultMapZoom() {
+    return window.matchMedia("(max-width: 640px)").matches ? 1.55 : 1;
+  }
+
+  function baseMapMetrics(rect) {
+    const size = Math.min(
+      rect.width / (Math.sqrt(3) * (C.region.width + 1.2)),
+      rect.height / (1.5 * (C.region.height + 1.3))
+    );
+    return { size, width: rect.width, height: rect.height };
+  }
+
+  function baseHexPosition(q, r, size) {
+    return {
+      x: size * Math.sqrt(3) * (q + 0.5 * (r & 1)) + size * 1.6,
+      y: size * 1.5 * r + size * 1.7
+    };
+  }
+
+  function clampMapPan(width, height) {
+    const extraX = Math.max(0, (width * mapView.zoom - width) / 2) + width * 0.14;
+    const extraY = Math.max(0, (height * mapView.zoom - height) / 2) + height * 0.14;
+    mapView.panX = Math.max(-extraX, Math.min(extraX, mapView.panX));
+    mapView.panY = Math.max(-extraY, Math.min(extraY, mapView.panY));
+  }
+
+  function centreMapOnParty(render = true) {
+    const rect = dom.mapCanvas.getBoundingClientRect();
+    if (!rect.width || !rect.height || !state) return;
+    const metrics = baseMapMetrics(rect);
+    const pos = baseHexPosition(state.position.q, state.position.r, metrics.size);
+    mapView.panX = -(pos.x - rect.width / 2) * mapView.zoom;
+    mapView.panY = -(pos.y - rect.height / 2) * mapView.zoom;
+    clampMapPan(rect.width, rect.height);
+    mapView.initialized = true;
+    if (render) renderMap();
+  }
+
+  function resetMapView() {
+    mapView.zoom = defaultMapZoom();
+    centreMapOnParty(false);
+    renderMap();
+    showFeedback("Map centred", `Zoom ${Math.round(mapView.zoom * 100)}% • centred on the party`);
+  }
+
+  function changeMapZoom(delta) {
+    mapView.zoom = Math.max(0.85, Math.min(2.4, mapView.zoom + delta));
+    const rect = dom.mapCanvas.getBoundingClientRect();
+    clampMapPan(rect.width, rect.height);
+    renderMap();
+    showFeedback("Map zoom", `${Math.round(mapView.zoom * 100)}%`);
+  }
+
+  function renderNearbyTravel() {
+    if (!dom.nearbyTravel || !state) return;
+    const directions = ["E", "NE", "NW", "W", "SW", "SE"];
+    const options = neighbours(state.position.q, state.position.r).map((n, index) => {
+      const tile = getTile(n.q, n.r);
+      const terrain = getTerrainDef(tile);
+      const weather = C.weatherDefs[state.weather];
+      const hours = Math.max(4, terrain.move - (tile.road ? 2 : 0) + weather.move);
+      const loc = getLocationAt(n.q, n.r);
+      const destination = loc && (loc.type === "settlement" || state.discoveredSites[loc.data.id])
+        ? loc.data.name
+        : terrain.name;
+      return `<button data-action="travel-hex" data-q="${n.q}" data-r="${n.r}" aria-label="Travel ${directions[index]} to ${destination}, about ${hours} hours">${directions[index]} · ${destination}<br><span class="subtle">${hours}h${tile.road ? " · road" : ""}</span></button>`;
+    }).join("");
+    dom.nearbyTravel.innerHTML = `
+      <div class="nearby-travel-head">
+        <strong>Nearby travel</strong>
+        <span class="muted">Large phone-friendly targets</span>
+      </div>
+      <div class="nearby-travel-grid">${options}</div>
+    `;
   }
 
   function renderMap() {
@@ -3098,18 +3400,25 @@
     dom.mapCanvas.height = Math.floor(rect.height * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, rect.width, rect.height);
-    const mapW = rect.width;
-    const mapH = rect.height;
-    const size = Math.min(mapW / (Math.sqrt(3) * (C.region.width + 1.2)), mapH / (1.5 * (C.region.height + 1.3)));
+    const metrics = baseMapMetrics(rect);
+    if (!mapView.initialized) {
+      mapView.zoom = defaultMapZoom();
+      centreMapOnParty(false);
+    }
+    clampMapPan(rect.width, rect.height);
+    const centreX = rect.width / 2;
+    const centreY = rect.height / 2;
     hexLayout = [];
     for (let r = 0; r < C.region.height; r++) {
       for (let q = 0; q < C.region.width; q++) {
-        const x = size * Math.sqrt(3) * (q + 0.5 * (r & 1)) + size * 1.6;
-        const y = size * 1.5 * r + size * 1.7;
-        drawHex(q, r, x, y, size);
+        const base = baseHexPosition(q, r, metrics.size);
+        const x = centreX + (base.x - centreX) * mapView.zoom + mapView.panX;
+        const y = centreY + (base.y - centreY) * mapView.zoom + mapView.panY;
+        drawHex(q, r, x, y, metrics.size * mapView.zoom);
       }
     }
-    dom.mapHint.textContent = "Gold-edged hexes are one step away. ◆ marks settlements, ✦ marks discovered sites, and the lantern ring marks your party.";
+    dom.mapHint.textContent = "Drag to pan. Use +/− to zoom. Gold-edged hexes are one step away; on phone, the large travel buttons below provide the same movement.";
+    renderNearbyTravel();
   }
 
   function hexPoints(cx, cy, size) {
@@ -3260,13 +3569,30 @@
     return inside;
   }
 
-  function onMapPointer(event) {
+  function findMapHexAt(x, y) {
+    const exact = hexLayout.find(h => pointInPoly(x, y, h.points));
+    if (exact) return exact;
+    let nearest = null;
+    let nearestDistance = Infinity;
+    hexLayout.forEach(h => {
+      const distance = Math.hypot(x - h.cx, y - h.cy);
+      if (distance < nearestDistance && distance <= h.size * 0.78) {
+        nearest = h;
+        nearestDistance = distance;
+      }
+    });
+    return nearest;
+  }
+
+  function handleMapTap(clientX, clientY) {
     if (!state || state.combat) return;
     const rect = dom.mapCanvas.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-    const clicked = hexLayout.find(h => pointInPoly(x, y, h.points));
-    if (!clicked) return;
+    const clicked = findMapHexAt(clientX - rect.left, clientY - rect.top);
+    if (!clicked) {
+      showFeedback("Map", "No hex selected. Try closer to the centre of a tile.");
+      return;
+    }
+    pulseHaptic(8);
     const loc = getLocationAt(clicked.q, clicked.r);
     if (clicked.q === state.position.q && clicked.r === state.position.r) {
       focusCurrentLocation();
@@ -3290,6 +3616,56 @@
     );
   }
 
+  function onMapPointerDown(event) {
+    if (!state || state.combat || mapPointer) return;
+    mapPointer = {
+      id: event.pointerId,
+      startX: event.clientX,
+      startY: event.clientY,
+      panX: mapView.panX,
+      panY: mapView.panY,
+      dragged: false
+    };
+    dom.mapCanvas.setPointerCapture?.(event.pointerId);
+  }
+
+  function onMapPointerMove(event) {
+    if (!mapPointer || mapPointer.id !== event.pointerId) return;
+    const dx = event.clientX - mapPointer.startX;
+    const dy = event.clientY - mapPointer.startY;
+    if (!mapPointer.dragged && Math.hypot(dx, dy) > 8) {
+      mapPointer.dragged = true;
+      dom.mapCanvas.classList.add("dragging");
+    }
+    if (!mapPointer.dragged) return;
+    event.preventDefault();
+    const rect = dom.mapCanvas.getBoundingClientRect();
+    mapView.panX = mapPointer.panX + dx;
+    mapView.panY = mapPointer.panY + dy;
+    clampMapPan(rect.width, rect.height);
+    mapView.initialized = true;
+    renderMap();
+  }
+
+  function onMapPointerUp(event) {
+    if (!mapPointer || mapPointer.id !== event.pointerId) return;
+    const wasDragged = mapPointer.dragged;
+    mapPointer = null;
+    dom.mapCanvas.classList.remove("dragging");
+    try {
+      dom.mapCanvas.releasePointerCapture?.(event.pointerId);
+    } catch {
+      // Pointer capture may already have been released by the browser.
+    }
+    if (!wasDragged) handleMapTap(event.clientX, event.clientY);
+  }
+
+  function onMapPointerCancel(event) {
+    if (!mapPointer || mapPointer.id !== event.pointerId) return;
+    mapPointer = null;
+    dom.mapCanvas.classList.remove("dragging");
+  }
+
   function renderAll() {
     if (!state) return;
     if (state.day > C.success.days && state.renown >= C.success.renownTarget && !state.worldFlags.victoryShown) {
@@ -3302,6 +3678,7 @@
     renderMap();
     renderModal();
     refreshAmbience();
+    scheduleAutosave();
   }
 
   async function toggleFullscreen() {
@@ -3375,7 +3752,32 @@
     if (action === "set-tab") return;
     if (!state && !["load-game", "new-game"].includes(action)) return;
 
+    pulseHaptic(6);
     switch (action) {
+      case "close-accessibility":
+        closeAccessibility();
+        break;
+      case "set-text-scale":
+        prefs.textScale = button.dataset.value;
+        applyPrefs();
+        savePrefs();
+        renderModal();
+        showFeedback("Text size updated", prefs.textScale === "normal" ? "Standard" : prefs.textScale === "large" ? "Large" : "Extra large", "good");
+        break;
+      case "toggle-contrast":
+        prefs.highContrast = !prefs.highContrast;
+        applyPrefs();
+        savePrefs();
+        renderModal();
+        showFeedback("High contrast", prefs.highContrast ? "On" : "Off", "good");
+        break;
+      case "toggle-haptics":
+        prefs.haptics = !prefs.haptics;
+        savePrefs();
+        renderModal();
+        if (prefs.haptics) pulseHaptic([15, 30, 15]);
+        showFeedback("Haptic taps", prefs.haptics ? "On" : "Off", "good");
+        break;
       case "close-dialogue":
         closeDialogue();
         break;
@@ -3424,6 +3826,9 @@
       case "focus-current":
         focusCurrentLocation();
         break;
+      case "travel-hex":
+        moveTo(Number(button.dataset.q), Number(button.dataset.r));
+        break;
       case "camp":
         campParty();
         break;
@@ -3440,21 +3845,34 @@
 
   function bindStaticUI() {
     dom.newGameBtn.addEventListener("click", () => {
-      startNewGame();
+      pulseHaptic(6);
+      confirmNewCampaign();
     });
     dom.saveBtn.addEventListener("click", saveGame);
     dom.loadBtn.addEventListener("click", loadGame);
+    dom.accessibilityBtn.addEventListener("click", () => {
+      pulseHaptic(6);
+      openAccessibility();
+    });
     dom.fullscreenBtn.addEventListener("click", toggleFullscreen);
     dom.soundToggleBtn?.addEventListener("click", toggleSound);
     dom.ambienceToggleBtn?.addEventListener("click", toggleAmbience);
     dom.volumeSlider?.addEventListener("input", event => setAudioVolume(event.target.value));
     dom.campBtn.addEventListener("click", () => state && campParty());
     dom.focusHereBtn.addEventListener("click", () => state && focusCurrentLocation());
+    dom.mapZoomOutBtn.addEventListener("click", () => changeMapZoom(-0.2));
+    dom.mapResetBtn.addEventListener("click", resetMapView);
+    dom.mapZoomInBtn.addEventListener("click", () => changeMapZoom(0.2));
     dom.tabs.forEach(tab => {
       tab.addEventListener("click", () => {
         if (!state) return;
+        pulseHaptic(5);
         state.ui.tab = tab.dataset.tab;
         renderAll();
+        if (window.matchMedia("(max-width: 640px)").matches) {
+          const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          dom.sidePanel?.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
+        }
       });
     });
     document.body.addEventListener("click", handleDocumentClick);
@@ -3465,8 +3883,29 @@
     }, true);
     document.addEventListener("pointerdown", resumeSavedAudioFromGesture, { once: true, capture: true });
     document.addEventListener("keydown", resumeSavedAudioFromGesture, { once: true, capture: true });
-    dom.mapCanvas.addEventListener("pointerdown", onMapPointer);
-    window.addEventListener("resize", renderAll);
+    dom.mapCanvas.addEventListener("pointerdown", onMapPointerDown);
+    dom.mapCanvas.addEventListener("pointermove", onMapPointerMove);
+    dom.mapCanvas.addEventListener("pointerup", onMapPointerUp);
+    dom.mapCanvas.addEventListener("pointercancel", onMapPointerCancel);
+    dom.mapCanvas.addEventListener("keydown", event => {
+      if (event.key === "+" || event.key === "=") {
+        event.preventDefault();
+        changeMapZoom(0.2);
+      } else if (event.key === "-") {
+        event.preventDefault();
+        changeMapZoom(-0.2);
+      } else if (event.key === "0") {
+        event.preventDefault();
+        resetMapView();
+      } else if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        focusCurrentLocation();
+      }
+    });
+    window.addEventListener("resize", () => {
+      mapView.initialized = false;
+      renderAll();
+    });
     document.addEventListener("keydown", event => {
       if (event.key.toLowerCase() === "f" && !event.ctrlKey && !event.metaKey && !event.altKey) {
         event.preventDefault();
@@ -3476,12 +3915,22 @@
   }
 
   function init() {
+    loadPrefs();
     bindStaticUI();
     updateAudioControls();
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("./sw.js").catch(() => {});
     }
-    startNewGame();
+    const hadAutosave = storageHas(AUTOSAVE_KEY);
+    const resumed = hadAutosave && loadStoredState(AUTOSAVE_KEY, "Autosave", { silent: true, recordLog: false });
+    if (!resumed) {
+      startNewGame();
+      if (hadAutosave) {
+        showFeedback("Autosave unreadable", "A new campaign was started. Your Manual Save slot was not changed.", "bad");
+      }
+    } else {
+      showFeedback("Autosave resumed", `${timeLabel()} • continue where you left off`, "good");
+    }
     window.render_game_to_text = renderGameToText;
     window.advanceTime = () => {
       renderAll();
