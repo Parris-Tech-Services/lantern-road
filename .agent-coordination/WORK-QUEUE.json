@@ -2672,7 +2672,7 @@
         ".agent-coordination/CLAIM-PROTOCOL.md",
         "tests/"
       ],
-      "notes": "Director-routed process bug discovered on LR-0044 approval: Agent coordination run 360 passed queue validation but failed PR claim verification because the task was correctly parked with zero active locks. CI must support review-only approval of parked work without weakening normal claim enforcement."
+      "notes": "PARKED HANDOFF: implementation complete on branch agent/LR-0101-parked-pr-review-8c2e51a9, exact useful head c6de5b054d71ef024a364543fe456c9451b386ed, draft PR #51. The verifier now allows exactly one no-lock case: a READY parked Agent 1–5 task whose final commit is only a fresh Agent 7 approval file matching the immediately preceding reviewed head and whose queue notes name the same branch/head; active competing claims, arbitrary unlocked feature commits, stale approvals and task/scope mismatches still fail. Agent coordination Actions run 37181526503 passed queue validation and all 4 verifier regression tests; the only failing step is the intentional missing Director review for LR-0101 itself. Next action: Agent 7 appends exact-head approval to PR #51; the new no-lock path should then pass on this parked PR. After approval, fresh Agent 1 claim is required before merge preparation, merge, DONE transition and lock release."
     },
     {
       "id": "LR-0102",
