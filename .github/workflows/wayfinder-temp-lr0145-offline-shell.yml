@@ -1,0 +1,46 @@
+name: Wayfinder temporary LR-0145 offline shell check
+
+on:
+  push:
+    branches:
+      - agent/LR-0145-save-shell-c2d86f51
+  workflow_dispatch:
+
+jobs:
+  offline-shell:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+
+      - name: Verify save-system is listed in APP_SHELL
+        run: |
+          node - <<'NODE'
+          const fs = require('fs');
+          const sw = fs.readFileSync('sw.js','utf8');
+          if (!sw.includes('"./save-system.js"')) {
+            throw new Error('sw.js APP_SHELL does not include ./save-system.js');
+          }
+          console.log('PASS sw.js lists ./save-system.js');
+          NODE
+
+      - name: Install Playwright Chromium
+        run: |
+          npm init -y
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Test first-install offline reload
+        run: |
+          node .github/tmp/lr0145-offline-start.mjs | tee lr0145-offline-shell-result.txt
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lr0145-offline-shell-result
+          path: lr0145-offline-shell-result.txt
