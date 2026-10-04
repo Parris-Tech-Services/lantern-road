@@ -3358,7 +3358,7 @@
         "tests/aed-report.test.mjs",
         "docs/ARCHITECTURE-MODULARISATION-PLAN.md"
       ],
-      "notes": "ACTIVE LR-0128: staged architecture IDs reserved on main as LR-0132–LR-0138 to prevent queue races. Remaining reform (drain rule, dependency narrowing, AED flow inbox and LR-0010 parent conversion) is being rebuilt from current main under the live AED claim."
+      "notes": "ACTIVE v3 LR-0128: PR #81 was green but conflicted with fast-moving main. Stage IDs LR-0132–LR-0138 remain reserved on main. Rebuilding final reform branch from current main with claim metadata pre-aligned."
     },
     {
       "id": "LR-0129",
@@ -3687,5 +3687,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T19:28:00+11:00"
+  "updated_at": "2026-10-04T20:08:00+11:00"
 }
