@@ -180,3 +180,58 @@ test("derives parked-review age when parking timestamps exist", () => {
   assert.match(formatReport(report), /oldest parked review age: 6\.0h/);
   assert.match(formatReport(report), /last current-main playtest: none recorded/);
 });
+
+
+test("classifies agent work state and chooses the highest-priority actionable task", () => {
+  const report = buildReport(
+    {
+      project: "Fixture",
+      updated_at: "2026-10-04T12:00:00Z",
+      agent_roster: [
+        { number: 1, name: "One" },
+        { number: 2, name: "Two" }
+      ],
+      tasks: [
+        { id: "LR-0001", title: "Blocked integration", status: "BLOCKED", primary_agent: 1, priority: 0, depends_on: ["LR-0004"], exclusive_scope: "a" },
+        { id: "LR-0002", title: "Useful producer work", status: "READY", primary_agent: 1, priority: 1, depends_on: [], exclusive_scope: "b", notes: "" },
+        { id: "LR-0003", title: "Lower priority producer", status: "READY", primary_agent: 1, priority: 2, depends_on: [], exclusive_scope: "c", notes: "" },
+        { id: "LR-0004", title: "Parked review", status: "READY", primary_agent: 2, priority: 0, depends_on: [], exclusive_scope: "d", notes: "PARKED HANDOFF awaiting Director review" }
+      ]
+    },
+    []
+  );
+
+  const one = report.agents.find(a => a.number === 1);
+  const two = report.agents.find(a => a.number === 2);
+  assert.equal(one.work_state, "READY");
+  assert.equal(one.next_task.id, "LR-0002");
+  assert.equal(two.work_state, "REVIEW_DRAIN");
+  assert.equal(two.next_task, null);
+  assert.match(formatReport(report), /One: READY/);
+  assert.match(formatReport(report), /NEXT LR-0002 P1: Useful producer work/);
+});
+
+test("active claim takes precedence over extra READY work in work-state classification", () => {
+  const report = buildReport(
+    {
+      project: "Fixture",
+      updated_at: "2026-10-04T12:00:00Z",
+      agent_roster: [{ number: 1, name: "One" }],
+      tasks: [
+        { id: "LR-0001", title: "Active work", status: "READY", primary_agent: 1, priority: 0, depends_on: [], exclusive_scope: "active", notes: "" },
+        { id: "LR-0002", title: "Next work", status: "READY", primary_agent: 1, priority: 1, depends_on: [], exclusive_scope: "next", notes: "" }
+      ]
+    },
+    [{
+      _file: "active.lock.json",
+      task_id: "LR-0001",
+      exclusive_scope: "active",
+      agent_number: 1,
+      session_id: "session-one",
+      branch: "agent/LR-0001-active"
+    }]
+  );
+  const one = report.agents[0];
+  assert.equal(one.work_state, "ACTIVE");
+  assert.equal(one.active_claims, 1);
+});
