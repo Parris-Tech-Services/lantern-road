@@ -8,6 +8,6 @@
   "claim_token": "7c9acb10-65e0-4fcb-8c12-bd0b30f2d4a9",
   "claimed_at": "2026-10-04T20:27:00+11:00",
   "expires_at": "2026-10-05T08:27:00+11:00",
-  "branch": "agent/LR-0139-fun-loop-6f27b960",
-  "note": "Implementing LR-0139 continuous fun-loop, finding schema, triage rules and AED player-impact metrics only."
+  "branch": "agent/LR-0139-fun-loop-v2-6f27b960",
+  "note": "LR-0139 v2 conflict-free rebuild from current main; same tested continuous fun-loop reform."
 }
