@@ -2786,6 +2786,31 @@
         ".agent-coordination/MAP-CANON-PROTOCOL.md"
       ],
       "notes": "Steward enforcement follow-on. Do not infer extra names beyond the exact LR-0104 ratification."
+    },
+    {
+      "id": "LR-0106",
+      "title": "Author active-roster check viability and specialist fallback matrix",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "roster-check-viability-authoring",
+      "depends_on": [
+        "LR-0089"
+      ],
+      "primary_agent": 3,
+      "goal": "Audit current hard-coded companion checks against the canonical Leader + three active companions roster so rotating one companion to reserve cannot silently soft-lock core travel, site or quest progress.",
+      "acceptance_criteria": [
+        "Inventory current runtime/content checks and consequential actions that explicitly depend on Garrick, Mira, Oren or Brindle, including travel events, sites, quest gates and camp/relationship interactions.",
+        "Classify each dependency as character-specific authored content, specialist-preferred content, optional bonus content or core-progress content that requires an active-roster fallback.",
+        "For every companion being the reserve member, identify current core progression/check gaps and specify a viable fallback such as Leader attempt, another active companion approach, tool/resource route, extra time, defer-until-rotation or clearly optional loss.",
+        "Preserve companion identity: personal-arc/authority-specific actions may legitimately require that companion active, while reserve companions must not contribute unseen checks or interjections.",
+        "Define implementation-facing actor-selection/fallback rules that consume LR-0103's Leader profile and do not simply replace all hard-coded actor ids with leader.",
+        "Produce a compact regression matrix for all four reserve permutations and representative core quests; authoring only, with no game.js/content.js/save edits."
+      ],
+      "likely_files": [
+        "systems/roster/",
+        "systems/checks/"
+      ],
+      "notes": "Mechanist author-now follow-up to DONE LR-0089 and parked LR-0103. This task performs the concrete live-content audit that LR-0103 only defines as an implementation requirement. Runtime changes remain downstream of architecture/save/browser gates."
     }
   ],
   "agent_roster": [
