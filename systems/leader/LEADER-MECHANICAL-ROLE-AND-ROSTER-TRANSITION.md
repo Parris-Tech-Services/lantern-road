@@ -283,11 +283,11 @@ Do not make Direct literally apply the Bless status, because that erases Brindle
 
 The Leader should get **one small permanent leadership choice**, not a class tree.
 
-Recommended unlock:
+Canonical unlock:
 
 > **Renown 2**, aligned with the parked LR-0006 companion path timing.
 
-Working design names are provisional.
+This is one **permanent binary choice**. It is intentionally small and must not expand into a class tree without a future explicit product decision.
 
 ### Focus A — Lead From the Front
 
@@ -298,7 +298,7 @@ Identity:
 
 > I contribute more directly.
 
-### Focus B — Coordinator
+### Focus B — Steady Hand
 
 - Direct gains **+1 encounter use** (3 total).
 - Leader Strike remains baseline.
@@ -322,13 +322,15 @@ It does not create:
 - stat allocation;
 - background-as-class.
 
-### Approval note
+### Canon rule
 
-The existence of one small mechanical Leader focus is a Mechanist recommendation.
+The Renown-2 focus is canonical and permanent.
 
-Final player-facing focus names should receive Director review.
+Do not:
 
-If Josh wants the Leader to have **no permanent combat focus at all**, this is the easiest part to remove without breaking the rest of the design.
+- remove the choice during downstream implementation;
+- make it freely respec-able;
+- expand it into a larger talent/class tree without a new explicit product decision.
 
 ## 12. Anti-dominance target
 
@@ -615,54 +617,17 @@ Ordinary shared healing items may be spent on the Leader directly because the Le
 
 Companion willingness rules apply when asking a companion to consume treatment themselves.
 
-## 25. Leader knockout — unresolved creative/system decision
+## 25. Leader knockout
 
-This requires explicit Josh/Director confirmation before runtime integration.
+Canonical rule:
 
-Two plausible approaches exist.
+- when the Leader reaches **0 HP**, the Leader is knocked out;
+- the Leader loses their turns while knocked out;
+- combat continues while at least one active companion remains standing;
+- defeat occurs only when **all four active adventurers** are down;
+- Leader knockout does **not** automatically force Retreat.
 
-### Option A — ordinary party-member knockout
-
-Leader reaches 0 HP:
-
-- Leader loses their turns;
-- combat continues while at least one active companion stands;
-- defeat occurs only when all four active members are down.
-
-**Pros**
-
-- mechanically consistent;
-- avoids making Leader the single failure point;
-- avoids Garrick/protection becoming mandatory.
-
-**Concern**
-
-The player would still be choosing ordinary companion combat actions while the fictional Leader is unconscious, which slightly reintroduces the “external controller” feeling Josh explicitly disliked.
-
-### Option B — Leader knockout forces Retreat
-
-Leader reaches 0 HP:
-
-- party automatically retreats/loses the fight.
-
-**Pros**
-
-- preserves the fiction that the player's embodied perspective is down;
-- makes protecting the Leader matter.
-
-**Concerns**
-
-- makes Leader uniquely fragile/important;
-- may create frustrating loss spikes;
-- risks making defensive compositions mandatory.
-
-### Mechanist recommendation
-
-Prefer **Option A** unless player testing shows the fiction feels wrong.
-
-The game already separates player input from literal spoken commands during compact combat. Making the Leader a unique instant-loss condition is likely to create more systemic harm than immersion benefit.
-
-But because this touches Josh's central “I am in the party” direction, do not settle it silently.
+This keeps the Leader embodied in the same injury/defeat system without creating a single-character instant-loss condition or making defensive compositions compulsory.
 
 ## 26. Companion reserve model
 
@@ -686,23 +651,27 @@ roster = {
 
 Do not encode “reserve” by deleting a companion from character state.
 
-## 27. Rotation locations
+## 27. Rotation locations and reserve fiction
 
-Rotation is allowed only at believable safe transitions.
+Canonical reserve fiction:
 
-Minimum:
+- the reserve companion travels with the expedition's **safe camp/support layer**;
+- they are not a hidden fifth active adventurer;
+- they contribute no field combat, check or passive benefit while in reserve.
 
-- settlement;
-- camp when the reserve companion is fictionally available.
+Rotation is allowed at:
 
-Not allowed:
+- settlements;
+- established **safe camp transitions** where the reserve companion is fictionally present.
 
-- mid-combat;
+Rotation is not allowed:
+
+- in combat;
+- in danger;
 - during a blocking dialogue;
-- during an unresolved travel event;
-- halfway through a site consequence.
-
-If the reserve companion is not plausibly present at a specific camp, rotation must not magically summon them.
+- during an unresolved travel event or site scene;
+- at an improvised unsafe stop;
+- through any “summon from nowhere” interaction.
 
 ## 28. Reserve-preserved state
 
@@ -736,22 +705,24 @@ They remain hurt until an owning recovery rule heals them.
 
 ## 30. Reserve and Rations
 
-Do **not** increase the current one-ration-per-day campaign cost merely because four authored companions exist in the roster.
+The reserve companion travels with the expedition's safe camp/support layer, but the current campaign economy keeps the existing **one-ration-per-day abstraction**.
 
-The active adventuring party remains four total:
+Do **not** add a new food tax solely because one companion is in reserve.
+
+The active field party remains:
 
 - Leader;
 - three companions.
 
-The reserve system should not silently impose a 25% food-economy increase.
-
-If later fiction establishes that reserve characters travel physically with a larger caravan/camp and should consume supplies, LR-0016 must explicitly rebalance that.
+Any future decision to model per-person food consumption would require an explicit economy/product change rather than being smuggled into roster implementation.
 
 ## 31. Reserve and direct memories
 
 A reserve companion does not receive a direct memory for an event they did not witness.
 
-They may later receive:
+They directly witness only events explicitly authored as **camp-wide** while they are present in the safe camp/support layer.
+
+Otherwise they may later learn through:
 
 - public party-news summary;
 - a companion telling them;
@@ -1614,40 +1585,42 @@ The target is:
 
 > viable second-best, not universal best.
 
-## 78. Decisions requiring Director/Josh confirmation
+## 78. Director decisions settled
 
-### Decision A — Leader knockout consequence
+The four previously open creative/system decisions are now canonical:
 
-Must be settled before runtime implementation.
+### Leader knockout
 
-Mechanist recommends ordinary knockout/continued combat, but the embodiment trade-off belongs to Josh/Director.
+Use ordinary party-member knockout:
 
-### Decision B — reserve companion fiction at camp
+- Leader loses turns at 0 HP;
+- combat continues while at least one active companion stands;
+- defeat occurs only when all four active adventurers are down;
+- no automatic Retreat on Leader knockout.
 
-The contract permits rotation at a believable camp or settlement.
+### Reserve companion fiction
 
-Story/Director should clarify whether the reserve companion:
+The reserve companion travels with the expedition's **safe camp/support layer**.
 
-- physically travels nearby with the expedition but is not one of the four active adventurers;
-- or is only available at particular safe hubs.
+- rotation is allowed at settlements and established safe camp transitions;
+- reserve contributes no field combat/check/passive benefit;
+- no rotation in danger, combat or unresolved travel/site scenes;
+- no magical “summon from nowhere” behaviour;
+- reserve directly witnesses only explicitly camp-wide events, otherwise knowledge requires debrief/telling/gossip;
+- keep the existing one-ration-per-day abstraction.
 
-This changes where rotation is fictionally legal.
+### Leader focus names
 
-Mechanist requirement:
+The permanent Renown-2 choices are:
 
-> no magical mid-danger summoning.
+- **Lead From the Front** — Leader Strike deals +1 damage.
+- **Steady Hand** — Direct gains one additional use per encounter.
 
-### Decision C — final Leader focus names
+### Focus permanence
 
-The two-effect structure is Mechanist design.
+The Leader gets exactly one permanent binary Renown-2 focus choice.
 
-Player-facing names/tone should receive Director review.
-
-### Decision D — whether Leader focus is permanent
-
-Mechanist recommends one permanent Renown-2 choice to mirror meaningful progression.
-
-If Josh prefers the Leader to remain mechanically fixed and let only companions specialise, remove the focus rather than expanding it into a tree.
+Do not expand this into a larger class/tree system without a future explicit product decision.
 
 ## 79. Decisions that do not need creative escalation
 
@@ -1692,9 +1665,9 @@ Sections 26–34 and 57–64.
 
 Sections 35–45 and 68–73 preserve all old companion data and avoid arbitrary reserve choice.
 
-### Creative approvals
+### Director-settled creative rules
 
-Section 78 explicitly identifies the remaining Josh/Director decisions.
+Section 78 records the four previously open decisions as settled canon.
 
 ### Authoring-only scope
 
