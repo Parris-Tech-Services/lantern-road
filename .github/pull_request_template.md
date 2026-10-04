@@ -16,6 +16,15 @@ Claim token suffix: `________`
 - [ ] Any new architectural/product decision is recorded in `docs/DECISIONS.md`.
 - [ ] This PR contains one claimed task/scope and no unrelated refactor.
 
+### Director review
+
+For implementation PRs owned by Agents 1–5:
+
+- [ ] Agent 7 reviewed the final code against vision, decisions, terminology, scope and adjacent tasks.
+- [ ] The final branch commit changes only `.agent-coordination/design-reviews/<TASK-ID>.json`.
+- [ ] No code/content commit was added after Director approval.
+- [ ] Any genuine creative-direction question was escalated to Josh.
+
 ### Tests performed
 
 - [ ] `node scripts/validate-agent-coordination.mjs`
