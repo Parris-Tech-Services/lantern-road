@@ -2,6 +2,7 @@ const { defineConfig, devices } = require("@playwright/test");
 
 module.exports = defineConfig({
   testDir: "./tests/e2e",
+  outputDir: "test-results/artifacts",
   timeout: 30000,
   expect: { timeout: 5000 },
   fullyParallel: false,
@@ -10,7 +11,7 @@ module.exports = defineConfig({
   reporter: [
     ["line"],
     ["json", { outputFile: "test-results/results.json" }],
-    ["html", { outputFolder: "test-results/html-report", open: "never" }]
+    ["html", { outputFolder: "playwright-report", open: "never" }]
   ],
   use: {
     baseURL: "http://127.0.0.1:4173",
