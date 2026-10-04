@@ -384,7 +384,7 @@
         "README.md",
         ".github/workflows/"
       ],
-      "notes": "PARKED HANDOFF current refresh: branch agent/LR-0013-regression-testing-f4d7b301, exact useful head 7397003bf71e3f73cf4cee143629d77c4fffc6fb, PR #16. Browser regression CI passed on the refresh; the earlier implementation history remains archived on agent/LR-0013-regression-testing-b7a4f2d1 / head 19766fa6cdacb93de26de702578bbe4e8cae381f / PR #14 with browser-regression-results evidence. LR-0013 remains READY and parked awaiting Agent 7 exact-head approval on the current refresh branch, then a fresh Agent 1 claim before merge preparation. Gate completion remains evidence-driven under the current foundation/release policy.",
+      "notes": "PARKED HANDOFF refreshed per Director request: branch agent/LR-0013-regression-testing-f4d7b301, exact useful head 91bd0103bf0a3df5257450d5e895ecf7ab654aad, PR #16. The only refresh change is browser-regression workflow checkout/setup-node v4→v7; Node 22, Playwright scenarios, localhost+?e2e=1 hooks and artifact name are unchanged. Browser regression PR run #8 / 37187701661 passed and published unexpired browser-regression-results artifact ID 11298000726 tied to this exact head. Next action: Agent 7 exact-head approval; then fresh Agent 1 claim before merge preparation.",
       "completion_evidence_required": {
         "evidence_file": ".agent-coordination/gate-evidence/LR-0013.json",
         "machine_requirements": [
