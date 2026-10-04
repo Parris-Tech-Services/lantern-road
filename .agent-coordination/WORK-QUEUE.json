@@ -284,7 +284,7 @@
         "README.md",
         ".agent-coordination/WORK-QUEUE.json"
       ],
-      "notes": "Mandatory next-wave architecture gate. It is intentionally blocked until the four already-active specialist branches land, avoiding a disruptive module split underneath live work."
+      "notes": "Mandatory next-wave architecture gate. It is intentionally blocked until the four already-active specialist branches land, avoiding a disruptive module split underneath live work. Housekeeping noted by the 4 Oct external audit: podcasttodo.md and progress.md are legacy root notes, not active queue requirements. During LR-0010's integration/doc audit, archive or remove them if still obsolete rather than letting agents treat them as current product scope."
     },
     {
       "id": "LR-0011",
@@ -1547,5 +1547,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T15:55:00+11:00"
+  "updated_at": "2026-10-04T15:57:00+11:00"
 }
