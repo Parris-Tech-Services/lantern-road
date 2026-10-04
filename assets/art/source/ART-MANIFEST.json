@@ -85,6 +85,10 @@
     {
       "generation_id": "9737f6b2-0877-4aed-9ca0-ef794ae9df40",
       "reason": "Map generated when the Tessa Reed standalone NPC portrait brief was requested; rejected for subject/type mismatch."
+    },
+    {
+      "generation_id": "ab78f610-a476-44a2-aec4-b3fbd601894e",
+      "reason": "Another art-direction/map board generated when a standalone Tessa Reed portrait was requested; rejected for asset-type mismatch."
     }
   ],
   "production_queue": [
@@ -152,6 +156,7 @@
   "generation_notes": [
     "Recent conversational context heavily biases generation toward cartography; do not accept off-brief map outputs as settlement or portrait assets.",
     "Quality rule: reject wrong asset type even when visually strong.",
-    "Next clean generation session should begin from the portrait/location brief before discussing maps."
+    "Next clean generation session should begin from the portrait/location brief before discussing maps.",
+    "LR-0042 is parked with useful hero/style-lock work preserved because this conversation's current image-generation context is repeatedly forcing cartography into non-map briefs. Resume in a clean image context rather than accepting off-brief art."
   ]
 }
