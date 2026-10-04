@@ -75,7 +75,7 @@ test("save survives a page reload and load restores campaign progress", async ({
   expect(saved.campaign.activeQuests.some(quest => quest.id === "lantern_road")).toBe(true);
 
   await page.locator("#saveBtn").click();
-  await expect(page.locator("#modalRoot")).toContainText("Saved");
+  await expect(page.locator("#modalRoot")).toContainText("Manual Save Updated");
   await page.locator('#modalRoot button[data-action="close-dialogue"]').click();
 
   await page.reload();
