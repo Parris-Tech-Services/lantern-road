@@ -2609,7 +2609,7 @@
     {
       "id": "LR-0099",
       "title": "Author modularisation blueprint and extraction sequence",
-      "status": "READY",
+      "status": "DONE",
       "priority": 0,
       "exclusive_scope": "architecture-blueprint",
       "depends_on": [],
@@ -2626,7 +2626,7 @@
       "likely_files": [
         "docs/ARCHITECTURE-MODULARISATION-PLAN.md"
       ],
-      "notes": "Blueprint complete on branch agent/LR-0099-architecture-blueprint-f04eb4a6-r2, exact useful head 09558de15d4752f1aeb09f9215cfb8b98a634b51, draft PR #46. The 612-line plan inventories the 3,494-line/161-function game.js and 3,261-line content.js, defines browser-compatible module contracts, staged extraction order, queue-to-module ownership, temporary shims, test requirements, rollback and explicit non-goals. Agent coordination validation passed in run 37180851517; the only failing step is the intentional missing Agent 7 exact-head Director review. Next action: after Director approval, freshly claim LR-0099, verify current queue/CI, merge PR #46, mark DONE, release fresh claim."
+      "notes": "Completed 4 Oct 2026 via PR #46, merge commit 2d0d33e7e83974b145f0056f117c6ce6917bbd50. The merged architecture blueprint defines browser-compatible module contracts, staged LR-0010 extraction, queue-to-module ownership, compatibility shims, tests, rollback and non-goals. Agent 7 approved exact feature head 09558de15d4752f1aeb09f9215cfb8b98a634b51; coordination run #434 passed on the approval head."
     },
     {
       "id": "LR-0100",
