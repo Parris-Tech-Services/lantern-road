@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0124",
+  "exclusive_scope": "ui-material-asset-production",
+  "agent_number": 4,
+  "agent": "The Lamplighter",
+  "session_id": "3d6fcf41-8122-4cf8-98b7-61f204b44be0",
+  "claim_token": "1f8d4f3e-cba0-4d2f-a70c-3b55bc184c6f",
+  "claimed_at": "2026-10-04T18:28:00+11:00",
+  "expires_at": "2026-10-05T06:28:00+11:00",
+  "branch": "agent/LR-0124-ui-materials-3d6fcf41",
+  "note": "Producing decorative UI materials only."
+}
