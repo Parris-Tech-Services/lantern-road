@@ -2309,7 +2309,7 @@
       "id": "LR-0088",
       "title": "Author player-leader and consequential dialogue framework",
       "status": "READY",
-      "priority": 2,
+      "priority": 0,
       "exclusive_scope": "player-leader-dialogue-authoring",
       "depends_on": [
         "LR-0004"
@@ -2327,7 +2327,7 @@
       "likely_files": [
         "story/dialogue/"
       ],
-      "notes": "Pure author-now Storyteller work responding to Josh's playtest feedback that the player feels disassociated from the four-person party and dialogue lacks BG3-like depth/memory. Distinct from LR-0045 NPC callback prose: this task defines the player-leader role, choice grammar, companion autonomy and conversation-state authoring contract. Later implementation should be consumed by the existing character/NPC/core-quest integration lanes rather than creating a parallel dialogue engine."
+      "notes": "Pure author-now Storyteller work responding to Josh's playtest feedback that the player feels disassociated from the four-person party and dialogue lacks BG3-like depth/memory. Distinct from LR-0045 NPC callback prose: this task defines the player-leader role, choice grammar, companion autonomy and conversation-state authoring contract. Later implementation should be consumed by the existing character/NPC/core-quest integration lanes rather than creating a parallel dialogue engine. Promoted to priority 0 after Josh's direct playtest feedback; this is a core social/player-identity direction, not optional polish."
     },
     {
       "id": "LR-0089",
