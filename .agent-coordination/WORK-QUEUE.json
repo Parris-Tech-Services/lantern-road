@@ -3089,7 +3089,7 @@
     {
       "id": "LR-0119",
       "title": "Author mobile suspend, resume and interruption contract",
-      "status": "READY",
+      "status": "DONE",
       "priority": 1,
       "exclusive_scope": "mobile-resume-authoring",
       "depends_on": [],
@@ -3107,7 +3107,7 @@
         "docs/MOBILE-SUSPEND-RESUME-CONTRACT.md",
         "QA/"
       ],
-      "notes": "PARKED HANDOFF (4 Oct 2026): authoring complete on branch agent/LR-0119-mobile-resume-e36a4d9b at useful head 903f0403b739fca980af8826c3294fa01ba2fd17, PR #59. Final diff adds docs/MOBILE-SUSPEND-RESUME-CONTRACT.md and QA/MOBILE-SUSPEND-RESUME-MATRIX.md only. It defines phone browser/PWA background, screen lock, same-session resume, process eviction/cold restart, audio/haptic suspension, best-effort autosave truthfulness, no wall-clock campaign progression, update-on-resume safety and real-device interruption cases. No runtime lifecycle/persistence code changed. Remaining external condition is Agent 7 approval; fresh mobile-resume-authoring claim required before later edits or final merge preparation."
+      "notes": "Completed 4 Oct 2026 via PR #59, squash merge e446ef954ba89c5eb1de7210932aa6297bc9387e. Agent 7 approved exact useful head 903f0403b739fca980af8826c3294fa01ba2fd17; final approval-head validation was green."
     },
     {
       "id": "LR-0120",
@@ -3363,5 +3363,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T19:25:00+11:00"
+  "updated_at": "2026-10-04T19:27:00+11:00"
 }
