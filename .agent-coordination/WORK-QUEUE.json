@@ -3125,6 +3125,58 @@
         "QA/"
       ],
       "notes": "Author-now Wayfinder input to LR-0074. Consumes Map Canon v1 exactly; no geography/canon mutation."
+    },
+    {
+      "id": "LR-0121",
+      "title": "Produce final UI iconography and map symbol asset set",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "ui-iconography-production",
+      "depends_on": [
+        "LR-0002"
+      ],
+      "primary_agent": 4,
+      "goal": "Create a coherent production-ready SVG icon and symbol language for Lantern Road so map, resource, status and common action cues feel authored rather than generic while remaining phone-readable.",
+      "acceptance_criteria": [
+        "Create a reusable SVG symbol sheet covering core resources, map/location categories, common actions and combat/status cues.",
+        "Keep icons legible at approximately 16–32 CSS px and visually coherent with the worn field-journal/lantern identity.",
+        "Do not encode critical meaning by icon alone; document accessible text/aria expectations for runtime consumers.",
+        "Use restrained stroke/fill complexity so the set remains crisp on low-density phone screens and lightweight in the bundle.",
+        "Define which symbols belong to Lamplighter art versus Wayfinder interaction semantics so this task does not redesign UX behaviour.",
+        "Document icon ids, intended meanings, sizing and use restrictions for Agent 1/5 integration."
+      ],
+      "likely_files": [
+        "assets/ui/icons.svg",
+        "assets/ui/README.md",
+        "docs/ART-DIRECTION.md"
+      ],
+      "notes": "Distinct from LR-0002's visual-system foundation and LR-0031's illustrative asset integration. This task produces the final reusable UI/map symbol artwork only; it does not change interaction semantics or runtime wiring."
+    },
+    {
+      "id": "LR-0122",
+      "title": "Produce title screen and Lantern Road key-art package",
+      "status": "BLOCKED",
+      "priority": 2,
+      "exclusive_scope": "title-key-art-production",
+      "depends_on": [
+        "LR-0002",
+        "LR-0042"
+      ],
+      "primary_agent": 4,
+      "goal": "Create Lantern Road's first-impression visual package for the title/start surface using the locked illustration language without turning the title screen into a heavy cinematic project.",
+      "acceptance_criteria": [
+        "Create one approved title/key-art composition that communicates road travel, lantern warmth, the Grey March and the party-scale tone without copying existing fantasy franchises.",
+        "Create phone-portrait and wider landscape crops that preserve the focal read and leave safe space for title/menu UI.",
+        "Create a clean Lantern Road title lockup treatment or placement specification compatible with the existing typography direction.",
+        "Keep assets compressed and static-first; motion, if later added, must be optional and lightweight.",
+        "Record source/provenance and hand off final crops for later runtime integration."
+      ],
+      "likely_files": [
+        "assets/art/key/",
+        "docs/ART-PROVENANCE.md",
+        "docs/ART-DIRECTION.md"
+      ],
+      "notes": "Blocked until LR-0042 locks the authored illustration set so title art does not establish a competing style."
     }
   ],
   "agent_roster": [
