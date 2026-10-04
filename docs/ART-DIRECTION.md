@@ -135,3 +135,17 @@ The motion language is deliberately restrained:
 - no visual effect owns gameplay meaning or interaction semantics.
 
 Agent 4 owns visual choreography and decorative VFX; Agent 5 owns interaction/focus/accessibility semantics; Agent 1 owns runtime integration.
+## UI material language
+
+Production decorative surfaces live in `assets/ui/materials/`.
+
+The hierarchy is intentional:
+
+- **light parchment** for occasional focused reading/authored content;
+- **dark parchment / timber** for restrained shell framing;
+- **divider/corner ornament** only at major structural moments;
+- **lantern wash** as a subtle atmosphere accent.
+
+The game should never look as though every component has been individually decorated. Quiet surfaces protect reading speed and make the rare ornamental moments feel deliberate.
+
+Decorative assets do not own contrast, focus, touch behaviour or accessibility. Those remain runtime/Wayfinder responsibilities.

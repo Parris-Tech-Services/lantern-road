@@ -1,0 +1,86 @@
+{
+  "seed": 424242,
+  "rngState": 99123,
+  "day": 5,
+  "hour": 16,
+  "weather": "drizzle",
+  "gold": 17,
+  "renown": 6,
+  "fatigue": 2,
+  "position": {
+    "q": 2,
+    "r": 1
+  },
+  "discoveredHexes": {
+    "2,1": true,
+    "1,1": true
+  },
+  "discoveredSites": {
+    "hearthwick": true
+  },
+  "inventory": {
+    "rations": 3,
+    "bandage": 1,
+    "lantern_oil": 1,
+    "rope": 1
+  },
+  "factions": {
+    "guild": 1,
+    "wardens": -1,
+    "archive": 0,
+    "veil": 0
+  },
+  "knownRumours": [
+    "missing_ledger"
+  ],
+  "quests": {
+    "lantern_road": {
+      "known": true,
+      "status": "active",
+      "stage": "investigate",
+      "outcome": "",
+      "dueDay": 9
+    }
+  },
+  "party": [
+    {
+      "id": "garrick",
+      "hp": 10,
+      "guard": 0,
+      "bless": 0
+    },
+    {
+      "id": "mira",
+      "hp": 8,
+      "guard": 1,
+      "bless": 0
+    },
+    {
+      "id": "oren",
+      "hp": 7,
+      "guard": 0,
+      "bless": 0
+    },
+    {
+      "id": "brindle",
+      "hp": 9,
+      "guard": 0,
+      "bless": 1
+    }
+  ],
+  "logs": [
+    "Legacy fixture: road opened."
+  ],
+  "worldFlags": {
+    "legacy_fixture": true
+  },
+  "activeScene": null,
+  "combat": null,
+  "ui": {
+    "tab": "journal",
+    "focus": null,
+    "dialogue": null,
+    "shop": null
+  },
+  "lastSettlement": "hearthwick"
+}

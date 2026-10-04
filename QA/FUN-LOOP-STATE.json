@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "purpose": "Standing state for LR-0140 current-build fun/friction micro-playtests.",
+  "last_tested_main_sha": "54ef2802e3a47e2f8cecfa77f7f7a8603e873dd4",
+  "last_tested_deployed_build": null,
+  "last_tested_at": "2026-10-04T09:56:38Z",
+  "last_triggering_merge_sha": "83d0aa54f0262d4e107103aee23ef2de8e52590a",
+  "last_report": "QA/LR-0140-2026-10-04-CURRENT-MAIN.md",
+  "note": "LR-0140 current-main micro-playtest completed after Josh requested a targeted retest. Exact game-under-test was 54ef2802e3a47e2f8cecfa77f7f7a8603e873dd4; findings WFD-2026-001 through WFD-2026-004 are routed and pending specialist fixes/retests."
+}

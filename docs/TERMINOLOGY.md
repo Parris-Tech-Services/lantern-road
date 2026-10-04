@@ -27,7 +27,8 @@ This is the canonical working language guide for Lantern Road. It standardises p
 - **Camp conversation** — authored party interaction during camp/rest flow.
 - **Trust** — player-facing relationship measure between the player and a party member. Legacy internal state may use `loyalty`; do not expose that key as a competing UI label.
 - **World flag** — internal implementation term only; never use it as player-facing prose.
-- **Map canon** — the approved Grey March place identities, names, coordinates and coordinate rules recorded in `world/map-canon.json`.
+- **Map canon** — the approved Grey March place identities/coordinates plus protected regional-map identity governed by `world/map-canon.json`, `docs/WORLD-MAP-CANON.md`, and the map-canon protocol.
+- **Regional label** — a canonical non-node landscape name used for orientation/lore, such as **Reedmarsh**. It is not a settlement/site, has no independent q/r, and is not clickable merely because it is named.
 - **Grid reference** — the human-facing location reference derived from canonical q/r, such as **E5**. Use it for map/navigation UI where helpful; ordinary dialogue normally uses the place name.
 - **Terrain atlas** — the authored illustrated background map. It is a visual layer, not authoritative gameplay data.
 - **Dynamic map overlay** — labels, symbols, roads, party marker, reachable hexes, discovery/fog, quest affordances and mutable world-state marks drawn from game/canon data over the terrain atlas.

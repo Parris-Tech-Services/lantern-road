@@ -1,0 +1,32 @@
+{
+  "finding_id": "WFD-2026-002",
+  "title": "Generic camp events repeat conspicuously during extended resting",
+  "status": "ROUTED",
+  "severity": "S2",
+  "player_impact": "MEDIUM",
+  "experience_tags": [
+    "REPETITION",
+    "PACING",
+    "FUN"
+  ],
+  "tested_commit": "54ef2802e3a47e2f8cecfa77f7f7a8603e873dd4",
+  "tested_source": "CURRENT_MAIN",
+  "observed_at": "2026-10-04T09:56:38Z",
+  "resolved_at": null,
+  "reproduction": "Start a fresh campaign and repeatedly Camp through the campaign clock. Across 53 camps the current-main browser run showed Thin Rations 6 times and Night Steps 5 times, including Night Steps on consecutive camps around Days 8-9 and again on consecutive camps on Day 18.",
+  "player_impact_summary": "The strongest companion scenes feel authored and specific, but recurring generic events make extended road life feel like a small random table and reduce the impact of otherwise memorable character moments.",
+  "recommended_owner_agent": 2,
+  "routed_task": "LR-0007",
+  "evidence_refs": [
+    "GitHub Actions run 37193714501",
+    "artifact 11299079820",
+    "current-main-result.json"
+  ],
+  "retest": {
+    "tested_commit": null,
+    "tested_at": null,
+    "outcome": "PENDING"
+  },
+  "reopen_count": 0,
+  "notes": "Existing Storyteller task LR-0007 owns conditional event integration and already consumes the completed LR-0046 authored event pack; no duplicate task created."
+}

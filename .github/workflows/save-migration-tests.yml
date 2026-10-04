@@ -1,0 +1,50 @@
+name: Save migration tests
+
+on:
+  push:
+    paths:
+      - "save-system.js"
+      - "game.js"
+      - "index.html"
+      - "tests/save-migrations.test.cjs"
+      - "tests/fixtures/saves/legacy/**"
+      - ".github/workflows/save-migration-tests.yml"
+  pull_request:
+    paths:
+      - "save-system.js"
+      - "game.js"
+      - "index.html"
+      - "tests/save-migrations.test.cjs"
+      - "tests/fixtures/saves/legacy/**"
+      - ".github/workflows/save-migration-tests.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  save-migration:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Use Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+      - name: Check JavaScript syntax
+        run: |
+          node --check save-system.js
+          node --check game.js
+      - name: Run save migration tests
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p test-results/save-migration
+          node --test tests/save-migrations.test.cjs 2>&1 | tee test-results/save-migration/results.tap
+      - name: Upload save migration evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: save-migration-results
+          path: test-results/save-migration/
+          if-no-files-found: error
+          retention-days: 30

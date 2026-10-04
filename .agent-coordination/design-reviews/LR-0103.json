@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0103",
+  "reviewer_agent_number": 7,
+  "reviewer": "The Director",
+  "status": "APPROVED",
+  "reviewed_head_sha": "bd5449e8c3ddbeccda05329a1b5611734b1221a2",
+  "reviewed_at": "2026-10-04T21:28:00+11:00",
+  "pillars_checked": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "terminology_checked": true,
+  "decision_log_checked": true,
+  "scope_conflicts_checked": true,
+  "notes": "All four requested Director decisions are now settled exactly as ratified: ordinary Leader knockout with combat continuing while an active companion stands; reserve companion as safe camp/support reserve with no field benefit and rotation only at settlements/established safe camps; Leader focuses named Lead From the Front and Steady Hand; one permanent Renown-2 binary focus. The rest of the generalist Leader stats/check/combat/equipment/injury/migration/rotation contract remains coherent and feeds LR-0125 without editing runtime/save/content."
+}

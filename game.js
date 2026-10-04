@@ -15,9 +15,14 @@
   const ENCOUNTER_MAP = Object.fromEntries(C.encounters.map(e => [e.id, e]));
   const ENEMY_MAP = Object.fromEntries(C.enemyArchetypes.map(e => [e.id, e]));
   const RUMOUR_MAP = Object.fromEntries(C.rumours.map(r => [r.id, r]));
+  const INJURY_MAP = Object.fromEntries((C.injuries || []).map(i => [i.id, i]));
   C.region.tiles.forEach(t => TILE_MAP[`${t.q},${t.r}`] = t);
 
+  // Keep the historical storage key so existing installs can discover and migrate raw v1 saves.
   const SAVE_KEY = "lantern-road-save-v1";
+  const LEGACY_BACKUP_KEY = "lantern-road-save-v1-backup";
+  const SaveSystem = window.LanternRoadSave;
+  if (!SaveSystem) throw new Error("Lantern Road save system failed to load.");
   const dom = {
     statusStrip: document.getElementById("statusStrip"),
     tabContent: document.getElementById("tabContent"),
@@ -506,7 +511,17 @@
     let after = before + qty;
     if (after < 0) after = 0;
     state.inventory[id] = after;
-    if (after === 0) delete state.inventory[id];
+    if (after === 0) {
+      delete state.inventory[id];
+      const equipment = state.progression?.equipment;
+      if (equipment) {
+        const equippedHeroId = Object.keys(equipment).find(heroId => equipment[heroId] === id);
+        if (equippedHeroId) {
+          equipment[equippedHeroId] = null;
+          addLog(`${getPartyBase(equippedHeroId).name} no longer has ${ITEM_MAP[id]?.name || id} equipped.`);
+        }
+      }
+    }
     if (logIt && qty !== 0) {
       const item = ITEM_MAP[id];
       addLog(`${qty > 0 ? "Gained" : "Lost"} ${Math.abs(qty)} × ${item.name}.`);
@@ -692,11 +707,90 @@
     }
   }
 
+  function ensureProgressionState() {
+    const previousProgression = state.progression;
+    const migrateLegacyEquipment = !previousProgression
+      || typeof previousProgression !== "object"
+      || !previousProgression.equipment
+      || typeof previousProgression.equipment !== "object";
+
+    if (!state.progression || typeof state.progression !== "object") state.progression = {};
+    if (!state.progression.builds || typeof state.progression.builds !== "object") state.progression.builds = {};
+    if (!state.progression.equipment || typeof state.progression.equipment !== "object") state.progression.equipment = {};
+    if (!state.progression.injuries || typeof state.progression.injuries !== "object") state.progression.injuries = {};
+
+    const legacyGear = {
+      garrick: "mail_patch",
+      mira: "trail_charms",
+      oren: "keen_lens",
+      brindle: "healer_satchel"
+    };
+
+    C.party.forEach(hero => {
+      if (!(hero.id in state.progression.builds)) state.progression.builds[hero.id] = null;
+      if (!(hero.id in state.progression.equipment)) state.progression.equipment[hero.id] = null;
+      if (!(hero.id in state.progression.injuries)) state.progression.injuries[hero.id] = null;
+
+      const injury = state.progression.injuries[hero.id];
+      if (typeof injury === "string") {
+        const def = INJURY_MAP[injury];
+        state.progression.injuries[hero.id] = {
+          id: injury,
+          restRemaining: def?.restNights || 2
+        };
+      }
+
+      const equipped = state.progression.equipment[hero.id];
+      if (equipped && (!hasItem(equipped) || ITEM_MAP[equipped]?.hero !== hero.id)) {
+        state.progression.equipment[hero.id] = null;
+      }
+      if (migrateLegacyEquipment && !state.progression.equipment[hero.id] && hasItem(legacyGear[hero.id])) {
+        state.progression.equipment[hero.id] = legacyGear[hero.id];
+      }
+    });
+  }
+
+  function getBuildChoice(memberId) {
+    const id = state.progression?.builds?.[memberId];
+    return C.heroBuilds?.[memberId]?.choices?.find(choice => choice.id === id) || null;
+  }
+
+  function getEquippedItem(memberId) {
+    const itemId = state.progression?.equipment?.[memberId];
+    if (!itemId || !hasItem(itemId)) return null;
+    const item = ITEM_MAP[itemId];
+    return item?.hero === memberId ? item : null;
+  }
+
+  function getInjury(memberId) {
+    const injury = state.progression?.injuries?.[memberId];
+    if (!injury) return null;
+    const def = INJURY_MAP[injury.id];
+    return def ? { ...injury, def } : null;
+  }
+
+  function getBuildEffects(memberId) {
+    return getBuildChoice(memberId)?.effects || {};
+  }
+
+  function getProgressionEffect(memberId, key) {
+    const build = getBuildEffects(memberId);
+    const gear = getEquippedItem(memberId);
+    return (build[key] || 0) + (gear?.[key] || 0);
+  }
+
+  function getProgressionSkillBonus(memberId, skill) {
+    const build = getBuildEffects(memberId);
+    const gear = getEquippedItem(memberId);
+    return (build.skillBonus?.[skill] || 0) + (gear?.skillBonus?.[skill] || 0);
+  }
+
   function getMaxHp(memberId) {
     const base = getPartyBase(memberId).maxHp;
-    let bonus = 0;
-    if (memberId === "garrick" && hasItem("mail_patch")) bonus += 2;
-    return base + bonus;
+    const injury = getInjury(memberId);
+    const maxHpBonus = getProgressionEffect(memberId, "maxHpBonus");
+    const injuryPenalty = injury?.def.maxHpPenalty || 0;
+    return Math.max(1, base + maxHpBonus - injuryPenalty);
   }
 
   function clampPartyHp() {
@@ -718,11 +812,46 @@
     state.party.forEach(m => healMember(m.id, amount));
   }
 
+  function maybeApplyInjury(memberId) {
+    ensureProgressionState();
+    if (state.progression.injuries[memberId]) return null;
+    const pool = C.injuries || [];
+    if (!pool.length) return null;
+    const def = pickRandom(pool);
+    state.progression.injuries[memberId] = {
+      id: def.id,
+      restRemaining: def.restNights || 2
+    };
+    const message = `${getPartyBase(memberId).name} suffers ${def.name}.`;
+    addLog(message);
+    if (state.combat) addCombatLog(message);
+    return def;
+  }
+
+  function recoverInjuriesAtInn() {
+    ensureProgressionState();
+    const updates = [];
+    C.party.forEach(hero => {
+      const injury = state.progression.injuries[hero.id];
+      if (!injury) return;
+      injury.restRemaining = Math.max(0, (injury.restRemaining || 1) - 1);
+      const def = INJURY_MAP[injury.id];
+      if (injury.restRemaining <= 0) {
+        state.progression.injuries[hero.id] = null;
+        updates.push(`${hero.name}'s ${def?.name || "injury"} has healed.`);
+      } else {
+        updates.push(`${hero.name}'s ${def?.name || "injury"} needs ${injury.restRemaining} more proper rest${injury.restRemaining === 1 ? "" : "s"}.`);
+      }
+    });
+    return updates;
+  }
+
   function damageMember(memberId, amount) {
     const m = getPartyMember(memberId);
     const before = m.hp;
     m.hp = Math.max(0, m.hp - amount);
     if (m.hp < before) signalVisualEffect("hit");
+    if (before > 0 && m.hp === 0) maybeApplyInjury(memberId);
   }
 
   function damageAll(amount) {
@@ -747,10 +876,76 @@
 
   function getSkill(memberId, skill) {
     const base = getPartyBase(memberId).skills[skill] || 0;
-    let bonus = 0;
-    if (memberId === "oren" && skill === "wits" && hasItem("keen_lens")) bonus += 1;
-    if (memberId === "mira" && skill === "scout" && hasItem("trail_charms")) bonus += 1;
-    return base + bonus + fatiguePenalty();
+    const injury = getInjury(memberId);
+    const injuryPenalty = injury?.def.skill === skill ? (injury.def.skillPenalty || 0) : 0;
+    return base + getProgressionSkillBonus(memberId, skill) - injuryPenalty + fatiguePenalty();
+  }
+
+  function buildUnlockRenown(memberId) {
+    return C.heroBuilds?.[memberId]?.unlockRenown ?? 2;
+  }
+
+  function chooseBuild(memberId, buildId) {
+    ensureProgressionState();
+    const hero = getPartyBase(memberId);
+    const config = C.heroBuilds?.[memberId];
+    const choice = config?.choices?.find(entry => entry.id === buildId);
+    if (!choice) {
+      showFeedback("Path unavailable", "That path does not exist.", "bad");
+      return;
+    }
+    if (state.progression.builds[memberId]) {
+      const existing = getBuildChoice(memberId);
+      showFeedback("Path already chosen", `${hero.name} is already committed to ${existing?.name || "a path"}.`);
+      return;
+    }
+    if (state.renown < buildUnlockRenown(memberId)) {
+      showFeedback("Path still locked", `Reach ${buildUnlockRenown(memberId)} renown before committing ${hero.name} to a path.`);
+      return;
+    }
+
+    state.progression.builds[memberId] = buildId;
+    clampPartyHp();
+    addLog(`${hero.name} commits to the ${choice.name} path.`);
+    playCue("ui");
+    renderAll();
+    showFeedback("Path chosen", `${hero.name}: ${choice.name}. This choice is permanent for this campaign.`, "good");
+  }
+
+  function equipGear(itemId) {
+    ensureProgressionState();
+    const item = ITEM_MAP[itemId];
+    if (!item || item.kind !== "gear" || !item.hero) {
+      showFeedback("Cannot equip", "That item is not hero equipment.", "bad");
+      return;
+    }
+    if (!hasItem(itemId)) {
+      showFeedback("Gear unavailable", `You do not currently carry ${item.name}.`, "bad");
+      return;
+    }
+
+    const hero = getPartyBase(item.hero);
+    if (state.progression.equipment[item.hero] === itemId) {
+      showFeedback("Already equipped", `${hero.name} is already using ${item.name}.`);
+      return;
+    }
+
+    const previous = getEquippedItem(item.hero);
+    state.progression.equipment[item.hero] = itemId;
+    clampPartyHp();
+    addLog(`${hero.name} equips ${item.name}${previous ? `, replacing ${previous.name}` : ""}.`);
+    playCue("ui");
+    renderAll();
+    showFeedback("Gear equipped", `${hero.name} now uses ${item.name}.`, "good");
+  }
+
+  function maybeAnnounceBuildUnlock(previousRenown) {
+    const thresholds = Object.values(C.heroBuilds || {}).map(entry => entry.unlockRenown ?? 2);
+    const threshold = thresholds.length ? Math.min(...thresholds) : Infinity;
+    if (previousRenown < threshold && state.renown >= threshold) {
+      addLog("Your growing renown has opened permanent hero paths. Choose them in the Party tab.");
+      showFeedback("Hero paths unlocked", "Open Party to choose one permanent path for each hero.", "good");
+    }
   }
 
   function rollCheck(actor, skill, dc) {
@@ -798,7 +993,9 @@
     q.stage = "completed";
     q.outcome = outcome || "";
     q.completedDay = state.day;
+    const previousRenown = state.renown;
     state.renown += 2;
+    maybeAnnounceBuildUnlock(previousRenown);
     addLog(`Completed quest: ${QUEST_MAP[id].title}.`);
   }
 
@@ -823,11 +1020,11 @@
     }
   }
 
-  function startNewGame() {
-    const seed = (Date.now() >>> 0) || 123456789;
-    state = {
+  function createInitialState(seedValue = 123456789) {
+    const seed = (Number(seedValue) >>> 0) || 123456789;
+    return {
       seed,
-      rngState: seed || 123456789,
+      rngState: seed,
       day: 1,
       hour: 8,
       weather: "clear",
@@ -847,6 +1044,11 @@
         relationships: {},
         seenCampMoments: []
       },
+      progression: {
+        builds: Object.fromEntries(C.party.map(p => [p.id, null])),
+        equipment: Object.fromEntries(C.party.map(p => [p.id, null])),
+        injuries: Object.fromEntries(C.party.map(p => [p.id, null]))
+      },
       logs: [],
       worldFlags: {},
       activeScene: null,
@@ -859,7 +1061,13 @@
       },
       lastSettlement: C.startingLocation
     };
+  }
+
+  function startNewGame() {
+    const seed = (Date.now() >>> 0) || 123456789;
+    state = createInitialState(seed);
     ensureCharacterState();
+    ensureProgressionState();
     revealAround(state.position.q, state.position.r);
     C.settlements.forEach(s => { if (s.id === C.startingLocation) state.discoveredSites[s.id] = true; });
     addLog("You begin in Hearthwick with a little coin, enough food for a few days, and a road full of trouble.");
@@ -878,15 +1086,20 @@
   }
 
   function serializeState() {
-    return JSON.stringify(state);
+    return SaveSystem.encode(state, { gameVersion: C.version });
   }
 
   function saveGame() {
     if (!state) return;
-    localStorage.setItem(SAVE_KEY, serializeState());
-    addLog("Campaign saved.");
-    renderAll();
-    openMessage("Saved", "Your campaign was saved to local storage on this device.");
+    try {
+      localStorage.setItem(SAVE_KEY, serializeState());
+      addLog("Campaign saved.");
+      renderAll();
+      openMessage("Saved", `Your campaign was saved on this device using save schema v${SaveSystem.CURRENT_SCHEMA_VERSION}.`);
+    } catch (err) {
+      console.error(err);
+      openMessage("Save Failed", "The browser could not store this campaign. Your current run is still open, but this save was not written.");
+    }
   }
 
   function loadGame() {
@@ -895,19 +1108,65 @@
       openMessage("No Save Found", "There is no saved Lantern Road campaign on this device yet.");
       return;
     }
+
     try {
-      state = JSON.parse(raw);
-      if (!state.ui) state.ui = { tab: "context", focus: null, dialogue: null, shop: null };
+      const result = SaveSystem.decode(raw, createInitialState(123456789));
+
+      if (result.migrated) {
+        try {
+          if (!localStorage.getItem(LEGACY_BACKUP_KEY)) localStorage.setItem(LEGACY_BACKUP_KEY, raw);
+        } catch (backupError) {
+          console.warn("Lantern Road could not preserve a legacy save backup.", backupError);
+        }
+      }
+
+      state = result.state;
       ensureCharacterState();
+      ensureProgressionState();
       clampPartyHp();
+
+      if (result.migrated || result.warnings.length) {
+        try {
+          localStorage.setItem(SAVE_KEY, serializeState());
+        } catch (upgradeError) {
+          console.warn("Lantern Road loaded the campaign but could not persist the upgraded save.", upgradeError);
+        }
+      }
+
       renderAll();
       addLog("Campaign loaded.");
       renderAll();
+
       const loc = currentLocation();
-      showFeedback("Campaign loaded", `${timeLabel()} • ${loc ? loc.data.name : getTerrainDef(currentTile()).name}`, "good");
+      const locationLabel = loc ? loc.data.name : getTerrainDef(currentTile()).name;
+      if (result.migrated) {
+        showFeedback(
+          "Campaign upgraded",
+          `Legacy save schema v${result.sourceVersion} was migrated to v${SaveSystem.CURRENT_SCHEMA_VERSION}. ${timeLabel()} • ${locationLabel}`,
+          "good"
+        );
+      } else if (result.warnings.length) {
+        showFeedback(
+          "Campaign repaired",
+          `${result.warnings.length} invalid or missing save field${result.warnings.length === 1 ? "" : "s"} were restored safely. ${timeLabel()} • ${locationLabel}`,
+          "good"
+        );
+      } else {
+        showFeedback("Campaign loaded", `${timeLabel()} • ${locationLabel}`, "good");
+      }
     } catch (err) {
       console.error(err);
-      openMessage("Load Failed", "The saved data could not be read cleanly.");
+      if (err && err.code === "SAVE_VERSION_NEWER") {
+        openMessage(
+          "Save From Newer Version",
+          "This campaign was created by a newer Lantern Road save format. It has not been overwritten. Update the game before trying to load it again."
+        );
+        return;
+      }
+      openMessage(
+        "Load Failed",
+        "The saved campaign could not be migrated or repaired safely. The stored save was left untouched so it can be recovered or inspected later."
+      );
     }
   }
 
@@ -998,13 +1257,17 @@
     const beforeRations = getItemQty("rations");
     state.gold -= settlement.innCost;
     state.fatigue = 0;
+    const injuryUpdates = recoverInjuriesAtInn();
     state.party.forEach(m => m.hp = getMaxHp(m.id));
     advanceToMorning();
     state.lastSettlement = settlementId;
     addLog(`You rest properly in ${settlement.name}.`);
+    injuryUpdates.forEach(message => addLog(message));
     renderAll();
+
     const rationUsed = Math.max(0, beforeRations - getItemQty("rations"));
-    const summary = `Paid ${settlement.innCost} gold. The party is fully healed, fatigue is cleared, and you wake at ${timeLabel()}.${rationUsed ? ` ${rationUsed} ration was consumed overnight.` : ""}`;
+    const injurySummary = injuryUpdates.length ? ` ${injuryUpdates.join(" ")}` : "";
+    const summary = `Paid ${settlement.innCost} gold. The party is fully healed, fatigue is cleared, and you wake at ${timeLabel()}.${rationUsed ? ` ${rationUsed} ration was consumed overnight.` : ""}${injurySummary}`;
     if (state.ui.dialogue) {
       showFeedback(`Rested at ${settlement.name}`, summary, "good");
     } else {
@@ -1177,7 +1440,7 @@
       return;
     }
     if (itemId === "bandage") {
-      const amount = 4 + (hasItem("healer_satchel") ? 1 : 0);
+      const amount = 4 + getProgressionEffect("brindle", "consumableHealBonus");
       const name = getPartyBase(memberId).name;
       const before = getPartyMember(memberId).hp;
       healMember(memberId, amount);
@@ -1228,13 +1491,15 @@
       showFeedback("Nothing to sell", `You no longer carry ${item.name}.`);
       return;
     }
+    const equippedHeroId = Object.keys(state.progression?.equipment || {}).find(heroId => state.progression.equipment[heroId] === itemId) || null;
     const price = Math.max(2, Math.floor(item.value * 0.5));
     state.gold += price;
     changeItem(itemId, -1, false);
     addLog(`Sold ${item.name}.`);
     renderAll();
     renderModal();
-    showFeedback("Sale complete", `${item.name} • +${price} gold • ${state.gold} gold total`, "good");
+    const equipmentNote = equippedHeroId ? ` • unequipped from ${getPartyBase(equippedHeroId).name}` : "";
+    showFeedback("Sale complete", `${item.name} • +${price} gold • ${state.gold} gold total${equipmentNote}`, "good");
   }
 
   function applyEffects(effects) {
@@ -1284,10 +1549,13 @@
         case "startCombat":
           startCombat(a, b);
           break;
-        case "addRenown":
+        case "addRenown": {
+          const previousRenown = state.renown;
           state.renown += a;
+          maybeAnnounceBuildUnlock(previousRenown);
           addLog(`${a} renown gained.`);
           break;
+        }
       }
     });
     clampPartyHp();
@@ -1559,9 +1827,38 @@
     const story = characterState(memberId);
     const latestMemory = story.memories[story.memories.length - 1];
     const arcReady = personalArcReady(memberId);
+    const gear = getEquippedItem(memberId);
+    const injury = getInjury(memberId);
+    const build = getBuildChoice(memberId);
+    const buildConfig = C.heroBuilds?.[memberId];
+    const unlock = buildUnlockRenown(memberId);
+
     const itemButtons = ["bandage", "healing_tonic"].filter(id => hasItem(id)).map(id =>
       `<button class="small" data-action="use-item" data-item="${id}" data-member="${memberId}">Use ${ITEM_MAP[id].name}</button>`
     ).join("");
+
+    let buildHtml = "";
+    if (build) {
+      buildHtml = `<p><strong>Path — ${build.name}:</strong> ${build.description}</p>`;
+    } else if (buildConfig && state.renown >= unlock) {
+      buildHtml = `
+        <p><strong>Choose a permanent path:</strong></p>
+        <div class="choice-list">
+          ${buildConfig.choices.map(choice => `
+            <button class="small" data-action="choose-build" data-member="${memberId}" data-build="${choice.id}">
+              ${choice.name} — ${choice.description}
+            </button>
+          `).join("")}
+        </div>
+      `;
+    } else if (buildConfig) {
+      buildHtml = `<p class="subtle">Path unlocks at ${unlock} renown.</p>`;
+    }
+
+    const injuryHtml = injury
+      ? `<p><strong>Injury — ${injury.def.name}:</strong> ${injury.def.description} ${injury.restRemaining} proper rest${injury.restRemaining === 1 ? "" : "s"} to recover.</p>`
+      : `<p class="subtle">No persistent injury.</p>`;
+
     return `
       <div class="party-card art-card">
         ${artSlot("party", memberId, base.name)}
@@ -1583,6 +1880,9 @@
             <div>Guile +${getSkill(memberId,"guile")}</div>
           </div>
           <p><strong>${base.ability.name}:</strong> ${base.ability.text}</p>
+          <p><strong>Gear:</strong> ${gear ? gear.name : "No hero gear equipped"}.</p>
+          ${buildHtml}
+          ${injuryHtml}
           <div class="row">
             <span class="tag">Trust: ${loyaltyLabel(story.loyalty)}${story.loyalty ? ` (${story.loyalty > 0 ? "+" : ""}${story.loyalty})` : ""}</span>
             ${(base.values || []).map(value => `<span class="tag">${value}</span>`).join("")}
@@ -1614,8 +1914,15 @@
   }
 
   function renderPartyTab() {
+    ensureProgressionState();
     const inventory = Object.entries(state.inventory).map(([id, qty]) => {
       const item = ITEM_MAP[id];
+      const equipped = item.kind === "gear" && item.hero && state.progression.equipment[item.hero] === id;
+      const heroName = item.hero ? getPartyBase(item.hero)?.name : "";
+      const equipmentAction = item.kind === "gear" && item.hero
+        ? `<button class="small" ${equipped ? "disabled" : ""} data-action="equip-gear" data-item="${id}">${equipped ? `Equipped by ${heroName}` : `Equip to ${heroName}`}</button>`
+        : "";
+
       return `
         <div class="item-entry art-entry">
           ${artSlot("item", id, item.name)}
@@ -1625,14 +1932,17 @@
               <span class="tag">${qty}</span>
             </div>
             <p>${item.description}</p>
+            ${equipmentAction}
           </div>
         </div>
       `;
     }).join("") || "<p>No items carried.</p>";
+
     const extra = hasItem("ward_salve") ? `<button data-action="use-item" data-item="ward_salve" data-member="all">Use Ward Salve</button>` : "";
     return `
       <div class="card">
         <h3>Adventuring Party</h3>
+        <p class="subtle">Each hero has one gear slot. Gear can be swapped freely; hero paths are permanent for this campaign.</p>
         ${state.party.map(m => memberCard(m.id)).join("")}
       </div>
       <div class="card">
@@ -2614,7 +2924,7 @@
       order.push({
         kind: "party",
         id: member.id,
-        initiative: getSkill(member.id, "scout") + randInt(1, 20)
+        initiative: getSkill(member.id, "scout") + getProgressionEffect(member.id, "initiativeBonus") + randInt(1, 20)
       });
     });
     enemies.forEach(enemy => {
@@ -2677,7 +2987,7 @@
 
   function heroDefense(memberId) {
     const might = getSkill(memberId, "might");
-    return 10 + Math.max(0, Math.floor(might / 2));
+    return 10 + Math.max(0, Math.floor(might / 2)) + getProgressionEffect(memberId, "defenseBonus");
   }
 
   function enemyAct(enemyUid) {
@@ -2702,7 +3012,7 @@
     if (attackRoll >= defence) {
       let dmg = randInt(enemy.damage[0], enemy.damage[1]);
       if (target.guard > 0) {
-        dmg = Math.max(1, dmg - 3);
+        dmg = Math.max(1, dmg - Math.max(3, target.guard));
         target.guard = 0;
       }
       damageMember(target.id, dmg);
@@ -2777,7 +3087,7 @@
       const hit = attackEnemy(memberId, targetId, getSkill(memberId, "wits"), [2, 4], `${hero.name} binds`);
       if (hit) {
         const enemy = state.combat.enemies.find(e => e.uid === targetId);
-        if (enemy) enemy.statuses.weakened = 2;
+        if (enemy) enemy.statuses.weakened = 2 + getProgressionEffect(memberId, "bindBonus");
         signalVisualEffect("status");
         addCombatLog(`${enemy.name}'s next attack is weakened.`);
       }
@@ -2787,18 +3097,18 @@
     }
     if (actionKey === "guard") {
       const ally = getPartyMember(targetId);
-      ally.guard = 1;
+      ally.guard = 3 + getProgressionEffect(memberId, "guardReduction");
       signalVisualEffect("status");
       addCombatLog(`${hero.name} guards ${getPartyBase(targetId).name}.`);
     }
     if (actionKey === "mend") {
-      const heal = 5 + (hasItem("healer_satchel") ? 2 : 0);
+      const heal = 5 + getProgressionEffect(memberId, "healBonus");
       healMember(targetId, heal);
       addCombatLog(`${hero.name} restores ${heal} HP to ${getPartyBase(targetId).name}.`);
     }
     if (actionKey === "bless") {
       const ally = getPartyMember(targetId);
-      ally.bless = 2;
+      ally.bless = 2 + getProgressionEffect(memberId, "blessBonus");
       signalVisualEffect("status");
       addCombatLog(`${hero.name} blesses ${getPartyBase(targetId).name}'s next strike.`);
     }
@@ -2812,7 +3122,7 @@
     const actor = getPartyMember(memberId);
     let attack = randInt(1, 20) + bonus + (actor.bless || 0) + enemy.statuses.exposed;
     if (attack >= enemy.armor) {
-      let dmg = randInt(damageRange[0], damageRange[1]);
+      let dmg = randInt(damageRange[0], damageRange[1]) + getProgressionEffect(memberId, "damageBonus");
       enemy.hp = Math.max(0, enemy.hp - dmg);
       signalVisualEffect("hit");
       addCombatLog(`${verb} ${enemy.name} for ${dmg}.`);
@@ -3349,7 +3659,10 @@
           guard: member.guard,
           loyalty: characterState(member.id).loyalty,
           memories: characterState(member.id).memories.map(memory => memory.id),
-          personalArcReady: personalArcReady(member.id)
+          personalArcReady: personalArcReady(member.id),
+          build: state.progression?.builds?.[member.id] || null,
+          equipment: state.progression?.equipment?.[member.id] || null,
+          injury: state.progression?.injuries?.[member.id] || null
         })),
         relationships: state.characterState?.relationships || {}
       } : null,
@@ -3364,6 +3677,43 @@
           maxHp: enemy.maxHp
         }))
       } : null
+    });
+  }
+
+  function installE2ETestHooks() {
+    const params = new URLSearchParams(window.location.search);
+    const localHost = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
+    if (!localHost || params.get("e2e") !== "1") return;
+
+    window.__lanternRoadTest = Object.freeze({
+      adjacentHexCenter() {
+        const adjacent = hexLayout.find(hex =>
+          neighbours(state.position.q, state.position.r).some(point => point.q === hex.q && point.r === hex.r)
+        );
+        return adjacent ? { q: adjacent.q, r: adjacent.r, x: adjacent.cx, y: adjacent.cy } : null;
+      },
+      placeAtSite(siteId) {
+        const site = SITE_MAP[siteId];
+        if (!site) throw new Error(`Unknown site: ${siteId}`);
+        state.position = { q: site.q, r: site.r };
+        state.discoveredSites[siteId] = true;
+        revealAround(site.q, site.r);
+        state.activeScene = null;
+        state.combat = null;
+        state.ui.dialogue = null;
+        state.ui.shop = null;
+        state.ui.tab = "context";
+        state.ui.focus = { type: "site", id: siteId };
+        renderAll();
+      },
+      startCombat(encounterId = "toll_cutters") {
+        if (!ENCOUNTER_MAP[encounterId]) throw new Error(`Unknown encounter: ${encounterId}`);
+        state.activeScene = null;
+        state.ui.dialogue = null;
+        state.ui.shop = null;
+        state.rngState = 123456789;
+        startCombat(encounterId, "Regression test encounter.");
+      }
     });
   }
 
@@ -3405,6 +3755,12 @@
         break;
       case "use-item":
         useConsumable(button.dataset.item, button.dataset.member);
+        break;
+      case "equip-gear":
+        equipGear(button.dataset.item);
+        break;
+      case "choose-build":
+        chooseBuild(button.dataset.member, button.dataset.build);
         break;
       case "buy-item":
         buyItem(button.dataset.settlement, button.dataset.item);
@@ -3482,6 +3838,7 @@
       navigator.serviceWorker.register("./sw.js").catch(() => {});
     }
     startNewGame();
+    installE2ETestHooks();
     window.render_game_to_text = renderGameToText;
     window.advanceTime = () => {
       renderAll();
