@@ -3201,6 +3201,32 @@
         "docs/VALIDATION.md"
       ],
       "notes": "PARKED HANDOFF: implementation complete on branch agent/LR-0123-dom-contract-b11d48f2, exact useful head 8c0967a760b8e1016e3aee71f9ac7535fa810c9e, draft PR #64. DOM contract integrity run #2 passed against the current game: no duplicate HTML ids, missing label/ARIA targets, or missing literal runtime DOM id references were found. Agent coordination run #540 passed queue validation and all 4 parked-claim regression tests; its only failure is the intentional missing Agent 7 exact-head review. Next action: Agent 7 appends final review-only approval; then fresh Agent 1 claim is required before merge preparation."
+    },
+    {
+      "id": "LR-0124",
+      "title": "Produce UI material, divider and ornament asset pack",
+      "status": "READY",
+      "priority": 2,
+      "exclusive_scope": "ui-material-asset-production",
+      "depends_on": [
+        "LR-0002"
+      ],
+      "primary_agent": 4,
+      "goal": "Create a lightweight authored material/ornament asset pack so Lantern Road's parchment, timber, divider and lantern-lit surfaces feel coherent and tactile without relying on heavy bitmap backgrounds.",
+      "acceptance_criteria": [
+        "Create lightweight reusable SVG assets for parchment, dark timber, subtle paper grain, divider/ornament treatment and lantern-light wash.",
+        "Keep assets decorative only; text contrast, layout, focus and interaction semantics remain owned by runtime/Wayfinder work.",
+        "Avoid baked text, controls or fixed sizing so assets can scale across phone and desktop surfaces.",
+        "Keep bundle cost low and avoid remote fonts, textures or third-party art dependencies.",
+        "Document intended usage, tiling/scaling behaviour, contrast restrictions and which surfaces should remain visually quiet.",
+        "Provide an Agent 1/5 handoff without editing blocked shared runtime files."
+      ],
+      "likely_files": [
+        "assets/ui/materials/",
+        "assets/ui/materials/README.md",
+        "docs/ART-DIRECTION.md"
+      ],
+      "notes": "Production decorative materials only. Distinct from LR-0002's CSS foundation, LR-0121 iconography, LR-0031 illustration integration and Wayfinder interaction/layout ownership."
     }
   ],
   "agent_roster": [
