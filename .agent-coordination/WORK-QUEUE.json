@@ -2840,7 +2840,7 @@
         ".github/workflows/static-runtime-integrity.yml",
         "README.md"
       ],
-      "notes": "PARKED HANDOFF: implementation complete on branch agent/LR-0107-static-runtime-integrity-9b6b22a5, exact useful head e816ae963ba05e311169ff6b0601d54796f68c2b, draft PR #55. Static runtime integrity Actions run 37184305989 passed the committed validator. Agent coordination run 37184305953 passed queue validation and all 4 parked-claim regression tests; its only failure is the intentional missing Agent 7 exact-head review for LR-0107. Next action: Agent 7 appends final review-only approval; then fresh Agent 1 claim is required before merge preparation, DONE transition and lock release."
+      "notes": "PARKED HANDOFF reconciled per Director request: branch agent/LR-0107-static-runtime-integrity-9b6b22a5, exact useful head ec99c3241e99fcae97167af15a4a9baedb47283a, PR #55. Workflow action majors are v7. Current-main service worker uses APP_SHELL instead of legacy FILES, so the validator was narrowly reconciled to support either static cache manifest only when passed to cache.addAll; no game/service-worker behaviour changed. Static runtime integrity PR run #8 / 37188006445 passed. Agent coordination is red only for missing Agent 7 exact-head review. Next action: Agent 7 approval; then fresh Agent 1 claim before merge."
     },
     {
       "id": "LR-0108",
