@@ -2260,7 +2260,7 @@
       "likely_files": [
         "docs/MOBILE-COMBAT-INTERACTION.md"
       ],
-      "notes": "Interaction-layer companion to Mechanist combat design, not a combat-system task."
+      "notes": "PARKED HANDOFF (4 Oct 2026): authoring complete on branch agent/LR-0085-mobile-combat-5c1a7e93 at head 518c8ea0091d3b441c65b89e0b6e338cef71c24b, PR #41. Final diff adds docs/MOBILE-COMBAT-INTERACTION.md only, defining phone current-turn/action/target ordering, one-handed reachability/scrolling, selected/target semantics, enlarged-text behaviour and keyboard/screen-reader handoff. Agent 3 retains mechanics/balance/AI. Remaining external condition is Agent 7 approval; fresh claim required before later edits or final merge preparation."
     },
     {
       "id": "LR-0086",
@@ -2655,5 +2655,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T17:54:00+11:00"
+  "updated_at": "2026-10-04T17:58:00+11:00"
 }
