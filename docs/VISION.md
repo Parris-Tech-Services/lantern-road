@@ -53,3 +53,10 @@ Use these selectively, not as templates to clone:
 - Battle Brothers — equipment/progression depth and systemic consequences.
 
 Lantern Road should remain recognisably its own compact browser road campaign.
+
+
+## Governance
+
+**Josh is the creative director and final authority on product direction, fun and premium feel.**
+
+Agent 7 — **The Director** is the operational design governor: it keeps this vision, the decision log and terminology coherent; checks implementation work for drift and hidden cross-task conflicts; and escalates genuine creative trade-offs to Josh rather than deciding them unilaterally.
