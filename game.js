@@ -3367,6 +3367,37 @@
     });
   }
 
+  function installE2ETestHooks() {
+    const params = new URLSearchParams(window.location.search);
+    const localHost = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
+    if (!localHost || params.get("e2e") !== "1") return;
+
+    window.__lanternRoadTest = Object.freeze({
+      placeAtSite(siteId) {
+        const site = SITE_MAP[siteId];
+        if (!site) throw new Error(`Unknown site: ${siteId}`);
+        state.position = { q: site.q, r: site.r };
+        state.discoveredSites[siteId] = true;
+        revealAround(site.q, site.r);
+        state.activeScene = null;
+        state.combat = null;
+        state.ui.dialogue = null;
+        state.ui.shop = null;
+        state.ui.tab = "context";
+        state.ui.focus = { type: "site", id: siteId };
+        renderAll();
+      },
+      startCombat(encounterId = "toll_cutters") {
+        if (!ENCOUNTER_MAP[encounterId]) throw new Error(`Unknown encounter: ${encounterId}`);
+        state.activeScene = null;
+        state.ui.dialogue = null;
+        state.ui.shop = null;
+        state.rngState = 123456789;
+        startCombat(encounterId, "Regression test encounter.");
+      }
+    });
+  }
+
   function handleDocumentClick(event) {
     const button = event.target.closest("[data-action]");
     if (!button) return;
@@ -3482,6 +3513,7 @@
       navigator.serviceWorker.register("./sw.js").catch(() => {});
     }
     startNewGame();
+    installE2ETestHooks();
     window.render_game_to_text = renderGameToText;
     window.advanceTime = () => {
       renderAll();
