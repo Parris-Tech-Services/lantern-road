@@ -160,6 +160,20 @@ fs.mkdirSync(OUT, { recursive: true });
     await tapMap(170,212,"continue east across the plains","16-east-step-2");
     await tapMap(204,212,"continue east again","17-east-step-3");
 
+    await clickExact("Follow the green lights into the ruins","Mosslight: follow green lights");
+    await snapshot("18-mosslight-entry");
+    const mossModal=page.locator("#modalRoot");
+    const mossText=(await mossModal.innerText()).trim();
+    if(mossText){
+      const mLabels=await mossModal.getByRole("button").evaluateAll(bs=>bs.filter(b=>!b.disabled && (b.offsetWidth||b.offsetHeight||b.getClientRects().length)).map(b=>(b.innerText||"").trim()));
+      console.log("MOSSLIGHT_MODAL_BUTTONS",JSON.stringify(mLabels));
+      const mChoices=mLabels.filter(x=>x && x!=="Close" && x!=="⚙");
+      if(mChoices.length){
+        await clickExact(mChoices[0],"Mosslight: first visible choice");
+        await snapshot("19-mosslight-choice-result");
+      }
+    }
+
     console.log("\n=== BROWSER ERRORS ===");
     console.log(JSON.stringify({pageErrors,consoleErrors},null,2));
   } finally { await browser.close(); }
