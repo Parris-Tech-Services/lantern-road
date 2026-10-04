@@ -881,7 +881,7 @@
     const config = C.heroBuilds?.[memberId];
     const choice = config?.choices?.find(entry => entry.id === buildId);
     if (!choice) {
-      showFeedback("Build unavailable", "That path does not exist.", "bad");
+      showFeedback("Path unavailable", "That path does not exist.", "bad");
       return;
     }
     if (state.progression.builds[memberId]) {
@@ -934,7 +934,7 @@
     const threshold = thresholds.length ? Math.min(...thresholds) : Infinity;
     if (previousRenown < threshold && state.renown >= threshold) {
       addLog("Your growing renown has opened permanent hero paths. Choose them in the Party tab.");
-      showFeedback("Hero paths unlocked", "Open Party to choose one permanent specialisation for each hero.", "good");
+      showFeedback("Hero paths unlocked", "Open Party to choose one permanent path for each hero.", "good");
     }
   }
 
