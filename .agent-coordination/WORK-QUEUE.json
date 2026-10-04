@@ -4016,7 +4016,7 @@
     {
       "id": "LR-0151",
       "title": "Establish Steward as project lead and lead game designer",
-      "status": "READY",
+      "status": "DONE",
       "priority": 0,
       "exclusive_scope": "steward-game-production-authority",
       "depends_on": [],
@@ -4041,7 +4041,7 @@
         "scripts/validate-agent-coordination.mjs",
         "scripts/verify-pr-claim.mjs"
       ],
-      "notes": "Josh explicitly directed on 5 Oct 2026 that Agent 7 is CEO, not lead game designer; Agent 1 is project lead and lead game designer as well as technical lead/program integrator. This task supersedes the game-production/design-approval portions of LR-0150 while preserving Agent 7 executive oversight."
+      "notes": "Completed 5 Oct 2026 via PR #118, merge commit 9316d05fd953d6dd49050e76ddc8ec652bb68da0. Josh/Agent7/Agent1 hierarchy is now explicit: Josh owner/creative director; Agent 7 CEO/executive oversight; Agent 1 project lead, lead game designer, technical lead and program integrator with final internal game-production approval. Live specialist review gating now uses steward_review, foundation evidence verification is Steward-owned, map canon approval is Steward-owned, redundant LR-0035/LR-0036 CEO design gates are cancelled, and LR-0152 CEO cadence/handover discipline is preserved. Exact PR head 7d8c4d42ff1d5e8f44582db5fca2858d2de1aece passed Agent coordination #1174, AED report tests #54, Map canon #46, Static runtime #62 and Browser regression #34."
     },
     {
       "id": "LR-0152",
@@ -4131,5 +4131,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-05T09:07:00+11:00"
+  "updated_at": "2026-10-05T09:10:00+11:00"
 }
