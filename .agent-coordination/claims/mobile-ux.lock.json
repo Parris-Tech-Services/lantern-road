@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0009",
+  "exclusive_scope": "mobile-ux",
+  "agent_number": 5,
+  "agent": "The Wayfinder",
+  "session_id": "4d385595-5190-42bf-8e02-e0a50d1ec4c2",
+  "claim_token": "3fb690d4-436c-49fb-adaf-657b1b0100a1",
+  "claimed_at": "2026-10-04T22:08:44+11:00",
+  "expires_at": "2026-10-05T10:08:44+11:00",
+  "branch": "agent/LR-0009-mobile-startup-hotfix-4d385595",
+  "note": "Reconcile the merged LR-0009 current-main startup regression only: restore valid game.js startup, preserve autosave resume, and verify phone rendering."
+}
