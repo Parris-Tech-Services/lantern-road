@@ -913,7 +913,8 @@
       "depends_on": [
         "LR-0002",
         "LR-0042",
-        "LR-0137"
+        "LR-0137",
+        "LR-0129"
       ],
       "primary_agent": 4,
       "goal": "Curate, optimise and integrate the approved illustration set into Lantern Road's existing visual slots while keeping mobile download cost controlled.",
@@ -930,7 +931,7 @@
         "style.css",
         "docs/ART-DIRECTION.md"
       ],
-      "notes": "Second-wave Lamplighter integration task. AI image generation itself is split into LR-0042 to avoid mixing generation with curation, optimisation and repo integration. Blocked until LR-0042 is DONE. Integration boundary: LR-0042 may generate/source art before the architecture gate, but repository/style integration waits for LR-0010 so it does not collide with the grandfathered mobile/foundation wave. Architecture dependency narrowed by LR-0128: replaces all-or-nothing LR-0010 wait with stage(s) LR-0137; final integration remains governed by LR-0010 where separately applicable."
+      "notes": "Second-wave Lamplighter illustration integration task. LR-0042 generates/sources the approved image set; LR-0129 defines exact composition/crop/export standards; LR-0031 owns final selection, crop, compression and runtime mapping into existing art slots after the UI/render seam exists. First visible priority is the approved Garrick/Mira/Oren/Brindle hero portrait set, followed by settlements/sites/enemies/NPCs/items as LR-0042 completes. Do not leave approved art sitting only in source folders once this task is unblocked."
     },
     {
       "id": "LR-0032",
@@ -941,7 +942,8 @@
       "depends_on": [
         "LR-0003",
         "LR-0126",
-        "LR-0137"
+        "LR-0137",
+        "LR-0131"
       ],
       "primary_agent": 4,
       "goal": "Replace or augment the procedural audio foundation with a coherent authored soundscape and restrained adaptive score while preserving phone performance and player control.",
@@ -958,7 +960,7 @@
         "game.js",
         "docs/AUDIO-DIRECTION.md"
       ],
-      "notes": "Second-wave Lamplighter authored-audio integration task. LR-0126 now owns the upstream soundscape/score production bible and source-asset contract; LR-0032 consumes that approved contract for final authored audio assets/runtime integration. It still waits for LR-0010 before touching shared runtime architecture. Architecture dependency narrowed by LR-0128: replaces all-or-nothing LR-0010 wait with stage(s) LR-0137; final integration remains governed by LR-0010 where separately applicable."
+      "notes": "Second-wave Lamplighter authored-audio production/integration task. LR-0126 supplies the approved soundscape/score production bible and source-asset contract; LR-0131 supplies Wayfinder's mobile audio-control/sensory-accessibility audit. LR-0032 owns obtaining/creating the final authored ambience/music/cue files plus runtime integration after the UI/render seam exists. Existing procedural Web Audio remains the fallback until authored assets are proven. Must preserve sound-off play, browser lifecycle correctness and phone/headphone performance."
     },
     {
       "id": "LR-0033",
@@ -3702,6 +3704,41 @@
         ".agent-coordination/WORK-QUEUE.json"
       ],
       "notes": "Becomes READY after LR-0021 is completed/parked and LR-0139 installs the finding/metrics workflow. This lane exists to test the current game repeatedly, not the Warden tooling branch itself."
+    },
+    {
+      "id": "LR-0141",
+      "title": "Integrate Lamplighter UI icons, materials and atmospheric VFX",
+      "status": "BLOCKED",
+      "priority": 1,
+      "exclusive_scope": "lamplighter-presentation-runtime-integration",
+      "depends_on": [
+        "LR-0121",
+        "LR-0124",
+        "LR-0127",
+        "LR-0130",
+        "LR-0137"
+      ],
+      "primary_agent": 1,
+      "goal": "Wire the approved Lamplighter presentation assets into the live game after the UI/render seam exists: custom icon sprite, restrained parchment/timber/lantern materials, and atmospheric/reduced-motion VFX, while preserving Wayfinder semantics and accessibility.",
+      "acceptance_criteria": [
+        "Replace temporary/generic glyph presentation with assets/ui/icons.svg where appropriate without removing visible/accessibly named text or confusing Renown with faction standing.",
+        "Apply the approved parchment/timber/divider/lantern material assets selectively to shell, journal/panel and major structural surfaces according to the Lamplighter material-use rules; do not decorate every component.",
+        "Integrate rain, fog, ember, lantern-bloom and sacred-halo effects only in the states authorised by docs/MOTION-VFX-DIRECTION.md.",
+        "Implement every continuous/decorative effect with the specified reduced-motion/static fallback and ensure gameplay meaning never depends on the effect loading.",
+        "Keep runtime icon/material/VFX code behind the extracted LR-0137 presentation seam instead of re-entangling mechanics with render code.",
+        "Consume LR-0130's icon semantics/phone-legibility audit before final wiring so confusable symbols remain visibly disambiguated.",
+        "Verify smallest-phone readability and performance; no decorative layer may obscure labels, text, focus indication or touch targets.",
+        "If an asset fails to load, controls and gameplay remain usable and semantically complete."
+      ],
+      "likely_files": [
+        "game.js",
+        "style.css",
+        "index.html",
+        "assets/ui/icons.svg",
+        "assets/ui/materials/",
+        "assets/ui/effects/"
+      ],
+      "notes": "Steward-owned runtime integration task created by Agent 4 to make already-produced Lamplighter assets visibly land in the game. Agent 4 retains art/VFX direction; Agent 5 retains interaction/accessibility semantics; Agent 1 owns runtime wiring. Do not duplicate LR-0031 hero/location art integration or LR-0032 authored audio integration."
     }
   ],
   "agent_roster": [
