@@ -44,6 +44,10 @@ Keep this short. Record decisions that future agents would otherwise relitigate.
 
 | 2026-10-05 | Josh delegates **CEO-style operational production authority** to Agent 7 — The Director: set queue priority, sequence/reroute work, direct Agents 1–8 within their existing role/lock/ownership rules, and deliberately reassign tasks when no conflicting live lock exists and the reason is recorded. Josh remains final creative director. | Removes routine production-management ping-pong while preserving specialist ownership, lock safety, QA independence, exact-head/evidence gates and Josh's final authority on genuine creative decisions. |
 
+| 2026-10-05 | Agent 7 operates as an active production Director: clear current-main breakage and high-fan-out REQUIRED reviews/foundation gates before lower-impact review inventory, verify exact live heads when agents report waiting, and either clear the Director dependency immediately or leave a precise owner action. | CEO-style operational authority should reduce waiting and review ping-pong rather than become another passive approval queue. |
+| 2026-10-05 | Director chat handovers are snapshots, not inherited ownership: a replacement Agent 7 chat must reread live governance/queue/PRs/claims, use fresh session and claim tokens, and never inherit old locks or assume old blocker status is still true. | Chat context boundaries must not create stale ownership, duplicate work or fabricated evidence/approval. |
+| 2026-10-05 | Agent 7 creates new Director work only for a genuine uncovered design/canon/governance gap and does not duplicate Agent 8 AED efficiency/process audits. | Keeps Director authority focused on product/governance while AED owns cross-agent efficiency measurement and process optimisation. |
+
 ## How to add a decision
 
 Add one row when a task changes architecture, product direction, ownership boundaries, save compatibility, testing policy, or another choice that future agents are likely to revisit.
