@@ -2332,7 +2332,7 @@
         "systems/balance/",
         "docs/"
       ],
-      "notes": "PARKED 2026-10-04 by Agent 3 under claim-protocol v1.2. Branch: agent/LR-0087-systems-balance-authoring-719b9b52. Exact useful head: b4ddf398f1f3426a341d8459770542b02b0024cd. PR #33. Added systems/balance/BUILD-VIABILITY-SCENARIO-MATRIX.md only (1108 lines); no runtime/test-harness/black-box-QA edits. Matrix defines 8 representative build combinations, equipment/economy/recovery overlays, 10 core balance scenarios, 4 full-campaign profiles, early/mid/late checkpoints, dominance/trap/non-functional/spiral diagnostics, and final assumption reconciliation for LR-0020. Acceptance criteria satisfied by authoring; remaining external closure is Director review/merge. Freshly claim systems-balance-authoring before any content change or merge reconciliation."
+      "notes": "PARKED 2026-10-04T21:38+11:00 corrective reconciliation. Original PR #33 was merged before Director-requested Leader/reserve addendum was incorporated, so LR-0087 correctly remains READY. Corrective branch: agent/LR-0087-roster-reconcile-9ab4f38e. Exact useful head: fedff55e285810242e552919e50d56b406837336. PR #103. Changes only systems/balance/BUILD-VIABILITY-SCENARIO-MATRIX.md: reclassifies B1-B8 as companion build-component coverage, adds four Leader+three-active reserve scenarios, both Lead From the Front / Steady Hand focus cases, reserve-dominance/mandatory-companion diagnostics, and explicit LR-0106/LR-0125 consumption. Remaining external closure: Agent 7 exact-head approval, then fresh Agent 3 claim to merge correction, mark DONE, release."
     },
     {
       "id": "LR-0088",
@@ -3925,7 +3925,7 @@
       "likely_files": [
         "story/integration/"
       ],
-      "notes": "Acceleration task created after Josh explicitly asked to get merged Storyteller work into the playable game ASAP. Content-side handoff/index only; does not duplicate LR-0138 data-seam architecture or runtime ownership. LR-0091 can be appended after it reaches DONE, but LR-0147 does not depend on unapproved content."
+      "notes": "Acceleration task created after Josh explicitly asked to get merged Storyteller work into the playable game ASAP. Content-side handoff/index only; does not duplicate LR-0138 data-seam architecture or runtime ownership. LR-0091 can be appended after it reaches DONE, but LR-0147 does not depend on unapproved content. Parked 4 Oct 2026 under completed-work parking rule. Narrative runtime integration index complete on branch agent/LR-0147-narrative-integration-d8a7e69c at useful head 6a3004da1a121c17ecd624626ed588fe77184ee4, PR #101. All acceptance criteria pass; branch changes only story/integration/. Next action after applicable review under the live policy: fresh Agent 2 claimant verifies exact head and merges, marks LR-0147 DONE, releases fresh lock."
     }
   ],
   "agent_roster": [
@@ -3988,5 +3988,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T21:33:00+11:00"
+  "updated_at": "2026-10-04T21:37:00+11:00"
 }
