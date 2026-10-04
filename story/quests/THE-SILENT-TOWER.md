@@ -220,6 +220,54 @@ This supports meaningful refusal without creating a random alternate faction rec
 
 ---
 
+# Aftermath — The Chart Starts Arguments
+
+The quest should visibly change how people talk about routes before the regional campaign asks the player to make a final political choice.
+
+### Sen
+
+After any successful recovery:
+
+> “People keep asking whether the chart proves them right.”
+>
+> Sen smooths the copied edge.
+>
+> “It proves there were more choices than they remember.”
+
+### Vesk
+
+If shown a route copy:
+
+> “Old landing's real.”
+>
+> “Bad bank, though.”
+>
+> He hands it back.
+>
+> “History doesn't improve the current.”
+
+### Mira
+
+> “Useful thing about old maps.”
+>
+> “They prove official people used to be wrong in different directions.”
+
+### Oren
+
+If the chart is full:
+
+> “We can compare claims now.”
+
+If partial/damaged:
+
+> “We can compare some claims.”
+>
+> Mira: “Look at you, learning moderation.”
+
+**Consequence intent:** recovered knowledge should create new questions, not instantly unlock every old road as safe or correct.
+
+---
+
 # Failure branch — Chart damaged
 
 If later integration supports failed retrieval/delay:
