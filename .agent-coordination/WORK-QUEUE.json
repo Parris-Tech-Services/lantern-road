@@ -1266,7 +1266,7 @@
     {
       "id": "LR-0044",
       "title": "Author the four hero personal arcs",
-      "status": "READY",
+      "status": "DONE",
       "priority": 1,
       "exclusive_scope": "personal-arc-authoring",
       "depends_on": [
@@ -1284,7 +1284,7 @@
       "likely_files": [
         "story/personal-quests/"
       ],
-      "notes": "Author-now, integrate-later split of LR-0037. Produces real game narrative content while save/runtime foundations are blocked. Parked 4 Oct 2026 under the updated parking rule. Completed authored content is on branch agent/LR-0044-personal-arc-authoring-e2b8d7a1 at useful head 2c0917596890a45612a5167a2a7a765a4fa1fdf2, PR #13. Live acceptance criteria were rechecked and satisfied; branch changes only story/personal-quests/. Coordination validation passed and CI is waiting only on the required Agent 7 Director review file. Next action after review: fresh Agent 2 claimant reacquires personal-arc-authoring, verifies the approved head/CI, merges PR #13 if current, marks LR-0044 DONE, then releases the fresh lock."
+      "notes": "Author-now, integrate-later split of LR-0037. Produces real game narrative content while save/runtime foundations are blocked. Parked 4 Oct 2026 under the updated parking rule. Completed authored content is on branch agent/LR-0044-personal-arc-authoring-e2b8d7a1 at useful head 2c0917596890a45612a5167a2a7a765a4fa1fdf2, PR #13. Live acceptance criteria were rechecked and satisfied; branch changes only story/personal-quests/. Coordination validation passed and CI is waiting only on the required Agent 7 Director review file. Next action after review: fresh Agent 2 claimant reacquires personal-arc-authoring, verifies the approved head/CI, merges PR #13 if current, marks LR-0044 DONE, then releases the fresh lock. Completed 4 Oct 2026: PR #13 merged as c3ba7107acdcdf550170b40fe900a4e16760d6a4 after Agent 7 approval; Garrick, Mira, Oren and Brindle personal-arc authoring is now on main."
     },
     {
       "id": "LR-0045",
@@ -3915,5 +3915,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T20:58:00+11:00"
+  "updated_at": "2026-10-04T21:02:00+11:00"
 }
