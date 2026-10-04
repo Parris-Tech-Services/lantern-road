@@ -2938,7 +2938,7 @@
     {
       "id": "LR-0112",
       "title": "Audit dependency critical path and blocker fan-out",
-      "status": "READY",
+      "status": "DONE",
       "priority": 0,
       "exclusive_scope": "aed-critical-path-audit",
       "depends_on": [],
@@ -2954,7 +2954,7 @@
         "audit/AED-CRITICAL-PATH.md",
         ".agent-coordination/WORK-QUEUE.json"
       ],
-      "notes": "AED task. Operational efficiency work only; do not take over a live specialist claim or create a new product/design approval gate."
+      "notes": "Merged via PR #67 at d9fe7442425e01cfcc99fc89603586b31b114d5a. audit/AED-CRITICAL-PATH.md ranks direct/transitive fan-out, separates technical versus process waits, preserves valid foundation dependencies and defines the operational sequencing/metrics for AED automation."
     },
     {
       "id": "LR-0113",
@@ -3335,5 +3335,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T19:00:00+11:00"
+  "updated_at": "2026-10-04T19:04:00+11:00"
 }
