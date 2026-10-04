@@ -90,22 +90,32 @@ What we are carrying forward from it:
 - enough breathing room that roads and settlements feel embedded in geography rather than floating on a UI;
 - restrained fog/atmosphere that supports navigation rather than obscuring it.
 
-The generated labels on that concept are **not automatically canon**.
+The generated labels on that concept were **not automatically canon**. LR-0071 reconciled them and LR-0104 ratified the Director decision.
 
-These currently remain PROPOSED pending LR-0071 Storyteller reconciliation and Director/Josh approval where needed:
+### Canonical non-node regional labels
 
-- Ashen Ridge
-- Duskwood
-- Mourn Lake
-- Hollowwold
-- Reedmarsh
-- Embermere
-- Siltbrook Marsh
-- Wyrthen Forest
-- Blackfen Plains
-- Stoneveil Mountains
+These landscape names are now CANON:
 
-If a generated label conflicts with existing Lantern Road material, existing canon wins until a controlled change is approved.
+- **Hollowwold** — north-central upland around Hollowglass Cavern;
+- **Reedmarsh** — southern river-and-reed country around the existing ford/ferry/crossing/marsh network;
+- **Barrow Ridge** — high ground around Old Barrow Keep;
+- **Watcherwood** — western/north-western wooded approaches anchored by Watcher's Rest;
+- **Greyfen Plain** — central open road country around Greyfen Market;
+- **Stoneveil Heights** — existing northern hill/mountain high-country and horizon.
+
+They are orientation/lore labels only. They do not create gameplay nodes, coordinates or new territory. See `design/REGIONAL-MAP-CANON-CONTRACT.md`.
+
+Resolved concept-map names:
+
+- **Ashen Ridge → Barrow Ridge**
+- **Duskwood → Watcherwood**
+- **Blackfen Plains → Greyfen Plain**
+- **Stoneveil Mountains → Stoneveil Heights**
+- **Hollowwold** and **Reedmarsh** are adopted unchanged.
+- **Embermere** and **Siltbrook Marsh** are rejected.
+- **Mourn Lake** and **Wyrthen Forest** are deferred and remain non-canon.
+
+A generated or deferred label may not be treated as established geography merely because it appears in concept art or proposal prose.
 
 ## Illustrated map architecture
 
