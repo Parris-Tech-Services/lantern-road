@@ -236,7 +236,9 @@
         "Verify map panning/zooming/touch targeting.",
         "Add autosave and a clear save-slot direction without data loss.",
         "Provide adjustable text size and high-contrast/accessibility settings.",
-        "Consider optional haptic feedback where browser/device support allows it."
+        "Consider optional haptic feedback where browser/device support allows it.",
+        "The settings gear and any floating/mobile controls never overlap or obscure actionable buttons at supported phone widths, including enlarged text settings.",
+        "Expose a visible build/version identifier in an unobtrusive Settings/About surface so stale service-worker/cache builds can be identified during support and testing."
       ],
       "likely_files": [
         "index.html",
@@ -244,7 +246,7 @@
         "game.js",
         "manifest.webmanifest"
       ],
-      "notes": "Premium-gap area: mobile experience.",
+      "notes": "Premium-gap area: mobile experience. Also owns the reported settings-gear overlap and a visible player/support-facing build/version identifier so stale cached builds are obvious.",
       "primary_agent": 5,
       "merge_gate_depends_on": [
         "LR-0011",
@@ -295,13 +297,29 @@
         "Add a migration path for older saves rather than assuming the latest state shape.",
         "Validate malformed or partial saves and give the player a useful recovery message.",
         "Preserve current campaign data where safely possible.",
-        "Document compatibility expectations for future feature agents."
+        "Document compatibility expectations for future feature agents.",
+        "Gate closure evidence: .agent-coordination/gate-evidence/LR-0011.json must be present, VERIFIED, tied to the exact tested commit and successful CI run, and include Josh's explicit Android phone confirmation before this task may be marked DONE."
       ],
       "likely_files": [
         "game.js",
         "README.md"
       ],
-      "notes": "Priority-0 safety gate. Current save-changing feature branches may work in parallel but must not merge until this foundation is DONE."
+      "notes": "Priority-0 safety gate. Current save-changing feature branches may work in parallel but must not merge until this foundation is DONE. Gate completion is evidence-driven: owner implementation alone is insufficient to mark DONE.",
+      "completion_evidence_required": {
+        "evidence_file": ".agent-coordination/gate-evidence/LR-0011.json",
+        "machine_requirements": [
+          "Commit representative pre-versioning/legacy save fixtures that exercise real older save shapes rather than synthetic empty objects.",
+          "Automated migration tests load every committed legacy fixture and verify successful migration into the current schema.",
+          "Automated current-version round-trip verifies save -> reload/reopen -> restored campaign state without silent data loss.",
+          "Malformed/partial/incompatible save cases fail safely with a player-visible recovery path.",
+          "A successful CI workflow run on the exact candidate commit publishes the save/migration test report as an artifact."
+        ],
+        "human_requirements": [
+          "Josh loads a legacy/pre-gate save on his Android phone after the candidate build is deployed or otherwise accessible.",
+          "Josh confirms the campaign opens and core state is intact enough to continue play.",
+          "The evidence record contains Josh's explicit phone-check confirmation; agents must not self-assert this field."
+        ]
+      }
     },
     {
       "id": "LR-0012",
@@ -343,7 +361,8 @@
         "Automate new campaign creation, representative travel/action flows, and checks for uncaught browser/runtime errors.",
         "Cover save/load round-trip behaviour through browser storage and a page reload/reopen.",
         "Cover at least one combat flow and one quest/site interaction.",
-        "Run the browser suite in CI where practical and document the local command every feature agent should run before PR completion."
+        "Run the browser suite in CI where practical and document the local command every feature agent should run before PR completion.",
+        "Gate closure evidence: .agent-coordination/gate-evidence/LR-0013.json must be present, VERIFIED, tied to the exact tested commit and successful CI run, and include Josh's explicit Android phone confirmation before this task may be marked DONE."
       ],
       "likely_files": [
         "tests/",
@@ -352,7 +371,22 @@
         "README.md",
         ".github/workflows/"
       ],
-      "notes": "Priority-0 safety gate. Keep tooling light, but the test must drive a real browser."
+      "notes": "Priority-0 safety gate. Keep tooling light, but the test must drive a real browser. Gate completion is evidence-driven: owner implementation alone is insufficient to mark DONE.",
+      "completion_evidence_required": {
+        "evidence_file": ".agent-coordination/gate-evidence/LR-0013.json",
+        "machine_requirements": [
+          "Playwright or equivalent launches Lantern Road in a real browser; source inspection alone does not count.",
+          "The automated suite exercises new campaign, representative travel/action flow, at least one combat flow, at least one quest/site interaction, and save/reload through browser storage.",
+          "The suite fails on uncaught page/runtime errors relevant to the tested flows.",
+          "A successful CI workflow run on the exact candidate commit publishes browser test results/artifacts.",
+          "The local and CI commands needed to reproduce the run are documented."
+        ],
+        "human_requirements": [
+          "Josh opens the candidate build on his Android phone and performs a short smoke test covering launch, starting/resuming play, one map/action interaction, and save/reload.",
+          "Josh confirms the tested build behaves correctly enough to close the foundation gate.",
+          "The evidence record contains Josh's explicit phone-check confirmation; agents must not self-assert this field."
+        ]
+      }
     },
     {
       "id": "LR-0014",
@@ -994,14 +1028,15 @@
         "Each of the four heroes gets a distinct multi-step personal quest or substantial personal thread unlocked by trust, memories or prior choices.",
         "Each personal arc contains at least one meaningful decision that changes that hero, a party relationship, or a visible world consequence.",
         "Personal arcs reuse the existing character memory/bond system and do not duplicate the main 18-day campaign plot.",
-        "Avoid generic fetch-quest structure; each arc must reveal character, create a trade-off, and have a remembered outcome."
+        "Avoid generic fetch-quest structure; each arc must reveal character, create a trade-off, and have a remembered outcome.",
+        "Mira's personal arc includes at least one choice whose effect is remembered and surfaces later outside the immediate scene through dialogue, relationship state, world consequence, or ending/campaign callback."
       ],
       "likely_files": [
         "story/",
         "content.js",
         "game.js"
       ],
-      "notes": "Follow-up to LR-0004. Distinct from LR-0007 general travel/camp events and LR-0008 main campaign arc.",
+      "notes": "Follow-up to LR-0004. Distinct from LR-0007 general travel/camp events and LR-0008 main campaign arc. Explicitly tracks the earlier open question of whether Mira's choices carry weight later.",
       "primary_agent": 2
     },
     {
