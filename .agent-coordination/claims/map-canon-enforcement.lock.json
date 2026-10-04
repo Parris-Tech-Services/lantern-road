@@ -8,6 +8,6 @@
   "claim_token": "66f51e93-e75c-4606-9fc4-7c21e3f73b58",
   "claimed_at": "2026-10-04T16:55:00+11:00",
   "expires_at": "2026-10-05T04:55:00+11:00",
-  "branch": "agent/LR-0070-map-canon-enforcement-1d7f63e2",
-  "note": "Implementing only LR-0070."
+  "branch": "agent/LR-0070-map-canon-enforcement-1d7f63e2-r2",
+  "note": "Implementing only LR-0070. Refreshed onto current main; original branch preserved as backup."
 }
