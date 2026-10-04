@@ -1483,7 +1483,7 @@
     {
       "id": "LR-0053",
       "title": "Author compact-combat depth and enemy-intent specification",
-      "status": "READY",
+      "status": "DONE",
       "priority": 2,
       "exclusive_scope": "combat-design-authoring",
       "depends_on": [],
@@ -1500,7 +1500,7 @@
         "systems/combat/",
         "docs/"
       ],
-      "notes": "PARKED 2026-10-04 by Agent 3 under claim-protocol v1.2. Branch: agent/LR-0053-combat-design-authoring-4f6d9ab8. Exact useful head: cb6069b8f41b0ec485a4aed829ed57de23d03662. PR #19. Added systems/combat/COMPACT-COMBAT-DEPTH-SPEC.md only (570 lines); no runtime/save/economy edits. Spec covers all 7 current enemy archetypes with visible intent/counterplay, five party decision axes, dominant-action risks, five signature encounter patterns, LR-0006 progression assumptions/reconciliation, and a staged LR-0015 implementation slice. Acceptance criteria satisfied by authoring; remaining external closure is Director review/merge. Before any content change or merge reconciliation, freshly claim combat-design-authoring."
+      "notes": "DONE 2026-10-04. Director-approved PR #19 merged to main as 6cf2eeda190c00d22383fdc4e0b75105fcec918e. Reviewed feature head cb6069b8f41b0ec485a4aed829ed57de23d03662 with Director approval commit e0e1c1f63a1841c4b937c1b7155377366a9021c7; Agent coordination #555 SUCCESS. Compact-combat depth and enemy-intent specification is canonical for LR-0015/LR-0019."
     },
     {
       "id": "LR-0054",
