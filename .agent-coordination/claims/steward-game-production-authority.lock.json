@@ -8,6 +8,6 @@
   "claim_token": "7feaad92-91d5-4cbf-89ce-a57a7b891bbb",
   "claimed_at": "2026-10-05T08:54:00+11:00",
   "expires_at": "2026-10-05T20:54:00+11:00",
-  "branch": "agent/LR-0151-steward-game-lead-9b9ba7c7",
-  "note": "Josh-directed company/game authority restructure: CEO remains Agent 7 executive oversight; Steward becomes project lead, lead game designer, technical lead and program integrator with final internal game approval."
+  "branch": "agent/LR-0151-steward-game-lead-9b9ba7c7-r2",
+  "note": "Reconciled LR-0151 onto latest main after concurrent Agent 7 LR-0152 governance changes; preserving CEO operating/handover discipline while moving game-production/design approval to Steward."
 }
