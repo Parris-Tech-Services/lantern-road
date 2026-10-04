@@ -79,7 +79,7 @@ Use **ESCALATE_TO_JOSH** when two legitimate interpretations of the pillars crea
 
 ## PR design-review checklist
 
-For every specialist implementation PR, answer all of these against the final code/content head:
+For every task explicitly marked `director_review: REQUIRED`, answer all of these against the final code/content head:
 
 - **Pillars:** Which of the five pillars does this touch, and does it strengthen or at least preserve each one?
 - **Non-goals:** Does it accidentally move toward a tactical grid, giant content treadmill, generic procedural volume, framework rewrite or silent-feedback behaviour?
