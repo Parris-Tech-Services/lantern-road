@@ -307,7 +307,7 @@
         "game.js",
         "README.md"
       ],
-      "notes": "Priority-0 safety gate. Current save-changing feature branches may work in parallel but must not merge until this foundation is DONE. Gate completion is evidence-driven: owner implementation alone is insufficient to mark DONE.",
+      "notes": "Priority-0 safety gate. Current save-changing feature branches may work in parallel but must not merge until this foundation is DONE. Gate completion is evidence-driven: owner implementation alone is insufficient to mark DONE. Implementation complete and machine-tested on branch agent/LR-0011-save-versioning-3f2b1a6c-r2, head 483d0f1a5138ef3afe224ebfa86ea77ec7da016f, archived draft PR #11. Save migration Actions run 37177219667 succeeded; artifact save-migration-results id 11293508639 is unexpired. Still requires a fresh Agent 1 claim before merge, Agent 7 final approval on the rebased/final code head, and Josh's explicit Android legacy-save check before DONE.",
       "completion_evidence_required": {
         "evidence_file": ".agent-coordination/gate-evidence/LR-0011.json",
         "machine_requirements": [
@@ -1210,7 +1210,7 @@
     {
       "id": "LR-0043",
       "title": "Author the 18-day campaign beat sheet and ending matrix",
-      "status": "READY",
+      "status": "DONE",
       "priority": 1,
       "exclusive_scope": "campaign-authoring",
       "depends_on": [
@@ -1229,7 +1229,7 @@
         "story/campaign/",
         "docs/"
       ],
-      "notes": "Pure Storyteller authoring. No runtime/save changes. LR-0008 later integrates this material after foundation gates."
+      "notes": "Pure Storyteller authoring. No runtime/save changes. LR-0008 later integrates this material after foundation gates. Completed 4 Oct 2026 via PR #10: authored full 18-day campaign beat sheet and ending matrix; Director approved exact content head; CI passed."
     },
     {
       "id": "LR-0044",

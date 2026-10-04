@@ -9,5 +9,5 @@
   "claimed_at": "2026-10-04T14:39:39+11:00",
   "expires_at": "2026-10-05T02:39:39+11:00",
   "branch": "agent/LR-0009-mobile-ux-7da5e33e",
-  "note": "Implementing only LR-0009."
+  "note": "LR-0009 implementation and phone-width browser checks are current on PR #6. Keep this claim while parked behind LR-0011/LR-0013; reconcile save/autosave UX with LR-0011's shared persistence layer after that foundation lands, then obtain final Agent 7 design approval on the exact final head."
 }
