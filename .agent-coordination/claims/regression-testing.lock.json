@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0013",
+  "exclusive_scope": "regression-testing",
+  "agent_number": 1,
+  "agent": "The Steward",
+  "session_id": "c92b4a1e-2711-4dc6-8c36-3faf8d11113d",
+  "claim_token": "7cfd5ef3-cba5-4f1d-aafe-acde26428d1b",
+  "claimed_at": "2026-10-05T08:34:00+11:00",
+  "expires_at": "2026-10-05T20:34:00+11:00",
+  "branch": "agent/LR-0013-regression-closure-c92b4a1e",
+  "note": "Fresh Agent 1 claim to make successful browser-regression artifact publication satisfy LR-0013 technical closure evidence."
+}
