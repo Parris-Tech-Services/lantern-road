@@ -101,15 +101,18 @@ Agent 8 — **AED (Agent Efficiency Department)** is the cross-agent operations 
 - Before proposing a new task, search the queue for an existing owner/task and extend or route there instead of creating filler.
 - Efficiency recommendations must preserve correctness, save compatibility, map canon, QA independence and the create-only ownership guarantees.
 
-## Evidence-gated foundation completion
+## Technical foundation gates and human release validation
 
-LR-0011 and LR-0013 are priority-zero foundation gates and have stricter completion rules.
+LR-0011 and LR-0013 are priority-zero **technical development gates**.
 
 - Their implementation may merge while the queue task remains `READY`.
 - They may be changed to `DONE` only in a later closure change that also adds the required `.agent-coordination/gate-evidence/<TASK-ID>.json`.
-- The candidate commit must have a genuinely successful GitHub Actions run with the task-specific required artifact; CI independently queries GitHub to verify the run, exact SHA and artifact.
-- Required legacy-save fixtures/browser tests must exist in the repository as specified by the task.
-- **Josh must personally complete the task's Android phone check.**
-- Agents must never invent, infer or self-assert Josh's phone confirmation. `josh_phone_check.confirmed: true` may be recorded only after Josh explicitly says the check passed.
+- Technical closure requires merged implementation, a genuinely successful GitHub Actions run on the exact candidate commit, the task-specific required artifact, and required repository fixtures/tests. CI independently verifies the run, SHA and artifact.
 - Agent 7 verifies that the evidence is coherent and corresponds to the task before closure.
-- If any required evidence is absent, the task stays `READY` even if its implementation code is already merged.
+- Once LR-0011/LR-0013 are technically `DONE`, dependent specialist development is allowed to proceed. Josh's phone availability must not keep Agents 2–5 idle.
+
+Josh's real-device validation is a **separate release gate**, LR-0056.
+
+- LR-0056 requires Josh's explicit Android confirmation and cannot be self-asserted, inferred or fabricated by any agent.
+- LR-0056 gates final integration/release milestones, including LR-0014, but does not gate ordinary specialist branch starts after the technical foundations are proven.
+- If Josh has not yet performed the phone check, leave LR-0056 incomplete and continue any technically eligible specialist work.
