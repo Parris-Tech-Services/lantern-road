@@ -65,3 +65,21 @@ Regenerate an image rather than accepting it when:
 ## Next production targets
 
 After the hero style lock: major settlements and adventure sites, then enemy archetypes, priority recurring NPCs and priority items. LR-0031 owns final selection, crop, compression and integration into the existing art-slot system.
+
+
+## Grey March map direction locked with Josh
+
+Josh approved the first generated Grey March map concept as the stronger direction: broad visible landmass, clearer terrain separation, lakes, forests, rivers, villages, marshes and mountain boundaries, with a restrained old-atlas/hex-campaign feel.
+
+The player should receive an old physical map early in the tutorial, plausibly from a tavern owner. The broad geography can therefore be visible from the start without magical fog-of-war. Exploration should enrich, correct and annotate the map rather than create the geography from nothing.
+
+For the production gameplay atlas:
+
+- the canonical game data remains authoritative;
+- the painted terrain base must align to the real hex topology;
+- do not bake gameplay-critical roads, labels, settlement/site markers, party position, discovery state, fog, quest markers or mutable world state into the raster;
+- dynamic overlays own the actual hex grid, labels, roads, markers and interaction affordances;
+- the physical-map feeling should survive zooming and phone use;
+- minor old-map inaccuracies or handwritten annotations may be used as authored flavour only when they do not misrepresent interaction-critical geography.
+
+This direction is now represented by LR-0069 (Director map canon), LR-0072 (Lamplighter canonical terrain atlas) and downstream integration work. Do not create a duplicate map architecture task.
