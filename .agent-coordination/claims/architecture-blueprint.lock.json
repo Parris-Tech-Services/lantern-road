@@ -8,6 +8,6 @@
   "claim_token": "c6d98038-3fd6-4a02-98b9-46d6fd8f7d6c",
   "claimed_at": "2026-10-04T16:44:00+11:00",
   "expires_at": "2026-10-05T04:44:00+11:00",
-  "branch": "agent/LR-0099-architecture-blueprint-f04eb4a6",
-  "note": "Authoring only LR-0099 modularisation blueprint."
+  "branch": "agent/LR-0099-architecture-blueprint-f04eb4a6-r2",
+  "note": "Authoring only LR-0099 modularisation blueprint. Refreshed onto current main; original branch preserved as backup."
 }
