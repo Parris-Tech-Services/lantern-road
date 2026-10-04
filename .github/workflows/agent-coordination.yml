@@ -8,6 +8,7 @@ on:
       - "scripts/validate-agent-coordination.mjs"
       - "scripts/verify-pr-claim.mjs"
       - "scripts/verify-gate-evidence-ci.mjs"
+      - "scripts/validate-actions-runtime.mjs"
       - "tests/verify-pr-claim.test.mjs"
       - ".github/workflows/agent-coordination.yml"
   pull_request:
@@ -21,11 +22,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Validate agent task coordination
         run: node scripts/validate-agent-coordination.mjs
+      - name: Validate GitHub Actions runtime majors
+        run: node scripts/validate-actions-runtime.mjs
       - name: Run PR claim verifier regression tests
         run: node --test tests/verify-pr-claim.test.mjs
       - name: Verify PR owns an active scope claim
