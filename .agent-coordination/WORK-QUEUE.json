@@ -3436,7 +3436,7 @@
         "docs/MOBILE-AUDIO-CONTROLS-AUDIT.md",
         "QA/MOBILE-AUDIO-CONTROLS-MATRIX.md"
       ],
-      "notes": "Author-now Wayfinder audit unlocked by LR-0126 and the existing LR-0003 runtime controls. Agent 4 retains sound design/assets; this task owns player-facing control semantics/accessibility/phone integration only."
+      "notes": "PARKED HANDOFF (4 Oct 2026): audit complete on branch agent/LR-0131-mobile-audio-f3a1b7c2 at useful head 1613678dbf1455965c59dae5917a70828cad669c, PR #80. Final diff adds docs/MOBILE-AUDIO-CONTROLS-AUDIT.md and QA/MOBILE-AUDIO-CONTROLS-MATRIX.md only. Findings: current Sound-Off-by-default/autoplay-safe/ambience-split foundation is good, but runtime integration must add foreground/background lifecycle handling, reconcile actual AudioContext.state instead of trusting stale audioUnlocked, retain resume retry after transient failure, clarify disabled Ambience-under-master-Sound semantics, expose intuitive Volume percent/touch semantics, avoid claiming preference persistence when local storage fails, and distinguish generic press cues from confirmed outcome cues. No runtime/audio-asset files changed. Remaining external condition is Agent 7 approval; fresh mobile-audio-controls-audit claim required before later edits or final merge preparation."
     },
     {
       "id": "LR-0132",
@@ -3687,5 +3687,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T19:47:00+11:00"
+  "updated_at": "2026-10-04T19:28:00+11:00"
 }
