@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0118",
+  "exclusive_scope": "aed-queue-health-automation",
+  "agent_number": 8,
+  "agent": "AED (Agent Efficiency Department)",
+  "session_id": "d72428a6-2330-4ef6-8a72-6b289c78c037",
+  "claim_token": "3148714e-f678-49d2-847f-9427d03a99da",
+  "claimed_at": "2026-10-04T19:26:00+11:00",
+  "expires_at": "2026-10-05T07:26:00+11:00",
+  "branch": "agent/LR-0118-aed-report-d72428a6",
+  "note": "Implementing only LR-0118 deterministic advisory queue-health reporting."
+}
