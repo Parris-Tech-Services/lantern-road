@@ -24,7 +24,8 @@
     "Agent 7 — The Director owns design governance, not specialist implementation. It reviews work against docs/VISION.md, docs/DECISIONS.md and canonical terminology, flags cross-task conflicts, and proposes queue/dependency corrections.",
     "Josh remains final creative director. The Director may protect and interpret established pillars but must not materially change product direction without Josh's approval.",
     "Before a specialist feature PR is treated as merge-ready, The Director should perform a design-coherence review and record any blocking conflict or terminology/tone issue in the PR or queue.",
-    "Narrative authoring may proceed ahead of runtime/save integration when it is isolated to story/docs assets. Blocking engine integration must not unnecessarily idle the Storyteller."
+    "Narrative authoring may proceed ahead of runtime/save integration when it is isolated to story/docs assets. Blocking engine integration must not unnecessarily idle the Storyteller.",
+    "Agent 1 follow-on engineering tasks should remain mostly blocked behind the relevant foundations; LR-0059 is the intentionally independent current lane so Steward work can continue without colliding with parked feature branches."
   ],
   "tasks": [
     {
@@ -1584,6 +1585,272 @@
         "docs/"
       ],
       "notes": "Mechanist author-now input for LR-0018. Distinct from LR-0006's minimal persistent injury hook and LR-0018's eventual runtime recovery loop."
+    },
+    {
+      "id": "LR-0059",
+      "title": "Automated content integrity validator",
+      "status": "READY",
+      "priority": 0,
+      "exclusive_scope": "content-integrity-validation",
+      "depends_on": [],
+      "primary_agent": 1,
+      "goal": "Catch broken IDs, references, map data and content contracts automatically as Lantern Road's authored content expands.",
+      "acceptance_criteria": [
+        "Validate duplicate/missing IDs across factions, party, items, enemies, settlements, NPCs, rumours, sites, quests, events, encounters and character authored data.",
+        "Validate map tile uniqueness/bounds and settlement/site coordinates against the region.",
+        "Validate high-value cross-references such as NPC faction/rumour/quest links, settlement NPCs, starting location/rumours, encounter enemies and content references used by quests/sites/events.",
+        "Fail with precise actionable messages that identify the object and broken reference.",
+        "Run in CI and document the local command; do not require a browser."
+      ],
+      "likely_files": [
+        "scripts/validate-content.mjs",
+        ".github/workflows/",
+        "README.md"
+      ],
+      "notes": "Safe independent Steward infrastructure. It validates authored data but does not own Storyteller/Mechanist content design."
+    },
+    {
+      "id": "LR-0060",
+      "title": "Deterministic campaign reproduction toolkit",
+      "status": "BLOCKED",
+      "priority": 1,
+      "exclusive_scope": "deterministic-reproduction",
+      "depends_on": [
+        "LR-0013"
+      ],
+      "primary_agent": 1,
+      "goal": "Make bugs and balance reports reproducible from a known seed and deterministic starting setup.",
+      "acceptance_criteria": [
+        "Allow dev/test sessions to start from an explicit seed without changing normal player flow.",
+        "Expose the active seed in diagnostic/test output.",
+        "Document how Warden reports can reproduce a seed and route.",
+        "Keep deterministic controls unavailable or unobtrusive in normal play.",
+        "Add regression coverage proving the same seed produces the same initial deterministic state."
+      ],
+      "likely_files": [
+        "game.js",
+        "tests/",
+        "README.md"
+      ],
+      "notes": "QA-enabling infrastructure; not a new gameplay feature."
+    },
+    {
+      "id": "LR-0061",
+      "title": "Runtime state invariant assertion layer",
+      "status": "BLOCKED",
+      "priority": 1,
+      "exclusive_scope": "state-invariants",
+      "depends_on": [
+        "LR-0010",
+        "LR-0011",
+        "LR-0013"
+      ],
+      "primary_agent": 1,
+      "goal": "Catch impossible campaign states close to where they are introduced instead of letting corruption surface later.",
+      "acceptance_criteria": [
+        "Define invariants for party/state identity, map position, resources, quest status, faction bounds and other critical shared state.",
+        "Assertions run in tests/dev diagnostics without spamming normal players.",
+        "Failures identify the violated invariant and enough context to reproduce it.",
+        "Regression tests cover representative invalid states.",
+        "Do not duplicate feature-specific validation owned by specialist systems."
+      ],
+      "likely_files": [
+        "src/",
+        "game.js",
+        "tests/"
+      ],
+      "notes": "Post-modularisation safety layer."
+    },
+    {
+      "id": "LR-0062",
+      "title": "Module boundary contract tests",
+      "status": "BLOCKED",
+      "priority": 1,
+      "exclusive_scope": "module-contract-tests",
+      "depends_on": [
+        "LR-0010",
+        "LR-0013"
+      ],
+      "primary_agent": 1,
+      "goal": "Protect the module boundaries created by LR-0010 so later agents do not silently rebuild the monolith.",
+      "acceptance_criteria": [
+        "Document and test allowed responsibilities/import directions for the extracted runtime/content/save/UI modules.",
+        "Detect accidental circular or forbidden module dependencies where practical.",
+        "Exercise public integration contracts rather than private implementation details.",
+        "Run in CI alongside browser regression.",
+        "Provide clear guidance for future agents adding a new system."
+      ],
+      "likely_files": [
+        "tests/",
+        "scripts/",
+        "docs/"
+      ],
+      "notes": "Architecture regression guard after LR-0010."
+    },
+    {
+      "id": "LR-0063",
+      "title": "Build provenance manifest and release identity",
+      "status": "BLOCKED",
+      "priority": 1,
+      "exclusive_scope": "build-provenance",
+      "depends_on": [
+        "LR-0009",
+        "LR-0050"
+      ],
+      "primary_agent": 1,
+      "goal": "Give every deployed build a machine-readable identity tied to source so stale-cache and support reports can be proven rather than guessed.",
+      "acceptance_criteria": [
+        "Generate or maintain a machine-readable build manifest containing game version and source commit identity.",
+        "Keep the player-visible version surface owned by LR-0009 while providing it a stable provenance source.",
+        "Expose the same identity to test/diagnostic tooling.",
+        "Ensure service-worker/cache behaviour does not report a version different from loaded code.",
+        "Document how support/QA records a tested build."
+      ],
+      "likely_files": [
+        "scripts/",
+        "build-info.js",
+        "README.md",
+        ".github/workflows/"
+      ],
+      "notes": "Complements, but does not duplicate, Wayfinder's visible build/version UI."
+    },
+    {
+      "id": "LR-0064",
+      "title": "Deployed GitHub Pages smoke workflow",
+      "status": "BLOCKED",
+      "priority": 1,
+      "exclusive_scope": "deployed-smoke-testing",
+      "depends_on": [
+        "LR-0013",
+        "LR-0050",
+        "LR-0063"
+      ],
+      "primary_agent": 1,
+      "goal": "Verify the actual deployed game, not only checkout-local files, after main releases.",
+      "acceptance_criteria": [
+        "Run a lightweight real-browser smoke against the deployed Pages URL after deployment.",
+        "Verify the expected build identity is actually served.",
+        "Exercise launch, basic interaction and critical asset/script loading.",
+        "Detect stale service-worker shell/version mismatches.",
+        "Produce a concise CI result suitable for release evidence."
+      ],
+      "likely_files": [
+        ".github/workflows/",
+        "tests/e2e/",
+        "scripts/"
+      ],
+      "notes": "Deployment-level validation; Warden still owns qualitative player QA."
+    },
+    {
+      "id": "LR-0065",
+      "title": "Art and asset integrity plus size-budget validation",
+      "status": "BLOCKED",
+      "priority": 2,
+      "exclusive_scope": "asset-integrity-budget",
+      "depends_on": [
+        "LR-0031"
+      ],
+      "primary_agent": 1,
+      "goal": "Prevent missing, orphaned or phone-hostile production assets after authored art lands.",
+      "acceptance_criteria": [
+        "Validate referenced production assets exist and fail on broken paths.",
+        "Detect obvious orphaned duplicate production assets where practical.",
+        "Define pragmatic per-file/aggregate web size budgets with Lamplighter input.",
+        "Report oversized assets precisely rather than modifying art automatically.",
+        "Run in CI without changing visual ownership."
+      ],
+      "likely_files": [
+        "scripts/",
+        "assets/",
+        "docs/",
+        ".github/workflows/"
+      ],
+      "notes": "Technical asset safety; Lamplighter retains art direction and compression decisions."
+    },
+    {
+      "id": "LR-0066",
+      "title": "Save-schema compatibility change guard",
+      "status": "BLOCKED",
+      "priority": 1,
+      "exclusive_scope": "save-schema-guard",
+      "depends_on": [
+        "LR-0011",
+        "LR-0013"
+      ],
+      "primary_agent": 1,
+      "goal": "Make future save-shape changes prove compatibility instead of relying on developers remembering the migration policy.",
+      "acceptance_criteria": [
+        "Document the contract for when a schema bump/migration is required.",
+        "CI detects relevant save-schema/version changes without corresponding migration/fixture updates where practical.",
+        "Legacy fixtures remain executable regression evidence.",
+        "Future-version rejection and supported migration paths remain tested.",
+        "Provide an explicit escape hatch only through a recorded design/architecture decision."
+      ],
+      "likely_files": [
+        "scripts/",
+        "tests/fixtures/saves/",
+        "tests/",
+        ".github/workflows/",
+        "docs/"
+      ],
+      "notes": "Future-proofing after LR-0011 has landed."
+    },
+    {
+      "id": "LR-0067",
+      "title": "Player-safe diagnostic bundle for bug reports",
+      "status": "BLOCKED",
+      "priority": 2,
+      "exclusive_scope": "diagnostic-bundle",
+      "depends_on": [
+        "LR-0010",
+        "LR-0013",
+        "LR-0063"
+      ],
+      "primary_agent": 1,
+      "goal": "Make hard-to-reproduce player bugs reportable with useful technical context without exposing unnecessary personal/browser data.",
+      "acceptance_criteria": [
+        "Create a copyable diagnostic summary containing build identity, seed, campaign day/location, current mode and recent game-log context.",
+        "Exclude localStorage contents beyond deliberately selected safe game-state summary fields.",
+        "Never include account identifiers, arbitrary browser storage or unrelated device data.",
+        "Provide a simple support/test path to copy the bundle.",
+        "Add tests for stable structure and sensitive-field exclusion."
+      ],
+      "likely_files": [
+        "src/",
+        "game.js",
+        "tests/",
+        "docs/"
+      ],
+      "notes": "Supportability infrastructure, not telemetry or remote tracking."
+    },
+    {
+      "id": "LR-0068",
+      "title": "Release rollback and cache-recovery validation",
+      "status": "BLOCKED",
+      "priority": 2,
+      "exclusive_scope": "release-recovery",
+      "depends_on": [
+        "LR-0040",
+        "LR-0050",
+        "LR-0063",
+        "LR-0064"
+      ],
+      "primary_agent": 1,
+      "goal": "Prove a bad web release can be rolled back without stranding installed/mobile players on a mixed cached version.",
+      "acceptance_criteria": [
+        "Document the rollback/recovery sequence for GitHub Pages and service-worker caches.",
+        "Test a simulated version-forward then rollback path in browser automation.",
+        "Verify saved campaigns survive release rollback/reload.",
+        "Detect mixed shell/script asset versions where possible.",
+        "Produce a concise operator checklist rather than adding player-facing complexity."
+      ],
+      "likely_files": [
+        "tests/e2e/",
+        "docs/",
+        "scripts/",
+        ".github/workflows/"
+      ],
+      "notes": "Late-stage operational resilience after PWA/cache foundations."
     }
   ],
   "agent_roster": [
