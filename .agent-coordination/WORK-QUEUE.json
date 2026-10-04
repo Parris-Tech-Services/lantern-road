@@ -2621,6 +2621,30 @@
         "docs/ARCHITECTURE-MODULARISATION-PLAN.md"
       ],
       "notes": "Safe author-now Steward preparation for blocked LR-0010. Documentation only; do not edit game.js/content.js in this task."
+    },
+    {
+      "id": "LR-0100",
+      "title": "Author evolving rumour network and settlement gossip pack",
+      "status": "READY",
+      "priority": 2,
+      "exclusive_scope": "rumour-network-authoring",
+      "depends_on": [
+        "LR-0043"
+      ],
+      "primary_agent": 2,
+      "goal": "Turn Hear Rumours from a static text dispenser into authored social worldbuilding that changes with quest outcomes, campaign phase, faction pressure and where the player is listening, without touching runtime code yet.",
+      "acceptance_criteria": [
+        "Author a curated rumour/gossip pack for Hearthwick, Greyfen Market, Candlemere, Alderwatch and Blacksalt Crossing plus road/inn fallback material.",
+        "Give every core quest at least one pre-resolution rumour and at least one post-outcome or changed-state rumour so the world talks about what the player did.",
+        "Distinguish reliable information, faction-biased interpretation, hearsay and harmless local colour without using misinformation to make critical quest navigation unfair.",
+        "Define repeat behaviour so the same NPC/settlement does not simply replay one identical rumour forever; include exhausted-topic and changed-state fallbacks.",
+        "Use recognisable local voices and named consequences rather than generic fantasy gossip.",
+        "Document declarative trigger/source/reliability metadata for later LR-0038/LR-0005/LR-0008/LR-0090 integration; do not edit game.js, content.js or persisted state."
+      ],
+      "likely_files": [
+        "story/rumours/"
+      ],
+      "notes": "Pure author-now Storyteller work. Distinct from LR-0045 recurring NPC dialogue: this task owns settlement-level rumour/gossip content and its evolution. It complements LR-0001 feedback fixes by making Hear Rumours substantively worthwhile, not merely visibly responsive."
     }
   ],
   "agent_roster": [
@@ -2678,5 +2702,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T16:42:00+11:00"
+  "updated_at": "2026-10-04T16:47:00+11:00"
 }
