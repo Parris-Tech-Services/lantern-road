@@ -161,7 +161,7 @@
         "content.js",
         "game.js"
       ],
-      "notes": "Premium-gap area: progression/builds.",
+      "notes": "Premium-gap area: progression/builds. Save boundary: LR-0006 may add progression state that must persist, but LR-0011 owns the schema/version/migration framework. Progression work should expose the state shape and rely on the shared migration contract rather than inventing a parallel persistence layer.",
       "primary_agent": 3,
       "merge_gate_depends_on": [
         "LR-0011",
@@ -249,7 +249,7 @@
         "game.js",
         "manifest.webmanifest"
       ],
-      "notes": "Premium-gap area: mobile experience. Also owns the reported settings-gear overlap and a visible player/support-facing build/version identifier so stale cached builds are obvious.",
+      "notes": "Premium-gap area: mobile experience. Also owns the reported settings-gear overlap and a visible player/support-facing build/version identifier so stale cached builds are obvious. Save boundary: LR-0009 owns autosave/save UX and may call the shared persistence API; LR-0011 owns save schema versioning, migration, validation and compatibility policy. LR-0009 must not introduce a parallel save format.",
       "primary_agent": 5,
       "merge_gate_depends_on": [
         "LR-0011",
@@ -420,7 +420,8 @@
         "LR-0009",
         "LR-0010",
         "LR-0011",
-        "LR-0013"
+        "LR-0013",
+        "LR-0035"
       ],
       "primary_agent": 1,
       "goal": "Integrate and reconcile the first premium-indie feature wave after the specialist foundations are complete.",
@@ -439,7 +440,7 @@
         "README.md",
         ".agent-coordination/WORK-QUEUE.json"
       ],
-      "notes": "Blocked until the first specialist foundation wave is complete."
+      "notes": "Blocked until the first specialist foundation wave is complete. Governance boundary: LR-0035 performs the cross-feature design diagnosis first; LR-0014 then owns Steward-level integration/reconciliation work and routes specialist fixes back to their owners rather than duplicating Director review."
     },
     {
       "id": "LR-0015",
@@ -519,7 +520,7 @@
         "content.js",
         "game.js"
       ],
-      "notes": "Blocked on LR-0006 so it extends rather than competes with the progression foundation."
+      "notes": "Blocked on LR-0006 so it extends rather than competes with the progression foundation. Economy boundary: LR-0017 owns item categories, effects, availability and equip/reward plumbing; LR-0016 owns global base prices/income/resource-pressure targets, with LR-0020 providing final whole-system tuning."
     },
     {
       "id": "LR-0018",
@@ -531,7 +532,8 @@
         "LR-0006",
         "LR-0010",
         "LR-0011",
-        "LR-0013"
+        "LR-0013",
+        "LR-0016"
       ],
       "primary_agent": 3,
       "goal": "Turn the progression foundation's injury/condition hooks into memorable persistent consequences that affect expedition decisions.",
@@ -546,7 +548,7 @@
         "content.js",
         "game.js"
       ],
-      "notes": "Blocked on LR-0006. This is the full recovery loop, not a duplicate of LR-0006's foundational persistent-state hook."
+      "notes": "Blocked on LR-0006. This is the full recovery loop, not a duplicate of LR-0006's foundational persistent-state hook. Economy boundary: recovery costs and resource drains must consume the target assumptions established by LR-0016; LR-0018 owns injury/recovery mechanics, not global economy rebalance."
     },
     {
       "id": "LR-0019",
@@ -558,7 +560,8 @@
         "LR-0015",
         "LR-0010",
         "LR-0011",
-        "LR-0013"
+        "LR-0013",
+        "LR-0016"
       ],
       "primary_agent": 3,
       "goal": "Use the deeper combat rules to create encounters that feel authored and mechanically distinct rather than permutations of the same fight.",
@@ -573,7 +576,7 @@
         "content.js",
         "game.js"
       ],
-      "notes": "Blocked on LR-0015 because encounter design should exploit the finished combat-depth vocabulary."
+      "notes": "Blocked on LR-0015 because encounter design should exploit the finished combat-depth vocabulary. Economy boundary: encounter reward/risk values must use LR-0016's documented economy assumptions; this task owns encounter composition/signature mechanics, not global price or income tuning."
     },
     {
       "id": "LR-0020",
@@ -688,7 +691,10 @@
       "exclusive_scope": "qa-exploit-hunt",
       "depends_on": [
         "LR-0006",
-        "LR-0016"
+        "LR-0016",
+        "LR-0017",
+        "LR-0018",
+        "LR-0019"
       ],
       "primary_agent": 6,
       "goal": "Actively attempt to abuse Lantern Road's systems to find infinite resources, repeatable rewards, sequence breaks, unwinnable states and other player-visible exploits.",
@@ -703,7 +709,7 @@
         "QA/",
         ".agent-coordination/WORK-QUEUE.json"
       ],
-      "notes": "Deliberately adversarial player testing. Real-browser execution is required; code inspection alone is not black-box QA."
+      "notes": "Deliberately adversarial player testing. Real-browser execution is required; code inspection alone is not black-box QA. Dependency audit: run after equipment, injury/recovery and signature-encounter systems exist so item/healing/reward re-entry exploits are not tested against an incomplete economy surface."
     },
     {
       "id": "LR-0025",
@@ -851,7 +857,12 @@
         "LR-0028",
         "LR-0029",
         "LR-0011",
-        "LR-0013"
+        "LR-0013",
+        "LR-0022",
+        "LR-0023",
+        "LR-0024",
+        "LR-0025",
+        "LR-0026"
       ],
       "primary_agent": 6,
       "goal": "Perform an independent functional/player-experience regression after integration and specialist QA. The Warden reports evidence and release risks; Josh makes the final creative-director judgement on fun, premium feel and release readiness.",
@@ -866,7 +877,7 @@
         "QA/",
         ".agent-coordination/WORK-QUEUE.json"
       ],
-      "notes": "The Warden's final premium-indie quality gate. Real-browser execution is required; code inspection alone is not black-box QA."
+      "notes": "The Warden's final premium-indie quality gate. Real-browser execution is required; code inspection alone is not black-box QA. Dependency audit: the final Warden gate waits for the interaction, persistence, exploit, quest-state, onboarding, narrative, combat and mobile audits so release-candidate regression is genuinely downstream of specialist QA."
     },
     {
       "id": "LR-0031",
@@ -876,7 +887,8 @@
       "exclusive_scope": "authored-art-production",
       "depends_on": [
         "LR-0002",
-        "LR-0042"
+        "LR-0042",
+        "LR-0010"
       ],
       "primary_agent": 4,
       "goal": "Curate, optimise and integrate the approved illustration set into Lantern Road's existing visual slots while keeping mobile download cost controlled.",
@@ -893,16 +905,17 @@
         "style.css",
         "docs/ART-DIRECTION.md"
       ],
-      "notes": "Second-wave Lamplighter integration task. AI image generation itself is split into LR-0042 to avoid mixing generation with curation, optimisation and repo integration. Blocked until LR-0042 is DONE."
+      "notes": "Second-wave Lamplighter integration task. AI image generation itself is split into LR-0042 to avoid mixing generation with curation, optimisation and repo integration. Blocked until LR-0042 is DONE. Integration boundary: LR-0042 may generate/source art before the architecture gate, but repository/style integration waits for LR-0010 so it does not collide with the grandfathered mobile/foundation wave."
     },
     {
       "id": "LR-0032",
       "title": "Bespoke soundscape and restrained score production pass",
-      "status": "READY",
+      "status": "BLOCKED",
       "priority": 2,
       "exclusive_scope": "authored-audio-production",
       "depends_on": [
-        "LR-0003"
+        "LR-0003",
+        "LR-0010"
       ],
       "primary_agent": 4,
       "goal": "Replace or augment the procedural audio foundation with a coherent authored soundscape and restrained adaptive score while preserving phone performance and player control.",
@@ -919,7 +932,7 @@
         "game.js",
         "docs/AUDIO-DIRECTION.md"
       ],
-      "notes": "Second-wave Lamplighter task discovered during LR-0003. This is authored production audio and music, not a duplicate of the browser-audio foundation."
+      "notes": "Second-wave Lamplighter task discovered during LR-0003. This is authored production audio and music, not a duplicate of the browser-audio foundation. Dependency audit: authored audio production may be planned/source-prepared separately, but this queued task includes game.js integration and therefore waits for LR-0010 rather than editing the monolith during the grandfathered foundation wave."
     },
     {
       "id": "LR-0033",
@@ -965,7 +978,7 @@
         ".agent-coordination/WORK-QUEUE.json",
         "docs/DECISIONS.md"
       ],
-      "notes": "Director-owned production/design audit. This is a coordination task, not code refactoring."
+      "notes": "Director-owned production/design audit. This is a coordination task, not code refactoring. Audit findings: no duplicate exclusive scopes, broken dependency references, READY tasks with unsatisfied dependencies or dependency cycles were present. Concrete fixes cover save ownership, Director-vs-Steward integration ordering, economy/reward sequencing, complete exploit QA coverage, second-wave art/audio integration gating, and release-candidate QA dependencies. Story authoring/integration splits LR-0043–LR-0046 -> LR-0008/LR-0037/LR-0038/LR-0007 were coherent and required no changes."
     },
     {
       "id": "LR-0035",
@@ -1343,5 +1356,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T15:20:00+11:00"
+  "updated_at": "2026-10-04T15:30:00+11:00"
 }
