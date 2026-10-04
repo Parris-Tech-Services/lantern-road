@@ -1206,7 +1206,7 @@
         "docs/ART-DIRECTION.md",
         "docs/ART-PROVENANCE.md"
       ],
-      "notes": "Lamplighter image-generation task. This chat/model has image-generation capability and can create the actual artwork. LR-0031 remains the downstream curation, optimisation and integration pass."
+      "notes": "Active Lamplighter AI-art task. Hero style-lock batch is on PR #12 / branch agent/LR-0042-ai-art-d1f018ec with four hero portraits, lineup, ART-PROVENANCE and ART-SHOT-LIST. Hero batch is awaiting exact-head Director design review before merge. Josh approved the first Grey March map concept direction; map canon/terrain atlas are separately governed by LR-0069/LR-0072. Continue generating settlement/site/enemy/NPC/item art under the locked style; do not integrate runtime art slots here (LR-0031 owns downstream integration)."
     },
     {
       "id": "LR-0043",
@@ -2061,7 +2061,7 @@
       "likely_files": [
         "story/endings/"
       ],
-      "notes": "Pure author-now follow-up to LR-0043. LR-0043 defines the structure/matrix; LR-0076 supplies finished modular epilogue copy. LR-0008 later integrates both after its foundation dependencies clear."
+      "notes": "Pure author-now follow-up to LR-0043. LR-0043 defines the structure/matrix; LR-0076 supplies finished modular epilogue copy. LR-0008 later integrates both after its foundation dependencies clear. Parked 4 Oct 2026 under the completed-work parking rule. Modular ending prose is complete on branch agent/LR-0076-ending-prose-authoring-db16c112 at useful head 94fde76323d570a47e3d80a4a4cc625205cb554c, PR #30. Live acceptance criteria were rechecked: six regional ending families, high/low legitimacy variants, all six quest callback families, four party epilogues with personal-arc variants, unresolved states, explicit Common Road non-golden guardrail, and Fractured March local-success handling; branch changes only story/endings/. Next action after Director approval: fresh Agent 2 claimant reacquires ending-prose-authoring, verifies approved head/CI, merges PR #30 if current, marks LR-0076 DONE, and releases the fresh lock."
     },
     {
       "id": "LR-0077",
@@ -2083,7 +2083,7 @@
         "docs/SAVE-RECOVERY-UX.md",
         "QA/"
       ],
-      "notes": "Author-now Wayfinder input. LR-0011 owns persistence/schema; this task owns only player-facing save/recovery behaviour."
+      "notes": "PARKED HANDOFF (4 Oct 2026): authoring complete on branch agent/LR-0077-save-recovery-ux-5d2e8b97 at head e9f313dd8dbacbf458770d671fdb0fd3001ad994, PR #29. Final diff adds docs/SAVE-RECOVERY-UX.md and QA/SAVE-RECOVERY-UX-CHECKLIST.md only. It models Manual Save/Autosave success and failure, missing slots, migrations, safe repairs, unrecoverable/newer-version saves, storage unavailability, New Campaign protection, focus/announcement behaviour, support build guidance, LR-0009/LR-0040 implementation checks and LR-0023 destructive-test handoff. No runtime/persistence implementation was changed. Remaining external condition is Agent 7 design approval. Before any later edit or final merge preparation, acquire a fresh save-recovery-ux-authoring claim."
     },
     {
       "id": "LR-0078",
@@ -2104,7 +2104,7 @@
       "likely_files": [
         "docs/PWA-LIFECYCLE-UX.md"
       ],
-      "notes": "Durable authoring input for LR-0040, informed by LR-0050 but not duplicating service-worker code."
+      "notes": "PARKED HANDOFF (4 Oct 2026): authoring complete on branch agent/LR-0078-pwa-lifecycle-ux-b73a9f21 at head 16ea71f252f1f2a40b32d3bd8655f93822440751, PR #31. Final diff adds docs/PWA-LIFECYCLE-UX.md only. Contract covers install/installed/offline/reconnect/update/stale-build/cache-recovery UX, keeps connectivity separate from save safety, prevents update reloads during consequential choices/combat, and defines graceful fallback when PWA APIs are absent. No runtime/service-worker/release-rollback implementation changed. Remaining external condition is Agent 7 approval; fresh claim required before later edits or final merge preparation."
     },
     {
       "id": "LR-0079",
@@ -2352,5 +2352,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T17:18:00+11:00"
+  "updated_at": "2026-10-04T17:28:00+11:00"
 }

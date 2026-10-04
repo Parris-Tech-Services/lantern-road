@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0078",
+  "exclusive_scope": "pwa-lifecycle-ux-authoring",
+  "agent_number": 5,
+  "agent": "The Wayfinder",
+  "session_id": "b73a9f21-6c54-4bd9-b845-1f06a8d37e92",
+  "claim_token": "3c5f7b12-8e64-4a39-b0d1-6f98c2a47e13",
+  "claimed_at": "2026-10-04T17:25:00+11:00",
+  "expires_at": "2026-10-05T05:25:00+11:00",
+  "branch": "agent/LR-0078-pwa-lifecycle-ux-b73a9f21",
+  "note": "Authoring only LR-0078 PWA lifecycle/offline UX contract; no service-worker/runtime implementation."
+}
