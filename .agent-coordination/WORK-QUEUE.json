@@ -637,7 +637,7 @@
     {
       "id": "LR-0021",
       "title": "Baseline full-campaign black-box playtest",
-      "status": "READY",
+      "status": "DONE",
       "priority": 0,
       "exclusive_scope": "qa-full-campaign-baseline",
       "depends_on": [],
@@ -654,7 +654,7 @@
         "QA/",
         ".agent-coordination/WORK-QUEUE.json"
       ],
-      "notes": "The single intentional early QA pass. Establish a baseline before the foundations change; findings may become stale and must be retested later. Real-browser execution is required. HISTORICAL BASELINE clarification from LR-0139: record the exact old branch/build actually tested. Findings are useful before-state evidence but must not be treated as current-main defects without a current-build LR-0140 retest. When LR-0021 is completed/parked and its lock is released, promote LR-0140 to READY (LR-0139 is DONE) so Agent 6's next lane tests current main/current deployed rather than continuing on the historical branch."
+      "notes": "The single intentional early QA pass. Establish a baseline before the foundations change; findings may become stale and must be retested later. Real-browser execution is required. HISTORICAL BASELINE clarification from LR-0139: record the exact old branch/build actually tested. Findings are useful before-state evidence but must not be treated as current-main defects without a current-build LR-0140 retest. When LR-0021 is completed/parked and its lock is released, promote LR-0140 to READY (LR-0139 is DONE) so Agent 6's next lane tests current main/current deployed rather than continuing on the historical branch. Completed 4 Oct 2026 by Agent 6: historical real-browser baseline merged via PR #91 at f89c9a4270d0fca4174610ba6f7ccfeeb0b22baf. Exact gameplay build tested was 70056f6a323b8df3c36f854988dc2cc036fbf88d. Evidence runs 37178112389 and 37193163526; report QA/LR-0021-HISTORICAL-BASELINE.md. Findings were routed to existing LR-0016, LR-0007/LR-0046, LR-0008 and LR-0009; no duplicate specialist tasks created."
     },
     {
       "id": "LR-0022",
@@ -3684,7 +3684,7 @@
     {
       "id": "LR-0140",
       "title": "Continuous current-build fun and friction micro-playtests",
-      "status": "BLOCKED",
+      "status": "READY",
       "priority": 0,
       "exclusive_scope": "qa-current-build-fun-loop",
       "depends_on": [
@@ -3707,7 +3707,7 @@
         ".agent-coordination/WORK-QUEUE.json",
         "QA/FUN-LOOP-STATE.json"
       ],
-      "notes": "Standing Warden lane after LR-0021 and LR-0139. Between runs it intentionally remains READY and unclaimed. Claim only when current main/deployed gameplay has materially changed since QA/FUN-LOOP-STATE.json:last_tested_main_sha or when Agent 7/Josh requests a targeted retest. After each run, update QA/FUN-LOOP-STATE.json and structured findings, park/release the lock, and leave LR-0140 READY for the next meaningful change."
+      "notes": "Standing Warden lane after LR-0021 and LR-0139. Between runs it intentionally remains READY and unclaimed. Claim only when current main/deployed gameplay has materially changed since QA/FUN-LOOP-STATE.json:last_tested_main_sha or when Agent 7/Josh requests a targeted retest. After each run, update QA/FUN-LOOP-STATE.json and structured findings, park/release the lock, and leave LR-0140 READY for the next meaningful change. Promoted to READY after LR-0021 completed; next Agent 6 run must use current main/current deployed and update QA/FUN-LOOP-STATE.json."
     },
     {
       "id": "LR-0141",
