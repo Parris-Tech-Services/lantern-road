@@ -65,3 +65,18 @@ The temporary Playwright workflow/script were removed after evidence capture.
 ## LR-0107 handoff
 
 This hotfix exists specifically so Steward LR-0107's static-runtime integrity validator can remain strict. After LR-0145 lands, LR-0107 should rerun its current-main validator unchanged and confirm the prior missing-`save-system.js` APP_SHELL failure is resolved.
+
+
+## Exact LR-0107 validator replay
+
+The exact `scripts/validate-static-runtime.mjs` logic from Steward branch `agent/LR-0107-static-runtime-current-7e6b2f39` was replayed unchanged against LR-0145.
+
+GitHub Actions run: **37193123865**
+
+Observed:
+
+```text
+Static runtime integrity OK: 5 local HTML resources, 9 service-worker cache entries, 17 first-party JavaScript files syntax-checked.
+```
+
+This confirms the prior LR-0107 failure for missing `save-system.js` in `APP_SHELL` is resolved without weakening the validator.
