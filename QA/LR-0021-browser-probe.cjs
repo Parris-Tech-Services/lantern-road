@@ -28,7 +28,11 @@ const { chromium } = require("playwright");
   for(const [name,x,y] of pts){
     await fresh();
     const before=await status();
-    await page.locator("#mapCanvas").click({position:{x,y},force:true});
+    const canvas=page.locator("#mapCanvas");
+    await canvas.scrollIntoViewIfNeeded();
+    const box=await canvas.boundingBox();
+    console.log("CANVAS_BOX",JSON.stringify(box));
+    await page.touchscreen.tap(box.x+x,box.y+y);
     await page.waitForTimeout(80);
     const immediate=await status();
     await page.waitForTimeout(400);
