@@ -6,6 +6,7 @@ on:
       - "AGENTS.md"
       - ".agent-coordination/**"
       - "scripts/validate-agent-coordination.mjs"
+      - "scripts/verify-pr-claim.mjs"
       - ".github/workflows/agent-coordination.yml"
   pull_request:
 
@@ -20,3 +21,5 @@ jobs:
         uses: actions/checkout@v4
       - name: Validate agent task coordination
         run: node scripts/validate-agent-coordination.mjs
+      - name: Verify PR owns an active scope claim
+        run: node scripts/verify-pr-claim.mjs
