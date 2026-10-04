@@ -1423,7 +1423,7 @@
     {
       "id": "LR-0051",
       "title": "Author accessibility interaction contract and phone test matrix",
-      "status": "READY",
+      "status": "DONE",
       "priority": 1,
       "exclusive_scope": "accessibility-contract",
       "depends_on": [],
@@ -1440,7 +1440,7 @@
         "docs/ACCESSIBILITY-INTERACTION-SPEC.md",
         "QA/"
       ],
-      "notes": "PARKED HANDOFF (4 Oct 2026): authoring complete on branch agent/LR-0051-accessibility-contract-8f26a1c4 at head 337d916d72d7147b747f67453f5c4990988d0f76, PR #23. Final diff adds docs/ACCESSIBILITY-INTERACTION-SPEC.md and QA/ACCESSIBILITY-MOBILE-MANUAL-MATRIX.md only; no game.js/style.css/index.html runtime edits. Contract covers keyboard/non-pointer parity for travel/tabs/shops/dialogue/site choices/combat, modal focus containment/return, screen-reader map/status/combat semantics, 320/360/390/430 phone targets/reflow, contrast, reduced motion and a downstream manual matrix mapped to LR-0039/LR-0022/LR-0029. Coordination validation passes; PR is red only because Agent 7 design approval .agent-coordination/design-reviews/LR-0051.json is not yet present. No legitimate Agent 5 authoring work remains. Under CLAIM-PROTOCOL v1.2 release accessibility-contract while waiting. Before any later edits or final merge preparation, acquire a fresh claim."
+      "notes": "Completed 4 Oct 2026 via PR #23, squash merge 1346bbfdb30be94f2ba4eeffbc688070a1df3195. Agent 7 approved exact useful head 337d916d72d7147b747f67453f5c4990988d0f76; final approval head validation was green."
     },
     {
       "id": "LR-0052",
@@ -3362,5 +3362,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T19:25:00+11:00"
+  "updated_at": "2026-10-04T18:57:00+11:00"
 }
