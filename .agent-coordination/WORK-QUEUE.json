@@ -2907,6 +2907,178 @@
         "QA/"
       ],
       "notes": "PARKED HANDOFF (4 Oct 2026): authoring complete on branch agent/LR-0110-mobile-back-a4f96d3c at useful head 1325d32cd7c756bd43bbf1a62ad8b6e2cc5bbb21, PR #58. Final diff adds docs/MOBILE-BACK-NAVIGATION-CONTRACT.md and QA/MOBILE-BACK-NAVIGATION-MATRIX.md only. It defines Back/Escape priority across modals, FULL_DETAIL, MAP_EXPANDED, details and root play; forbids history inflation for routine tabs/sheet snaps; protects destructive/required flows; consumes LR-0077 unconfirmed-progress rules; defines focus restoration and browser/PWA acceptance cases. No runtime/history implementation changed. Remaining external condition is Agent 7 approval; fresh mobile-back-navigation-authoring claim required before later edits or final merge preparation."
+    },
+    {
+      "id": "LR-0111",
+      "title": "Establish AED baseline efficiency audit",
+      "status": "READY",
+      "priority": 0,
+      "exclusive_scope": "aed-baseline-efficiency-audit",
+      "depends_on": [],
+      "primary_agent": 8,
+      "goal": "Create an evidence-based baseline of how efficiently Agents 1–7 are operating, what they are blocked by, whether their work distribution is sensible, and which coordination changes would produce the biggest throughput gains without disrupting active claims.",
+      "acceptance_criteria": [
+        "Report READY/BLOCKED/DONE distribution and active-claim state by agent, highlighting idle, overloaded and critical-path roles.",
+        "Identify the highest dependency fan-out tasks and distinguish real technical blockers from avoidable process waiting.",
+        "Assess whether each role is appropriately scoped and whether any work is duplicated, orphaned or assigned to the wrong specialist.",
+        "Assess repository/code/process friction, including shared-file hotspots, monolith risk, stale notes and coordination overhead.",
+        "Produce a prioritised action list with concrete owners and measurable expected benefit; do not create a new approval gate."
+      ],
+      "likely_files": [
+        "audit/AED-BASELINE.md",
+        ".agent-coordination/WORK-QUEUE.json"
+      ],
+      "notes": "AED task. Operational efficiency work only; do not take over a live specialist claim or create a new product/design approval gate."
+    },
+    {
+      "id": "LR-0112",
+      "title": "Audit dependency critical path and blocker fan-out",
+      "status": "READY",
+      "priority": 0,
+      "exclusive_scope": "aed-critical-path-audit",
+      "depends_on": [],
+      "primary_agent": 8,
+      "goal": "Map Lantern Road's dependency graph and reduce unnecessary serialisation, especially where one task or agent blocks a large fraction of the roadmap.",
+      "acceptance_criteria": [
+        "Rank incomplete tasks by downstream blocker fan-out and identify the true critical path.",
+        "Separate unavoidable implementation dependencies from merge/review/evidence dependencies that can be parked or parallelised.",
+        "Recommend dependency edits only where they preserve technical correctness and existing design gates.",
+        "Route any ownership change through the queue and never steal a live claimed scope."
+      ],
+      "likely_files": [
+        "audit/AED-CRITICAL-PATH.md",
+        ".agent-coordination/WORK-QUEUE.json"
+      ],
+      "notes": "AED task. Operational efficiency work only; do not take over a live specialist claim or create a new product/design approval gate."
+    },
+    {
+      "id": "LR-0113",
+      "title": "Build agent tooling and capability matrix",
+      "status": "READY",
+      "priority": 0,
+      "exclusive_scope": "aed-agent-tooling-matrix",
+      "depends_on": [],
+      "primary_agent": 8,
+      "goal": "Verify Agents 1–7 have the practical tools, evidence paths and fallback workflows needed to execute their roles without waiting on unavailable capabilities.",
+      "acceptance_criteria": [
+        "Document required tools/capabilities for each agent role, including GitHub, real-browser QA, image generation, asset handling and validation commands where relevant.",
+        "Identify tasks whose acceptance criteria require a capability their owning agent cannot reliably exercise.",
+        "Provide an explicit fallback or handoff path for each capability gap without weakening acceptance criteria.",
+        "Flag tool-dependent tasks that should be split into authoring versus integration/evidence phases."
+      ],
+      "likely_files": [
+        "audit/AED-AGENT-TOOLING.md"
+      ],
+      "notes": "AED task. Operational efficiency work only; do not take over a live specialist claim or create a new product/design approval gate."
+    },
+    {
+      "id": "LR-0114",
+      "title": "Audit role boundaries and workload balance",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "aed-role-workload-audit",
+      "depends_on": [],
+      "primary_agent": 8,
+      "goal": "Check whether the eight-agent structure has clean ownership and balanced useful work, with special attention to overload, idle roles and blurred handoffs.",
+      "acceptance_criteria": [
+        "Compare task counts, READY work, blockers and critical-path ownership across all agents.",
+        "Identify role overlap or responsibility gaps that create duplicate work or repeated review loops.",
+        "Recommend reassignment only for unclaimed work or future tasks; live claims remain with their owner unless Josh explicitly directs otherwise.",
+        "Keep Josh as final creative authority and Agent 7 as design governor; AED is operational, not creative approval."
+      ],
+      "likely_files": [
+        "audit/AED-ROLE-BALANCE.md",
+        ".agent-coordination/WORK-QUEUE.json"
+      ],
+      "notes": "AED task. Operational efficiency work only; do not take over a live specialist claim or create a new product/design approval gate."
+    },
+    {
+      "id": "LR-0115",
+      "title": "Audit repository hygiene and stale project surface",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "aed-repository-hygiene-audit",
+      "depends_on": [],
+      "primary_agent": 8,
+      "goal": "Make the repository easier for agents to navigate by identifying obsolete notes, redundant artifacts, ambiguous roots and documentation that can mislead current work.",
+      "acceptance_criteria": [
+        "Inventory root-level and coordination documentation that agents are likely to treat as authoritative.",
+        "Identify stale, duplicated or superseded project notes and route cleanup to the existing owning task when one already exists.",
+        "Do not delete evidence, provenance, active handoffs or files owned by an active claim.",
+        "Recommend a simple canonical navigation path for new agent sessions."
+      ],
+      "likely_files": [
+        "audit/AED-REPO-HYGIENE.md",
+        "README.md"
+      ],
+      "notes": "AED task. Operational efficiency work only; do not take over a live specialist claim or create a new product/design approval gate."
+    },
+    {
+      "id": "LR-0116",
+      "title": "Map code hotspots and cross-agent collision risk",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "aed-change-collision-map",
+      "depends_on": [],
+      "primary_agent": 8,
+      "goal": "Quantify which files and feature areas create the most merge/collision risk and feed that evidence into the Steward's modularisation work without duplicating architecture ownership.",
+      "acceptance_criteria": [
+        "Measure concentrated runtime/content/style hotspots and map queue likely_files overlap across active and near-term tasks.",
+        "Identify file-level collision clusters likely to create rebases or serial work.",
+        "Recommend seams/extraction priorities as evidence for LR-0099/LR-0010 rather than implementing their architecture scope.",
+        "Call out areas where data/content authoring can safely proceed independently of runtime integration."
+      ],
+      "likely_files": [
+        "audit/AED-COLLISION-MAP.md"
+      ],
+      "notes": "AED task. Operational efficiency work only; do not take over a live specialist claim or create a new product/design approval gate."
+    },
+    {
+      "id": "LR-0117",
+      "title": "Audit claim, parking, PR and review lifecycle efficiency",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "aed-claim-pr-lifecycle-audit",
+      "depends_on": [],
+      "primary_agent": 8,
+      "goal": "Reduce coordination churn from claim creation, parking, re-claiming, exact-head review and merge preparation while preserving exclusive ownership and review safety.",
+      "acceptance_criteria": [
+        "Trace representative task lifecycles from claim through branch, parking, Director review, re-claim and merge.",
+        "Identify repeated manual steps or commits that can be safely automated or collapsed.",
+        "Preserve create-only ownership, exact-head Director review and parked-work safety guarantees.",
+        "Propose regression tests for any coordination simplification before recommending protocol changes."
+      ],
+      "likely_files": [
+        "audit/AED-CLAIM-PR-LIFECYCLE.md",
+        ".agent-coordination/CLAIM-PROTOCOL.md"
+      ],
+      "notes": "AED task. Operational efficiency work only; do not take over a live specialist claim or create a new product/design approval gate."
+    },
+    {
+      "id": "LR-0118",
+      "title": "Automate queue health and critical-path reporting",
+      "status": "BLOCKED",
+      "priority": 1,
+      "exclusive_scope": "aed-queue-health-automation",
+      "depends_on": [
+        "LR-0111",
+        "LR-0112",
+        "LR-0117"
+      ],
+      "primary_agent": 8,
+      "goal": "Turn proven AED metrics into a small deterministic repository report command so agents can see queue health, blockers and workload concentration without manual recounting.",
+      "acceptance_criteria": [
+        "Add a deterministic local script that reads WORK-QUEUE.json and claim locks without network access.",
+        "Report per-agent task/READY/BLOCKED counts, active claims, top incomplete dependency fan-out and obvious queue inconsistencies.",
+        "Keep output advisory; it must not become a new merge gate unless a later explicit decision approves that.",
+        "Document the command and add focused tests for its calculations."
+      ],
+      "likely_files": [
+        "scripts/aed-report.mjs",
+        "tests/",
+        "README.md"
+      ],
+      "notes": "Blocked until the baseline, critical-path and lifecycle audits define stable metrics worth automating."
     }
   ],
   "agent_roster": [
@@ -2944,6 +3116,11 @@
       "number": 7,
       "name": "The Director",
       "role": "Design direction and production governance. Owns the product vision, terminology and decision log; reviews feature work for pillar alignment, tone/coherence, scope drift and cross-task conflicts; does not replace Josh as final creative director."
+    },
+    {
+      "number": 8,
+      "name": "AED (Agent Efficiency Department)",
+      "role": "Cross-agent efficiency, tooling, repository hygiene, coordination throughput, blocker/dependency analysis, code/process quality audits and systemic workflow improvements. Audits Agents 1–7 without taking over their active specialist work or product authority."
     }
   ],
   "foundation_gates": {
