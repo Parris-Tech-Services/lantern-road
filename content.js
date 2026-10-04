@@ -792,7 +792,7 @@ window.CONTENT = {
         {
           "id": "beacon",
           "name": "Beacon",
-          "description": "Become the party's anchor: Lantern Grace heals +2 HP and Bless grants +1 extra attack.",
+          "description": "Become the party's anchor: Lantern Grace heals +2 HP and Bless grants +1 additional attack-roll bonus.",
           "effects": {
             "healBonus": 2,
             "blessBonus": 1
