@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0129",
+  "exclusive_scope": "art-asset-production-contract",
+  "agent_number": 4,
+  "agent": "The Lamplighter",
+  "session_id": "5a2b7347-204e-4f6d-9461-8482f564e810",
+  "claim_token": "df21af32-4b7a-4d86-bc88-24d04a9ec302",
+  "claimed_at": "2026-10-04T19:14:00+11:00",
+  "expires_at": "2026-10-05T07:14:00+11:00",
+  "branch": "agent/LR-0129-art-production-contract-5a2b7347",
+  "note": "Authoring composition/crop/export standards only; no runtime integration."
+}
