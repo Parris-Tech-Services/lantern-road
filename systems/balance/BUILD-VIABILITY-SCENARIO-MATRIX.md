@@ -312,6 +312,89 @@ Use at least the following eight.
 
 **Failure signal:** one repeating sequence solves most encounters.
 
+## 9A. Leader + three-active roster reconciliation
+
+The B1–B8 combinations above remain useful, but they must now be read as **companion-roster/build-component coverage**, not as literal final active-party compositions.
+
+Canonical active play is:
+
+- the Player **Leader**;
+- three active companions;
+- one reserve companion when Garrick, Mira, Oren and Brindle are all available.
+
+LR-0020 must therefore apply the B1–B8 path identities through an active-roster overlay rather than assuming all four companions fight at once.
+
+### Required roster scenarios
+
+At minimum, final whole-system balance testing must include all four reserve permutations.
+
+| Roster scenario | Leader focus | Active companions | Reserve | Primary balance question |
+| --- | --- | --- | --- | --- |
+| RA | **Lead From the Front** | Mira + Oren + Brindle | Garrick | Can the party function without dedicated Hold Fast protection without turning the Leader into a replacement Garrick? |
+| RB | **Steady Hand** | Garrick + Oren + Brindle | Mira | Do Leader/other approaches keep Scout/Guile progress viable while Mira still feels meaningfully missed? |
+| RC | **Lead From the Front** | Garrick + Mira + Brindle | Oren | Can ordinary Wits progress through Leader/tools/fallbacks without erasing Oren's specialist value? |
+| RD | **Steady Hand** | Garrick + Mira + Oren | Brindle | Can recovery/support remain viable without making Brindle effectively mandatory or turning Direct into a replacement Bless/heal kit? |
+
+These scenarios deliberately exercise both final LR-0103 Leader focuses:
+
+- **Lead From the Front** — Leader Strike deals +1 damage;
+- **Steady Hand** — Direct gains one additional use per encounter.
+
+The Leader focus is permanent for the run being tested.
+
+### Rotation viability question
+
+LR-0020 must explicitly ask:
+
+> Is any companion the obvious permanent reserve across unrelated situations?
+
+Flag for investigation if:
+
+- one companion is benched in nearly every rational composition;
+- one companion is effectively mandatory because core progress or survival collapses without them;
+- rotation is used only to exploit healing/resource reset;
+- reserve equipment/injury/Trust state is lost or reset;
+- the Leader duplicates a missing specialist so completely that roster choice stops mattering.
+
+A healthy roster has **situational absence costs**:
+
+- no Garrick means weaker dedicated protection;
+- no Mira means weaker Scout/Guile/setup;
+- no Oren means weaker Wits/control;
+- no Brindle means weaker recovery/support;
+
+but each composition remains campaign-viable.
+
+### Specialist-fallback contract
+
+Before running final roster scenarios, LR-0020 must consume the final **LR-0106 active-roster check viability matrix**.
+
+That means core progress tests must use the actual fallback contract rather than silently allowing reserve companions to roll checks.
+
+Examples include:
+
+- Leader fallback where a reserved specialist would otherwise block core progress;
+- active Oren/Mira selection at Broken Span/Moonmere;
+- no reserve companion interjections or direct witness memories.
+
+### Runtime roster contract
+
+LR-0020 must also consume **LR-0125** as the runtime authority for:
+
+- Leader + three active companions;
+- reserve persistence;
+- rotation locations;
+- no free heal/resource refresh through swapping;
+- reserve exclusion from combat/check/passive effects.
+
+Do not treat this authoring matrix as permission to recreate roster semantics inside balance code.
+
+### Existing diagnostics remain valid
+
+The economy, recovery, injury, action-dominance, encounter-length, decision-density, trap-choice and unrecoverable-spiral diagnostics elsewhere in this document remain unchanged.
+
+The roster overlay is an additional axis, not a replacement for those tests.
+
 ## 10. Equipment strategy overlays
 
 Run the build configurations under at least four item strategies.
@@ -1080,11 +1163,11 @@ Do not carry stale parked-branch numbers into final tuning.
 
 ## 39. Acceptance mapping for LR-0087
 
-- **Representative party build combinations:** Sections 9–10.
+- **Representative companion build-component coverage plus final Leader/roster scenarios:** Sections 9–10, especially Section 9A.
 - **Spending/resource strategies:** Sections 11, 25–28.
 - **Dominance/trap/non-functional/spiral signals:** Sections 15–23.
 - **Early/mid/late checkpoint matrix:** Sections 14, 24–25.
-- **Mapped authoring assumptions/reconciliation:** Sections 3–7, 38.
+- **Mapped authoring assumptions/reconciliation:** Sections 3–7, 9A and 38.
 - **No black-box/runtime scope violation:** Sections 1–2 and 32.
 
 ## 40. Handoff to LR-0020
