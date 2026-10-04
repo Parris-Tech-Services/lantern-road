@@ -60,6 +60,31 @@ https://YOUR-USERNAME.github.io/YOUR-REPO/
 - `window.render_game_to_text()` returns a concise JSON summary of the campaign, active quests, and combat.
 - `window.advanceTime(ms)` refreshes the turn-based view deterministically and returns the same summary.
 
+## Browser regression tests
+
+Lantern Road's critical browser loops are covered by Playwright using a phone-sized Chromium project.
+
+Run locally:
+
+```bash
+npm install
+npx playwright install chromium
+npm run test:e2e
+```
+
+The suite in `tests/e2e/` drives the real game UI and covers:
+
+- starting a campaign and accepting a quest;
+- clicking the canvas to travel to an adjacent hex;
+- saving, reloading the page, and restoring campaign progress through localStorage;
+- executing a real site action;
+- entering combat and completing a party combat action;
+- failure on uncaught browser page errors.
+
+Deterministic setup for the site/combat cases is exposed only when Lantern Road is running on `localhost` or `127.0.0.1` with `?e2e=1`. The deployed game does not expose those test hooks.
+
+CI runs the same suite in Chromium. LR-0013 is not allowed to close until its successful CI evidence and required Android smoke check are recorded.
+
 ## Design Overview
 
 Lantern Road is a compact campaign sandbox rather than a giant CRPG. The core loop is:
