@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0042",
+  "style_lock_status": "approved-by-josh-awaiting-director-review",
+  "house_style": {
+    "medium": "painted low-fantasy illustration with subtle ink/gouache field-journal texture",
+    "palette": [
+      "parchment",
+      "earth brown",
+      "weathered olive",
+      "smoky slate blue",
+      "lantern gold"
+    ],
+    "lighting": "natural overcast/daylight with restrained warm practical light",
+    "costume": "practical frontier clothing and gear with visible wear",
+    "rendering": "semi-realistic, readable silhouette, restrained detail at phone scale",
+    "avoid": [
+      "named-artist imitation",
+      "existing franchise visual copying",
+      "glossy 3D rendering",
+      "anime rendering",
+      "neon saturation",
+      "ornate high-fantasy costume",
+      "baked UI or gameplay text in production art"
+    ]
+  },
+  "accepted_assets": [
+    {
+      "id": "style-lock-lineup",
+      "kind": "party-lineup",
+      "file": "assets/art/source/style-lock-lineup.webp",
+      "generation_id": "12af3b57-04de-43a2-ab3c-95754257caa5",
+      "status": "accepted"
+    },
+    {
+      "id": "garrick",
+      "kind": "party-portrait",
+      "file": "assets/art/source/garrick.webp",
+      "generation_id": "d321adb8-a730-457d-bede-0dabd457c111",
+      "status": "accepted"
+    },
+    {
+      "id": "mira",
+      "kind": "party-portrait",
+      "file": "assets/art/source/mira.webp",
+      "generation_id": "ac93354b-f679-4aeb-9ff9-bc9c6733eb42",
+      "status": "accepted"
+    },
+    {
+      "id": "oren",
+      "kind": "party-portrait",
+      "file": "assets/art/source/oren.webp",
+      "generation_id": "e22e5039-7fe7-4c5e-9b45-f7dd97edd8da",
+      "status": "accepted"
+    },
+    {
+      "id": "brindle",
+      "kind": "party-portrait",
+      "file": "assets/art/source/brindle.webp",
+      "generation_id": "859251de-24c8-4eba-b700-bc7f55469c09",
+      "status": "accepted"
+    },
+    {
+      "id": "grey-march-approved-concept",
+      "kind": "map-visual-reference",
+      "file": "assets/art/source/grey-march-approved-concept.webp",
+      "generation_id": "b3410a9d-8e18-43fb-8399-5108304d1045",
+      "status": "accepted-reference-only",
+      "canon": false
+    }
+  ],
+  "rejected_generations": [
+    {
+      "generation_id": "ded4ad8b-4170-4ee2-870a-32599d85ac2a",
+      "reason": "Map concept board generated when a clean settlement establishing scene was requested."
+    },
+    {
+      "generation_id": "a6bba667-2fe7-407d-8c36-eb1121660e5d",
+      "reason": "Map/tutorial concept board generated instead of standalone Hearthwick environment art."
+    },
+    {
+      "generation_id": "5e86892b-3733-4ed8-ba65-aa0c22d70aec",
+      "reason": "Another full map generated instead of standalone settlement art."
+    },
+    {
+      "generation_id": "9737f6b2-0877-4aed-9ca0-ef794ae9df40",
+      "reason": "Map generated when the Tessa Reed standalone NPC portrait brief was requested; rejected for subject/type mismatch."
+    }
+  ],
+  "production_queue": [
+    {
+      "id": "tessa_reed",
+      "kind": "npc-portrait",
+      "priority": 1,
+      "status": "next"
+    },
+    {
+      "id": "rowan_pike",
+      "kind": "npc-portrait",
+      "priority": 1,
+      "status": "queued"
+    },
+    {
+      "id": "sen_marrow",
+      "kind": "npc-portrait",
+      "priority": 1,
+      "status": "queued"
+    },
+    {
+      "id": "edda_briar",
+      "kind": "npc-portrait",
+      "priority": 1,
+      "status": "queued"
+    },
+    {
+      "id": "nera_vale",
+      "kind": "npc-portrait",
+      "priority": 1,
+      "status": "queued"
+    },
+    {
+      "id": "hearthwick",
+      "kind": "settlement-environment",
+      "priority": 1,
+      "status": "retry-after-context-reset"
+    },
+    {
+      "id": "greyfen",
+      "kind": "settlement-environment",
+      "priority": 1,
+      "status": "queued"
+    },
+    {
+      "id": "candlemere",
+      "kind": "settlement-environment",
+      "priority": 1,
+      "status": "queued"
+    },
+    {
+      "id": "alderwatch",
+      "kind": "settlement-environment",
+      "priority": 1,
+      "status": "queued"
+    },
+    {
+      "id": "blacksalt",
+      "kind": "settlement-environment",
+      "priority": 1,
+      "status": "queued"
+    }
+  ],
+  "generation_notes": [
+    "Recent conversational context heavily biases generation toward cartography; do not accept off-brief map outputs as settlement or portrait assets.",
+    "Quality rule: reject wrong asset type even when visually strong.",
+    "Next clean generation session should begin from the portrait/location brief before discussing maps."
+  ]
+}
