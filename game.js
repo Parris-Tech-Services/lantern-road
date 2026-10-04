@@ -523,8 +523,22 @@
   }
 
   function changeFaction(id, amount) {
-    state.factions[id] = Math.max(-5, Math.min(5, (state.factions[id] || 0) + amount));
-    addLog(`${FACTION_MAP[id].name} standing ${amount > 0 ? "improved" : "fell"} to ${state.factions[id]}.`);
+    const before = state.factions[id] || 0;
+    const after = Math.max(-5, Math.min(5, before + amount));
+    state.factions[id] = after;
+    if (after === before) {
+      if (amount === 0) addLog(`${FACTION_MAP[id].name} standing remains ${after}.`);
+      return;
+    }
+    if (!Array.isArray(state.factionHistory)) state.factionHistory = [];
+    state.factionHistory.push({ id, before, after, day: state.day });
+    state.factionHistory = state.factionHistory.slice(-24);
+    addLog(`${FACTION_MAP[id].name} standing ${after > before ? "improved" : "fell"} from ${before} to ${after}.`);
+    showFeedback(
+      "Faction standing",
+      `${FACTION_MAP[id].name}: ${factionDisplay(before)} → ${factionDisplay(after)} (${before} → ${after})`,
+      after > before ? "good" : "bad"
+    );
   }
 
   function getPartyBase(memberId) {
@@ -991,12 +1005,13 @@
 
   function innRest(settlementId) {
     const settlement = SETTLEMENT_MAP[settlementId];
-    if (state.gold < settlement.innCost) {
-      openMessage("Not Enough Coin", `A room in ${settlement.name} costs ${settlement.innCost} gold.`);
+    const innCost = getInnCost(settlementId);
+    if (state.gold < innCost) {
+      openMessage("Not Enough Coin", `A room in ${settlement.name} costs ${innCost} gold.`);
       return;
     }
     const beforeRations = getItemQty("rations");
-    state.gold -= settlement.innCost;
+    state.gold -= innCost;
     state.fatigue = 0;
     state.party.forEach(m => m.hp = getMaxHp(m.id));
     advanceToMorning();
@@ -1004,7 +1019,7 @@
     addLog(`You rest properly in ${settlement.name}.`);
     renderAll();
     const rationUsed = Math.max(0, beforeRations - getItemQty("rations"));
-    const summary = `Paid ${settlement.innCost} gold. The party is fully healed, fatigue is cleared, and you wake at ${timeLabel()}.${rationUsed ? ` ${rationUsed} ration was consumed overnight.` : ""}`;
+    const summary = `Paid ${innCost} gold. The party is fully healed, fatigue is cleared, and you wake at ${timeLabel()}.${rationUsed ? ` ${rationUsed} ration was consumed overnight.` : ""} ${marketStandingText(settlementId)}`;
     if (state.ui.dialogue) {
       showFeedback(`Rested at ${settlement.name}`, summary, "good");
     } else {
@@ -1065,14 +1080,34 @@
     renderAll();
   }
 
-  function getRoadRiskBonus() {
-    return state.worldFlags.roadSafe ? -0.05 : 0;
+  function getWorldRiskModifier(tile) {
+    let modifier = 0;
+    if (tile.road && state.worldFlags.roadSafe) modifier -= 0.07;
+    const marshOutcome = questOutcome("ash_in_marsh");
+    if (tile.terrain === "swamp") {
+      if (marshOutcome === "brokered_with_veil") modifier -= 0.08;
+      if (marshOutcome === "exposed_to_wardens") modifier -= 0.04;
+      if (marshOutcome === "recorded_as_evidence") modifier -= 0.02;
+      if (questOutcome("sealed_medicine") === "diverted") modifier += 0.03;
+    }
+    return modifier;
+  }
+
+  function routeConsequenceText(tile) {
+    const notes = [];
+    if (tile.road && state.worldFlags.roadSafe) notes.push("The cleared old-road threat makes travel here safer.");
+    const marshOutcome = questOutcome("ash_in_marsh");
+    if (tile.terrain === "swamp" && marshOutcome === "brokered_with_veil") notes.push("The Mosslight truce has made marsh routes noticeably quieter.");
+    if (tile.terrain === "swamp" && marshOutcome === "exposed_to_wardens") notes.push("Warden patrols have reduced some marsh danger, though tension remains.");
+    if (tile.terrain === "swamp" && marshOutcome === "recorded_as_evidence") notes.push("Known Mosslight routes are being watched more carefully.");
+    if (tile.terrain === "swamp" && questOutcome("sealed_medicine") === "diverted") notes.push("The diverted medicine has made some southern routes more desperate and unpredictable.");
+    return notes.join(" ");
   }
 
   function maybeTravelEvent(tile) {
     const terrain = getTerrainDef(tile);
     const weather = C.weatherDefs[state.weather];
-    let chance = terrain.risk + weather.risk + (state.fatigue * 0.03) + getRoadRiskBonus();
+    let chance = terrain.risk + weather.risk + (state.fatigue * 0.03) + getWorldRiskModifier(tile);
     if (tile.road) chance -= 0.08;
     chance = Math.max(0.05, chance);
     if (rand() > chance) return false;
@@ -1206,20 +1241,21 @@
 
   function buyItem(settlementId, itemId) {
     const item = ITEM_MAP[itemId];
-    if (state.gold < item.value) {
-      showFeedback("Not enough gold", `${item.name} costs ${item.value} gold.`, "bad");
+    const price = getBuyPrice(settlementId, itemId);
+    if (state.gold < price) {
+      showFeedback("Not enough gold", `${item.name} costs ${price} gold here.`, "bad");
       return;
     }
     if (!item.stack && hasItem(itemId)) {
       showFeedback("Already owned", `You already carry ${item.name}.`);
       return;
     }
-    state.gold -= item.value;
+    state.gold -= price;
     changeItem(itemId, 1, false);
-    addLog(`Bought ${item.name} in ${SETTLEMENT_MAP[settlementId].name}.`);
+    addLog(`Bought ${item.name} in ${SETTLEMENT_MAP[settlementId].name} for ${price} gold.`);
     renderAll();
     renderModal();
-    showFeedback("Purchase complete", `${item.name} • -${item.value} gold • ${state.gold} gold left`, "good");
+    showFeedback("Purchase complete", `${item.name} • -${price} gold • ${state.gold} gold left`, "good");
   }
 
   function sellItem(itemId) {
@@ -1366,6 +1402,224 @@
     return "Neutral";
   }
 
+  const SETTLEMENT_PATRON_FACTION = {
+    hearthwick: "wardens",
+    greyfen: "guild",
+    candlemere: "archive",
+    alderwatch: "wardens",
+    blacksalt: "veil"
+  };
+
+  function questOutcome(id) {
+    return state.quests?.[id]?.outcome || "";
+  }
+
+  function settlementPatronFaction(settlementId) {
+    return SETTLEMENT_PATRON_FACTION[settlementId] || null;
+  }
+
+  function settlementStanding(settlementId) {
+    const factionId = settlementPatronFaction(settlementId);
+    return factionId ? getFactionStanding(factionId) : 0;
+  }
+
+  function standingPriceMultiplier(standing) {
+    if (standing >= 4) return 0.8;
+    if (standing >= 2) return 0.9;
+    if (standing <= -4) return 1.3;
+    if (standing <= -2) return 1.15;
+    return 1;
+  }
+
+  function directMarketMultiplier(settlementId) {
+    if (settlementId === "greyfen" && questOutcome("missing_ledger") === "returned_to_guild") return 0.9;
+    if (settlementId === "blacksalt") {
+      const veilHelped = questOutcome("missing_ledger") === "buried_by_veil"
+        || questOutcome("ash_in_marsh") === "brokered_with_veil";
+      if (veilHelped) return 0.9;
+    }
+    return 1;
+  }
+
+  function getBuyPrice(settlementId, itemId) {
+    const item = ITEM_MAP[itemId];
+    if (!item) return 0;
+    const multiplier = standingPriceMultiplier(settlementStanding(settlementId)) * directMarketMultiplier(settlementId);
+    return Math.max(1, Math.round(item.value * multiplier));
+  }
+
+  function getInnCost(settlementId) {
+    const settlement = SETTLEMENT_MAP[settlementId];
+    if (!settlement) return 0;
+    const multiplier = standingPriceMultiplier(settlementStanding(settlementId));
+    let cost = Math.max(1, Math.round(settlement.innCost * multiplier));
+    if (settlementId === "alderwatch" && questOutcome("sealed_medicine") === "delivered_in_time") {
+      cost = Math.max(1, cost - 1);
+    }
+    return cost;
+  }
+
+  function marketStandingText(settlementId) {
+    const factionId = settlementPatronFaction(settlementId);
+    if (!factionId) return "";
+    const standing = getFactionStanding(factionId);
+    const multiplier = standingPriceMultiplier(standing);
+    if (multiplier < 1) return `${FACTION_MAP[factionId].name} standing earns you better local prices.`;
+    if (multiplier > 1) return `${FACTION_MAP[factionId].name} standing is costing you at local counters.`;
+    return `${FACTION_MAP[factionId].name} standing is not changing prices here yet.`;
+  }
+
+  function latestFactionChangeText(factionId) {
+    const history = Array.isArray(state.factionHistory) ? state.factionHistory : [];
+    const latest = [...history].reverse().find(entry => entry.id === factionId);
+    if (!latest) return "";
+    return `Last changed on day ${latest.day}: ${latest.before} → ${latest.after}.`;
+  }
+
+  function factionPracticalEffectText(factionId) {
+    const standing = getFactionStanding(factionId);
+    const places = Object.entries(SETTLEMENT_PATRON_FACTION)
+      .filter(([, patron]) => patron === factionId)
+      .map(([settlementId]) => SETTLEMENT_MAP[settlementId]?.name)
+      .filter(Boolean);
+    const where = places.length ? ` in ${places.join(" and ")}` : "";
+    if (standing >= 4) return `Trusted standing: roughly 20% better buy/inn prices${where}.`;
+    if (standing >= 2) return `Favoured standing: roughly 10% better buy/inn prices${where}.`;
+    if (standing <= -4) return `Enemy standing: roughly 30% worse buy/inn prices${where}.`;
+    if (standing <= -2) return `Disliked standing: roughly 15% worse buy/inn prices${where}.`;
+    return `No major commercial effect${where} at this standing.`;
+  }
+
+  function getSettlementConsequenceLines(settlementId) {
+    const lines = [];
+    const roadOutcome = questOutcome("lantern_road");
+    const ledgerOutcome = questOutcome("missing_ledger");
+    const relicOutcome = questOutcome("pilgrim_reliquary");
+    const medicineOutcome = questOutcome("sealed_medicine");
+    const chartOutcome = questOutcome("silent_tower");
+    const marshOutcome = questOutcome("ash_in_marsh");
+
+    if (settlementId === "hearthwick" && state.worldFlags.roadSafe) {
+      lines.push(roadOutcome === "bargained"
+        ? "Caravans are returning to the old road, and people quietly note that you ended the false-lantern trouble without a massacre."
+        : "Caravans are returning to the old road now that the false-lantern crew has been driven off.");
+    }
+    if (settlementId === "hearthwick" && relicOutcome === "returned_to_shrine") {
+      lines.push("Pilgrims have started stopping at Saint Rhel's Shrine again; the returned reliquary has become a small local story.");
+    }
+    if (settlementId === "greyfen") {
+      if (ledgerOutcome === "returned_to_guild") lines.push("Guild factors are suddenly friendlier, and several awkward ledger questions have disappeared behind closed doors.");
+      if (ledgerOutcome === "buried_by_veil") lines.push("The missing ledger never came home. Guild clerks are tighter with information and quicker to inspect unfamiliar faces.");
+      if (ledgerOutcome === "archived_as_evidence") lines.push("Greyfen merchants now know the ledger exists somewhere they cannot quietly rewrite it.");
+    }
+    if (settlementId === "candlemere") {
+      if (relicOutcome === "archived") lines.push("Saint Rhel's reliquary sits under Archive protection, drawing scholars and criticism in equal measure.");
+      if (ledgerOutcome === "archived_as_evidence") lines.push("The missing guild ledger is catalogued as evidence; its existence has become harder to deny.");
+      if (chartOutcome === "chart_to_archive") lines.push("The Moonmere chart is being copied, argued over and used to reopen old boundary claims.");
+    }
+    if (settlementId === "alderwatch") {
+      if (medicineOutcome === "delivered_in_time") lines.push("The medicine arrived before the fever worsened. The stores are still thin, but the ward is no longer bracing for the same number of funerals.");
+      if (medicineOutcome === "late_but_useful") lines.push("The medicine arrived late enough that nobody calls it a victory, but it is still saving lives.");
+      if (medicineOutcome === "diverted") lines.push("The promised medicine never arrived. Beds stay full, tempers are shorter, and the wardens remember the failed route.");
+      if (medicineOutcome === "too_late") lines.push("The medicine came too late. The settlement carries the absence in quieter rooms and harsher logistics.");
+      if (marshOutcome === "exposed_to_wardens") lines.push("Warden patrols now probe the Mosslight routes. The marsh is more controlled and far less trusting.");
+      if (marshOutcome === "brokered_with_veil") lines.push("An unofficial truce around Mosslight is holding: fewer seizures, fewer ambushes, and many people pretending no agreement exists.");
+      if (marshOutcome === "recorded_as_evidence") lines.push("Mosslight is now a documented problem rather than a ghost story, which has made every faction more careful.");
+    }
+    if (settlementId === "blacksalt") {
+      if (ledgerOutcome === "buried_by_veil") lines.push("Veil brokers treat you like someone who understands how dangerous paper can be.");
+      if (ledgerOutcome === "returned_to_guild") lines.push("The Veil has not forgotten that the ledger went back to the Guild.");
+      if (marshOutcome === "brokered_with_veil") lines.push("Mosslight couriers move more openly through back rooms and ferry sheds now that a working arrangement exists.");
+      if (marshOutcome === "exposed_to_wardens") lines.push("People lower their voices when Mosslight comes up; several familiar runners have stopped using the crossing.");
+    }
+    return lines;
+  }
+
+  function getWorldLegacyLines() {
+    const lines = [];
+    const road = questOutcome("lantern_road");
+    const ledger = questOutcome("missing_ledger");
+    const relic = questOutcome("pilgrim_reliquary");
+    const med = questOutcome("sealed_medicine");
+    const chart = questOutcome("silent_tower");
+    const marsh = questOutcome("ash_in_marsh");
+
+    if (road === "bargained") lines.push("You ended the false-lantern threat by breaking the crew's nerve instead of killing them.");
+    if (road === "fought_clear" || road === "cleared") lines.push("You made the old road safe by driving the false-lantern crew off by force.");
+    if (ledger === "returned_to_guild") lines.push("You returned the missing ledger to the Gilt Caravan Guild.");
+    if (ledger === "buried_by_veil") lines.push("You entrusted the missing ledger to the Ashen Veil and let it disappear.");
+    if (ledger === "archived_as_evidence") lines.push("You placed the missing ledger in the Archive as durable evidence.");
+    if (relic === "returned_to_shrine") lines.push("You returned Saint Rhel's reliquary to the roadside shrine.");
+    if (relic === "archived") lines.push("You placed Saint Rhel's reliquary under Archive protection.");
+    if (med === "delivered_in_time") lines.push("You delivered Alderwatch's medicine in time.");
+    if (med === "late_but_useful") lines.push("You delivered Alderwatch's medicine late, but still in time to help.");
+    if (med === "diverted") lines.push("You diverted Alderwatch's medicine into Veil routes for coin.");
+    if (med === "too_late") lines.push("Alderwatch's medicine run failed before help arrived.");
+    if (chart === "chart_to_archive") lines.push("You recovered the Moonmere chart for the Archive.");
+    if (marsh === "exposed_to_wardens") lines.push("You exposed the Mosslight operation to the Wardens.");
+    if (marsh === "brokered_with_veil") lines.push("You brokered an unofficial settlement around the Mosslight routes.");
+    if (marsh === "recorded_as_evidence") lines.push("You turned Mosslight evidence over to the Archive.");
+    return lines;
+  }
+
+  function worldLegacyText() {
+    const lines = getWorldLegacyLines();
+    return lines.length ? lines.map(line => `• ${line}`).join("\n") : "The March is still waiting to see what your choices will leave behind.";
+  }
+
+  function npcWorldReactionText(npcId) {
+    const road = questOutcome("lantern_road");
+    const ledger = questOutcome("missing_ledger");
+    const relic = questOutcome("pilgrim_reliquary");
+    const med = questOutcome("sealed_medicine");
+    const chart = questOutcome("silent_tower");
+    const marsh = questOutcome("ash_in_marsh");
+
+    if (npcId === "mayor_rowan" && state.worldFlags.roadSafe) return road === "bargained"
+      ? "Rowan mentions that merchants are using the road again, though he still does not entirely trust the bargain that made it possible."
+      : "Rowan says wagon traffic is finally thickening again now that the false lanterns are gone.";
+    if (npcId === "tessa_inn" && state.worldFlags.roadSafe) return "Tessa says returning caravans have improved both the gossip and the stew budget.";
+    if (npcId === "sister_elira" && relic) return relic === "returned_to_shrine"
+      ? "Elira says pilgrims have begun leaving fresh oil at Saint Rhel's again."
+      : "Elira remains polite about the reliquary's Archive home, but never calls it the right home.";
+    if (npcId === "oswin_marris" && ledger) {
+      if (ledger === "returned_to_guild") return "Oswin treats you as someone who protected the Guild's interests when the ledger mattered.";
+      if (ledger === "buried_by_veil") return "Oswin's courtesy has acquired a hard edge since the ledger vanished into Veil hands.";
+      return "Oswin knows the Archive now holds a record the Guild cannot quietly edit.";
+    }
+    if (npcId === "joric_pell" && med) return med === "delivered_in_time"
+      ? "Joric has already started using your medicine run as an example of what competent logistics looks like."
+      : "Joric does not discuss the failed medicine route unless someone else raises it first.";
+    if (npcId === "quartermaster_yor" && med) return med === "delivered_in_time"
+      ? "Yor offers a tired smile; the crate you brought bought Alderwatch breathing room."
+      : "Yor's shelves and his tone both remember that the promised crate did not arrive cleanly.";
+    if (npcId === "sen_marrow" && chart === "chart_to_archive") return "Sen says the Moonmere chart has already reopened arguments that had been dormant for a generation.";
+    if (npcId === "magister_holt" && (ledger === "archived_as_evidence" || marsh === "recorded_as_evidence")) {
+      return "Holt is visibly pleased that at least one dangerous truth now has a catalogue number and witnesses.";
+    }
+    if (npcId === "edda_briar" && marsh) {
+      if (marsh === "exposed_to_wardens") return "Edda has patrols moving against Mosslight routes now; she calls the result imperfect but actionable.";
+      if (marsh === "brokered_with_veil") return "Edda knows an unofficial arrangement exists around Mosslight. She dislikes it, but she dislikes missing medicine more.";
+      return "Edda says the Archive record has made Mosslight harder for anyone to dismiss as superstition.";
+    }
+    if (npcId === "nera_vale") {
+      if (ledger === "buried_by_veil") return "Nera treats the vanished ledger as proof that you understand some truths survive by staying mobile.";
+      if (ledger === "returned_to_guild") return "Nera has not forgotten that you put the ledger back in Guild hands.";
+      if (marsh === "brokered_with_veil") return "Nera says the Mosslight compromise is working precisely because nobody important wants to admit it exists.";
+      if (marsh === "exposed_to_wardens") return "Nera says three useful routes went dark after your Mosslight report.";
+    }
+    if (npcId === "tobin_reed" && marsh === "brokered_with_veil") return "Tobin says the back room has been quieter since couriers stopped expecting every crossing to become a raid.";
+    if (npcId === "ferry_vesk" && ledger) return ledger === "returned_to_guild"
+      ? "Vesk says Guild writ checks have relaxed since the ledger came home."
+      : "Vesk says river inspections have become more suspicious since the ledger ended up outside Guild control.";
+    return "";
+  }
+
+  function decorateNpcDialogue(npcId, dialogue) {
+    const reaction = npcWorldReactionText(npcId);
+    if (!reaction || !dialogue) return dialogue;
+    return { ...dialogue, text: `${dialogue.text}\n\n${reaction}` };
+  }
 
   function isAtLocation(locationId) {
     const settlement = SETTLEMENT_MAP[locationId];
@@ -1394,6 +1648,7 @@
         <h3>On the Road</h3>
         <p>${getTerrainDef(tile).name}. ${tile.road ? "The road improves the pace a little." : "Off-road travel is slower and riskier here."}</p>
         <div class="row">${terrainBadge(tile)} ${tile.river ? '<span class="tag">river</span>' : ''}</div>
+        ${routeConsequenceText(tile) ? `<div class="notice"><strong>Road consequence:</strong> ${routeConsequenceText(tile)}</div>` : ""}
         <div class="notice">${nearby || "No marked sites within immediate reach."}</div>
       </div>
       <div class="card">
@@ -1409,6 +1664,8 @@
   function renderSettlementContext(settlementId) {
     const s = SETTLEMENT_MAP[settlementId];
     const here = isAtLocation(settlementId);
+    const innCost = getInnCost(settlementId);
+    const consequenceLines = getSettlementConsequenceLines(settlementId);
     return `
       <div class="card location-card">
         ${artSlot("settlement", s.id, s.name, true)}
@@ -1423,11 +1680,17 @@
           ${s.services.map(service => `<span class="tag">${service}</span>`).join("")}
         </div>
       </div>
+      ${consequenceLines.length ? `
+        <div class="card">
+          <h3>What changed here</h3>
+          ${consequenceLines.map(line => `<div class="notice">${line}</div>`).join("")}
+        </div>
+      ` : ""}
       <div class="card">
         <h3>Services</h3>
         ${here ? "" : `<p class="muted">You are viewing this place from the map. Travel there to interact.</p>`}
         <div class="choice-list">
-          <button ${here ? "" : "disabled"} data-action="inn-rest" data-settlement="${s.id}">Rest at the inn (${s.innCost} gold)</button>
+          <button ${here ? "" : "disabled"} data-action="inn-rest" data-settlement="${s.id}">Rest at the inn (${innCost} gold)</button>
           <button ${here ? "" : "disabled"} data-action="open-shop" data-settlement="${s.id}">Visit the market</button>
           <button ${here ? "" : "disabled"} data-action="hear-rumours" data-settlement="${s.id}">Hear rumours</button>
         </div>
@@ -1526,11 +1789,15 @@
       <div class="faction-entry">
         <div class="entry-head">
           <strong>${f.name}</strong>
-          <span class="tag">${factionDisplay(getFactionStanding(f.id))}</span>
+          <span class="tag">${factionDisplay(getFactionStanding(f.id))} (${getFactionStanding(f.id)})</span>
         </div>
         <p>${f.description}</p>
+        <p><em>${factionPracticalEffectText(f.id)}</em></p>
+        ${latestFactionChangeText(f.id) ? `<p class="muted">${latestFactionChangeText(f.id)}</p>` : ""}
       </div>
     `).join("");
+
+    const legacy = getWorldLegacyLines();
 
     return `
       <div class="card">
@@ -1544,6 +1811,10 @@
       <div class="card">
         <h3>Discovered Places</h3>
         <p>${discovered || "You have not marked much of the March yet."}</p>
+      </div>
+      <div class="card">
+        <h3>What the March Remembers</h3>
+        ${legacy.length ? legacy.map(line => `<div class="log-entry">${line}</div>`).join("") : "<p>Your major decisions have not settled into history yet.</p>"}
       </div>
       <div class="card">
         <h3>Factions</h3>
@@ -2920,12 +3191,13 @@
     const settlement = SETTLEMENT_MAP[settlementId];
     const buyList = settlement.shopStock.map(itemId => {
       const item = ITEM_MAP[itemId];
-      const canBuy = state.gold >= item.value && (item.stack || !hasItem(itemId));
+      const price = getBuyPrice(settlementId, itemId);
+      const canBuy = state.gold >= price && (item.stack || !hasItem(itemId));
       return `
         <div class="item-entry">
           <div class="entry-head">
             <strong>${item.name}</strong>
-            <span class="tag">${item.value}g</span>
+            <span class="tag">${price}g${price !== item.value ? ` (base ${item.value}g)` : ""}</span>
           </div>
           <p>${item.description}</p>
           <button ${canBuy ? "" : "disabled"} data-action="buy-item" data-settlement="${settlementId}" data-item="${itemId}">Buy</button>
@@ -2952,7 +3224,7 @@
         <div class="modal-header">
           <div>
             <h2>${settlement.name} Market</h2>
-            <p class="subtle">${state.gold} gold on hand.</p>
+            <p class="subtle">${state.gold} gold on hand. ${marketStandingText(settlementId)}</p>
           </div>
           <button class="close-btn" data-action="close-shop">Close</button>
         </div>
@@ -3294,7 +3566,10 @@
     if (!state) return;
     if (state.day > C.success.days && state.renown >= C.success.renownTarget && !state.worldFlags.victoryShown) {
       state.worldFlags.victoryShown = true;
-      openMessage("Frontier Success", `By day ${state.day}, your party has earned ${state.renown} renown. The Grey March speaks your names with something like trust.`);
+      openMessage(
+        "Frontier Success",
+        `By day ${state.day}, your party has earned ${state.renown} renown. The Grey March speaks your names with something like trust.\n\nWhat the March remembers\n${worldLegacyText()}`
+      );
     }
     renderStatus();
     renderTabs();
@@ -3351,7 +3626,22 @@
           memories: characterState(member.id).memories.map(memory => memory.id),
           personalArcReady: personalArcReady(member.id)
         })),
-        relationships: state.characterState?.relationships || {}
+        relationships: state.characterState?.relationships || {},
+        worldConsequences: {
+          legacy: getWorldLegacyLines(),
+          settlementStates: Object.fromEntries(C.settlements.map(settlement => [
+            settlement.id,
+            getSettlementConsequenceLines(settlement.id)
+          ])),
+          marketStanding: Object.fromEntries(C.settlements.map(settlement => [
+            settlement.id,
+            {
+              faction: settlementPatronFaction(settlement.id),
+              standing: settlementStanding(settlement.id),
+              innCost: getInnCost(settlement.id)
+            }
+          ]))
+        }
       } : null,
       combat: state?.combat ? {
         encounterId: state.combat.encounterId,
@@ -3391,9 +3681,11 @@
       case "dialogue-choice":
         handleDialogueChoice(button.dataset.key);
         break;
-      case "talk-npc":
-        openDialogue(buildNpcDialogue(button.dataset.npc));
+      case "talk-npc": {
+        const npcId = button.dataset.npc;
+        openDialogue(decorateNpcDialogue(npcId, buildNpcDialogue(npcId)));
         break;
+      }
       case "hear-rumours":
         hearRumours(button.dataset.settlement);
         break;
