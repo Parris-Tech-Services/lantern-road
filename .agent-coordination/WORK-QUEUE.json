@@ -21,14 +21,15 @@
     "Small PR policy: one claimed task/scope per PR; avoid unrelated refactors. Split broad work into follow-up tasks instead of creating giant integration PRs.",
     "Subjective quality policy: agents may report evidence about clarity, pacing, repetition and friction, but Josh is the creative director and final judge of fun/premium feel.",
     "All black-box Warden QA must drive a real browser (Playwright, agent-browser or equivalent). Reading source/DOM alone is not a playtest.",
-    "Agent 7 — The Director owns design governance, not specialist implementation. It reviews work against docs/VISION.md, docs/DECISIONS.md and canonical terminology, flags cross-task conflicts, and proposes queue/dependency corrections.",
-    "Josh remains final creative director. The Director may protect and interpret established pillars but must not materially change product direction without Josh's approval.",
-    "Before a specialist feature PR is treated as merge-ready, The Director should perform a design-coherence review and record any blocking conflict or terminology/tone issue in the PR or queue.",
     "Narrative authoring may proceed ahead of runtime/save integration when it is isolated to story/docs assets. Blocking engine integration must not unnecessarily idle the Storyteller.",
     "Agent 1 follow-on engineering tasks should remain mostly blocked behind the relevant foundations; LR-0059 is the intentionally independent current lane so Steward work can continue without colliding with parked feature branches.",
     "Josh's 4 Oct playtest direction: the player should exist in-world as party leader; active adventuring composition is leader + three companions; companions should have bounded personality-driven agency; dialogue should remember prior conversations/choices; action repeatability must be explicit; and the phone core loop should not require whole-page scroll shuttling between map and outcome.",
     "BG3 is a reference for player-avatar-centred companion approval/dialogue and legible action-resource costs. Inkle's Sorcery! is a structural reference for remembered narrative state and map-centric cross-platform/mobile presentation. Adapt principles only; do not clone copyrighted dialogue, UI art or D&D rules.",
-    "Critical-path drain mode: when high-fan-out priority-0 work is PARKED, Agent 7 prioritises its standing review before lower-impact review inventory; once required review/gates clear, the owning role prioritises fresh reconciliation/merge/closure before creating filler work. This does not permit cross-role claiming or weaken exact-head review."
+    "Critical-path drain mode: when high-fan-out priority-0 work is PARKED, Agent 7 prioritises its standing review before lower-impact review inventory; once required review/gates clear, the owning role prioritises fresh reconciliation/merge/closure before creating filler work. This does not permit cross-role claiming or weaken exact-head review.",
+    "Company authority: Josh is owner/creative director; Agent 7 is CEO/executive oversight; Agent 1 is project lead, lead game designer, technical lead and program integrator.",
+    "Game-production approval: Agent 1 owns routine design coherence, technical integration and final internal game approval. Specialist tasks marked steward_review=REQUIRED need exact-head Steward approval; Agent 7 is not a game-design or merge approval gate.",
+    "CEO boundary: Agent 7 may set company-level priorities, resourcing, organisational risk and executive handover discipline, but routine game-design decisions, map canon and production integration belong to Agent 1 within Josh's vision.",
+    "Critical-path drain mode: when high-fan-out priority-0 work is PARKED, Agent 1 prioritises required Steward reviews and integration closure before lower-impact backlog. This does not permit cross-role claiming or weaken exact-head/machine evidence."
   ],
   "tasks": [
     {
@@ -140,13 +141,13 @@
         "content.js",
         "game.js"
       ],
-      "notes": "Storyteller owns consequence logic and faction-specific modifiers. The Mechanist owns base economy/prices in LR-0016. This task is grandfathered as already in flight but has LR-0011/LR-0013 merge gates. Implementation is complete on commit 5c9e3caf2823b3f84ec548c7cdff58dbda6bad44 and archived draft PR #7. CI coordination validation passed; merge verification is intentionally blocked by LR-0011 and LR-0013. After those gates are DONE, a fresh Agent 2 claimant should create a new claim/branch, rebase or cherry-pick the LR-0005 implementation, run the real-browser harness, obtain fresh Agent 7 Director approval as the final PR commit, then merge.",
+      "notes": "Storyteller owns consequence logic and faction-specific modifiers. The Mechanist owns base economy/prices in LR-0016. This task is grandfathered as already in flight but has LR-0011/LR-0013 merge gates. Implementation is complete on commit 5c9e3caf2823b3f84ec548c7cdff58dbda6bad44 and archived draft PR #7. CI coordination validation passed; merge verification is intentionally blocked by LR-0011 and LR-0013. After those gates are DONE, a fresh Agent 2 claimant should create a new claim/branch, rebase or cherry-pick the LR-0005 implementation, run the real-browser harness, obtain fresh Agent 1 Steward approval as the final PR commit, then merge.",
       "primary_agent": 2,
       "merge_gate_depends_on": [
         "LR-0011",
         "LR-0013"
       ],
-      "director_review": "REQUIRED"
+      "steward_review": "REQUIRED"
     },
     {
       "id": "LR-0006",
@@ -166,13 +167,13 @@
         "content.js",
         "game.js"
       ],
-      "notes": "PARKED 2026-10-04T22:08+11:00 after merged-runtime verification. LR-0006 implementation is already present on main via PR #5 merge commit ea0cc88f082d5c7a0a20f340477c6f5c826ab125; current main contains heroBuilds, explicit companion equipment slots, persistent injuries/recovery and progression-aware combat/UI hooks. Do NOT replay/cherry-pick the old 259-commit-behind branch over current main. Merged LR-0011 save-system v2 preserves progression because encode clones the full state and decode/mergeDefaults retains candidate keys while filling current defaults; current game.js also normalizes builds/equipment/injuries. Task must remain READY because merge gates LR-0011 and LR-0013 are not formally DONE and director_review is REQUIRED. After both gates are DONE: fresh Agent 3 claim, run the permanent LR-0013 real-browser suite plus focused progression save/reload checks against exact current main, obtain/repair exact-head Agent 7 approval for the merged progression state, then mark LR-0006 DONE. No further feature replay is currently needed.",
+      "notes": "PARKED 2026-10-04T22:08+11:00 after merged-runtime verification. LR-0006 implementation is already present on main via PR #5 merge commit ea0cc88f082d5c7a0a20f340477c6f5c826ab125; current main contains heroBuilds, explicit companion equipment slots, persistent injuries/recovery and progression-aware combat/UI hooks. Do NOT replay/cherry-pick the old 259-commit-behind branch over current main. Merged LR-0011 save-system v2 preserves progression because encode clones the full state and decode/mergeDefaults retains candidate keys while filling current defaults; current game.js also normalizes builds/equipment/injuries. Task must remain READY because merge gates LR-0011 and LR-0013 are not formally DONE and steward_review is REQUIRED. After both gates are DONE: fresh Agent 3 claim, run the permanent LR-0013 real-browser suite plus focused progression save/reload checks against exact current main, obtain/repair exact-head Agent 1 Steward approval for the merged progression state, then mark LR-0006 DONE. No further feature replay is currently needed.",
       "primary_agent": 3,
       "merge_gate_depends_on": [
         "LR-0011",
         "LR-0013"
       ],
-      "director_review": "REQUIRED"
+      "steward_review": "REQUIRED"
     },
     {
       "id": "LR-0007",
@@ -232,7 +233,7 @@
       ],
       "notes": "Premium-gap area: campaign arc/replayability. Architecture dependency narrowed by LR-0128: replaces all-or-nothing LR-0010 wait with stage(s) LR-0138; final integration remains governed by LR-0010 where separately applicable.",
       "primary_agent": 2,
-      "director_review": "REQUIRED"
+      "steward_review": "REQUIRED"
     },
     {
       "id": "LR-0009",
@@ -315,13 +316,13 @@
         "Validate malformed or partial saves and give the player a useful recovery message.",
         "Preserve current campaign data where safely possible.",
         "Document compatibility expectations for future feature agents.",
-        "Technical gate closure evidence: .agent-coordination/gate-evidence/LR-0011.json must be VERIFIED, tied to the exact merged/tested commit and successful CI run, include the task-specific required artifact, and include Agent 7 evidence verification before this task may be marked DONE."
+        "Technical gate closure evidence: .agent-coordination/gate-evidence/LR-0011.json must be VERIFIED, tied to the exact merged/tested commit and successful CI run, include the task-specific required artifact, and include Agent 1 Steward verification before this task may be marked DONE."
       ],
       "likely_files": [
         "game.js",
         "README.md"
       ],
-      "notes": "PARKED HANDOFF 5 Oct 2026: merged save implementation remains intact; evidence-refresh support merged via PR #114, merge commit 76d7bf4c5e2e73669cd356fbef04d24198ff2749. Exact tested candidate head 73998799b1574c9d6cf98e2aa9d8bb899c52539b passed Save migration run #54 / 37236741387, Browser regression #28 / 37236741395 and Agent coordination #1124 / 37236741380. Successful save run published live unexpired save-migration-results artifact ID 11315976941 (expires 5 Oct 2026 21:35Z). The earlier LR-0011 design review remains historical and does not substitute for the separate technical evidence verification required by current policy. parked_at=2026-10-05T08:41:00+11:00. Remaining gate only: Agent 7 independently verifies this fresh machine evidence, then a fresh Agent 1 claimant may add .agent-coordination/gate-evidence/LR-0011.json and mark LR-0011 DONE. Josh Android validation remains separate LR-0056.",
+      "notes": "PARKED HANDOFF 5 Oct 2026: merged save implementation remains intact; evidence-refresh support merged via PR #114, merge commit 76d7bf4c5e2e73669cd356fbef04d24198ff2749. Exact tested candidate head 73998799b1574c9d6cf98e2aa9d8bb899c52539b passed Save migration run #54 / 37236741387, Browser regression #28 / 37236741395 and Agent coordination #1124 / 37236741380. Successful save run published live unexpired save-migration-results artifact ID 11315976941 (expires 5 Oct 2026 21:35Z). The earlier LR-0011 design review remains historical and does not substitute for the separate technical evidence verification required by current policy. parked_at=2026-10-05T08:41:00+11:00. Remaining gate: Steward verifies this fresh machine evidence, then LR-0011 can add its gate-evidence record and close DONE without CEO approval.agent-coordination/gate-evidence/LR-0011.json and mark LR-0011 DONE. Josh Android validation remains separate LR-0056.",
       "completion_evidence_required": {
         "evidence_file": ".agent-coordination/gate-evidence/LR-0011.json",
         "machine_requirements": [
@@ -337,8 +338,7 @@
         "required_repository_paths": [
           "tests/fixtures/saves/legacy/"
         ]
-      },
-      "director_review": "NOT_REQUIRED"
+      }
     },
     {
       "id": "LR-0012",
@@ -381,7 +381,7 @@
         "Cover save/load round-trip behaviour through browser storage and a page reload/reopen.",
         "Cover at least one combat flow and one quest/site interaction.",
         "Run the browser suite in CI where practical and document the local command every feature agent should run before PR completion.",
-        "Technical gate closure evidence: .agent-coordination/gate-evidence/LR-0013.json must be VERIFIED, tied to the exact merged/tested commit and successful CI run, include the task-specific required artifact, and include Agent 7 evidence verification before this task may be marked DONE."
+        "Technical gate closure evidence: .agent-coordination/gate-evidence/LR-0013.json must be VERIFIED, tied to the exact merged/tested commit and successful CI run, include the task-specific required artifact, and include Agent 1 Steward verification before this task may be marked DONE."
       ],
       "likely_files": [
         "tests/",
@@ -390,7 +390,7 @@
         "README.md",
         ".github/workflows/"
       ],
-      "notes": "PARKED HANDOFF 5 Oct 2026: browser evidence publication defect fixed and merged via PR #113, merge commit 987257562094665f3766a3cce3faf673d9c7b2fa. Exact tested candidate head 7ee63b8f0e9814d7968180640c8f9fd0bc449fbb passed Browser regression run #27 / 37236544930 and Agent coordination #1120 / 37236544890. Successful browser run published live unexpired browser-regression-results artifact ID 11316215501 (expires 5 Oct 2026 21:33Z). The original harness implementation from PR #88 remains merged. parked_at=2026-10-05T08:36:00+11:00. Remaining gate only: Agent 7 must independently verify the fresh machine evidence, then a fresh Agent 1 claimant may add .agent-coordination/gate-evidence/LR-0013.json and mark LR-0013 DONE. Josh Android validation remains separate LR-0056.",
+      "notes": "PARKED HANDOFF 5 Oct 2026: browser evidence publication defect fixed and merged via PR #113, merge commit 987257562094665f3766a3cce3faf673d9c7b2fa. Exact tested candidate head 7ee63b8f0e9814d7968180640c8f9fd0bc449fbb passed Browser regression run #27 / 37236544930 and Agent coordination #1120 / 37236544890. Successful browser run published live unexpired browser-regression-results artifact ID 11316215501 (expires 5 Oct 2026 21:33Z). The original harness implementation from PR #88 remains merged. parked_at=2026-10-05T08:36:00+11:00. Remaining gate: Steward verifies this fresh machine evidence, then LR-0013 can add its gate-evidence record and close DONE without CEO approval.agent-coordination/gate-evidence/LR-0013.json and mark LR-0013 DONE. Josh Android validation remains separate LR-0056.",
       "completion_evidence_required": {
         "evidence_file": ".agent-coordination/gate-evidence/LR-0013.json",
         "machine_requirements": [
@@ -406,8 +406,7 @@
         "required_repository_paths": [
           "tests/e2e/"
         ]
-      },
-      "director_review": "NOT_REQUIRED"
+      }
     },
     {
       "id": "LR-0014",
@@ -427,7 +426,6 @@
         "LR-0010",
         "LR-0011",
         "LR-0013",
-        "LR-0035",
         "LR-0056"
       ],
       "primary_agent": 1,
@@ -447,7 +445,7 @@
         "README.md",
         ".agent-coordination/WORK-QUEUE.json"
       ],
-      "notes": "Blocked until the first specialist foundation wave is complete. Governance boundary: LR-0035 performs the cross-feature design diagnosis first; LR-0014 then owns Steward-level integration/reconciliation work and routes specialist fixes back to their owners rather than duplicating Director review. LR-0056 is the human Android release-validation gate; it intentionally blocks this final integration milestone, not specialist development."
+      "notes": "Final Steward integration/reconciliation pass. Agent 1 owns cross-feature game coherence and routes specialist fixes back to their owners. LR-0056 remains the Josh-only Android release-validation gate."
     },
     {
       "id": "LR-0015",
@@ -1006,7 +1004,7 @@
     {
       "id": "LR-0035",
       "title": "First-wave design coherence review",
-      "status": "BLOCKED",
+      "status": "CANCELLED",
       "priority": 1,
       "exclusive_scope": "design-first-wave-review",
       "depends_on": [
@@ -1031,19 +1029,18 @@
         "QA/",
         ".agent-coordination/WORK-QUEUE.json"
       ],
-      "notes": "Design review after the foundation wave. Agent 7 diagnoses and routes; specialists implement."
+      "notes": "Superseded 5 Oct 2026 by LR-0151. Agent 1 now owns continuous game-design coherence and final internal production approval; a separate Agent 7 design-coherence gate would duplicate leadership."
     },
     {
       "id": "LR-0036",
       "title": "Release design cohesion and scope audit",
-      "status": "BLOCKED",
+      "status": "CANCELLED",
       "priority": 3,
       "exclusive_scope": "design-release-cohesion",
       "depends_on": [
         "LR-0014",
         "LR-0020",
-        "LR-0030",
-        "LR-0035"
+        "LR-0030"
       ],
       "primary_agent": 7,
       "goal": "Perform the final design/production audit before release candidate sign-off, separating genuine product-identity problems from optional polish and scope creep.",
@@ -1059,7 +1056,7 @@
         "QA/",
         ".agent-coordination/WORK-QUEUE.json"
       ],
-      "notes": "Final Director gate. Josh retains final creative sign-off."
+      "notes": "Superseded 5 Oct 2026 by LR-0151. Release design cohesion is part of Steward final game-production approval plus Warden QA and Josh creative sign-off; CEO is not a game-design gate."
     },
     {
       "id": "LR-0037",
@@ -1233,7 +1230,7 @@
         "docs/ART-DIRECTION.md",
         "docs/ART-PROVENANCE.md"
       ],
-      "notes": "PARTIAL HANDOFF: PR #12 / branch agent/LR-0042-ai-art-d1f018ec has Director-approved useful head e38785f642b9e64aaed08781c85cd629c8b608a2 containing the accepted hero style-lock assets, approved non-canonical Grey March visual reference, ART-PROVENANCE.md, ART-SHOT-LIST.md and ART-MANIFEST.json. Agent 7 approval covers this preserved batch only; LR-0042 remains READY and ACTIONABLE because settlement/site/enemy/NPC/item production is still incomplete. Agent 4 should freshly claim LR-0042 and resume remaining generation in a clean image-generation context, keeping the accepted hero/style batch intact and rejecting off-brief cartography. Do not wait for Agent 1; LR-0031 owns later runtime integration."
+      "notes": "PARTIAL HANDOFF: PR #12 / branch agent/LR-0042-ai-art-d1f018ec has Director-approved useful head e38785f642b9e64aaed08781c85cd629c8b608a2 containing the accepted hero style-lock assets, approved non-canonical Grey March visual reference, ART-PROVENANCE.md, ART-SHOT-LIST.md and ART-MANIFEST.json. The historical approval covers this preserved batch only; future game approval is Steward-owned; LR-0042 remains READY and ACTIONABLE because settlement/site/enemy/NPC/item production is still incomplete. Agent 4 should freshly claim LR-0042 and resume remaining generation in a clean image-generation context, keeping the accepted hero/style batch intact and rejecting off-brief cartography. Do not wait for Agent 1; LR-0031 owns later runtime integration."
     },
     {
       "id": "LR-0043",
@@ -1374,7 +1371,7 @@
         "Quest dialogue and outcomes consume LR-0005 consequence hooks and the shared persistence/migration framework rather than creating parallel state systems.",
         "Preserve route freedom: no core quest becomes an artificial mandatory step solely to serve the campaign spine.",
         "Add real-browser regression coverage for the new quest branches and verify old saves remain valid through the LR-0011 contract.",
-        "Obtain fresh Director approval on the final implementation head before merge."
+        "Obtain fresh Steward approval on the final implementation head before merge."
       ],
       "likely_files": [
         "story/quests/",
@@ -1535,9 +1532,9 @@
         "LR-0011 and LR-0013 can become development-satisfying DONE tasks from merged implementation plus verified machine CI/artifact evidence, without Josh's phone check.",
         "Josh's Android confirmation moves to a separate human release-validation gate that agents cannot self-assert.",
         "Specialist development dependencies use the technical gates; release/final-integration milestones still depend on the human device gate.",
-        "Automated test quality, artifact verification, exact-commit checking and Director design review are not weakened.",
+        "Automated test quality, artifact verification, exact-commit checking and Steward game review are not weakened.",
         "AGENTS.md, validator logic, queue dependencies, gate-evidence documentation and decision log all describe the same model.",
-        "Agent 7 reviews the governance change before this policy task merges."
+        "Steward confirms the policy remains technically coherent; CEO review is not a game-production gate."
       ],
       "likely_files": [
         ".agent-coordination/WORK-QUEUE.json",
@@ -1547,11 +1544,8 @@
         ".agent-coordination/gate-evidence/README.md",
         ".agent-coordination/DESIGN-REVIEW-PROTOCOL.md"
       ],
-      "notes": "PARKED HANDOFF: current-main reconciliation complete on branch agent/LR-0055-foundation-policy-69f9a050-r5, exact useful head e4f1ccbb154c2dd690b2d7e0a00a08c83776640c, draft PR #74 (supersedes closed stale PR #17). Mechanical queue comparison confirmed every non-policy task and top-level queue metadata match live main; only LR-0011/LR-0013/LR-0014/LR-0055/LR-0056 carry intended policy deltas. Agent coordination run #689 (37187380586) passed every step. Next action: Agent 7 exact-head approval, then fresh Agent 1 claim before merge.",
-      "supporting_agents": [
-        7
-      ],
-      "director_review": "NOT_REQUIRED"
+      "notes": "PARKED HANDOFF: current-main reconciliation complete on branch agent/LR-0055-foundation-policy-69f9a050-r5, exact useful head e4f1ccbb154c2dd690b2d7e0a00a08c83776640c, draft PR #74 (supersedes closed stale PR #17). Mechanical queue comparison confirmed every non-policy task and top-level queue metadata match live main; only LR-0011/LR-0013/LR-0014/LR-0055/LR-0056 carry intended policy deltas. Agent coordination run #689 (37187380586) passed every step. Next action: Agent 1 Steward approval, then fresh Agent 1 claim before merge.",
+      "supporting_agents": []
     },
     {
       "id": "LR-0056",
@@ -2449,7 +2443,7 @@
         "story/companions/",
         "story/dialogue/"
       ],
-      "notes": "Full authored companion-social layer following LR-0088's framework. Lifecycle refreshed 4 Oct 2026 after LR-0044, LR-0088 and LR-0089 all reached DONE; task is now eligible for Agent 2 authoring. Parked 4 Oct 2026 under completed-work parking rule. Full direct-companion conversation/advice pack is complete on branch agent/LR-0091-companion-dialogue-36d6c15f at useful head 69f5e2e40e69ed31adbc923d08b69f4afea75401, PR #96. All live acceptance criteria pass; runtime handoff explicitly targets LR-0090/LR-0093 with a minimal playable slice. Branch changes only story/companions/. Next action after Agent 7 approval: fresh Agent 2 claimant verifies exact head and merges, marks LR-0091 DONE, releases fresh lock."
+      "notes": "Full authored companion-social layer following LR-0088's framework. Lifecycle refreshed 4 Oct 2026 after LR-0044, LR-0088 and LR-0089 all reached DONE; task is now eligible for Agent 2 authoring. Parked 4 Oct 2026 under completed-work parking rule. Full direct-companion conversation/advice pack is complete on branch agent/LR-0091-companion-dialogue-36d6c15f at useful head 69f5e2e40e69ed31adbc923d08b69f4afea75401, PR #96. All live acceptance criteria pass; runtime handoff explicitly targets LR-0090/LR-0093 with a minimal playable slice. Branch changes only story/companions/. Next action after Agent 1 Steward approval: fresh Agent 2 claimant verifies exact head and merges, marks LR-0091 DONE, releases fresh lock."
     },
     {
       "id": "LR-0092",
@@ -2809,9 +2803,9 @@
       "primary_agent": 1,
       "goal": "Extend Map Canon so approved regional labels are machine-readable and protected by schema/CI without turning regions into fake gameplay locations.",
       "acceptance_criteria": [
-        "Add a canonical regional-label collection/shape to world/map-canon.json that implements the exact LR-0104 Director ratification.",
+        "Add a canonical regional-label collection/shape to world/map-canon.json that implements the exact LR-0104 ratified regional-label contract.",
         "Extend world/map-canon.schema.json and map-canon validation to distinguish protected non-node regions from settlements/sites and from still-PROPOSED generated labels.",
-        "Extend protected-change verification so add/rename/retire/identity changes to canonical regional labels require fresh Agent 7 exact-head map-canon approval.",
+        "Extend protected-change verification so add/rename/retire/identity changes to canonical regional labels require fresh Agent 1 Steward exact-head map-canon approval.",
         "Keep regional labels non-clickable/non-node data unless a separate future task explicitly creates gameplay geography.",
         "Preserve all 16 existing canonical place ids/names/q/r/grid refs exactly.",
         "Document how LR-0073 dynamic overlays consume canonical regional labels without baking them into the terrain atlas."
@@ -2824,8 +2818,7 @@
         "docs/WORLD-MAP-CANON.md",
         ".agent-coordination/MAP-CANON-PROTOCOL.md"
       ],
-      "notes": "IMPLEMENTATION ALREADY PRESENT ON MAIN as of 4 Oct 2026; former PR #95 has zero commits/files ahead of main after later reconciliation. Task remains READY because the protected regional-label canon mutation still lacks the separate Agent 7 map-canon approval record required by MAP-CANON-PROTOCOL. Director design review is NOT_REQUIRED under LR-0146. Next action: Agent 7 records map-canon approval against the integrated canonical change/evidence, then close LR-0105.",
-      "director_review": "NOT_REQUIRED"
+      "notes": "IMPLEMENTATION ALREADY PRESENT ON MAIN as of 4 Oct 2026; former PR #95 has zero commits/files ahead of main after later reconciliation. Task remains READY only because the protected regional-label canon mutation lacks the dedicated Steward map-canon approval record required by MAP-CANON-PROTOCOL. The dedicated map-canon approval is the final game-design approval; no CEO or duplicate generic review is required. Next action: Agent 1 records exact-head map-canon approval against the integrated canonical change/evidence, then closes LR-0105."
     },
     {
       "id": "LR-0106",
@@ -3270,8 +3263,7 @@
         "assets/ui/materials/README.md",
         "docs/ART-DIRECTION.md"
       ],
-      "notes": "PARKED pending refreshed Director exact-head review after merge-conflict resolution. PR #66 branch agent/LR-0124-ui-materials-3d6fcf41 now at e09800eb898226a7c0fa4fb92128380ea1ef7bfe. The prior feature approval was valid, but LR-0121 landed first and both appended docs/ART-DIRECTION.md; conflict was resolved by preserving both approved iconography and UI-material sections without changing the six material SVG assets. Fresh Agent 7 review is required for the resolved head before merge.",
-      "director_review": "NOT_REQUIRED"
+      "notes": "PARKED pending refreshed Steward exact-head review after merge-conflict resolution. PR #66 branch agent/LR-0124-ui-materials-3d6fcf41 now at e09800eb898226a7c0fa4fb92128380ea1ef7bfe. The prior feature approval was valid, but LR-0121 landed first and both appended docs/ART-DIRECTION.md; conflict was resolved by preserving both approved iconography and UI-material sections without changing the six material SVG assets. Fresh Agent 1 Steward review is required for the resolved head before merge."
     },
     {
       "id": "LR-0125",
@@ -3297,7 +3289,7 @@
       "acceptance_criteria": [
         "Represent the player Leader as a real mechanical actor using the final LR-0103 contract, including approved stats/check participation, combat actions/focus, equipment and injury compatibility.",
         "Represent Garrick, Mira, Oren and Brindle as the persistent companion roster while exactly three are active in field play and one may be reserve when all four are available.",
-        "Implement safe-point roster rotation according to the final Director-approved reserve fiction, with no mid-danger swap, rotation heal, duplicate equipment effect or resource exploit.",
+        "Implement safe-point roster rotation according to the final approved reserve fiction, with no mid-danger swap, rotation heal, duplicate equipment effect or resource exploit.",
         "Preserve Trust, personal-arc state, injuries/conditions, equipment and other character-owned persistent state for reserve companions.",
         "Migrate existing four-active-companion saves without losing any companion state and without silently erasing or rewriting a companion; use the final LR-0103 migration rule and LR-0011 persistence contract.",
         "Audit existing party iteration/check/combat/render code so active-party mechanics use Leader + active companions while roster/history/relationship surfaces can still address all available companions appropriately.",
@@ -3313,7 +3305,7 @@
         "content.js",
         "tests/"
       ],
-      "notes": "Director-routed runtime ownership gap found during second-wave review. LR-0103 defines the mechanics but explicitly leaves implementation downstream; LR-0125 is the single shared runtime foundation so LR-0015/LR-0017/LR-0018/LR-0093/LR-0098 do not each reinvent active/reserve roster semantics. Agent 1 supports save/architecture reconciliation but Agent 3 owns the gameplay roster mechanics. Architecture dependency narrowed by LR-0128: replaces all-or-nothing LR-0010 wait with stage(s) LR-0134, LR-0135; final integration remains governed by LR-0010 where separately applicable."
+      "notes": "Previously identified runtime ownership gap found during second-wave review. LR-0103 defines the mechanics but explicitly leaves implementation downstream; LR-0125 is the single shared runtime foundation so LR-0015/LR-0017/LR-0018/LR-0093/LR-0098 do not each reinvent active/reserve roster semantics. Agent 1 supports save/architecture reconciliation but Agent 3 owns the gameplay roster mechanics. Architecture dependency narrowed by LR-0128: replaces all-or-nothing LR-0010 wait with stage(s) LR-0134, LR-0135; final integration remains governed by LR-0010 where separately applicable."
     },
     {
       "id": "LR-0126",
@@ -3427,8 +3419,8 @@
         "assets/art/ASSET-SPECS.json",
         "docs/ART-DIRECTION.md"
       ],
-      "notes": "PARKED pending Director exact-head review. PR #77, branch agent/LR-0129-art-production-contract-5a2b7347, useful head 778f1e4d41cbe4a4091c4cb260d576afbb3664ff. Added exact composition/crop/export contract and machine-readable ASSET-SPECS.json grounded in 58 px entry, 76–92 px card and ~112 px wide-phone art cases. QA: all category/crop/export/provenance sections present and JSON parses across eight asset categories. Coordination checks pass; only remaining gate is .agent-coordination/design-reviews/LR-0129.json.",
-      "director_review": "REQUIRED"
+      "notes": "PARKED pending Steward exact-head review. PR #77, branch agent/LR-0129-art-production-contract-5a2b7347, useful head 778f1e4d41cbe4a4091c4cb260d576afbb3664ff. Added exact composition/crop/export contract and machine-readable ASSET-SPECS.json grounded in 58 px entry, 76–92 px card and ~112 px wide-phone art cases. QA: all category/crop/export/provenance sections present and JSON parses across eight asset categories. Coordination checks pass; only remaining gate is .agent-coordination/design-reviews/LR-0129.json.",
+      "steward_review": "REQUIRED"
     },
     {
       "id": "LR-0130",
@@ -3760,7 +3752,7 @@
         "assets/ui/materials/",
         "assets/ui/effects/"
       ],
-      "notes": "PARKED HANDOFF 5 Oct 2026: Josh-directed early current-shell presentation integration implemented on branch agent/LR-0141-early-visual-wiring-2c2fd694, exact useful head 12082a50870bd00f40b20acca8b769ef960ab916, PR #115. Player-visible work includes accepted Garrick/Mira/Oren/Brindle portraits via existing CSS art slots, authored icons on selected visible controls, restrained parchment/lantern material treatment, contextual rain/fog/sacred VFX with reduced-motion/high-contrast fallbacks, build id 2026.10.05-lr0141-v1, and service-worker caching for every new runtime asset. CI green on exact head: Browser regression #29 / 37237342547, Static runtime #50 / 37237342542, DOM contract #43 / 37237342515, Save migration #58 / 37237342482, Agent coordination #1129 / 37237342499. parked_at=2026-10-05T08:47:00+11:00. Remaining gate from Josh's team brief: Agent 4 visual review of PR #115; after approval, frozen PR may merge if head remains unchanged. Broader LR-0031 art delivery remains separate."
+      "notes": "PARKED HANDOFF 5 Oct 2026: Josh-directed early current-shell presentation integration implemented on branch agent/LR-0141-early-visual-wiring-2c2fd694, exact useful head 12082a50870bd00f40b20acca8b769ef960ab916, PR #115. Player-visible work includes accepted Garrick/Mira/Oren/Brindle portraits via existing CSS art slots, authored icons on selected visible controls, restrained parchment/lantern material treatment, contextual rain/fog/sacred VFX with reduced-motion/high-contrast fallbacks, build id 2026.10.05-lr0141-v1, and service-worker caching for every new runtime asset. CI green on exact head: Browser regression #29 / 37237342547, Static runtime #50 / 37237342542, DOM contract #43 / 37237342515, Save migration #58 / 37237342482, Agent coordination #1129 / 37237342499. parked_at=2026-10-05T08:47:00+11:00. Agent 4 visual feedback is welcome but advisory; Steward is final internal game-production approver and may merge the frozen green PR at unchanged head. Broader LR-0031 art delivery remains separate."
     },
     {
       "id": "LR-0142",
@@ -3818,8 +3810,7 @@
         "docs/AUDIO-DIRECTION.md",
         "docs/AUDIO-PROVENANCE.md"
       ],
-      "notes": "Producer-only Lamplighter task split from LR-0032 so audio creation does not wait for Agent 1's UI/render seam. LR-0032 consumes this pack later.",
-      "director_review": "NOT_REQUIRED"
+      "notes": "Producer-only Lamplighter task split from LR-0032 so audio creation does not wait for Agent 1's UI/render seam. LR-0032 consumes this pack later."
     },
     {
       "id": "LR-0144",
@@ -3847,8 +3838,7 @@
         "docs/ART-PROVENANCE.md",
         "docs/ART-DIRECTION.md"
       ],
-      "notes": "Producer-only Lamplighter task split from LR-0031. It becomes READY once LR-0042 source generation and LR-0129 production contract are DONE; it does not depend on Agent 1 architecture.",
-      "director_review": "NOT_REQUIRED"
+      "notes": "Producer-only Lamplighter task split from LR-0031. It becomes READY once LR-0042 source generation and LR-0129 production contract are DONE; it does not depend on Agent 1 architecture."
     },
     {
       "id": "LR-0145",
@@ -4085,7 +4075,7 @@
     {
       "number": 1,
       "name": "The Steward",
-      "role": "Lead, architecture, integration, production discipline, cross-system consistency, bug triage and code review."
+      "role": "Project lead, lead game designer, technical lead and program integrator. Owns day-to-day game direction, production sequencing, architecture, integration, cross-system consistency, bug triage and final internal game-production approval within Josh's creative vision."
     },
     {
       "number": 2,
@@ -4115,7 +4105,7 @@
     {
       "number": 7,
       "name": "The Director",
-      "role": "Design direction and production governance. Owns the product vision, terminology and decision log; reviews feature work for pillar alignment, tone/coherence, scope drift and cross-task conflicts; does not replace Josh as final creative director."
+      "role": "CEO / executive oversight. Owns company-level priorities, resourcing, organisational risk, executive escalation and safe organisational handover; does not act as the routine game-design, technical or merge approval gate."
     },
     {
       "number": 8,
@@ -4141,5 +4131,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-05T09:04:00+11:00"
+  "updated_at": "2026-10-05T09:07:00+11:00"
 }

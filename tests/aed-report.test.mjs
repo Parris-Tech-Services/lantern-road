@@ -17,7 +17,7 @@ function queue(tasks) {
 test("separates actionable READY from parked READY and review-ready", () => {
   const report = buildReport(queue([
     { id: "LR-0001", title: "Actionable", status: "READY", primary_agent: 1, depends_on: [], exclusive_scope: "a", notes: "" },
-    { id: "LR-0002", title: "Parked", status: "READY", primary_agent: 1, director_review: "REQUIRED", depends_on: [], exclusive_scope: "b", notes: "PARKED HANDOFF: awaiting Agent 7 Director approval." },
+    { id: "LR-0002", title: "Parked", status: "READY", primary_agent: 1, steward_review: "REQUIRED", depends_on: [], exclusive_scope: "b", notes: "PARKED HANDOFF: awaiting Agent 1 Steward approval." },
     { id: "LR-0003", title: "Blocked", status: "BLOCKED", primary_agent: 2, depends_on: ["LR-0001"], exclusive_scope: "c", notes: "" },
     { id: "LR-0004", title: "Done", status: "DONE", primary_agent: 2, depends_on: [], exclusive_scope: "d", notes: "" }
   ]));
@@ -29,26 +29,26 @@ test("separates actionable READY from parked READY and review-ready", () => {
   assert.equal(report.totals.parked_ready, 1);
   assert.equal(report.totals.review_ready, 1);
   assert.equal(isParked({ status: "READY", notes: "PARKED" }), true);
-  assert.equal(isReviewReady({ status: "READY", director_review: "REQUIRED", notes: "PARKED awaiting Director review" }), true);
+  assert.equal(isReviewReady({ status: "READY", steward_review: "REQUIRED", notes: "PARKED awaiting Steward review" }), true);
 });
 
 
 test("ranks critical-path flow inbox and distinguishes review from owner merge", () => {
   const report = buildReport(queue([
     {
-      id: "LR-0001", title: "Low impact review", status: "READY", primary_agent: 1, director_review: "REQUIRED", priority: 1,
+      id: "LR-0001", title: "Low impact review", status: "READY", primary_agent: 1, steward_review: "REQUIRED", priority: 1,
       depends_on: [], exclusive_scope: "a",
-      notes: "PARKED HANDOFF. Awaiting Agent 7 Director approval."
+      notes: "PARKED HANDOFF. Awaiting Agent 1 Steward approval."
     },
     {
-      id: "LR-0002", title: "Critical review", status: "READY", primary_agent: 1, director_review: "REQUIRED", priority: 0,
+      id: "LR-0002", title: "Critical review", status: "READY", primary_agent: 1, steward_review: "REQUIRED", priority: 0,
       depends_on: [], exclusive_scope: "b",
-      notes: "PARKED HANDOFF. Next action: Agent 7 exact-head approval."
+      notes: "PARKED HANDOFF. Next action: Agent 1 Steward exact-head approval."
     },
     {
-      id: "LR-0003", title: "Owner merge", status: "READY", primary_agent: 2, director_review: "REQUIRED", priority: 0,
+      id: "LR-0003", title: "Owner merge", status: "READY", primary_agent: 2, steward_review: "REQUIRED", priority: 0,
       depends_on: ["LR-0002"], exclusive_scope: "c",
-      notes: "PARKED HANDOFF. Agent 7 approved exact useful head. Fresh claimant should reconcile, then merge and mark DONE."
+      notes: "PARKED HANDOFF. Agent 1 approved exact useful head. Fresh claimant should reconcile, then merge and mark DONE."
     },
     {
       id: "LR-0004", title: "Downstream", status: "BLOCKED", primary_agent: 2, priority: 1,
@@ -56,11 +56,11 @@ test("ranks critical-path flow inbox and distinguishes review from owner merge",
     }
   ]));
 
-  assert.equal(flowState({ status: "READY", director_review: "REQUIRED", notes: "PARKED. Awaiting Director review." }), "DIRECTOR_REVIEW");
-  assert.equal(flowState({ status: "READY", director_review: "REQUIRED", notes: "PARKED. Agent 7 approved exact useful head. Fresh claim then merge." }), "OWNER_MERGE");
+  assert.equal(flowState({ status: "READY", steward_review: "REQUIRED", notes: "PARKED. Awaiting Steward review." }), "STEWARD_REVIEW");
+  assert.equal(flowState({ status: "READY", steward_review: "REQUIRED", notes: "PARKED. Agent 1 approved exact useful head. Fresh claim then merge." }), "OWNER_MERGE");
   assert.equal(report.flow_inbox[0].id, "LR-0002");
-  assert.equal(report.flow_inbox[0].flow_state, "DIRECTOR_REVIEW");
-  assert.equal(report.totals.director_review, 2);
+  assert.equal(report.flow_inbox[0].flow_state, "STEWARD_REVIEW");
+  assert.equal(report.totals.steward_review, 2);
   assert.equal(report.totals.owner_merge, 1);
   assert.match(formatReport(report), /Critical-path flow inbox/);
 });
@@ -169,7 +169,7 @@ test("derives parked-review age when parking timestamps exist", () => {
       tasks: [{
         id: "LR-0001", title: "Parked", status: "READY", primary_agent: 1, priority: 0,
         depends_on: [], exclusive_scope: "a",
-        notes: "PARKED HANDOFF parked_at=2026-10-04T06:00:00Z awaiting Director review"
+        notes: "PARKED HANDOFF parked_at=2026-10-04T06:00:00Z awaiting Steward review"
       }]
     },
     [],
@@ -195,7 +195,7 @@ test("classifies agent work state and chooses the highest-priority actionable ta
         { id: "LR-0001", title: "Blocked integration", status: "BLOCKED", primary_agent: 1, priority: 0, depends_on: ["LR-0004"], exclusive_scope: "a" },
         { id: "LR-0002", title: "Useful producer work", status: "READY", primary_agent: 1, priority: 1, depends_on: [], exclusive_scope: "b", notes: "" },
         { id: "LR-0003", title: "Lower priority producer", status: "READY", primary_agent: 1, priority: 2, depends_on: [], exclusive_scope: "c", notes: "" },
-        { id: "LR-0004", title: "Parked review", status: "READY", primary_agent: 2, priority: 0, depends_on: [], exclusive_scope: "d", notes: "PARKED HANDOFF awaiting Director review" }
+        { id: "LR-0004", title: "Parked review", status: "READY", primary_agent: 2, priority: 0, depends_on: [], exclusive_scope: "d", notes: "PARKED HANDOFF awaiting Steward review" }
       ]
     },
     []
@@ -237,14 +237,14 @@ test("active claim takes precedence over extra READY work in work-state classifi
 });
 
 
-test("review-by-exception ignores stale Director-wait notes for NOT_REQUIRED tasks", () => {
+test("review-by-exception ignores stale Steward-wait notes for NOT_REQUIRED tasks", () => {
   const report = buildReport(queue([
     {
       id: "LR-0013",
       title: "Technical harness",
       status: "READY",
       primary_agent: 1,
-      director_review: "NOT_REQUIRED",
+      steward_review: "NOT_REQUIRED",
       priority: 0,
       depends_on: [],
       merge_gate_depends_on: [],
@@ -254,10 +254,10 @@ test("review-by-exception ignores stale Director-wait notes for NOT_REQUIRED tas
   ]));
   assert.equal(flowState(report ? {
     status: "READY",
-    director_review: "NOT_REQUIRED",
+    steward_review: "NOT_REQUIRED",
     notes: "PARKED HANDOFF awaiting Agent 7 approval"
   } : {}), "PARKED_WAIT");
-  assert.equal(report.totals.director_review, 0);
+  assert.equal(report.totals.steward_review, 0);
   assert.equal(report.totals.owner_merge, 1);
   assert.equal(report.flow_inbox[0].flow_state, "OWNER_MERGE");
 });

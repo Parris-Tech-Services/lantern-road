@@ -9,21 +9,21 @@ export function isParked(task) {
 }
 
 export function isReviewReady(task) {
-  return flowState(task) === "DIRECTOR_REVIEW";
+  return flowState(task) === "STEWARD_REVIEW";
 }
 
 export function flowState(task) {
   if (!isParked(task)) return null;
   const notes = String(task.notes ?? "");
-  const approved = /(agent\s*7\s+approved|director-approved|director\s+approval\s+covers|approved\s+exact\s+(useful\s+)?head|exact-head\s+approval\s+(?:is\s+)?(?:valid|complete))/i.test(notes);
+  const approved = /(agent\s*7\s+approved|steward-approved|steward\s+approval\s+covers|approved\s+exact\s+(useful\s+)?head|exact-head\s+approval\s+(?:is\s+)?(?:valid|complete))/i.test(notes);
   const mergeNext = /(fresh(?:ly)?\s+(?:agent\s+\d+\s+)?claim|fresh claimant|reconcil|merge preparation|then merge|merge and mark done)/i.test(notes);
-  const reviewNeeded = /(await(?:ing)?[^.]{0,80}(?:director|agent\s*7)[^.]{0,50}(?:review|approval)|missing\s+agent\s*7|director\s+review\s+requested|next action:\s*agent\s*7)/i.test(notes);
+  const reviewNeeded = /(await(?:ing)?[^.]{0,80}(?:steward|agent\s*1)[^.]{0,50}(?:review|approval)|missing\s+agent\s*1|steward\s+review\s+requested|next action:\s*agent\s*1)/i.test(notes);
 
-  if (task.director_review !== "REQUIRED") {
+  if (task.steward_review !== "REQUIRED") {
     return "PARKED_WAIT";
   }
   if (approved && mergeNext) return "OWNER_MERGE";
-  if (reviewNeeded) return "DIRECTOR_REVIEW";
+  if (reviewNeeded) return "STEWARD_REVIEW";
   return "PARKED_WAIT";
 }
 
@@ -269,7 +269,7 @@ export function buildReport(queue, locks = [], findings = [], options = {}) {
     );
     let state = flowState(task);
 
-    if (task.director_review !== "REQUIRED" && incompleteGates.length === 0) {
+    if (task.steward_review !== "REQUIRED" && incompleteGates.length === 0) {
       state = "OWNER_MERGE";
     } else if (state === "OWNER_MERGE" && incompleteGates.length > 0) {
       state = "PARKED_WAIT";
@@ -280,8 +280,8 @@ export function buildReport(queue, locks = [], findings = [], options = {}) {
       title: task.title,
       agent: task.primary_agent,
       priority: task.priority,
-      director_review: task.director_review ?? "NOT_REQUIRED",
-      review_ready: state === "DIRECTOR_REVIEW",
+      steward_review: task.steward_review ?? "NOT_REQUIRED",
+      review_ready: state === "STEWARD_REVIEW",
       flow_state: state,
       incomplete_merge_gates: incompleteGates,
       parked_at: parkedAt,
@@ -330,7 +330,7 @@ export function buildReport(queue, locks = [], findings = [], options = {}) {
       CANCELLED: tasks.filter(t => t.status === "CANCELLED").length,
       parked_ready: parked.length,
       review_ready: parked.filter(t => t.review_ready).length,
-      director_review: flowInbox.filter(t => t.flow_state === "DIRECTOR_REVIEW").length,
+      steward_review: flowInbox.filter(t => t.flow_state === "STEWARD_REVIEW").length,
       owner_merge: flowInbox.filter(t => t.flow_state === "OWNER_MERGE").length,
       active_claims: activeClaims.length
     },
@@ -395,7 +395,7 @@ export function formatReport(report, { top = 10 } = {}) {
   const lines = [];
   lines.push(`${report.project} — AED queue health (advisory only; not a merge gate)`);
   if (report.queue_updated_at) lines.push(`Queue updated: ${report.queue_updated_at}`);
-  lines.push(`Tasks: ${report.totals.tasks} | READY ${report.totals.READY} | BLOCKED ${report.totals.BLOCKED} | DONE ${report.totals.DONE} | parked READY ${report.totals.parked_ready} | Director review ${report.totals.director_review} | owner merge ${report.totals.owner_merge} | active claims ${report.totals.active_claims}`);
+  lines.push(`Tasks: ${report.totals.tasks} | READY ${report.totals.READY} | BLOCKED ${report.totals.BLOCKED} | DONE ${report.totals.DONE} | parked READY ${report.totals.parked_ready} | Steward review ${report.totals.steward_review} | owner merge ${report.totals.owner_merge} | active claims ${report.totals.active_claims}`);
   lines.push("");
   lines.push("Agent workload:");
   for (const a of report.agents) {

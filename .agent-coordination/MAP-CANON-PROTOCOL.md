@@ -1,7 +1,7 @@
 # Lantern Road Map Canon Change Protocol
 
 Version: 1.0  
-Owner: **Agent 7 — The Director**
+Owner: **Agent 1 — The Steward / Lead Game Designer**
 
 This protocol protects canonical geography from accidental drift while allowing deliberate evolution.
 
@@ -49,7 +49,7 @@ These may happen in their owning specialist tasks when they leave canonical iden
 2. Describe the requested geography change and why existing canon cannot satisfy the need.
 3. Record affected ids, names, q/r, grid references, save/story references and rendering implications.
 4. Keep the proposed geography `PROPOSED` until approved.
-5. Agent 7 reviews for product/lore/map coherence.
+5. Agent 1 reviews for product/lore/map coherence.
 6. Escalate to Josh when the change is a genuine creative-direction decision rather than a mechanical correction.
 7. Only after approval, implement the registry/docs change and any required migration/integration work.
 8. Agent 1's LR-0070 enforcement must verify that protected changes use this workflow.
@@ -68,7 +68,7 @@ Recommended shape:
 {
   "schema_version": 1,
   "task_id": "LR-xxxx",
-  "reviewer_agent_number": 7,
+  "reviewer_agent_number": 1,
   "status": "APPROVED",
   "reviewed_head_sha": "FULL_SHA",
   "change_type": "ADD|MOVE|RENAME|RETIRE|IDENTITY|GRID|PROJECTION",
@@ -96,7 +96,7 @@ A regional-label record must remain distinct from a settlement/site:
 - references only existing CANON `anchor_place_ids`;
 - no q/r or grid reference is invented merely to label a landscape.
 
-Renaming, retiring or materially redefining a CANON regional label requires a dedicated map-canon change and Agent 7 approval.
+Renaming, retiring or materially redefining a CANON regional label requires a dedicated map-canon change and Agent 1 Steward approval.
 
 Generated concept labels use explicit dispositions (`ADOPT`, `RENAME`, `REJECT`, `DEFER`). A rejected/deferred label is not canonical overlay content.
 
@@ -112,7 +112,7 @@ LR-0105 owns the machine-readable registry/schema/CI implementation of this rule
 - Regional labels do not carry q/r or grid references.
 - ADOPT/RENAME concept dispositions must resolve to an existing CANON regional id.
 - REJECT/DEFER concept labels remain non-canon and must not carry a canonical regional id.
-- Protected regional-label identity changes are checked by `verify-map-canon-change.mjs` and require fresh Agent 7 exact-head map-canon approval.
+- Protected regional-label identity changes are checked by `verify-map-canon-change.mjs` and require fresh Agent 1 exact-head map-canon approval.
 
 ## Stable coordinate rule
 
@@ -191,7 +191,7 @@ A change to protected canonical identity requires a **final review-only commit**
 
 That record must:
 
-- be authored/reviewed by Agent 7;
+- be authored/reviewed by Agent 1;
 - have `status: "APPROVED"`;
 - name the exact preceding commit in `reviewed_head_sha`;
 - use an allowed `change_type`: `ADD`, `MOVE`, `RENAME`, `RETIRE`, `IDENTITY`, `GRID` or `PROJECTION`;
@@ -205,16 +205,16 @@ Any later code/canon commit after approval makes that approval stale.
 
 ### Review ordering for Agent 1–5 implementation PRs
 
-A protected map-canon implementation owned by Agents 1–5 must satisfy both map-canon review and ordinary Director design review.
+A protected map-canon implementation requires the dedicated exact-head Steward map-canon review. That dedicated approval replaces any duplicate generic game-review gate for the same change.
 
 Use this exact tail:
 
 1. final feature/canon implementation commit;
-2. Agent 7 map-canon review-only commit changing exactly `.agent-coordination/map-canon-reviews/<TASK-ID>.json`, whose `reviewed_head_sha` is the feature/canon commit;
-3. Agent 7 Director design-review-only commit changing exactly `.agent-coordination/design-reviews/<TASK-ID>.json`.
+2. Agent 1 map-canon review-only commit changing exactly `.agent-coordination/map-canon-reviews/<TASK-ID>.json`, whose `reviewed_head_sha` is the feature/canon commit;
+3. Agent 1 Steward game-review-only commit changing exactly `.agent-coordination/design-reviews/<TASK-ID>.json`.
 
-The Director design review remains the final PR commit, satisfying normal implementation governance. The map-canon verifier is allowed to look through that one final design-review commit to verify the immediately preceding map-canon approval against the exact feature/canon head.
+The map-canon approval itself is the Steward's exact-head game-design approval for protected geography. Do not add a second generic Steward review commit for the same protected map-canon change.
 
-Do not put both approval files in one commit, and do not add implementation changes after either approval.
+Do not add implementation changes after the map-canon approval commit; any later feature/canon change makes the approval stale.
 
 Deleting an existing protected id outright is rejected. Retire it so ids remain reserved for saves and historical references.

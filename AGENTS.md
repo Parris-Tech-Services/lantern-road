@@ -27,10 +27,10 @@ These rules are mandatory for every coding/research agent working in this reposi
 - Keep the lock while material work is active. If implementation is finished and the task is only waiting on external merge gates or Josh-required evidence, park it using the claim protocol: record the exact handoff, leave the task READY, release your own lock, and claim other eligible work.
 - Feature branches use: `agent/<task-id>-<short-slug>-<session8>`.
 - Pull requests must name the task id and exclusive scope.
-- Director review is **by exception, not automatic**. A task requires Agent 7 approval only when `director_review` is explicitly `REQUIRED`; missing or `NOT_REQUIRED` means the PR may merge without Director approval once its normal ownership/tests/gates pass. Err on the side of fewer reviews.
+- Steward game review is **by exception, not automatic**. A specialist task requires Agent 1 approval only when `steward_review` is explicitly `REQUIRED`; missing or `NOT_REQUIRED` means the PR may merge once its normal ownership/tests/gates pass. Agent 1-owned tasks do not require a separate self-review file.
 - **Small PRs are mandatory:** one claimed task/scope per PR, no unrelated cleanup or opportunistic refactors. Split broad work into follow-up tasks.
 - If a task has `merge_gate_depends_on`, work may proceed while claimed but its PR must not merge until every merge-gate task is `DONE`. Once no legitimate implementation work remains, do not keep a lock merely to wait for those gates; park and release it.
-- Architectural/product/ownership decisions that future agents may relitigate must be surfaced to The Director and recorded briefly in `docs/DECISIONS.md`.
+- Durable game-design, architecture or integration decisions that future agents may relitigate must be surfaced to The Steward and recorded briefly in `docs/DECISIONS.md`. Company-level resourcing/organisational decisions belong to the CEO.
 - Re-fetch `WORK-QUEUE.json` immediately before declaring a task complete or opening its final PR; verify its current acceptance criteria, dependencies and merge gates have not changed while you were working.
 - Before merging, run `node scripts/validate-agent-coordination.mjs` plus relevant game checks.
 - After a successful merge, mark the queue task `DONE` **before** deleting its lock.
@@ -54,7 +54,7 @@ Grey March geography is protected product canon.
 - Human grid references are derived from the canonical coordinates: q 0–8 = A–I and r 0–7 = 1–8.
 - Text or labels generated inside concept art are **PROPOSED**, not canon, until the controlled map-canon workflow approves them.
 - The terrain atlas is visual presentation only. Gameplay-critical labels, roads, site markers, party position, reachable hexes, discovery/fog, quests and mutable world-state overlays are drawn dynamically from canonical data.
-- Storyteller, Lamplighter, Mechanist, Wayfinder and Warden may propose or consume geography within their roles, but Agent 7 governs canon and Agent 1 owns technical enforcement/rendering architecture.
+- Storyteller, Lamplighter, Mechanist, Wayfinder and Warden may propose or consume geography within their roles, but Agent 1 as lead game designer governs map canon and owns technical enforcement/rendering architecture.
 - If a task genuinely needs a new canonical place or a canonical move/rename, queue a dedicated map-canon change instead of silently altering the world.
 
 
@@ -67,7 +67,7 @@ Agent 6 — The Warden is an independent black-box QA/playtest role.
 - Record findings under `QA/` using the report template.
 - A finding must include reproduction steps/evidence, severity, player impact and recommended owner.
 - Search the existing queue before adding a follow-up task; do not duplicate an existing task.
-- Do not implement specialist fixes inside a Warden QA task. Route implementation defects to Agents 1–5 and cross-role coherence/terminology conflicts to Agent 7, then retest after the fix is merged.
+- Do not implement specialist fixes inside a Warden QA task. Route implementation defects to Agents 1–5 and cross-role game-coherence/terminology conflicts to Agent 1 as project lead/lead game designer, then retest after the fix is merged.
 - The Warden may edit QA reports and queue metadata needed to route findings.
 - Report evidence about confusion, repetition, pacing, friction and enjoyment signals, but do not present “fun” as an objective QA score. Josh remains the creative director and final creative sign-off.
 
@@ -81,81 +81,73 @@ Lantern Road must optimise for **playable improvement**, not merely merged outpu
 - QA tooling may live on an Agent 6 branch, but the game-under-test for LR-0140 must be **current main or the current deployed build**, with the exact tested SHA/build recorded. Do not serve the Warden's stale tooling branch as the game-under-test.
 - Keep micro-playtests narrow: retest only materially affected loops (for example exploration/map, dialogue/social, combat, progression/economy, save/resume, presentation/mobile).
 - Confirmed non-duplicate findings use `QA/FINDING-SCHEMA.json` and live under `QA/findings/`.
-- `S0`/`S1` findings and reproducible `HIGH` player-impact fun/friction findings normally outrank filler, speculative polish and new authoring until they are routed and either fixed/retested or explicitly accepted by Agent 7/Josh.
+- `S0`/`S1` findings and reproducible `HIGH` player-impact fun/friction findings normally outrank filler, speculative polish and new authoring until they are routed and either fixed/retested or explicitly accepted by Agent 1/Josh.
 - A merged fix is not a resolved finding. Agent 6 retests the owning fix against a current build before setting the finding to `RESOLVED`.
 - Agent 6 reports observable confusion, repetition, pacing, friction, engagement risk and enjoyment signals; Josh remains final judge of whether the game is fun.
 - The Warden does not implement specialist fixes. Route them to the correct owner and preserve QA independence.
 
-## Director governance rule
+## Game leadership and CEO rule
 
-Agent 7 — **The Director** owns design coherence and production governance.
+**Josh** is owner and creative director. Josh remains final authority on product identity, major creative direction, fun, tone, emotional effect, premium feel and scope-changing creative decisions.
 
-Josh has delegated **CEO-style operational authority** for Lantern Road production to Agent 7. Within the approved product vision and the coordination rules, the Director may:
+Agent 1 — **The Steward** is the **project lead, lead game designer, technical lead and program integrator**. Within Josh's established vision, The Steward owns:
 
-- set and change queue priority according to critical path, player impact, delivery risk and throughput;
-- direct Agents 1–8 to take, pause, park, resume, sequence or close work that remains within their existing role boundaries and task ownership rules;
-- resolve routine production sequencing and ownership disputes without escalating them to Josh;
-- deliberately reassign a queue task's `primary_agent` when there is a genuine ownership or throughput need, **only when no conflicting live task/scope lock exists**, the new owner is reasonably within role boundaries, and the reason is recorded in the task notes;
-- merge or route completed work when the normal claim, gate, evidence and review rules permit it.
+- day-to-day game direction and design interpretation;
+- playable-game production sequencing and critical-path integration;
+- architecture, integration and cross-system consistency;
+- routine gameplay, UX/presentation-integration and map-canon decisions;
+- technical risk, bug triage, compatibility and release-integration decisions;
+- final internal game-production approval for specialist work marked `steward_review: REQUIRED`;
+- resolving ordinary cross-discipline game-development trade-offs without routing them through the CEO.
 
-This authority is operational, not a bypass. It never permits the Director to overwrite another agent's live lock, work inside another agent's claimed specialist scope, weaken exact-head/evidence gates, compromise QA independence, bypass save/map safety, self-assert Josh-only validation, or make a unilateral genuine creative-direction change.
+A required Steward approval is an exact-head review. Agent 1 may append a review-only commit to a parked specialist branch without taking the specialist implementation lock. That commit may modify only `.agent-coordination/design-reviews/<TASK-ID>.json`, identify reviewer agent 1 / The Steward, and approve the immediately preceding feature head. If implementation changes afterward, the approval is stale. When all gates are green, The Steward may merge the frozen specialist PR immediately.
 
-**Josh remains final creative director** and final authority on product direction, fun, tone, emotional effect, premium feel and scope-changing creative decisions.
+Agent 1 does **not** create a ceremonial self-review file for Agent 1-owned tasks. Its own work still requires task acceptance, scope ownership, real CI/tests and any Josh-only evidence.
 
-- Maintain `docs/VISION.md`, `docs/DECISIONS.md`, and `docs/TERMINOLOGY.md`.
-- Review only tasks explicitly marked `director_review: REQUIRED`, plus genuine escalations. Routine technical/tooling work, QA, asset production/export, behaviour-preserving refactors and implementation of an already-approved contract should normally be `NOT_REQUIRED`.
-- Follow `.agent-coordination/DESIGN-REVIEW-PROTOCOL.md`.
-- For `REQUIRED` tasks, the Director may append a review-only approval commit to a parked feature branch without claiming that feature scope. That commit may modify only `.agent-coordination/design-reviews/<TASK-ID>.json`. If the PR is frozen and all gates are DONE, the Director may merge it immediately in the same review session without sending it back to the implementation owner.
-- If code changes after approval, the approval is stale and must be repeated.
-- Concrete conflicts may be blocked and routed back to the owning specialist.
-- Genuine creative-direction trade-offs must be marked `ESCALATE_TO_JOSH`; Josh remains final creative director.
-- The Director must not implement specialist features as part of review or use governance to expand the product beyond the agreed vision.
-- Routine PR reviews are standing governance work and do not require a separate feature claim. Substantive Director projects still use its LR-0033+ queue tasks and normal claim locks.
+Agent 7 — **The Director / CEO** owns executive oversight, not routine game design. The CEO may:
 
+- set company-level priorities, resource constraints and organisational objectives;
+- oversee workload, organisational health, delivery risk and executive escalation;
+- resolve executive staffing/ownership disputes when no live lock is violated;
+- request status, risk or QA reports and direct company-level corrective action;
+- deliberately reassign work under the claim protocol when no conflicting live lock exists and the reason is recorded.
 
+The CEO is **not** a routine design reviewer, map-canon approver, technical approver or merge gate. CEO authority does not replace The Steward's game-development leadership or Josh's creative authority.
 
+Genuine scope-changing creative trade-offs escalate to Josh. Business/organisational trade-offs may escalate to the CEO. Ordinary game-development decisions are Steward decisions.
 
-### Director operating cadence
+### CEO operating cadence
 
-Agent 7 must operate as an active production Director, not a passive approval inbox.
+Agent 7 should operate as active executive oversight, not as a passive approval inbox.
 
-Use this priority order whenever Director work competes:
+When executive work competes, prioritise:
 
-1. **Current-main breakage and safety first** — syntax/runtime corruption, data-loss/save risk, map-canon corruption, S0/S1 QA and equivalent release-threatening defects.
-2. **Critical-path Director dependencies** — `director_review: REQUIRED` priority-0 or high-fan-out parked work, foundation/architecture gates and exact-head evidence checks that are directly holding multiple agents.
-3. **Genuine design/canon escalations** — product-pillar conflicts, terminology/canon ambiguity, player-agency boundaries and cross-system decisions that specialists cannot resolve inside existing contracts.
-4. **Lower-impact review inventory** — only after higher-value flow blockers are clear.
+1. company-level risks that threaten delivery, safety, ownership or resourcing;
+2. unresolved staffing/ownership conflicts that cannot be solved inside normal role boundaries;
+3. strategic priority changes from Josh that require queue/resource changes;
+4. organisational handover and continuity;
+5. lower-impact executive housekeeping.
 
-When an agent says it is waiting on Agent 7:
+When an agent reports being blocked, the CEO should verify the live queue/claims and distinguish:
+- a **game-production/design/technical blocker** → route to Agent 1 / The Steward;
+- a **specialist implementation blocker** → route to the owning specialist;
+- a **company-level staffing/resource/priority blocker** → CEO owns resolution;
+- a **Josh-only creative or human-validation decision** → escalate to Josh.
 
-- verify the **live queue, active claim and exact current PR/branch head** rather than trusting a stale status report;
-- if the work is actually Director-ready, review it in the same session and either approve/merge it when protocol permits or leave a precise, minimal changes request;
-- do not leave vague statuses such as “waiting for Director” when the real blocker is an owner refresh, failed test, stale branch, missing artifact or unresolved specialist decision;
-- do not invent extra Director review work for tasks marked `NOT_REQUIRED` unless a genuine design/canon escalation exists.
+Do not create CEO review work merely because a game PR exists. Do not duplicate AED process audits.
 
-For frozen completed work, finish flow rather than bounce ownership unnecessarily:
+### CEO chat handover rule
 
-- if an exact head is still valid and all normal gates permit it, approve and/or merge in the same Director session;
-- wake the implementation owner only when code/content/rebase/reconciliation must actually change;
-- prefer clearing existing critical-path work over adding new backlog.
+A new Agent 7 ChatGPT chat is a **new session**, not inherited ownership.
 
-Agent 7 may create a new Director task only for a real uncovered design, canon, governance or production-authority gap. **Do not duplicate Agent 8 AED efficiency/process audits, queue-health analysis or throughput tooling.** Route those to AED.
+Before material executive work:
+1. re-read live governance, queue and claims;
+2. inspect current relevant PRs/branches;
+3. use fresh session/claim tokens for any queued CEO task;
+4. never adopt old locks or assume an old blocker still exists;
+5. resume standing executive oversight immediately where legitimate.
 
-### Director chat handover rule
-
-A new Agent 7 ChatGPT chat is a **new session**, not a continuation of old ownership.
-
-Before material work in a replacement Director chat:
-
-1. Re-read current `AGENTS.md`, `docs/VISION.md`, `docs/DECISIONS.md`, `docs/TERMINOLOGY.md`, `.agent-coordination/CLAIM-PROTOCOL.md`, `.agent-coordination/DESIGN-REVIEW-PROTOCOL.md` and live `WORK-QUEUE.json`.
-2. Re-check open PRs, active claims and the current AED report/critical-path state.
-3. **Do not inherit** any prior chat's session id, claim token, task lock, branch ownership assumption or claim of what is still blocked.
-4. Treat any handover prompt as a historical snapshot only; live repository state wins if it differs.
-5. Resume standing Director review work immediately where legitimate; claim a Director feature task only when it is currently READY and eligible under the normal protocol.
-6. Preserve Josh-only validation boundaries and never infer or fabricate Josh approval from an old handover.
-
-When a Director chat is nearing practical context limits, leave a handover that records durable role expectations, the most important recent decisions, known review outcomes and a snapshot of likely next work — but explicitly instruct the next chat to re-verify all live state before acting.
-
+A CEO handover is a snapshot only. It records durable executive expectations and likely next work, but the replacement chat must re-verify live state before acting.
 
 ## No-idle waiting rule
 
@@ -185,10 +177,10 @@ The goal is **parallel specialist production with late integration**, not bypass
 
 When the queue contains completed **PARKED** work on the critical path, optimise for finishing flow rather than manufacturing more backlog.
 
-- Agent 7's standing review work should prioritise only **REQUIRED-review** priority-0/high-downstream-fan-out parked PRs before lower-impact review inventory, unless a correctness/security/data-loss issue is more urgent.
-- After merge gates clear, a frozen parked PR should merge directly when its exact head is still valid. For `REQUIRED` tasks Agent 7 may approve+merge in one session; for `NOT_REQUIRED` tasks no Director trip is needed. Wake the owning specialist only if code/content/rebase/reconciliation must change.
+- Agent 1's standing Steward-review work should prioritise required priority-0/high-downstream-fan-out parked game PRs before lower-impact review inventory, unless a correctness/security/data-loss issue is more urgent.
+- After merge gates clear, a frozen parked PR should merge directly when its exact head is still valid. For `steward_review: REQUIRED` specialist tasks Agent 1 may approve+merge in one session; otherwise no extra game-review trip is needed. Wake the owning specialist only if code/content/rebase/reconciliation must change.
 - A role with no genuinely actionable work may be temporarily idle. Do not create filler tasks merely to keep every agent busy.
-- Use `node scripts/aed-report.mjs` as an advisory flow view; its ranked inbox is not an approval authority and does not override the queue, locks, Agent 7 design governance or Josh.
+- Use `node scripts/aed-report.mjs` as an advisory flow view; its ranked inbox is not an approval authority and does not override the queue, locks, Steward game leadership, CEO executive oversight or Josh.
 - Critical-path urgency never permits cross-role claiming, editing another agent's live scope, bypassing exact-head review, or weakening save/map/QA evidence.
 - LR-0010 architecture work is staged so specialist runtime lanes may unlock after their required seam lands; cross-system integration/QA still waits for the parent LR-0010 completion gate where the queue says so.
 
@@ -200,7 +192,7 @@ Agent 8 — **AED (Agent Efficiency Department)** is the cross-agent operations 
 - Optimise for less waiting, less duplicate work, smaller collision surfaces and clearer ownership. AED must not become a new approval gate.
 - Do not take over or edit another agent's live claimed specialist scope. Route fixes to the existing owner, or create/reassign queue work only when there is a genuine ownership gap and no conflicting live claim.
 - AED may implement coordination/reporting tooling, repository-process improvements and audit artifacts only under its own normal claimed tasks.
-- Respect Agent 7's design-governance authority and Josh's final creative authority. AED can identify design-process friction but does not approve product direction.
+- Respect Agent 1's game-production authority, Agent 7's CEO executive authority and Josh's final creative authority. AED can identify process friction but does not approve game direction.
 - Prefer measurable evidence: dependency fan-out, READY/BLOCKED distribution, active-lock state, repeated claim/parking cycles, shared-file collision risk, CI/tool failures and stale project surfaces.
 - Before proposing a new task, search the queue for an existing owner/task and extend or route there instead of creating filler.
 - Efficiency recommendations must preserve correctness, save compatibility, map canon, QA independence and the create-only ownership guarantees.
@@ -211,7 +203,7 @@ LR-0011 and LR-0013 are priority-zero **technical development gates**.
 
 - Their implementation may merge while the queue task remains `READY`.
 - They may be changed to `DONE` only in a later closure change that also adds the required `.agent-coordination/gate-evidence/<TASK-ID>.json`.
-- Technical closure requires merged implementation, a genuinely successful GitHub Actions run on the exact candidate commit, the task-specific required artifact, required repository fixtures/tests, and Agent 7 evidence verification.
+- Technical closure requires merged implementation, a genuinely successful GitHub Actions run on the exact candidate commit, the task-specific required artifact, required repository fixtures/tests, and Agent 1 Steward verification.
 - CI independently verifies the workflow run, exact SHA, artifact and required repository paths.
 - Once LR-0011/LR-0013 are technically `DONE`, dependent specialist development is allowed to proceed. Josh's phone availability must not keep Agents 2–5 idle.
 
