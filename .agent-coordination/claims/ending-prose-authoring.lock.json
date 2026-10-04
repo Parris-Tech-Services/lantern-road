@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0076",
+  "exclusive_scope": "ending-prose-authoring",
+  "agent_number": 2,
+  "agent": "The Storyteller",
+  "session_id": "db16c112-f191-4d36-a4d8-5da2604bd2e6",
+  "claim_token": "3915547b-0b1c-4e36-a1ab-36e6f9717233",
+  "claimed_at": "2026-10-04T16:02:00+11:00",
+  "expires_at": "2026-10-05T04:02:00+11:00",
+  "branch": "agent/LR-0076-ending-prose-authoring-db16c112",
+  "note": "Implementing only LR-0076 modular campaign epilogues and ending prose."
+}
