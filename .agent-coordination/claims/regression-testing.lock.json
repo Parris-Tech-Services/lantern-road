@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0013",
+  "exclusive_scope": "regression-testing",
+  "agent_number": 1,
+  "agent": "The Steward",
+  "session_id": "b7a4f2d1-6c83-4e2b-a159-9fd2036e71c4",
+  "claim_token": "4c6e91a8-2db7-4f35-b2a4-7e5d1093c8f6",
+  "claimed_at": "2026-10-04T15:34:00+11:00",
+  "expires_at": "2026-10-05T03:34:00+11:00",
+  "branch": "agent/LR-0013-regression-testing-b7a4f2d1",
+  "note": "Implementing only LR-0013."
+}
