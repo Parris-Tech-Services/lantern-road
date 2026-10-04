@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0046",
+  "exclusive_scope": "event-pack-authoring",
+  "agent_number": 2,
+  "agent": "The Storyteller",
+  "session_id": "5b2d2f12-b8bd-4af1-930c-a7beef7f7c5b",
+  "claim_token": "5af6fb9c-1bf5-4d1c-8a4b-852469469935",
+  "claimed_at": "2026-10-04T17:01:00+11:00",
+  "expires_at": "2026-10-05T05:01:00+11:00",
+  "branch": "agent/LR-0046-event-pack-authoring-5b2d2f12",
+  "note": "Implementing only LR-0046 conditional travel and camp event authoring."
+}
