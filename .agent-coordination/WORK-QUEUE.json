@@ -15,7 +15,9 @@
     "Claiming does not change task status.",
     "Tasks were seeded from the Premium Indie Gap Analysis dated 4 October 2026 and current player-feedback defects.",
     "Tasks are role-owned through primary_agent. Agents normally claim only tasks assigned to their own agent number unless Josh explicitly reassigns the work or the queue is updated.",
-    "Supporting agents may advise or review but must not independently implement the primary task without a separate non-overlapping queued scope."
+    "Supporting agents may advise or review but must not independently implement the primary task without a separate non-overlapping queued scope.",
+    "Agent 6 — The Warden is a black-box QA/playtest role. It may create QA reports and non-duplicate follow-up tasks, but should not implement specialist feature fixes inside QA tasks.",
+    "Warden findings must include reproduction steps/evidence, severity, player impact and the recommended owner agent. Check the existing queue before creating a new task."
   ],
   "tasks": [
     {
@@ -496,6 +498,242 @@
         "tests/"
       ],
       "notes": "Mechanist capstone task. Blocked until its underlying systems exist."
+    },
+    {
+      "id": "LR-0021",
+      "title": "Baseline full-campaign black-box playtest",
+      "status": "READY",
+      "priority": 0,
+      "exclusive_scope": "qa-full-campaign-baseline",
+      "depends_on": [],
+      "primary_agent": 6,
+      "goal": "Play Lantern Road as a normal player from a fresh campaign through as much of the 18-day arc as possible and identify the highest-impact failures in fun, clarity, pacing and reliability.",
+      "acceptance_criteria": [
+        "Start from a fresh campaign without relying on internal implementation knowledge.",
+        "Record major player decisions, progression, friction points and any point where the next action is unclear.",
+        "Capture reproducible bugs, soft-locks, broken states, pacing problems, boring/repetitive stretches and moments that feel especially strong.",
+        "Classify findings by severity and player impact.",
+        "Check the existing queue before creating non-duplicate follow-up tasks and assign each new finding to the appropriate specialist agent."
+      ],
+      "likely_files": [
+        "QA/",
+        ".agent-coordination/WORK-QUEUE.json"
+      ],
+      "notes": "The Warden does not fix discovered specialist defects in this task; it reports, routes and later retests them."
+    },
+    {
+      "id": "LR-0022",
+      "title": "Every-action and navigation black-box audit",
+      "status": "READY",
+      "priority": 0,
+      "exclusive_scope": "qa-interaction-audit",
+      "depends_on": [],
+      "primary_agent": 6,
+      "goal": "Systematically exercise every visible player control and navigation path to find inert, misleading, inconsistent or unintuitive interactions.",
+      "acceptance_criteria": [
+        "Exercise top-bar controls, map interactions, tabs, settlement/site actions, dialogue choices, shops, camp, combat and save/load controls.",
+        "Identify controls that appear to do nothing, give insufficient feedback, have unclear labels, or produce surprising results.",
+        "Record reproducible steps and expected versus observed player-facing behaviour.",
+        "Test both successful actions and blocked/no-op states.",
+        "Route non-duplicate findings to the appropriate specialist rather than implementing fixes directly."
+      ],
+      "likely_files": [
+        "QA/",
+        ".agent-coordination/WORK-QUEUE.json"
+      ],
+      "notes": "QA counterpart to LR-0001/LR-0009; evaluates player experience rather than implementing UI changes."
+    },
+    {
+      "id": "LR-0023",
+      "title": "Save, load and resume destructive playtest",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "qa-save-resume",
+      "depends_on": [],
+      "primary_agent": 6,
+      "goal": "Try to break campaign persistence through real player save/load/resume behaviour and unusual timing/state combinations.",
+      "acceptance_criteria": [
+        "Save and reload from settlements, travel, sites, dialogue/event states and combat where supported.",
+        "Test repeated loads, refreshing/reopening the browser, partial progress and unusual action sequences.",
+        "Look for duplicated rewards, lost progress, impossible states, stale UI and corrupted or inconsistent restored state.",
+        "Record exact reproduction paths and whether the failure is deterministic.",
+        "Create non-duplicate findings for The Steward or relevant specialist; do not repair save internals within the QA task."
+      ],
+      "likely_files": [
+        "QA/",
+        ".agent-coordination/WORK-QUEUE.json"
+      ],
+      "notes": "A later release-candidate regression retests persistence after save hardening and feature integration."
+    },
+    {
+      "id": "LR-0024",
+      "title": "Exploit, resource-loop and soft-lock hunt",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "qa-exploit-hunt",
+      "depends_on": [],
+      "primary_agent": 6,
+      "goal": "Actively attempt to abuse Lantern Road's systems to find infinite resources, repeatable rewards, sequence breaks, unwinnable states and other player-visible exploits.",
+      "acceptance_criteria": [
+        "Try repeated site actions, rest/shop loops, travel/camp loops, save/load abuse and reward re-entry.",
+        "Look for infinite gold/rations/items/renown, free healing, repeatable quest rewards and bypassed costs.",
+        "Identify soft-locks or states where the campaign remains technically running but meaningful progress is impossible.",
+        "Rate exploit severity based on ease, impact and likelihood of accidental discovery.",
+        "Route each reproducible non-duplicate finding to the appropriate specialist."
+      ],
+      "likely_files": [
+        "QA/",
+        ".agent-coordination/WORK-QUEUE.json"
+      ],
+      "notes": "Deliberately adversarial player testing."
+    },
+    {
+      "id": "LR-0025",
+      "title": "Quest-path and impossible-state audit",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "qa-quest-state",
+      "depends_on": [],
+      "primary_agent": 6,
+      "goal": "Test quest and site progression for dead ends, contradictory state, unavailable required actions and sequence-sensitive failures.",
+      "acceptance_criteria": [
+        "Exercise different ordering of rumours, quest acceptance, travel, site resolution and faction-facing decisions.",
+        "Look for objectives that cannot be completed, completed objectives that remain active, unavailable required NPC/site actions and contradictory journal/state text.",
+        "Test revisiting resolved and partially resolved locations.",
+        "Record the smallest reproducible state/path for each failure.",
+        "Create non-duplicate specialist tasks rather than rewriting quest code directly."
+      ],
+      "likely_files": [
+        "QA/",
+        ".agent-coordination/WORK-QUEUE.json"
+      ],
+      "notes": "Focus is state integrity and player completion paths, not authorship."
+    },
+    {
+      "id": "LR-0026",
+      "title": "Fresh-player clarity and onboarding playtest",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "qa-new-player-clarity",
+      "depends_on": [],
+      "primary_agent": 6,
+      "goal": "Approach Lantern Road as if seeing it for the first time and identify where the game fails to teach goals, controls, terminology, consequences or next steps naturally.",
+      "acceptance_criteria": [
+        "Begin without consulting README/internal documentation.",
+        "Record every point where the player's goal, available action, cost, risk or expected outcome is unclear.",
+        "Assess information density, jargon, tutorialisation-by-play and whether important systems surface at the right time.",
+        "Distinguish genuine confusion from intentional uncertainty or mystery.",
+        "Route recommendations to the appropriate specialist without turning the QA task into a redesign implementation."
+      ],
+      "likely_files": [
+        "QA/",
+        ".agent-coordination/WORK-QUEUE.json"
+      ],
+      "notes": "Tests intuitiveness rather than raw functionality."
+    },
+    {
+      "id": "LR-0027",
+      "title": "Narrative continuity and consequence playtest",
+      "status": "BLOCKED",
+      "priority": 2,
+      "exclusive_scope": "qa-narrative-continuity",
+      "depends_on": [
+        "LR-0004",
+        "LR-0005",
+        "LR-0007",
+        "LR-0008"
+      ],
+      "primary_agent": 6,
+      "goal": "Play branching narrative paths after the Storyteller foundation is complete and find dialogue, memory, consequence and ending contradictions.",
+      "acceptance_criteria": [
+        "Test materially different decisions and faction alignments.",
+        "Look for characters forgetting major events, inappropriate dialogue, contradictory relationship reactions and consequences that fail to surface.",
+        "Verify endings acknowledge relevant named decisions and campaign outcomes.",
+        "Assess whether consequences feel understandable rather than merely hidden state changes.",
+        "Route reproducible findings to The Storyteller or Steward as appropriate."
+      ],
+      "likely_files": [
+        "QA/",
+        ".agent-coordination/WORK-QUEUE.json"
+      ],
+      "notes": "Unlocks after the first narrative/consequence/event/campaign wave."
+    },
+    {
+      "id": "LR-0028",
+      "title": "Combat fun, difficulty and tedium playtest",
+      "status": "BLOCKED",
+      "priority": 2,
+      "exclusive_scope": "qa-combat-fun",
+      "depends_on": [
+        "LR-0015",
+        "LR-0019"
+      ],
+      "primary_agent": 6,
+      "goal": "Evaluate whether the deeper combat system is readable, varied, fair and enjoyable across repeated encounters rather than merely mechanically functional.",
+      "acceptance_criteria": [
+        "Play multiple encounter types using different party/build approaches.",
+        "Identify dominant actions, fake choices, difficulty spikes, trivial fights, excessive repetition and unclear enemy behaviour.",
+        "Assess perceived battle length and decision density rather than only win/loss outcomes.",
+        "Test whether signature/elite encounters actually require different thinking.",
+        "Route balance/design findings to The Mechanist with reproducible examples."
+      ],
+      "likely_files": [
+        "QA/",
+        ".agent-coordination/WORK-QUEUE.json"
+      ],
+      "notes": "Player-experience validation of Mechanist combat work."
+    },
+    {
+      "id": "LR-0029",
+      "title": "Phone one-handed usability black-box playtest",
+      "status": "BLOCKED",
+      "priority": 2,
+      "exclusive_scope": "qa-mobile-usability",
+      "depends_on": [
+        "LR-0009"
+      ],
+      "primary_agent": 6,
+      "goal": "Test the completed mobile UX pass as a real phone game and identify interactions that remain awkward, error-prone, cramped or tiring.",
+      "acceptance_criteria": [
+        "Play substantial sessions in portrait orientation using touch only.",
+        "Test map tap/pan/zoom, modals, choice cards, combat, scrolling, text sizing and save/resume flows.",
+        "Look for accidental taps, obscured controls, reachability problems, tiny targets and excessive scrolling.",
+        "Assess one-handed comfort and whether feedback is visible without hunting through logs.",
+        "Route findings to The Wayfinder or relevant specialist."
+      ],
+      "likely_files": [
+        "QA/",
+        ".agent-coordination/WORK-QUEUE.json"
+      ],
+      "notes": "Independent validation after LR-0009, not a duplicate implementation pass."
+    },
+    {
+      "id": "LR-0030",
+      "title": "Release-candidate regression and premium-feel gate",
+      "status": "BLOCKED",
+      "priority": 3,
+      "exclusive_scope": "qa-release-candidate",
+      "depends_on": [
+        "LR-0014",
+        "LR-0020",
+        "LR-0027",
+        "LR-0028",
+        "LR-0029"
+      ],
+      "primary_agent": 6,
+      "goal": "Perform a final independent player-facing gate after integration, balance and specialist QA passes to decide what still prevents Lantern Road from feeling release-ready and premium.",
+      "acceptance_criteria": [
+        "Run fresh-campaign and resumed-campaign regression passes across core loops.",
+        "Retest previously reported critical/high findings and mark them verified or still reproducible.",
+        "Assess stability, clarity, pacing, character attachment, combat, presentation, mobile comfort and replay motivation as one product.",
+        "Create only non-duplicate release-blocking follow-up tasks with explicit severity and owner.",
+        "Produce a go/no-go style QA summary separating release blockers from post-release polish."
+      ],
+      "likely_files": [
+        "QA/",
+        ".agent-coordination/WORK-QUEUE.json"
+      ],
+      "notes": "The Warden's final premium-indie quality gate."
     }
   ],
   "agent_roster": [
@@ -523,6 +761,11 @@
       "number": 5,
       "name": "The Wayfinder",
       "role": "Mobile UX, accessibility, save/autosave usability, touch/map behaviour, testing, edge cases and interaction audits."
+    },
+    {
+      "number": 6,
+      "name": "The Warden",
+      "role": "QA, black-box playtesting and player experience. Repeatedly plays Lantern Road, tries to break it, identifies bugs, exploits, confusion, tedium, pacing and fun problems, and routes reproducible findings back to the appropriate specialist rather than implementing feature fixes."
     }
   ]
 }
