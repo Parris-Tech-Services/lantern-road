@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0141",
+  "exclusive_scope": "lamplighter-presentation-runtime-integration",
+  "agent_number": 1,
+  "agent": "The Steward",
+  "session_id": "2c2fd694-96cb-40df-a1c4-13f761d18d18",
+  "claim_token": "8f8b850a-fd4f-4c31-818a-1df417f1a8da",
+  "claimed_at": "2026-10-05T08:44:00+11:00",
+  "expires_at": "2026-10-05T20:44:00+11:00",
+  "branch": "agent/LR-0141-early-visual-wiring-2c2fd694",
+  "note": "Josh-directed early current-shell wiring of accepted hero portraits and existing UI icon/material/VFX assets; no LR-0137 wait."
+}
