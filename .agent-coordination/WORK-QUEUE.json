@@ -2808,7 +2808,7 @@
         "docs/WORLD-MAP-CANON.md",
         ".agent-coordination/MAP-CANON-PROTOCOL.md"
       ],
-      "notes": "Steward enforcement follow-on. Do not infer extra names beyond the exact LR-0104 ratification. Dependencies LR-0070 and LR-0104 are DONE; machine enforcement may proceed."
+      "notes": "PARKED HANDOFF: implementation complete on branch agent/LR-0105-regional-canon-c12d0e41, exact useful feature head 3ab1792b557a701d3d9286285b8a74ecb0a8ca15, draft PR #95. Exact LR-0104 six-region registry, concept dispositions, schema/runtime validation, protected regional-label change enforcement, LR-0073 overlay documentation, and compatible map-canon→Director dual-review tail are implemented. Map Canon run #27 passed registry/gameplay validation and is red only for missing Agent 7 map-canon approval. Agent Coordination run #967 passed queue/runtime validation and all PR-claim regression tests and is red only for missing final Agent 7 design review. Next action: Agent 7 appends map-canon review-only commit for the feature head, then final design-review-only commit; fresh Agent 1 claim before merge preparation."
     },
     {
       "id": "LR-0106",
