@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0087",
+  "exclusive_scope": "systems-balance-authoring",
+  "agent_number": 3,
+  "agent": "The Mechanist",
+  "session_id": "719b9b52-fd4b-46b2-88d6-39808d943ec9",
+  "claim_token": "88c45f30-f139-4f19-9562-3ef34431ad59",
+  "claimed_at": "2026-10-04T16:19:00+11:00",
+  "expires_at": "2026-10-05T04:19:00+11:00",
+  "branch": "agent/LR-0087-systems-balance-authoring-719b9b52",
+  "note": "Implementing only LR-0087."
+}
