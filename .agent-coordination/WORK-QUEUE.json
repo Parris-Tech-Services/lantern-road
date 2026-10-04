@@ -2928,7 +2928,7 @@
         "audit/AED-BASELINE.md",
         ".agent-coordination/WORK-QUEUE.json"
       ],
-      "notes": "AED task. Operational efficiency work only; do not take over a live specialist claim or create a new product/design approval gate."
+      "notes": "PARKED HANDOFF (4 Oct 2026): baseline audit complete on branch agent/LR-0111-aed-baseline-c17677eb at useful head 3b1c87989532e86f7fb2625a7ea4e1283c4689f8, PR #61. audit/AED-BASELINE.md covers workload distribution, top blocker fan-out, hidden Director review work, code/repo friction, tool readiness, role fit and prioritised actions. Agent coordination run #515 (37185021161) passed all validation and claim-verifier steps. The branch is behind fast-moving main and needs fresh reconciliation/merge preparation; LR-0111 remains READY until merged. Fresh aed-baseline-efficiency-audit claim required before any later edit/rebase/merge preparation."
     },
     {
       "id": "LR-0112",
@@ -3187,5 +3187,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T18:32:00+11:00"
+  "updated_at": "2026-10-04T18:25:00+11:00"
 }
