@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0106",
+  "exclusive_scope": "roster-check-viability-authoring",
+  "agent_number": 3,
+  "agent": "The Mechanist",
+  "session_id": "1a42c780-20d1-44dc-a18c-c2e12bc69baa",
+  "claim_token": "9d48ed87-a13b-40f1-8cac-a498467928d2",
+  "claimed_at": "2026-10-04T17:21:00+11:00",
+  "expires_at": "2026-10-05T05:21:00+11:00",
+  "branch": "agent/LR-0106-roster-check-viability-1a42c780",
+  "note": "Implementing only LR-0106."
+}
