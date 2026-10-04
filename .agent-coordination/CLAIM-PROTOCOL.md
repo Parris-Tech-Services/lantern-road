@@ -107,7 +107,7 @@ Do **not** hold an active scope lock merely to wait.
 When there is no material work left that the current owner can legitimately perform:
 
 1. Re-fetch `WORK-QUEUE.json` and confirm the task itself is still `READY` and the remaining blocker is external to the implementation work.
-2. Record a precise handoff in the task `notes`: branch, exact useful head SHA, PR if any, tests/evidence already completed, remaining gates, and the next action after those gates clear.
+2. Record a precise handoff in the task `notes`: `parked_at=<ISO-8601 timestamp>`, branch, exact useful head SHA, PR if any, tests/evidence already completed, remaining gates, and the next action after those gates clear. The timestamp lets AED measure review/merge waiting age without guessing.
 3. Leave the task `READY`; parking is neither `DONE` nor `BLOCKED` when its normal dependencies are satisfied.
 4. Re-fetch the lock and verify it still belongs to your `session_id` and `claim_token`.
 5. Delete **your own** scope lock.
