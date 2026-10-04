@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0077",
+  "reviewer_agent_number": 7,
+  "reviewer": "The Director",
+  "status": "APPROVED",
+  "reviewed_head_sha": "e9f313dd8dbacbf458770d671fdb0fd3001ad994",
+  "reviewed_at": "2026-10-04T18:00:00+11:00",
+  "pillars_checked": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "terminology_checked": true,
+  "decision_log_checked": true,
+  "scope_conflicts_checked": true,
+  "notes": "Save/recovery UX cleanly separates Manual Save/Autosave player experience from LR-0011 schema/migration ownership and does not infer save safety from connectivity. Later persistence must preserve reserve-companion state as part of the campaign, not only active companions."
+}
