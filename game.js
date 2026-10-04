@@ -1057,7 +1057,7 @@
       case "broken_span":
         return [
           { key: "broken_span:search", label: qLedger.status === "active" && qLedger.stage === "accepted" ? "Read the changing chalk marks" : "Inspect the chalk marks and snapped ropes" },
-          { key: "broken_span:scavenge", label: "Scavenge rope and salvage" }
+          { key: "broken_span:scavenge", label: state.worldFlags.brokenSpanSalvaged ? "Bridge salvage exhausted" : "Scavenge rope and salvage", disabled: !!state.worldFlags.brokenSpanSalvaged }
         ];
       case "weeping_stones":
         return [
@@ -1199,9 +1199,15 @@
         break;
       }
       case "broken_span:scavenge":
+        if (state.worldFlags.brokenSpanSalvaged) {
+          openMessage("Nothing Left to Salvage", "You have already stripped the useful rope and fittings from the Broken Span.");
+          break;
+        }
         changeItem("rope", 1, false);
+        state.worldFlags.brokenSpanSalvaged = true;
         advanceTime(1);
         addLog("You salvage usable rope from the bridge wreckage.");
+        openMessage("Salvage Recovered", "After an hour picking through snapped beams and wet stone, you recover 1 Climber's Rope. The useful salvage here is now exhausted.");
         break;
       case "weeping_stones:tracks": {
         const result = rollCheck("mira", "scout", 12);
