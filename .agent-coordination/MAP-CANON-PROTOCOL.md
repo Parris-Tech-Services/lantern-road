@@ -20,7 +20,7 @@ The illustrated terrain atlas is a rendering asset, not a source of gameplay coo
 
 A dedicated map-canon change is required to:
 
-- add a CANON settlement, site or region with gameplay identity;
+- add a CANON settlement, site or protected non-node regional label;
 - rename a CANON place;
 - move a CANON place to another q/r or human grid reference;
 - change a canonical place type in a way that alters world identity;
@@ -79,6 +79,27 @@ Recommended shape:
 ```
 
 LR-0070 owns the exact automated enforcement mechanics.
+
+## Protected regional-label rule
+
+Canonical regional labels are protected map identity even though they are not gameplay nodes.
+
+The LR-0104 baseline is defined in `design/REGIONAL-MAP-CANON-CONTRACT.md`.
+
+A regional-label record must remain distinct from a settlement/site:
+
+- stable id;
+- canonical display name;
+- `place_type: "region-label"`;
+- `gameplay_node: false`;
+- references only existing CANON `anchor_place_ids`;
+- no q/r or grid reference is invented merely to label a landscape.
+
+Renaming, retiring or materially redefining a CANON regional label requires a dedicated map-canon change and Agent 7 approval.
+
+Generated concept labels use explicit dispositions (`ADOPT`, `RENAME`, `REJECT`, `DEFER`). A rejected/deferred label is not canonical overlay content.
+
+LR-0105 owns the machine-readable registry/schema/CI implementation of this rule.
 
 ## Stable coordinate rule
 
