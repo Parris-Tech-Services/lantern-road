@@ -17,7 +17,11 @@
   const RUMOUR_MAP = Object.fromEntries(C.rumours.map(r => [r.id, r]));
   C.region.tiles.forEach(t => TILE_MAP[`${t.q},${t.r}`] = t);
 
+  // Keep the historical storage key so existing installs can discover and migrate raw v1 saves.
   const SAVE_KEY = "lantern-road-save-v1";
+  const LEGACY_BACKUP_KEY = "lantern-road-save-v1-backup";
+  const SaveSystem = window.LanternRoadSave;
+  if (!SaveSystem) throw new Error("Lantern Road save system failed to load.");
   const dom = {
     statusStrip: document.getElementById("statusStrip"),
     tabContent: document.getElementById("tabContent"),
@@ -823,11 +827,11 @@
     }
   }
 
-  function startNewGame() {
-    const seed = (Date.now() >>> 0) || 123456789;
-    state = {
+  function createInitialState(seedValue = 123456789) {
+    const seed = (Number(seedValue) >>> 0) || 123456789;
+    return {
       seed,
-      rngState: seed || 123456789,
+      rngState: seed,
       day: 1,
       hour: 8,
       weather: "clear",
@@ -859,6 +863,11 @@
       },
       lastSettlement: C.startingLocation
     };
+  }
+
+  function startNewGame() {
+    const seed = (Date.now() >>> 0) || 123456789;
+    state = createInitialState(seed);
     ensureCharacterState();
     revealAround(state.position.q, state.position.r);
     C.settlements.forEach(s => { if (s.id === C.startingLocation) state.discoveredSites[s.id] = true; });
@@ -878,15 +887,20 @@
   }
 
   function serializeState() {
-    return JSON.stringify(state);
+    return SaveSystem.encode(state, { gameVersion: C.version });
   }
 
   function saveGame() {
     if (!state) return;
-    localStorage.setItem(SAVE_KEY, serializeState());
-    addLog("Campaign saved.");
-    renderAll();
-    openMessage("Saved", "Your campaign was saved to local storage on this device.");
+    try {
+      localStorage.setItem(SAVE_KEY, serializeState());
+      addLog("Campaign saved.");
+      renderAll();
+      openMessage("Saved", `Your campaign was saved on this device using save schema v${SaveSystem.CURRENT_SCHEMA_VERSION}.`);
+    } catch (err) {
+      console.error(err);
+      openMessage("Save Failed", "The browser could not store this campaign. Your current run is still open, but this save was not written.");
+    }
   }
 
   function loadGame() {
@@ -895,19 +909,64 @@
       openMessage("No Save Found", "There is no saved Lantern Road campaign on this device yet.");
       return;
     }
+
     try {
-      state = JSON.parse(raw);
-      if (!state.ui) state.ui = { tab: "context", focus: null, dialogue: null, shop: null };
+      const result = SaveSystem.decode(raw, createInitialState(123456789));
+
+      if (result.migrated) {
+        try {
+          if (!localStorage.getItem(LEGACY_BACKUP_KEY)) localStorage.setItem(LEGACY_BACKUP_KEY, raw);
+        } catch (backupError) {
+          console.warn("Lantern Road could not preserve a legacy save backup.", backupError);
+        }
+      }
+
+      state = result.state;
       ensureCharacterState();
       clampPartyHp();
+
+      if (result.migrated || result.warnings.length) {
+        try {
+          localStorage.setItem(SAVE_KEY, serializeState());
+        } catch (upgradeError) {
+          console.warn("Lantern Road loaded the campaign but could not persist the upgraded save.", upgradeError);
+        }
+      }
+
       renderAll();
       addLog("Campaign loaded.");
       renderAll();
+
       const loc = currentLocation();
-      showFeedback("Campaign loaded", `${timeLabel()} • ${loc ? loc.data.name : getTerrainDef(currentTile()).name}`, "good");
+      const locationLabel = loc ? loc.data.name : getTerrainDef(currentTile()).name;
+      if (result.migrated) {
+        showFeedback(
+          "Campaign upgraded",
+          `Legacy save schema v${result.sourceVersion} was migrated to v${SaveSystem.CURRENT_SCHEMA_VERSION}. ${timeLabel()} • ${locationLabel}`,
+          "good"
+        );
+      } else if (result.warnings.length) {
+        showFeedback(
+          "Campaign repaired",
+          `${result.warnings.length} invalid or missing save field${result.warnings.length === 1 ? "" : "s"} were restored safely. ${timeLabel()} • ${locationLabel}`,
+          "good"
+        );
+      } else {
+        showFeedback("Campaign loaded", `${timeLabel()} • ${locationLabel}`, "good");
+      }
     } catch (err) {
       console.error(err);
-      openMessage("Load Failed", "The saved data could not be read cleanly.");
+      if (err && err.code === "SAVE_VERSION_NEWER") {
+        openMessage(
+          "Save From Newer Version",
+          "This campaign was created by a newer Lantern Road save format. It has not been overwritten. Update the game before trying to load it again."
+        );
+        return;
+      }
+      openMessage(
+        "Load Failed",
+        "The saved campaign could not be migrated or repaired safely. The stored save was left untouched so it can be recovered or inspected later."
+      );
     }
   }
 
