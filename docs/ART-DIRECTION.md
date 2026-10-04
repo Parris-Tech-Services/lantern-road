@@ -119,3 +119,17 @@ Icons are an art layer, not interaction semantics:
 - do not rely on icon shape alone for important status;
 - keep guidance gold, positive green and danger/rust-red as contextual runtime colours rather than permanently painting individual symbols;
 - Agent 5 owns control semantics and accessibility; Agent 4 owns the drawn icon family.
+
+
+## Production crop and export contract
+
+Exact illustration composition, crop-safety, phone-preview and export rules live in `docs/ART-ASSET-PRODUCTION-CONTRACT.md`, with machine-readable category targets in `assets/art/ASSET-SPECS.json`.
+
+Production acceptance is judged at the real smallest slots, not only at full-resolution:
+
+- approximately 58 px entry portraits/enemies;
+- 76–92 px card portraits;
+- approximately 112 px-tall wide phone location art;
+- 48–58 px item previews.
+
+LR-0042 should generate/source against that composition contract. LR-0031 owns final selection/crop/compression/integration. LR-0065 owns later CI enforcement of measured size budgets.
