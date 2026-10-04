@@ -4052,6 +4052,33 @@
         "scripts/verify-pr-claim.mjs"
       ],
       "notes": "Josh explicitly directed on 5 Oct 2026 that Agent 7 is CEO, not lead game designer; Agent 1 is project lead and lead game designer as well as technical lead/program integrator. This task supersedes the game-production/design-approval portions of LR-0150 while preserving Agent 7 executive oversight."
+    },
+    {
+      "id": "LR-0152",
+      "title": "Codify Director operating cadence and safe chat handover",
+      "status": "READY",
+      "priority": 0,
+      "exclusive_scope": "director-operating-cadence-handover",
+      "depends_on": [
+        "LR-0150"
+      ],
+      "primary_agent": 7,
+      "goal": "Make Agent 7's CEO-style operational behaviour durable across ChatGPT context resets: proactively drain genuine Director bottlenecks, respect review-by-exception and AED ownership, and hand off from live repository state without inheriting stale claims or ownership.",
+      "acceptance_criteria": [
+        "Extend the Director role rules with a concrete critical-path operating order that prioritises current-main breakage/data-loss risk, REQUIRED high-fan-out reviews/foundation gates, genuine canon/design escalations, then lower-impact review inventory.",
+        "State that when another agent reports waiting on Agent 7, the Director must verify the live exact head and either clear the Director-owned dependency immediately or leave a precise actionable changes request; vague waiting states are not acceptable.",
+        "Reinforce review-by-exception: do not create or perform routine Director approval work for NOT_REQUIRED tasks unless there is a genuine design/canon escalation.",
+        "State that frozen approved work should be merged/routed in the same Director session when protocol permits rather than bounced back to the owner merely for waiting.",
+        "State that Agent 7 creates new Director work only for a genuine uncovered governance/canon/product gap and must not duplicate Agent 8 AED efficiency/process audits.",
+        "Add a safe Director chat-handover rule: never inherit old session ids, claim tokens, locks or task ownership; the next Agent 7 chat must reread live AGENTS/VISION/DECISIONS/TERMINOLOGY/claim protocol/queue/open PRs and active claims before material work.",
+        "Record the operating/handover decision durably without changing specialist feature scope or weakening any exact-head/evidence/QA/Josh-only gate."
+      ],
+      "likely_files": [
+        "AGENTS.md",
+        "docs/DECISIONS.md"
+      ],
+      "director_review": "NOT_REQUIRED",
+      "notes": "Created at Josh's explicit request when the current Agent 7 chat reached practical context length. This is Director-role durability, not an AED efficiency audit and not a specialist feature task."
     }
   ],
   "agent_roster": [
@@ -4114,5 +4141,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-05T08:55:00+11:00"
+  "updated_at": "2026-10-05T08:58:00+11:00"
 }
