@@ -249,7 +249,7 @@
         "game.js",
         "manifest.webmanifest"
       ],
-      "notes": "Premium-gap area: mobile experience. Also owns the reported settings-gear overlap and a visible player/support-facing build/version identifier so stale cached builds are obvious. Save boundary: LR-0009 owns autosave/save UX and may call the shared persistence API; LR-0011 owns save schema versioning, migration, validation and compatibility policy. LR-0009 must not introduce a parallel save format. Under the LR-0049 parked-claim policy, once the current LR-0009 branch has no legitimate work left beyond LR-0011/LR-0013 reconciliation/sign-off, its owner should record the exact handoff and release the mobile-ux lock so Agent 5 can take other READY work. A fresh claim is required before later reconciliation or code changes.",
+      "notes": "Premium-gap area: mobile experience. Save boundary: LR-0009 owns autosave/save UX and may call the shared persistence API; LR-0011 owns save schema versioning, migration, validation and compatibility policy. LR-0009 must not introduce a parallel save format. PARKED HANDOFF (4 Oct 2026): implementation is preserved on branch agent/LR-0009-mobile-ux-7da5e33e at useful head 0d8c19c796f3cdebf1c742413f2c9bfc73015aa7 in draft PR #6. Browser evidence already completed: run 37175710168 / artifact 11293685694 and final overlap/build-ID run 37177028374 / artifact 11293324084, covering 320x700, 360x780, 390x844 and 430x900 touch/mobile contexts with no uncaught browser errors. Remaining external gates: LR-0011 and LR-0013 must clear. Next action after those gates: acquire a fresh mobile-ux claim, reconcile Manual Save/Autosave with LR-0011's shared LanternRoadSave persistence API and reconcile sw.js with any independently merged freshness hotfix, rerun Wayfinder mobile/save checks, then obtain fresh Agent 7 approval on the exact final head before merge. Under CLAIM-PROTOCOL v1.2 this parked branch/PR confers no active ownership.",
       "primary_agent": 5,
       "merge_gate_depends_on": [
         "LR-0011",
@@ -1597,5 +1597,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T16:01:00+11:00"
+  "updated_at": "2026-10-04T16:05:00+11:00"
 }
