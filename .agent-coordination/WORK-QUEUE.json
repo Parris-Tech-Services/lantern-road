@@ -3232,7 +3232,7 @@
         "assets/ui/materials/README.md",
         "docs/ART-DIRECTION.md"
       ],
-      "notes": "PARKED pending Director exact-head review. PR #66, branch agent/LR-0124-ui-materials-3d6fcf41, useful head 8da675d889b8a56e9bad8190337e202d1b748b2d. Added six decorative SVG materials (light/dark parchment, dark timber, lantern divider, corner flourish, lantern wash), material usage/accessibility docs and ART-DIRECTION update. QA: 6 SVGs, 4.3 KB source total, no scripts, no remote dependencies, no baked text. Coordination and Actions-runtime checks pass; only remaining gate is .agent-coordination/design-reviews/LR-0124.json for exact head. Director review requested on PR #66. After approval, fresh claimant should verify exact head, merge, mark DONE and release any fresh claim."
+      "notes": "PARKED pending refreshed Director exact-head review after merge-conflict resolution. PR #66 branch agent/LR-0124-ui-materials-3d6fcf41 now at e09800eb898226a7c0fa4fb92128380ea1ef7bfe. The prior feature approval was valid, but LR-0121 landed first and both appended docs/ART-DIRECTION.md; conflict was resolved by preserving both approved iconography and UI-material sections without changing the six material SVG assets. Fresh Agent 7 review is required for the resolved head before merge."
     },
     {
       "id": "LR-0125",
