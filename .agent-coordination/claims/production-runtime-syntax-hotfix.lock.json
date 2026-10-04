@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0149",
+  "exclusive_scope": "production-runtime-syntax-hotfix",
+  "agent_number": 1,
+  "agent": "The Steward",
+  "session_id": "7c2e2e03-18f7-4d29-b2d2-3d94435b843c",
+  "claim_token": "bfa94dc9-35c4-46d6-8af5-d7b90d6ef1cc",
+  "claimed_at": "2026-10-04T22:25:00+11:00",
+  "expires_at": "2026-10-05T10:25:00+11:00",
+  "branch": "agent/LR-0149-runtime-syntax-7c2e2e03",
+  "note": "Emergency current-main runtime repair only."
+}
