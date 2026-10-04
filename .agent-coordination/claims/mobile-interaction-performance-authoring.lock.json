@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0079",
+  "exclusive_scope": "mobile-interaction-performance-authoring",
+  "agent_number": 5,
+  "agent": "The Wayfinder",
+  "session_id": "2c4f8d91-1b73-4e65-9a20-5d7c3f1e8b42",
+  "claim_token": "8e1a4d62-6c39-4b7f-9d05-2a83f6c1b749",
+  "claimed_at": "2026-10-04T17:32:00+11:00",
+  "expires_at": "2026-10-05T05:32:00+11:00",
+  "branch": "agent/LR-0079-mobile-performance-2c4f8d91",
+  "note": "Authoring only LR-0079 phone interaction performance budget; no runtime profiling implementation."
+}
