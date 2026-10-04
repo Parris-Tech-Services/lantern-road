@@ -3853,6 +3853,42 @@
         "sw.js"
       ],
       "notes": "Completed 4 Oct 2026 via PR #92, squash merge e78f8c7400cc73fa447e1894e0b1ca778e4f9675. Production change adds ./save-system.js to sw.js APP_SHELL and preserves existing network-first/cache/skipWaiting/clients.claim behaviour. Current-main reconstruction had already passed exact LR-0107 static runtime validation and 390x844 Chromium first-install→offline→reload in Actions run 37193340901 / artifact 11300176435. Agent 7 approved useful head 566c3d5905f2d8bc427f070373657e72c62f836c; approval head a1adca8a799c58b7e2477adada23cce339b4bfc1 had green coordination validation."
+    },
+    {
+      "id": "LR-0146",
+      "title": "Replace universal Director review with review-by-exception",
+      "status": "READY",
+      "priority": 0,
+      "exclusive_scope": "aed-review-by-exception",
+      "depends_on": [
+        "LR-0117",
+        "LR-0128",
+        "LR-0142"
+      ],
+      "primary_agent": 8,
+      "goal": "Remove the Agents 1–5 → Director → owner bottleneck by making Director review explicit and exceptional, while preserving review for genuinely design-sensitive changes and allowing frozen parked PRs to merge without unnecessary owner re-claim.",
+      "acceptance_criteria": [
+        "Change policy so Director review is required only when a task explicitly sets director_review=REQUIRED; missing/NOT_REQUIRED defaults to no Director review.",
+        "Define narrow REQUIRED triggers: changes to vision/decisions/terminology/canon, material player-facing narrative/tone/choice meaning, major progression/economy/combat balance promises, or interaction/accessibility behaviour that can alter a product pillar.",
+        "Routine architecture extraction, tests/tooling, validators, QA evidence, asset production/export, mechanical refactors preserving behaviour, and already-approved contract implementation default to NOT_REQUIRED unless the task explicitly crosses a REQUIRED trigger.",
+        "Update PR claim verification so low-risk Agent 1–5 PRs do not require Agent 7 approval.",
+        "Allow an exact frozen parked PR with NOT_REQUIRED review to merge without reacquiring its implementation lock once merge gates are DONE and parked notes name the exact branch/head.",
+        "Allow Agent 7 to approve and directly merge an exact frozen parked REQUIRED-review PR without returning it to the implementation owner, provided no code/content/rebase changes occur after approval and all merge gates are DONE.",
+        "Keep fresh role ownership mandatory before any implementation/content edit, rebase or reconciliation change.",
+        "Add regression tests for required-review, no-review, parked no-review direct merge, stale approval and competing-lock rejection.",
+        "Record the policy decision and update agent/claim/design-review rules."
+      ],
+      "likely_files": [
+        "AGENTS.md",
+        "docs/DECISIONS.md",
+        ".agent-coordination/CLAIM-PROTOCOL.md",
+        ".agent-coordination/DESIGN-REVIEW-PROTOCOL.md",
+        ".agent-coordination/WORK-QUEUE.json",
+        "scripts/verify-pr-claim.mjs",
+        "tests/verify-pr-claim.test.mjs",
+        "scripts/validate-agent-coordination.mjs"
+      ],
+      "notes": "Josh explicitly directed the system to err on the side of fewer reviews. Review remains available for real creative/design risk; routine specialist work should flow without a universal Agent 7 tollbooth."
     }
   ],
   "agent_roster": [
@@ -3915,5 +3951,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T21:23:00+11:00"
+  "updated_at": "2026-10-04T21:28:00+11:00"
 }
