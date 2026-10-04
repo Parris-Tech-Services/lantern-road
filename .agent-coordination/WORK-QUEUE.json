@@ -17,7 +17,10 @@
     "Tasks are role-owned through primary_agent. Agents normally claim only tasks assigned to their own agent number unless Josh explicitly reassigns the work or the queue is updated.",
     "Supporting agents may advise or review but must not independently implement the primary task without a separate non-overlapping queued scope.",
     "Agent 6 — The Warden is a black-box QA/playtest role. It may create QA reports and non-duplicate follow-up tasks, but should not implement specialist feature fixes inside QA tasks.",
-    "Warden findings must include reproduction steps/evidence, severity, player impact and the recommended owner agent. Check the existing queue before creating a new task."
+    "Warden findings must include reproduction steps/evidence, severity, player impact and the recommended owner agent. Check the existing queue before creating a new task.",
+    "Small PR policy: one claimed task/scope per PR; avoid unrelated refactors. Split broad work into follow-up tasks instead of creating giant integration PRs.",
+    "Subjective quality policy: agents may report evidence about clarity, pacing, repetition and friction, but Josh is the creative director and final judge of fun/premium feel.",
+    "All black-box Warden QA must drive a real browser (Playwright, agent-browser or equivalent). Reading source/DOM alone is not a playtest."
   ],
   "tasks": [
     {
@@ -120,7 +123,8 @@
       "depends_on": [],
       "goal": "Make choices visibly alter the Grey March instead of only changing hidden numbers.",
       "acceptance_criteria": [
-        "At least several existing decisions alter later dialogue, services, prices, routes, danger or settlement state.",
+        "At least several existing decisions alter later dialogue, services, routes, danger, settlement state, or faction-specific service/price modifiers.",
+        "Faction pricing changes are expressed as documented modifiers/hooks; LR-0005 does not rebalance global base prices or the overall economy.",
         "Faction changes have visible player-facing explanations.",
         "End-of-campaign state can remember named decisions, not only renown/reputation totals."
       ],
@@ -128,8 +132,12 @@
         "content.js",
         "game.js"
       ],
-      "notes": "Premium-gap area: choice and consequence.",
-      "primary_agent": 2
+      "notes": "Storyteller owns consequence logic and faction-specific modifiers. The Mechanist owns base economy/prices in LR-0016. This task is grandfathered as already in flight but has LR-0011/LR-0013 merge gates.",
+      "primary_agent": 2,
+      "merge_gate_depends_on": [
+        "LR-0011",
+        "LR-0013"
+      ]
     },
     {
       "id": "LR-0006",
@@ -150,7 +158,11 @@
         "game.js"
       ],
       "notes": "Premium-gap area: progression/builds.",
-      "primary_agent": 3
+      "primary_agent": 3,
+      "merge_gate_depends_on": [
+        "LR-0011",
+        "LR-0013"
+      ]
     },
     {
       "id": "LR-0007",
@@ -161,7 +173,10 @@
       "depends_on": [
         "LR-0004",
         "LR-0005",
-        "LR-0006"
+        "LR-0006",
+        "LR-0010",
+        "LR-0011",
+        "LR-0013"
       ],
       "goal": "Build memorable conditional travel/camp events that react to the party and prior choices.",
       "acceptance_criteria": [
@@ -182,10 +197,15 @@
     {
       "id": "LR-0008",
       "title": "Strengthen the 18-day campaign arc and endings",
-      "status": "READY",
+      "status": "BLOCKED",
       "priority": 2,
       "exclusive_scope": "campaign-arc",
-      "depends_on": [],
+      "depends_on": [
+        "LR-0010",
+        "LR-0011",
+        "LR-0013",
+        "LR-0005"
+      ],
       "goal": "Turn the existing 18-day renown frame into a clearer escalating dramatic arc with substantially different endings.",
       "acceptance_criteria": [
         "Define early, mid and late campaign beats without removing sandbox freedom.",
@@ -222,23 +242,33 @@
         "manifest.webmanifest"
       ],
       "notes": "Premium-gap area: mobile experience.",
-      "primary_agent": 5
+      "primary_agent": 5,
+      "merge_gate_depends_on": [
+        "LR-0011",
+        "LR-0013"
+      ]
     },
     {
       "id": "LR-0010",
-      "title": "Architecture and integration audit",
-      "status": "READY",
-      "priority": 1,
+      "title": "Architecture modularisation and integration audit",
+      "status": "BLOCKED",
+      "priority": 0,
       "exclusive_scope": "architecture-integration",
-      "depends_on": [],
+      "depends_on": [
+        "LR-0003",
+        "LR-0005",
+        "LR-0006",
+        "LR-0009"
+      ],
       "primary_agent": 1,
-      "goal": "Audit Lantern Road's current architecture for fragile coupling, duplicated state logic, unsafe extension points and integration risks before the next wave of systems lands.",
+      "goal": "After the already-in-flight specialist branches land, split the monolithic runtime/content hotspots into safer module boundaries so the next feature wave does not keep colliding in game.js and content.js.",
       "acceptance_criteria": [
-        "Document the main runtime/state/rendering boundaries and identify high-risk coupling.",
-        "Remove or contain obvious architectural hazards where a small safe refactor is justified.",
-        "Define integration contracts for content, save state, UI feedback and feature modules.",
-        "Create follow-up queue tasks for larger refactors rather than silently expanding scope.",
-        "Existing gameplay behaviour remains intact."
+        "Map current state, rendering, save, combat, content and UI responsibilities and document the intended module boundaries.",
+        "Extract high-collision responsibilities from game.js/content.js into small stable modules or data files without changing player-visible behaviour.",
+        "Keep a simple static-browser build; do not introduce a heavy framework or bundler unless a documented decision explicitly approves it.",
+        "Define ownership/integration contracts so future tasks can usually touch their specialist module instead of the same monolithic files.",
+        "Run the real-browser regression harness after the split and preserve existing saves through the documented migration layer.",
+        "Record any deliberately deferred extractions as separate queue tasks rather than growing this PR indefinitely."
       ],
       "likely_files": [
         "game.js",
@@ -246,13 +276,13 @@
         "README.md",
         ".agent-coordination/WORK-QUEUE.json"
       ],
-      "notes": "Steward-owned foundation task. Prefer small risk-reducing changes over a rewrite."
+      "notes": "Mandatory next-wave architecture gate. It is intentionally blocked until the four already-active specialist branches land, avoiding a disruptive module split underneath live work."
     },
     {
       "id": "LR-0011",
       "title": "Save format versioning and migration hardening",
       "status": "READY",
-      "priority": 1,
+      "priority": 0,
       "exclusive_scope": "save-versioning",
       "depends_on": [],
       "primary_agent": 1,
@@ -268,15 +298,18 @@
         "game.js",
         "README.md"
       ],
-      "notes": "Steward-owned cross-system reliability task."
+      "notes": "Priority-0 safety gate. Current save-changing feature branches may work in parallel but must not merge until this foundation is DONE."
     },
     {
       "id": "LR-0012",
       "title": "Runtime stability and performance baseline",
-      "status": "READY",
+      "status": "BLOCKED",
       "priority": 2,
       "exclusive_scope": "runtime-performance",
-      "depends_on": [],
+      "depends_on": [
+        "LR-0010",
+        "LR-0013"
+      ],
       "primary_agent": 1,
       "goal": "Establish a performance and stability baseline so new premium-indie features do not gradually make the browser game unreliable.",
       "acceptance_criteria": [
@@ -297,17 +330,17 @@
       "id": "LR-0013",
       "title": "Automated gameplay regression harness",
       "status": "READY",
-      "priority": 1,
+      "priority": 0,
       "exclusive_scope": "regression-testing",
       "depends_on": [],
       "primary_agent": 1,
-      "goal": "Create repeatable automated checks for Lantern Road's critical game loops so concurrent agent work can be integrated with confidence.",
+      "goal": "Create repeatable real-browser regression checks for Lantern Road's critical game loops so concurrent agent work can be integrated with confidence.",
       "acceptance_criteria": [
-        "Add automated checks for new campaign creation, deterministic state inspection and representative travel/action flows.",
-        "Cover save/load round-trip behaviour.",
+        "Use Playwright, agent-browser, or an equivalent real browser engine; DOM/code inspection alone does not count as the regression harness.",
+        "Automate new campaign creation, representative travel/action flows, and checks for uncaught browser/runtime errors.",
+        "Cover save/load round-trip behaviour through browser storage and a page reload/reopen.",
         "Cover at least one combat flow and one quest/site interaction.",
-        "Tests fail clearly on uncaught runtime errors or broken critical interactions.",
-        "Document how every feature agent should run the regression checks before PR completion."
+        "Run the browser suite in CI where practical and document the local command every feature agent should run before PR completion."
       ],
       "likely_files": [
         "tests/",
@@ -316,7 +349,7 @@
         "README.md",
         ".github/workflows/"
       ],
-      "notes": "Steward-owned production-discipline task. Use the lightest practical test tooling for a static browser game."
+      "notes": "Priority-0 safety gate. Keep tooling light, but the test must drive a real browser."
     },
     {
       "id": "LR-0014",
@@ -332,7 +365,10 @@
         "LR-0005",
         "LR-0006",
         "LR-0008",
-        "LR-0009"
+        "LR-0009",
+        "LR-0010",
+        "LR-0011",
+        "LR-0013"
       ],
       "primary_agent": 1,
       "goal": "Integrate and reconcile the first premium-indie feature wave after the specialist foundations are complete.",
@@ -356,10 +392,14 @@
     {
       "id": "LR-0015",
       "title": "Tactical combat depth and enemy behaviour",
-      "status": "READY",
+      "status": "BLOCKED",
       "priority": 1,
       "exclusive_scope": "combat-depth-ai",
-      "depends_on": [],
+      "depends_on": [
+        "LR-0010",
+        "LR-0011",
+        "LR-0013"
+      ],
       "primary_agent": 3,
       "goal": "Make combat decisions substantially more interesting without turning Lantern Road into a grid tactics game.",
       "acceptance_criteria": [
@@ -378,10 +418,15 @@
     {
       "id": "LR-0016",
       "title": "Economy, supplies and expedition pressure balance",
-      "status": "READY",
+      "status": "BLOCKED",
       "priority": 2,
       "exclusive_scope": "economy-supplies",
-      "depends_on": [],
+      "depends_on": [
+        "LR-0005",
+        "LR-0010",
+        "LR-0011",
+        "LR-0013"
+      ],
       "primary_agent": 3,
       "goal": "Make gold, rations, rest, shops and expedition resources create sustained but fair pressure across the 18-day campaign.",
       "acceptance_criteria": [
@@ -395,7 +440,7 @@
         "content.js",
         "game.js"
       ],
-      "notes": "Mechanist-owned economy/balance work; distinct from LR-0005's narrative/faction consequences."
+      "notes": "Mechanist owns base prices, income, costs and resource-pressure balance. Consume LR-0005 faction modifier hooks rather than duplicating consequence logic."
     },
     {
       "id": "LR-0017",
@@ -404,7 +449,10 @@
       "priority": 2,
       "exclusive_scope": "equipment-itemisation",
       "depends_on": [
-        "LR-0006"
+        "LR-0006",
+        "LR-0010",
+        "LR-0011",
+        "LR-0013"
       ],
       "primary_agent": 3,
       "goal": "Expand LR-0006's equipment/build foundation into a small but expressive item ecosystem with meaningful trade-offs.",
@@ -428,7 +476,10 @@
       "priority": 2,
       "exclusive_scope": "injury-condition-system",
       "depends_on": [
-        "LR-0006"
+        "LR-0006",
+        "LR-0010",
+        "LR-0011",
+        "LR-0013"
       ],
       "primary_agent": 3,
       "goal": "Turn the progression foundation's injury/condition hooks into memorable persistent consequences that affect expedition decisions.",
@@ -452,7 +503,10 @@
       "priority": 2,
       "exclusive_scope": "combat-encounter-variety",
       "depends_on": [
-        "LR-0015"
+        "LR-0015",
+        "LR-0010",
+        "LR-0011",
+        "LR-0013"
       ],
       "primary_agent": 3,
       "goal": "Use the deeper combat rules to create encounters that feel authored and mechanically distinct rather than permutations of the same fight.",
@@ -481,7 +535,10 @@
         "LR-0016",
         "LR-0017",
         "LR-0018",
-        "LR-0019"
+        "LR-0019",
+        "LR-0010",
+        "LR-0011",
+        "LR-0013"
       ],
       "primary_agent": 3,
       "goal": "Balance the completed Mechanist systems as one coherent game so multiple strategies remain viable across a full campaign.",
@@ -519,15 +576,18 @@
         "QA/",
         ".agent-coordination/WORK-QUEUE.json"
       ],
-      "notes": "The Warden does not fix discovered specialist defects in this task; it reports, routes and later retests them."
+      "notes": "The single intentional early QA pass. Establish a baseline before the foundations change; findings may become stale and must be retested later. Real-browser execution is required."
     },
     {
       "id": "LR-0022",
       "title": "Every-action and navigation black-box audit",
-      "status": "READY",
+      "status": "BLOCKED",
       "priority": 0,
       "exclusive_scope": "qa-interaction-audit",
-      "depends_on": [],
+      "depends_on": [
+        "LR-0009",
+        "LR-0013"
+      ],
       "primary_agent": 6,
       "goal": "Systematically exercise every visible player control and navigation path to find inert, misleading, inconsistent or unintuitive interactions.",
       "acceptance_criteria": [
@@ -541,15 +601,18 @@
         "QA/",
         ".agent-coordination/WORK-QUEUE.json"
       ],
-      "notes": "QA counterpart to LR-0001/LR-0009; evaluates player experience rather than implementing UI changes."
+      "notes": "QA counterpart to LR-0001/LR-0009; evaluates player experience rather than implementing UI changes. Real-browser execution is required; code inspection alone is not black-box QA."
     },
     {
       "id": "LR-0023",
       "title": "Save, load and resume destructive playtest",
-      "status": "READY",
+      "status": "BLOCKED",
       "priority": 1,
       "exclusive_scope": "qa-save-resume",
-      "depends_on": [],
+      "depends_on": [
+        "LR-0011",
+        "LR-0013"
+      ],
       "primary_agent": 6,
       "goal": "Try to break campaign persistence through real player save/load/resume behaviour and unusual timing/state combinations.",
       "acceptance_criteria": [
@@ -563,15 +626,18 @@
         "QA/",
         ".agent-coordination/WORK-QUEUE.json"
       ],
-      "notes": "A later release-candidate regression retests persistence after save hardening and feature integration."
+      "notes": "A later release-candidate regression retests persistence after save hardening and feature integration. Real-browser execution is required; code inspection alone is not black-box QA."
     },
     {
       "id": "LR-0024",
       "title": "Exploit, resource-loop and soft-lock hunt",
-      "status": "READY",
+      "status": "BLOCKED",
       "priority": 1,
       "exclusive_scope": "qa-exploit-hunt",
-      "depends_on": [],
+      "depends_on": [
+        "LR-0006",
+        "LR-0016"
+      ],
       "primary_agent": 6,
       "goal": "Actively attempt to abuse Lantern Road's systems to find infinite resources, repeatable rewards, sequence breaks, unwinnable states and other player-visible exploits.",
       "acceptance_criteria": [
@@ -585,15 +651,19 @@
         "QA/",
         ".agent-coordination/WORK-QUEUE.json"
       ],
-      "notes": "Deliberately adversarial player testing."
+      "notes": "Deliberately adversarial player testing. Real-browser execution is required; code inspection alone is not black-box QA."
     },
     {
       "id": "LR-0025",
       "title": "Quest-path and impossible-state audit",
-      "status": "READY",
+      "status": "BLOCKED",
       "priority": 1,
       "exclusive_scope": "qa-quest-state",
-      "depends_on": [],
+      "depends_on": [
+        "LR-0005",
+        "LR-0007",
+        "LR-0008"
+      ],
       "primary_agent": 6,
       "goal": "Test quest and site progression for dead ends, contradictory state, unavailable required actions and sequence-sensitive failures.",
       "acceptance_criteria": [
@@ -607,15 +677,18 @@
         "QA/",
         ".agent-coordination/WORK-QUEUE.json"
       ],
-      "notes": "Focus is state integrity and player completion paths, not authorship."
+      "notes": "Focus is state integrity and player completion paths, not authorship. Real-browser execution is required; code inspection alone is not black-box QA."
     },
     {
       "id": "LR-0026",
       "title": "Fresh-player clarity and onboarding playtest",
-      "status": "READY",
+      "status": "BLOCKED",
       "priority": 1,
       "exclusive_scope": "qa-new-player-clarity",
-      "depends_on": [],
+      "depends_on": [
+        "LR-0009",
+        "LR-0010"
+      ],
       "primary_agent": 6,
       "goal": "Approach Lantern Road as if seeing it for the first time and identify where the game fails to teach goals, controls, terminology, consequences or next steps naturally.",
       "acceptance_criteria": [
@@ -629,7 +702,7 @@
         "QA/",
         ".agent-coordination/WORK-QUEUE.json"
       ],
-      "notes": "Tests intuitiveness rather than raw functionality."
+      "notes": "Tests intuitiveness rather than raw functionality. Real-browser execution is required; code inspection alone is not black-box QA."
     },
     {
       "id": "LR-0027",
@@ -641,7 +714,10 @@
         "LR-0004",
         "LR-0005",
         "LR-0007",
-        "LR-0008"
+        "LR-0008",
+        "LR-0010",
+        "LR-0011",
+        "LR-0013"
       ],
       "primary_agent": 6,
       "goal": "Play branching narrative paths after the Storyteller foundation is complete and find dialogue, memory, consequence and ending contradictions.",
@@ -656,7 +732,7 @@
         "QA/",
         ".agent-coordination/WORK-QUEUE.json"
       ],
-      "notes": "Unlocks after the first narrative/consequence/event/campaign wave."
+      "notes": "Unlocks after the first narrative/consequence/event/campaign wave. Real-browser execution is required; code inspection alone is not black-box QA."
     },
     {
       "id": "LR-0028",
@@ -666,7 +742,9 @@
       "exclusive_scope": "qa-combat-fun",
       "depends_on": [
         "LR-0015",
-        "LR-0019"
+        "LR-0019",
+        "LR-0010",
+        "LR-0013"
       ],
       "primary_agent": 6,
       "goal": "Evaluate whether the deeper combat system is readable, varied, fair and enjoyable across repeated encounters rather than merely mechanically functional.",
@@ -681,7 +759,7 @@
         "QA/",
         ".agent-coordination/WORK-QUEUE.json"
       ],
-      "notes": "Player-experience validation of Mechanist combat work."
+      "notes": "Player-experience validation of Mechanist combat work. Real-browser execution is required; code inspection alone is not black-box QA."
     },
     {
       "id": "LR-0029",
@@ -690,7 +768,8 @@
       "priority": 2,
       "exclusive_scope": "qa-mobile-usability",
       "depends_on": [
-        "LR-0009"
+        "LR-0009",
+        "LR-0013"
       ],
       "primary_agent": 6,
       "goal": "Test the completed mobile UX pass as a real phone game and identify interactions that remain awkward, error-prone, cramped or tiring.",
@@ -705,11 +784,11 @@
         "QA/",
         ".agent-coordination/WORK-QUEUE.json"
       ],
-      "notes": "Independent validation after LR-0009, not a duplicate implementation pass."
+      "notes": "Independent validation after LR-0009, not a duplicate implementation pass. Real-browser execution is required; code inspection alone is not black-box QA."
     },
     {
       "id": "LR-0030",
-      "title": "Release-candidate regression and premium-feel gate",
+      "title": "Release-candidate regression and quality gate",
       "status": "BLOCKED",
       "priority": 3,
       "exclusive_scope": "qa-release-candidate",
@@ -718,22 +797,24 @@
         "LR-0020",
         "LR-0027",
         "LR-0028",
-        "LR-0029"
+        "LR-0029",
+        "LR-0011",
+        "LR-0013"
       ],
       "primary_agent": 6,
-      "goal": "Perform a final independent player-facing gate after integration, balance and specialist QA passes to decide what still prevents Lantern Road from feeling release-ready and premium.",
+      "goal": "Perform an independent functional/player-experience regression after integration and specialist QA. The Warden reports evidence and release risks; Josh makes the final creative-director judgement on fun, premium feel and release readiness.",
       "acceptance_criteria": [
-        "Run fresh-campaign and resumed-campaign regression passes across core loops.",
+        "Run fresh-campaign and resumed-campaign real-browser regression passes across core loops.",
         "Retest previously reported critical/high findings and mark them verified or still reproducible.",
-        "Assess stability, clarity, pacing, character attachment, combat, presentation, mobile comfort and replay motivation as one product.",
+        "Report evidence on stability, clarity, pacing, repetition, character continuity, combat readability, presentation and mobile comfort without claiming an objective measurement of 'fun'.",
         "Create only non-duplicate release-blocking follow-up tasks with explicit severity and owner.",
-        "Produce a go/no-go style QA summary separating release blockers from post-release polish."
+        "Produce a functional go/no-go recommendation plus a separate creative-signoff section reserved for Josh."
       ],
       "likely_files": [
         "QA/",
         ".agent-coordination/WORK-QUEUE.json"
       ],
-      "notes": "The Warden's final premium-indie quality gate."
+      "notes": "The Warden's final premium-indie quality gate. Real-browser execution is required; code inspection alone is not black-box QA."
     },
     {
       "id": "LR-0031",
@@ -747,9 +828,9 @@
       "primary_agent": 4,
       "goal": "Replace the visual foundation's fallback sigils with a coherent, production-ready illustrated asset set while keeping mobile download cost controlled.",
       "acceptance_criteria": [
-        "Create final art for all four party members and the most frequently encountered named NPCs.",
-        "Create one strong illustration for each major settlement and adventure site.",
-        "Create readable art for all enemy archetypes and a prioritised item-icon set.",
+        "Commit actual final image assets for all four party members and the most frequently encountered named NPCs; placeholder sigils/CSS-only stand-ins do not satisfy this task.",
+        "Commit one strong final illustration for each major settlement and adventure site.",
+        "Commit readable final art for all enemy archetypes and a prioritised item-icon set.",
         "Use the existing reusable art-slot contract without changing gameplay logic.",
         "Compress assets for phone browsers and retain graceful fallbacks when any asset is unavailable.",
         "Perform a consistency pass for silhouette, palette, crop, contrast and small-screen legibility."
@@ -759,7 +840,7 @@
         "style.css",
         "docs/ART-DIRECTION.md"
       ],
-      "notes": "Second-wave Lamplighter task discovered during LR-0002. This is production artwork, not a duplicate of the visual-system foundation."
+      "notes": "Requires actual illustration assets. If the current agent environment cannot generate/import approved images and commit them, do not fake completion with placeholders; report the capability gap and leave the task unfinished."
     }
   ],
   "agent_roster": [
@@ -793,5 +874,23 @@
       "name": "The Warden",
       "role": "QA, black-box playtesting and player experience. Repeatedly plays Lantern Road, tries to break it, identifies bugs, exploits, confusion, tedium, pacing and fun problems, and routes reproducible findings back to the appropriate specialist rather than implementing feature fixes."
     }
-  ]
+  ],
+  "foundation_gates": {
+    "rationale": "The ideal architecture/save/test foundations were identified after the first specialist wave had already been claimed. Do not invalidate live work mid-branch. Finish the listed in-flight wave under merge gates, then complete modularisation before new feature work.",
+    "in_flight_grandfathered_tasks": [
+      "LR-0003",
+      "LR-0005",
+      "LR-0006",
+      "LR-0009"
+    ],
+    "in_flight_merge_gates": [
+      "LR-0011",
+      "LR-0013"
+    ],
+    "next_wave_gate_tasks": [
+      "LR-0010",
+      "LR-0011",
+      "LR-0013"
+    ]
+  }
 }
