@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0071",
+  "exclusive_scope": "map-lore-reconciliation",
+  "agent_number": 2,
+  "agent": "The Storyteller",
+  "session_id": "a4c829c7-26d5-40fd-b1e8-81e7f694c8b9",
+  "claim_token": "5fcae2f1-7a3e-4a0c-92ae-7c427830c987",
+  "claimed_at": "2026-10-04T16:39:00+11:00",
+  "expires_at": "2026-10-05T04:39:00+11:00",
+  "branch": "agent/LR-0071-map-lore-a4c829c7",
+  "note": "Implementing only LR-0071 generated-label audit and proposed Grey March regional lore; no canonical coordinate edits."
+}
