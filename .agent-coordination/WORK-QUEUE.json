@@ -1,0 +1,212 @@
+{
+  "schema_version": 1,
+  "project": "Lantern Road",
+  "snapshot_date": "2026-10-04",
+  "claim_authority": ".agent-coordination/claims/<exclusive_scope>.lock.json",
+  "lease_hours": 12,
+  "status_values": [
+    "READY",
+    "BLOCKED",
+    "DONE",
+    "CANCELLED"
+  ],
+  "notes": [
+    "Active ownership is determined only by a successfully created exclusive-scope lock.",
+    "Claiming does not change task status.",
+    "Tasks were seeded from the Premium Indie Gap Analysis dated 4 October 2026 and current player-feedback defects."
+  ],
+  "tasks": [
+    {
+      "id": "LR-0001",
+      "title": "Immediate action feedback and meaningful button responses",
+      "status": "READY",
+      "priority": 0,
+      "exclusive_scope": "interaction-feedback",
+      "depends_on": [],
+      "goal": "Every player-facing action visibly confirms what happened; no button should appear inert when state changes.",
+      "acceptance_criteria": [
+        "Scavenge rope and salvage gives immediate visible feedback and cannot silently repeat unintended rewards.",
+        "Rest at the inn gives immediate visible feedback describing time/resource/health effects.",
+        "Hear rumours gives immediate visible feedback even when no new rumour is available.",
+        "Audit all interactive buttons for a visible success, failure, blocked, or no-op explanation.",
+        "Relevant feedback remains readable on phone-sized screens."
+      ],
+      "likely_files": [
+        "game.js",
+        "style.css",
+        "content.js"
+      ],
+      "notes": "Highest-priority polish/bug task from observed play."
+    },
+    {
+      "id": "LR-0002",
+      "title": "Coherent visual identity foundation",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "visual-identity",
+      "depends_on": [],
+      "goal": "Create a consistent lightweight art/presentation layer without turning the game into a 3D project.",
+      "acceptance_criteria": [
+        "Define reusable visual slots for party/NPC portraits, settlement/site art, enemies and items.",
+        "Improve map iconography and state readability.",
+        "Add restrained movement/combat/hit/heal/status visual feedback.",
+        "Assets degrade gracefully when unavailable and remain performant on mobile."
+      ],
+      "likely_files": [
+        "index.html",
+        "style.css",
+        "game.js",
+        "content.js",
+        "assets/"
+      ],
+      "notes": "Premium-gap area: art/presentation."
+    },
+    {
+      "id": "LR-0003",
+      "title": "Audio and atmosphere foundation",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "audio-atmosphere",
+      "depends_on": [],
+      "goal": "Give the Grey March a recognisable audio identity with optional, lightweight browser audio.",
+      "acceptance_criteria": [
+        "Add opt-in/controllable ambience support for weather and key locations.",
+        "Add restrained UI/combat feedback sounds.",
+        "Persist mute/volume preference.",
+        "Respect browser autoplay restrictions and reduced-distraction play."
+      ],
+      "likely_files": [
+        "game.js",
+        "index.html",
+        "style.css",
+        "assets/audio/"
+      ],
+      "notes": "Premium-gap area: audio/atmosphere."
+    },
+    {
+      "id": "LR-0004",
+      "title": "Make the four heroes into persistent characters",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "character-relationships",
+      "depends_on": [],
+      "goal": "Turn Garrick, Mira, Oren and Brindle from stat packages into people the player can become attached to.",
+      "acceptance_criteria": [
+        "Introduce persistent character memories/traits or relationship state.",
+        "Add camp conversations and reactions to major decisions.",
+        "Support friendship/rivalry/loyalty changes without breaking old saves.",
+        "Provide hooks for personal quests and character-specific consequences."
+      ],
+      "likely_files": [
+        "content.js",
+        "game.js"
+      ],
+      "notes": "The premium gap analysis identifies personality/emotional weight as the biggest missing ingredient."
+    },
+    {
+      "id": "LR-0005",
+      "title": "Visible world and faction consequences",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "world-consequence",
+      "depends_on": [],
+      "goal": "Make choices visibly alter the Grey March instead of only changing hidden numbers.",
+      "acceptance_criteria": [
+        "At least several existing decisions alter later dialogue, services, prices, routes, danger or settlement state.",
+        "Faction changes have visible player-facing explanations.",
+        "End-of-campaign state can remember named decisions, not only renown/reputation totals."
+      ],
+      "likely_files": [
+        "content.js",
+        "game.js"
+      ],
+      "notes": "Premium-gap area: choice and consequence."
+    },
+    {
+      "id": "LR-0006",
+      "title": "Meaningful progression and builds",
+      "status": "READY",
+      "priority": 2,
+      "exclusive_scope": "progression-builds",
+      "depends_on": [],
+      "goal": "Add build choices with trade-offs rather than linear stat growth.",
+      "acceptance_criteria": [
+        "Define a small equipment or upgrade model that creates real choices.",
+        "Support at least one mutually exclusive upgrade decision per hero or build path.",
+        "Allow persistent injuries/conditions or transformations to affect play.",
+        "Save/load remains compatible."
+      ],
+      "likely_files": [
+        "content.js",
+        "game.js"
+      ],
+      "notes": "Premium-gap area: progression/builds."
+    },
+    {
+      "id": "LR-0007",
+      "title": "Conditional authored event expansion",
+      "status": "BLOCKED",
+      "priority": 2,
+      "exclusive_scope": "authored-events",
+      "depends_on": [
+        "LR-0004",
+        "LR-0005",
+        "LR-0006"
+      ],
+      "goal": "Build memorable conditional travel/camp events that react to the party and prior choices.",
+      "acceptance_criteria": [
+        "Event conditions can react to party members, traits/injuries, weather, factions, items, earlier decisions, time and quest outcomes.",
+        "Add a first curated batch of memorable events using those conditions.",
+        "Avoid filler events whose only effect is a generic resource roll."
+      ],
+      "likely_files": [
+        "content.js",
+        "game.js"
+      ],
+      "notes": "Blocked until character, consequence and progression foundations exist."
+    },
+    {
+      "id": "LR-0008",
+      "title": "Strengthen the 18-day campaign arc and endings",
+      "status": "READY",
+      "priority": 2,
+      "exclusive_scope": "campaign-arc",
+      "depends_on": [],
+      "goal": "Turn the existing 18-day renown frame into a clearer escalating dramatic arc with substantially different endings.",
+      "acceptance_criteria": [
+        "Define early, mid and late campaign beats without removing sandbox freedom.",
+        "Add a mid-campaign revelation and escalating faction pressure.",
+        "Add a hard late-game decision.",
+        "Endings reference specific consequential choices."
+      ],
+      "likely_files": [
+        "content.js",
+        "game.js"
+      ],
+      "notes": "Premium-gap area: campaign arc/replayability."
+    },
+    {
+      "id": "LR-0009",
+      "title": "Phone-native interaction and accessibility pass",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "mobile-ux",
+      "depends_on": [],
+      "goal": "Make Lantern Road feel intentionally designed for a phone browser rather than merely responsive.",
+      "acceptance_criteria": [
+        "Improve one-handed interaction flow and choice sizing.",
+        "Verify map panning/zooming/touch targeting.",
+        "Add autosave and a clear save-slot direction without data loss.",
+        "Provide adjustable text size and high-contrast/accessibility settings.",
+        "Consider optional haptic feedback where browser/device support allows it."
+      ],
+      "likely_files": [
+        "index.html",
+        "style.css",
+        "game.js",
+        "manifest.webmanifest"
+      ],
+      "notes": "Premium-gap area: mobile experience."
+    }
+  ]
+}
