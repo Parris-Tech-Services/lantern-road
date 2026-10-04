@@ -1,0 +1,26 @@
+name: Browser regression tests
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  browser-regression:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install test dependencies
+        run: npm install --no-audit --no-fund
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Check game syntax
+        run: node --check game.js
+      - name: Run real-browser regression suite
+        run: npm run test:e2e
