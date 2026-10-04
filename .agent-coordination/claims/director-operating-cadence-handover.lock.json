@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0152",
+  "exclusive_scope": "director-operating-cadence-handover",
+  "agent_number": 7,
+  "agent": "The Director",
+  "session_id": "4d5b7f0a-2c9e-4b61-8d37-1f6a8e0c9b42",
+  "claim_token": "7a2e41dc-8b5f-4e96-9d3c-6f0b1a7e2c55",
+  "claimed_at": "2026-10-05T08:59:00+11:00",
+  "expires_at": "2026-10-05T20:59:00+11:00",
+  "branch": "agent/LR-0152-director-handover-4d5b7f0a",
+  "note": "Implementing only LR-0152 Director operating cadence and safe handover rules."
+}
