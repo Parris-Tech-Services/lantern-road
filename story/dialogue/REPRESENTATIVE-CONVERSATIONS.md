@@ -134,7 +134,7 @@ Repeat conversation should NOT offer:
 
 Instead:
 
-> **“You asked me not to press. I haven’t.”**
+> **“I said I wouldn’t press. I haven’t.”**
 
 Mira:
 
@@ -371,7 +371,9 @@ If kept:
 >
 > “You meant it.”
 
-If broken/delayed:
+If the promise is explicitly broken or repudiated without renegotiation:
+
+> Delay alone does **not** break this untimed promise.
 
 > “Tell me what you intend to do now.”
 >
@@ -577,7 +579,7 @@ The conversation teaches that “truth” can still be selected.
 
 Mira watches carefully.
 
-**Promise condition:** do not later disclose names without renegotiating.
+**Promise condition:** do not later disclose Nera’s names to Crow without renegotiating.
 
 Nera:
 
@@ -658,4 +660,4 @@ Later implementation should support, at minimum:
 - repeat-safe NPC dialogue;
 - ability to ask questions before irreversible major decisions.
 
-Do not require a fifth combatant or fixed Leader biography to deliver these benefits.
+Assume the ratified active party of **Leader + three active companions**. LR-0088 remains authoring-only and does not itself implement active/reserve roster mechanics or a fixed Leader biography.
