@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0047",
+  "reviewer_agent_number": 7,
+  "reviewer": "The Director",
+  "status": "APPROVED",
+  "reviewed_head_sha": "625b77fdc45fba9072e16b0da7b97c544e9f3531",
+  "reviewed_at": "2026-10-04T18:00:00+11:00",
+  "pillars_checked": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "terminology_checked": true,
+  "decision_log_checked": true,
+  "scope_conflicts_checked": true,
+  "notes": "Six core quest scene packs deepen existing quests without creating a competing main campaign, preserve non-ideal authored outcomes and use canonical locations. Under LR-0089, companion interjections may shape but must not silently seize the Leader's irreversible quest resolution."
+}

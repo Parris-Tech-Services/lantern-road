@@ -44,7 +44,7 @@ node scripts/aed-report.mjs --json
 node --test tests/aed-report.test.mjs
 ```
 
-The report reads only `.agent-coordination/WORK-QUEUE.json` and `.agent-coordination/claims/*.lock.json`. It does not claim tasks, change lifecycle state, approve PRs or modify repository files.
+The report reads the coordination queue/claims plus structured Warden findings under `QA/findings/`. It also shows an **agent work-state classification** (`ACTIVE`, `READY`, `REVIEW_DRAIN`, `BLOCKED_ONLY`, or `DONE`) and a concrete `NEXT` task for each agent, so an agent cannot mistake a blocked integration task for having no useful work. It prints a ranked **critical-path flow inbox** and **player-impact QA metrics**: unresolved/resolved high-impact findings, pending retests, parked-review age, a median time-to-playable-improvement proxy, and finding reopen/rework rate. Metrics are reported as unavailable when the repository does not contain enough timestamped evidence. The tool does not claim tasks, change lifecycle state, approve PRs or modify repository files.
 
 ## CI action runtime policy
 
@@ -102,10 +102,36 @@ https://YOUR-USERNAME.github.io/YOUR-REPO/
 - Save and load with the buttons in the top bar.
 - Press `F` or use the top-bar button to toggle fullscreen.
 
+## Static runtime integrity
+
+Before merging changes to the browser shell, run:
+
+```bash
+node scripts/validate-static-runtime.mjs
+```
+
+The check verifies local scripts/styles/manifest references from `index.html`, PWA manifest start/icon paths, service-worker cache coverage for the current local app shell, and JavaScript syntax across first-party `.js`, `.mjs`, and `.cjs` files. GitHub Actions runs the same validator when relevant files change.
+
 ## Runtime inspection
 
 - `window.render_game_to_text()` returns a concise JSON summary of the campaign, active quests, and combat.
 - `window.advanceTime(ms)` refreshes the turn-based view deterministically and returns the same summary.
+
+## Browser regression tests
+
+Lantern Road's critical browser loops are covered by Playwright using a phone-sized Chromium project.
+
+Run locally:
+
+```bash
+npm install
+npx playwright install chromium
+npm run test:e2e
+```
+
+The suite in `tests/e2e/` drives the real game UI and covers new-campaign quest acceptance, adjacent canvas travel, save/reload through browser storage, a real site action, a combat action, and uncaught browser runtime errors.
+
+Deterministic setup for the site/combat cases is exposed only on `localhost` or `127.0.0.1` with `?e2e=1`; deployed hosts do not expose those hooks. CI runs the same suite in Chromium and publishes `browser-regression-results` for gate evidence.
 
 ## Design Overview
 

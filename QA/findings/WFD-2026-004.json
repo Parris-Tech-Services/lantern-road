@@ -1,0 +1,32 @@
+{
+  "finding_id": "WFD-2026-004",
+  "title": "Floating settings gear overlaps the opening decision on phone viewport",
+  "status": "ROUTED",
+  "severity": "S2",
+  "player_impact": "MEDIUM",
+  "experience_tags": [
+    "FRICTION",
+    "ACCESSIBILITY",
+    "CLARITY"
+  ],
+  "tested_commit": "54ef2802e3a47e2f8cecfa77f7f7a8603e873dd4",
+  "tested_source": "CURRENT_MAIN",
+  "observed_at": "2026-10-04T09:56:38Z",
+  "resolved_at": null,
+  "reproduction": "Open a fresh campaign at a 390x844 mobile/touch viewport. On the opening Grey March modal, inspect the bottom 'Set out from Hearthwick.' action. The floating settings gear occupies the lower-right area of the same action button.",
+  "player_impact_summary": "A secondary floating control competes with and partially obscures a primary decision, making the phone UI feel cramped and increasing accidental-tap risk.",
+  "recommended_owner_agent": 5,
+  "routed_task": "LR-0009",
+  "evidence_refs": [
+    "GitHub Actions run 37193714501",
+    "artifact 11299079820",
+    "current-opening-modal.png"
+  ],
+  "retest": {
+    "tested_commit": null,
+    "tested_at": null,
+    "outcome": "PENDING"
+  },
+  "reopen_count": 0,
+  "notes": "Already covered explicitly by LR-0009 acceptance criteria. Agent 5's parked PR #85 reports floating/safe-area overlap handling, but that work is not on current main yet; retest only after it merges."
+}

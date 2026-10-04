@@ -20,7 +20,7 @@ The illustrated terrain atlas is a rendering asset, not a source of gameplay coo
 
 A dedicated map-canon change is required to:
 
-- add a CANON settlement, site or region with gameplay identity;
+- add a CANON settlement, site or protected non-node regional label;
 - rename a CANON place;
 - move a CANON place to another q/r or human grid reference;
 - change a canonical place type in a way that alters world identity;
@@ -72,13 +72,47 @@ Recommended shape:
   "status": "APPROVED",
   "reviewed_head_sha": "FULL_SHA",
   "change_type": "ADD|MOVE|RENAME|RETIRE|IDENTITY|GRID|PROJECTION",
-  "affected_place_ids": ["example_id"],
+  "affected_place_ids": ["example_place_id"],
+  "affected_region_ids": ["example_region_id"],
   "josh_approval_required": false,
   "notes": "Why this change preserves Grey March coherence."
 }
 ```
 
 LR-0070 owns the exact automated enforcement mechanics.
+
+## Protected regional-label rule
+
+Canonical regional labels are protected map identity even though they are not gameplay nodes.
+
+The LR-0104 baseline is defined in `design/REGIONAL-MAP-CANON-CONTRACT.md`.
+
+A regional-label record must remain distinct from a settlement/site:
+
+- stable id;
+- canonical display name;
+- `place_type: "region-label"`;
+- `gameplay_node: false`;
+- references only existing CANON `anchor_place_ids`;
+- no q/r or grid reference is invented merely to label a landscape.
+
+Renaming, retiring or materially redefining a CANON regional label requires a dedicated map-canon change and Agent 7 approval.
+
+Generated concept labels use explicit dispositions (`ADOPT`, `RENAME`, `REJECT`, `DEFER`). A rejected/deferred label is not canonical overlay content.
+
+LR-0105 owns the machine-readable registry/schema/CI implementation of this rule.
+
+### Machine-enforced regional labels
+
+`world/map-canon.json.regional_labels` is the authoritative registry for protected non-node regions.
+
+- CANON regional labels use stable ids and `place_type: "region-label"`.
+- `gameplay_node` is always `false`; regions do not become travel/click targets by being named.
+- `anchor_place_ids` may reference only existing CANON settlements/sites and describe geographic relationship without inheriting their coordinates.
+- Regional labels do not carry q/r or grid references.
+- ADOPT/RENAME concept dispositions must resolve to an existing CANON regional id.
+- REJECT/DEFER concept labels remain non-canon and must not carry a canonical regional id.
+- Protected regional-label identity changes are checked by `verify-map-canon-change.mjs` and require fresh Agent 7 exact-head map-canon approval.
 
 ## Stable coordinate rule
 
@@ -162,10 +196,25 @@ That record must:
 - name the exact preceding commit in `reviewed_head_sha`;
 - use an allowed `change_type`: `ADD`, `MOVE`, `RENAME`, `RETIRE`, `IDENTITY`, `GRID` or `PROJECTION`;
 - list every changed canonical place id in `affected_place_ids`;
+- list every changed canonical regional-label id in `affected_region_ids` when regional canon changes;
 - explicitly state whether Josh approval was required.
 
 If `josh_approval_required` is true, the record must also contain `josh_approved: true`.
 
 Any later code/canon commit after approval makes that approval stale.
+
+### Review ordering for Agent 1–5 implementation PRs
+
+A protected map-canon implementation owned by Agents 1–5 must satisfy both map-canon review and ordinary Director design review.
+
+Use this exact tail:
+
+1. final feature/canon implementation commit;
+2. Agent 7 map-canon review-only commit changing exactly `.agent-coordination/map-canon-reviews/<TASK-ID>.json`, whose `reviewed_head_sha` is the feature/canon commit;
+3. Agent 7 Director design-review-only commit changing exactly `.agent-coordination/design-reviews/<TASK-ID>.json`.
+
+The Director design review remains the final PR commit, satisfying normal implementation governance. The map-canon verifier is allowed to look through that one final design-review commit to verify the immediately preceding map-canon approval against the exact feature/canon head.
+
+Do not put both approval files in one commit, and do not add implementation changes after either approval.
 
 Deleting an existing protected id outright is rejected. Retire it so ids remain reserved for saves and historical references.
