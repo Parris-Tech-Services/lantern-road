@@ -3124,7 +3124,7 @@
         "docs/CANONICAL-MAP-INSPECTION-UX.md",
         "QA/"
       ],
-      "notes": "Author-now Wayfinder input to LR-0074. Consumes Map Canon v1 exactly; no geography/canon mutation."
+      "notes": "PARKED HANDOFF (4 Oct 2026): authoring complete on branch agent/LR-0120-map-inspection-2f8b4d6a at useful head c20f5ef083b1e460d928bf6a20a8ce267fa242e7, PR #63. Final diff adds docs/CANONICAL-MAP-INSPECTION-UX.md and QA/CANONICAL-MAP-INSPECTION-MATRIX.md only. It defines natural-name/grid-ref hierarchy, inspect-vs-travel behaviour, legend/symbol semantics, zoom decluttering, shared-hex handling, hidden-site protection, PROPOSED-label exclusion, dynamic overlay priority and screen-reader map summaries. Consumes Map Canon v1 exactly; no canonical geography or runtime files changed. Remaining external condition is Agent 7 approval; fresh map-inspection-ux-authoring claim required before later edits or final merge preparation."
     },
     {
       "id": "LR-0121",
@@ -3239,5 +3239,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T18:25:00+11:00"
+  "updated_at": "2026-10-04T18:38:00+11:00"
 }
