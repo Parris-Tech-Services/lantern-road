@@ -3358,7 +3358,7 @@
         "tests/aed-report.test.mjs",
         "docs/ARCHITECTURE-MODULARISATION-PLAN.md"
       ],
-      "notes": "Josh explicitly asked AED to solve the review/merge bottleneck and shared game.js collision problem. Operational coordination only; specialist code extraction remains Agent 1 ownership."
+      "notes": "ACTIVE LR-0128: staged architecture IDs reserved on main as LR-0132–LR-0138 to prevent queue races. Remaining reform (drain rule, dependency narrowing, AED flow inbox and LR-0010 parent conversion) is being rebuilt from current main under the live AED claim."
     },
     {
       "id": "LR-0129",
@@ -3437,6 +3437,194 @@
         "QA/MOBILE-AUDIO-CONTROLS-MATRIX.md"
       ],
       "notes": "Author-now Wayfinder audit unlocked by LR-0126 and the existing LR-0003 runtime controls. Agent 4 retains sound design/assets; this task owns player-facing control semantics/accessibility/phone integration only."
+    },
+    {
+      "id": "LR-0132",
+      "title": "Extract core state, persistence-adapter and effect seams",
+      "status": "BLOCKED",
+      "priority": 0,
+      "exclusive_scope": "architecture-core-state-effects",
+      "depends_on": [
+        "LR-0003",
+        "LR-0005",
+        "LR-0006",
+        "LR-0009",
+        "LR-0011",
+        "LR-0013",
+        "LR-0099"
+      ],
+      "primary_agent": 1,
+      "goal": "Create stable browser-compatible core state, persistence-adapter and effect-dispatch boundaries so later specialist modules stop mutating the monolithic runtime directly.",
+      "acceptance_criteria": [
+        "Extract deterministic/pure core helpers and explicit state/effect contracts without player-visible feature changes.",
+        "Consume LR-0011's save contract rather than redesigning persistence.",
+        "Keep static-browser compatibility with no framework/bundler rewrite.",
+        "Add focused contract/unit tests and run the real-browser regression baseline.",
+        "Leave game.js compatibility shims explicit and temporary, with no unrelated feature implementation."
+      ],
+      "likely_files": [
+        "src/core/",
+        "src/save/",
+        "game.js",
+        "tests/",
+        "index.html"
+      ],
+      "notes": "Reserved by LR-0128 staged architecture reform. Architecture-only: preserve player-visible behaviour and specialist ownership. Do not claim until declared dependencies are DONE."
+    },
+    {
+      "id": "LR-0133",
+      "title": "Extract world map and travel model seam",
+      "status": "BLOCKED",
+      "priority": 0,
+      "exclusive_scope": "architecture-world-map-travel",
+      "depends_on": [
+        "LR-0132"
+      ],
+      "primary_agent": 1,
+      "goal": "Separate canonical map/travel model behaviour from canvas/UI rendering so map and responsive-shell work can proceed without changing travel mechanics.",
+      "acceptance_criteria": [
+        "Extract odd-r geometry, tile/location lookup, reveal/neighbour/travel eligibility and travel-state operations behind an explicit model API.",
+        "Do not change canonical geography or player-visible map design.",
+        "Keep canvas/rendering compatibility until the owning UI/map tasks consume the seam.",
+        "Run map/model unit checks plus browser regression."
+      ],
+      "likely_files": [
+        "src/world/",
+        "game.js",
+        "tests/"
+      ],
+      "notes": "Reserved by LR-0128 staged architecture reform. Architecture-only: preserve player-visible behaviour and specialist ownership. Do not claim until declared dependencies are DONE."
+    },
+    {
+      "id": "LR-0134",
+      "title": "Extract party, relationship and dialogue runtime seams",
+      "status": "BLOCKED",
+      "priority": 0,
+      "exclusive_scope": "architecture-party-dialogue",
+      "depends_on": [
+        "LR-0132"
+      ],
+      "primary_agent": 1,
+      "goal": "Create stable party/relationship/actor and dialogue lifecycle boundaries for Leader, companion autonomy and stateful conversation work.",
+      "acceptance_criteria": [
+        "Extract party/relationship state helpers without changing authored character behaviour.",
+        "Separate dialogue lifecycle/state/condition evaluation from authored prose and DOM rendering.",
+        "Expose small explicit APIs suitable for LR-0090, LR-0093 and LR-0125.",
+        "Run focused tests plus browser regression; preserve current saves."
+      ],
+      "likely_files": [
+        "src/party/",
+        "src/dialogue/",
+        "game.js",
+        "tests/"
+      ],
+      "notes": "Reserved by LR-0128 staged architecture reform. Architecture-only: preserve player-visible behaviour and specialist ownership. Do not claim until declared dependencies are DONE."
+    },
+    {
+      "id": "LR-0135",
+      "title": "Extract compact combat and action runtime seam",
+      "status": "BLOCKED",
+      "priority": 0,
+      "exclusive_scope": "architecture-combat-actions",
+      "depends_on": [
+        "LR-0132"
+      ],
+      "primary_agent": 1,
+      "goal": "Move compact-combat lifecycle and action resolution behind a stable module boundary so combat depth/action-economy work no longer edits the general runtime.",
+      "acceptance_criteria": [
+        "Extract combat lifecycle, turn order, action availability/resolution and enemy-decision plumbing without changing balance/content.",
+        "Keep rendering outside the mechanical module.",
+        "Expose extension points for LR-0015 and LR-0098 rather than implementing those features.",
+        "Run focused combat tests plus browser regression."
+      ],
+      "likely_files": [
+        "src/combat/",
+        "src/actions/",
+        "game.js",
+        "tests/"
+      ],
+      "notes": "Reserved by LR-0128 staged architecture reform. Architecture-only: preserve player-visible behaviour and specialist ownership. Do not claim until declared dependencies are DONE."
+    },
+    {
+      "id": "LR-0136",
+      "title": "Extract economy, inventory and service runtime seam",
+      "status": "BLOCKED",
+      "priority": 0,
+      "exclusive_scope": "architecture-economy-services",
+      "depends_on": [
+        "LR-0132"
+      ],
+      "primary_agent": 1,
+      "goal": "Separate inventory, shop/service, rest/resource and pricing operations from settlement rendering for later economy/equipment/injury work.",
+      "acceptance_criteria": [
+        "Extract inventory mutation, buy/sell/service/rest operations behind explicit APIs.",
+        "Preserve Storyteller-owned faction modifier hooks and Mechanist-owned base economy boundaries.",
+        "Do not rebalance prices or add equipment/injury features.",
+        "Run focused economy/state tests plus browser regression."
+      ],
+      "likely_files": [
+        "src/economy/",
+        "game.js",
+        "tests/"
+      ],
+      "notes": "Reserved by LR-0128 staged architecture reform. Architecture-only: preserve player-visible behaviour and specialist ownership. Do not claim until declared dependencies are DONE."
+    },
+    {
+      "id": "LR-0137",
+      "title": "Extract UI/render controller and presentation seam",
+      "status": "BLOCKED",
+      "priority": 0,
+      "exclusive_scope": "architecture-ui-render-shell",
+      "depends_on": [
+        "LR-0132",
+        "LR-0133"
+      ],
+      "primary_agent": 1,
+      "goal": "Separate UI rendering/controller composition from game-state mutation so responsive shell, accessibility and art/audio integration stop colliding with mechanics.",
+      "acceptance_criteria": [
+        "Extract feedback, tabs/modal composition and map-render controller boundaries without redesigning the UI.",
+        "Keep world/map model dependencies inward and prevent DOM dependencies from leaking into model modules.",
+        "Provide stable hooks for LR-0031, LR-0032, LR-0039 and LR-0096.",
+        "Run DOM/static integrity plus phone-size/browser regression."
+      ],
+      "likely_files": [
+        "src/ui/",
+        "src/audio/",
+        "game.js",
+        "style.css",
+        "index.html",
+        "tests/"
+      ],
+      "notes": "Reserved by LR-0128 staged architecture reform. Architecture-only: preserve player-visible behaviour and specialist ownership. Do not claim until declared dependencies are DONE."
+    },
+    {
+      "id": "LR-0138",
+      "title": "Split authored content ownership and narrative/quest data seams",
+      "status": "BLOCKED",
+      "priority": 0,
+      "exclusive_scope": "architecture-content-narrative",
+      "depends_on": [
+        "LR-0133",
+        "LR-0134",
+        "LR-0135",
+        "LR-0136"
+      ],
+      "primary_agent": 1,
+      "goal": "Split content.js by world/actors/systems/narrative responsibility while preserving a compatible aggregate and stable narrative/quest integration seams.",
+      "acceptance_criteria": [
+        "Split authored content into ownership-aligned files while retaining a backwards-compatible CONTENT aggregate during transition.",
+        "Keep canonical geography protected and authored narrative data separate from runtime state mutation.",
+        "Provide stable narrative/quest content seams for Storyteller integrations.",
+        "Run content integrity, module contract and browser regression checks."
+      ],
+      "likely_files": [
+        "content/",
+        "content.js",
+        "src/quests/",
+        "tests/",
+        "index.html"
+      ],
+      "notes": "Reserved by LR-0128 staged architecture reform. Architecture-only: preserve player-visible behaviour and specialist ownership. Do not claim until declared dependencies are DONE."
     }
   ],
   "agent_roster": [
@@ -3499,5 +3687,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T19:24:00+11:00"
+  "updated_at": "2026-10-04T19:47:00+11:00"
 }
