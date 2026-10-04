@@ -79,22 +79,31 @@ function collectHtmlRefs(html) {
 }
 
 function parseServiceWorkerFiles(swSource) {
-  const match = swSource.match(/\bconst\s+FILES\s*=\s*(\[[\s\S]*?\]);/);
-  if (!match) {
-    fail("sw.js: could not find a static const FILES = [...] cache manifest.");
-    return [];
+  const matches = [...swSource.matchAll(/\bconst\s+(FILES|APP_SHELL)\s*=\s*(\[[\s\S]*?\]);/g)];
+  if (!matches.length) {
+    fail("sw.js: could not find a supported static cache manifest (const FILES = [...] or const APP_SHELL = [...]).");
+    return { name: "cache manifest", files: [] };
+  }
+
+  const match = matches.find(candidate =>
+    new RegExp(`\\bcache\\.addAll\\(\\s*${candidate[1]}\\s*\\)`).test(swSource)
+  ) || matches[0];
+
+  const name = match[1];
+  if (!new RegExp(`\\bcache\\.addAll\\(\\s*${name}\\s*\\)`).test(swSource)) {
+    fail(`sw.js: static ${name} array exists but is not passed to cache.addAll(...).`);
   }
 
   try {
-    const value = vm.runInNewContext(`(${match[1]})`, Object.create(null), { timeout: 1000 });
+    const value = vm.runInNewContext(`(${match[2]})`, Object.create(null), { timeout: 1000 });
     if (!Array.isArray(value)) {
-      fail("sw.js: FILES must evaluate to an array.");
-      return [];
+      fail(`sw.js: ${name} must evaluate to an array.`);
+      return { name, files: [] };
     }
-    return value;
+    return { name, files: value };
   } catch (error) {
-    fail(`sw.js: FILES could not be parsed: ${error.message}`);
-    return [];
+    fail(`sw.js: ${name} could not be parsed: ${error.message}`);
+    return { name, files: [] };
   }
 }
 
