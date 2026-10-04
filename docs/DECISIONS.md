@@ -19,6 +19,8 @@ Keep this short. Record decisions that future agents would otherwise relitigate.
 
 | 2026-10-04 | LR-0011 and LR-0013 cannot close on owner assertion: they require verified GitHub Actions evidence/artifacts, Agent 7 evidence review, and Josh's explicit Android phone check. | These are foundation gates for later save-changing work; machine evidence plus a real-device human check is stronger than AI self-attestation. |
 
+| 2026-10-04 | Manual Save and Autosave are separate device-local slots; starting a new campaign may replace Autosave but never overwrites Manual Save unless the player presses Save Manual. | Makes phone resume convenient without turning autosave into a destructive or ambiguous checkpoint. |
+
 ## How to add a decision
 
 Add one row when a task changes architecture, product direction, ownership boundaries, save compatibility, testing policy, or another choice that future agents are likely to revisit.
