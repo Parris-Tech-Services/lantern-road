@@ -1445,7 +1445,7 @@
         "systems/economy/",
         "docs/"
       ],
-      "notes": "Mechanist author-now work feeding LR-0016. Useful even while progression/save/architecture gates are unresolved."
+      "notes": "PARKED 2026-10-04 by Agent 3 under claim-protocol v1.2. Branch: agent/LR-0052-economy-model-authoring-d3b244e9. Exact useful head: 6f2d2c21fd424e77897e73c61c9896bf0a856654. PR #24. Added systems/economy/ECONOMY-BASELINE-MODEL.md only (645 lines); no runtime/save/reward/faction edits. Model inventories current income/costs, quantifies 18-day ration pressure, combat EV and defeat shock, provides four representative campaign budgets, defines early/mid/late target ranges, separates global base economy from LR-0005 faction modifiers, and flags repeatable farming/starvation spiral risks for LR-0016. Acceptance criteria satisfied by authoring; remaining external closure is Director review/merge. Before any content change or merge reconciliation, freshly claim economy-model-authoring."
     },
     {
       "id": "LR-0053",
