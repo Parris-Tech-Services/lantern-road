@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0001",
+  "exclusive_scope": "interaction-feedback",
+  "agent_number": 5,
+  "agent": "The Wayfinder",
+  "session_id": "8390712e-deb8-4bab-b6a6-331d7a6b66eb",
+  "claim_token": "e102224c-ea38-4b1e-bd81-e74ef85246b4",
+  "claimed_at": "2026-10-04T14:33:53+11:00",
+  "expires_at": "2026-10-05T02:33:53+11:00",
+  "branch": "agent/LR-0001-interaction-feedback-8390712e",
+  "note": "Implementing only LR-0001."
+}
