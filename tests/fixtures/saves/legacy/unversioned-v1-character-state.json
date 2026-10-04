@@ -1,0 +1,110 @@
+{
+  "seed": 777777,
+  "rngState": 1234567,
+  "day": 8,
+  "hour": 9,
+  "weather": "wind",
+  "gold": 31,
+  "renown": 11,
+  "fatigue": 1,
+  "position": {
+    "q": 0,
+    "r": 0
+  },
+  "discoveredHexes": {
+    "0,0": true
+  },
+  "discoveredSites": {
+    "hearthwick": true
+  },
+  "inventory": {
+    "rations": 5,
+    "bandage": 2,
+    "lantern_oil": 1,
+    "rope": 1
+  },
+  "factions": {
+    "guild": 0,
+    "wardens": 2,
+    "archive": 1,
+    "veil": -1
+  },
+  "knownRumours": [
+    "lantern_signs"
+  ],
+  "quests": {},
+  "party": [
+    {
+      "id": "garrick",
+      "hp": 10,
+      "guard": 0,
+      "bless": 0
+    },
+    {
+      "id": "mira",
+      "hp": 8,
+      "guard": 0,
+      "bless": 0
+    },
+    {
+      "id": "oren",
+      "hp": 7,
+      "guard": 0,
+      "bless": 0
+    },
+    {
+      "id": "brindle",
+      "hp": 9,
+      "guard": 0,
+      "bless": 0
+    }
+  ],
+  "characterState": {
+    "members": {
+      "garrick": {
+        "loyalty": 2,
+        "memories": [
+          {
+            "id": "held-the-line",
+            "text": "You stood with Garrick.",
+            "day": 4
+          }
+        ]
+      },
+      "mira": {
+        "loyalty": 1,
+        "memories": [
+          {
+            "id": "trusted-mira",
+            "text": "You trusted Mira's judgement.",
+            "day": 6
+          }
+        ]
+      }
+    },
+    "relationships": {
+      "garrick|mira": 1
+    },
+    "seenCampMoments": [
+      "first-fire"
+    ]
+  },
+  "logs": [
+    "Legacy fixture with character state."
+  ],
+  "worldFlags": {
+    "character_fixture": true
+  },
+  "activeScene": null,
+  "combat": null,
+  "ui": {
+    "tab": "party",
+    "focus": {
+      "type": "settlement",
+      "id": "hearthwick"
+    },
+    "dialogue": null,
+    "shop": null
+  },
+  "lastSettlement": "hearthwick"
+}
