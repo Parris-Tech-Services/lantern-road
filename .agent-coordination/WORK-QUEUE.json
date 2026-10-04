@@ -4073,7 +4073,7 @@
     {
       "id": "LR-0153",
       "title": "Record Map Canon v2 expansion decision",
-      "status": "READY",
+      "status": "DONE",
       "priority": 0,
       "primary_agent": 1,
       "exclusive_scope": "map-canon-v2-decision",
@@ -4089,7 +4089,7 @@
       "likely_files": [
         "docs/DECISIONS.md"
       ],
-      "notes": "Josh explicitly approved the 24×18 Map Canon v2 direction on 5 Oct 2026. This task records the durable product decision only; it does not mutate world/map-canon.json, content.js, saves or projection."
+      "notes": "Completed 5 Oct 2026 via PR #119, merge commit ec47fa68d511da8461755708f2504ffac643b094. docs/DECISIONS.md now records Josh-approved Map Canon v2 direction: 24×18 / 432 hexes; preserve all 16 current CANON place ids and embed the current 9×8 world as the developed core province; save-safe position/discovery migration; approximately 3200×2200 atlas with overview/regional/local scales; 6–8 major regions; eventual 40–60 meaningful named locations with roughly 25–30 in the first expansion wave; terrain/route-sensitive travel pacing; and staged specialist ownership. Actual protected grid/projection/canonical-coordinate mutation remains a later dedicated map-canon implementation task. Agent coordination #1186 and Browser regression #35 passed on exact PR head 224ad19370374a4c07627416b621d35df167ed6c."
     }
   ],
   "agent_roster": [
@@ -4152,5 +4152,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-05T10:07:00+11:00"
+  "updated_at": "2026-10-05T10:11:00+11:00"
 }
