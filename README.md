@@ -14,6 +14,21 @@ You lead a party of four adventurers across the Grey March on a real hex map. Yo
 - `sw.js`
 - `LICENSE`
 
+## CI action runtime policy
+
+Lantern Road's GitHub Actions workflows must use Node-24-compatible majors for the core JavaScript actions:
+
+- `actions/checkout@v5+`
+- `actions/setup-node@v5+`
+
+The repository currently uses newer supported majors where available. Run:
+
+```bash
+node scripts/validate-actions-runtime.mjs
+```
+
+The Agent coordination workflow runs the same check automatically so future workflow PRs cannot silently reintroduce deprecated Node-20 action majors.
+
 ## Running It
 
 ### Local
