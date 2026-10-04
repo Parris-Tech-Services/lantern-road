@@ -20,6 +20,12 @@ try {
 }
 
 const allowedStatuses = new Set(["READY", "BLOCKED", "DONE", "CANCELLED"]);
+const roster = Array.isArray(queue.agent_roster) ? queue.agent_roster : [];
+const rosterNumbers = new Set(roster.map(agent => agent.number));
+if (roster.length !== 5) fail(`agent_roster must contain exactly 5 agents; found ${roster.length}.`);
+for (const required of [1, 2, 3, 4, 5]) {
+  if (!rosterNumbers.has(required)) fail(`agent_roster is missing agent ${required}.`);
+}
 const tasks = Array.isArray(queue.tasks) ? queue.tasks : [];
 const byId = new Map();
 const scopeToTasks = new Map();
@@ -34,6 +40,14 @@ for (const task of tasks) {
     fail(`${task.id}: invalid exclusive_scope.`);
   }
   if (!Array.isArray(task.depends_on)) fail(`${task.id}: depends_on must be an array.`);
+  if (!rosterNumbers.has(task.primary_agent)) fail(`${task.id}: primary_agent must be one of the five roster agent numbers.`);
+  if (task.supporting_agents !== undefined) {
+    if (!Array.isArray(task.supporting_agents)) fail(`${task.id}: supporting_agents must be an array when present.`);
+    else for (const agentNumber of task.supporting_agents) {
+      if (!rosterNumbers.has(agentNumber)) fail(`${task.id}: unknown supporting agent ${agentNumber}.`);
+      if (agentNumber === task.primary_agent) fail(`${task.id}: primary agent must not also be a supporting agent.`);
+    }
+  }
 
   const list = scopeToTasks.get(task.exclusive_scope) ?? [];
   list.push(task.id);
@@ -81,8 +95,12 @@ for (const file of claimFiles) {
   if (file !== expectedFile) fail(`${file}: expected filename ${expectedFile}`);
   if (lock.exclusive_scope !== task.exclusive_scope) fail(`${file}: scope does not match queue task.`);
 
-  for (const field of ["session_id", "claim_token", "agent", "claimed_at", "expires_at", "branch"]) {
+  for (const field of ["agent_number", "session_id", "claim_token", "agent", "claimed_at", "expires_at", "branch"]) {
     if (!lock[field]) fail(`${file}: missing ${field}`);
+  }
+
+  if (lock.agent_number !== task.primary_agent) {
+    fail(`${file}: agent_number ${lock.agent_number} does not own ${task.id}; primary_agent is ${task.primary_agent}.`);
   }
 
   if (task.status === "BLOCKED" || task.status === "CANCELLED") {
