@@ -19,6 +19,11 @@ Keep this short. Record decisions that future agents would otherwise relitigate.
 | 2026-10-04 | Director review distinguishes **pillar drift** from local implementation variation; only changes that materially alter or undermine a vision promise, non-goal or recorded decision are design-governance blockers. | Prevents governance from turning ordinary implementation preference into product-direction authority while still catching real identity/scope drift. |
 | 2026-10-04 | Canonical player-facing terminology may differ from legacy internal identifiers; cosmetic governance work must not rename persisted ids/save keys without an owning migration task. | Keeps UI language coherent without creating accidental save-compatibility or cross-agent work. |
 
+| 2026-10-04 | Pure authoring/asset generation may proceed before LR-0010, but second-wave repository/runtime integration must wait for the LR-0010 architecture gate. | Preserves useful parallel work without reopening game.js/style.css collision risk during the grandfathered foundation wave. |
+| 2026-10-04 | LR-0035 Director coherence review precedes LR-0014 Steward integration. | The Director diagnoses/routs design conflicts; the Steward then integrates cross-system fixes, preventing duplicate audits and blurred ownership. |
+| 2026-10-04 | LR-0011 owns save schema/version/migration policy and LR-0016 owns global economy targets; specialist tasks consume those contracts rather than creating parallel persistence or pricing systems. | Keeps save compatibility and balance assumptions coherent across mobile, progression, equipment, injury and encounter work. |
+| 2026-10-04 | Final release-candidate Warden QA must be downstream of all targeted specialist QA passes, not only narrative/combat/mobile checks. | Prevents the final gate from running before interaction, persistence, exploit, quest-state and onboarding risks have been exercised. |
+
 ## How to add a decision
 
 Add one row when a task changes architecture, product direction, ownership boundaries, save compatibility, testing policy, or another choice that future agents are likely to revisit.
