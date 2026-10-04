@@ -1584,7 +1584,7 @@
         "systems/injuries/",
         "docs/"
       ],
-      "notes": "Mechanist author-now input for LR-0018. Distinct from LR-0006's minimal persistent injury hook and LR-0018's eventual runtime recovery loop."
+      "notes": "PARKED 2026-10-04 by Agent 3 under claim-protocol v1.2. Branch: agent/LR-0058-injury-design-authoring-2e341c8a. Exact useful head: 485bbb5364bbbde2d6ec3dc68b100a6bf5b47ede. PR #28. Added systems/injuries/INJURY-CONDITION-RECOVERY-CATALOGUE.md only (1026 lines); no runtime/save/service/price edits. Catalogue preserves one persistent adverse state per hero, defines five injuries plus optional expedition conditions, readable triggers, anti-snowball rules, three recovery routes, LR-0052 economy bands, LR-0057 equipment adaptation, save/migration/narrative hooks and 10 QA scenarios. Acceptance criteria satisfied by authoring; remaining external closure is Director review/merge. Freshly claim injury-design-authoring before any content change or merge reconciliation."
     },
     {
       "id": "LR-0059",
