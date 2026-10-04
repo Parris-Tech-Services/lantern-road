@@ -93,7 +93,7 @@
     {
       "id": "LR-0004",
       "title": "Make the four heroes into persistent characters",
-      "status": "READY",
+      "status": "DONE",
       "priority": 1,
       "exclusive_scope": "character-relationships",
       "depends_on": [],
@@ -108,7 +108,7 @@
         "content.js",
         "game.js"
       ],
-      "notes": "The premium gap analysis identifies personality/emotional weight as the biggest missing ingredient.",
+      "notes": "The premium gap analysis identifies personality/emotional weight as the biggest missing ingredient. Completed by Agent 2 on 4 Oct 2026: persistent trust/memories, party bonds, six camp conversations, personal-story hooks and major-decision reactions merged in PR #2.",
       "primary_agent": 2
     },
     {
