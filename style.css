@@ -404,7 +404,6 @@ footer.note{
   :root{
     --lr-mobile-nav-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
     --lr-mobile-control-clearance: calc(84px + env(safe-area-inset-bottom, 0px));
-    --lr-mobile-feedback-clearance: calc(136px + env(safe-area-inset-bottom, 0px));
   }
   body{
     padding:8px 8px calc(94px + env(safe-area-inset-bottom, 0px));
@@ -528,21 +527,24 @@ footer.note{
 }
 @media (max-width:640px){
   .feedback-root{
-    bottom:var(--lr-mobile-feedback-clearance);
+    top:calc(12px + env(safe-area-inset-top, 0px));
+    bottom:auto;
     width:calc(100% - 16px);
+    transform:translate(-50%, -18px);
+  }
+  .feedback-root.visible{
+    transform:translate(-50%, 0);
   }
 
   /*
    * JoshHub can inject a fixed podcast/settings launcher after this stylesheet.
-   * Keep it above Lantern Road's thumb tabs, and keep the full dock out of the
-   * same action zone. !important is intentional because the injected styles
-   * are appended later and use ID selectors.
+   * On phone, Lantern Road exposes an exact "Settings" surface that those
+   * integrations can mount into, so the separate floating settings gear is
+   * hidden rather than competing with the thumb navigation.
    */
   #jup-reopen,
   #jpd-reopen{
-    bottom:var(--lr-mobile-control-clearance) !important;
-    right:max(8px, env(safe-area-inset-right, 0px)) !important;
-    max-width:calc(100vw - 16px) !important;
+    display:none !important;
   }
   #josh-universal-podcast,
   #josh-podcast-dock{
