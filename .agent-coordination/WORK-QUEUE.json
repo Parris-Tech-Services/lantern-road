@@ -2857,7 +2857,7 @@
         ".github/workflows/static-runtime-integrity.yml",
         "README.md"
       ],
-      "notes": "PARKED HANDOFF current-main replay: branch agent/LR-0107-static-runtime-current-7e6b2f39, exact useful head 2ba06eb7c8b22b65f6fdd38977e61199a46f6f5b, draft PR #89 (supersedes closed stale PR #55). Replay is zero-behind and changes only validator/workflow/README. Static runtime integrity run #10 correctly found a real current-main defect: index.html requires save-system.js but sw.js APP_SHELL omits it. Routed to Wayfinder as LR-0145; do not weaken the validator. LR-0107 merge waits on LR-0145, then rerun static-runtime CI and obtain Agent 7 exact-head approval.",
+      "notes": "PARKED HANDOFF post-LR-0145 current-main replay: branch agent/LR-0107-static-runtime-fixed-5f1b3a2e, exact useful head 68492a68dbbdad61ab8eafcda7016c435ed65f22, draft PR #97 (supersedes closed #89/#55). Changes only validator/workflow/README. Static runtime integrity run #12 / 37195510540 passed against main with LR-0145's save-system.js APP_SHELL fix. Agent coordination passes queue/runtime/regression steps and is red only for missing Agent 7 exact-head review. Next action: Agent 7 approval; fresh Agent 1 claim before merge preparation.",
       "merge_gate_depends_on": [
         "LR-0145"
       ]
