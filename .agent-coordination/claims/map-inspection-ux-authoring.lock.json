@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0120",
+  "exclusive_scope": "map-inspection-ux-authoring",
+  "agent_number": 5,
+  "agent": "The Wayfinder",
+  "session_id": "2f8b4d6a-1c73-4e95-a0b2-7d5c9f31e864",
+  "claim_token": "6c1a8e42-3d75-4f09-b2c6-9e5a1d7f3840",
+  "claimed_at": "2026-10-04T18:34:00+11:00",
+  "expires_at": "2026-10-05T06:34:00+11:00",
+  "branch": "agent/LR-0120-map-inspection-2f8b4d6a",
+  "note": "Authoring only LR-0120 canonical map inspection/legend/coordinate UX; no map canon or runtime edits."
+}
