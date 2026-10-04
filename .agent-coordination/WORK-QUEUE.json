@@ -1855,14 +1855,14 @@
     {
       "id": "LR-0069",
       "title": "Establish Grey March canonical map registry and governance",
-      "status": "READY",
+      "status": "DONE",
       "priority": 0,
       "exclusive_scope": "world-map-canon",
       "depends_on": [],
       "primary_agent": 7,
       "goal": "Freeze a single canonical Grey March geography that maps every existing gameplay hex/location to a stable human grid reference and defines how future map changes are proposed, approved and consumed.",
       "acceptance_criteria": [
-        "Create a canonical machine-readable map registry covering the current 9×8 axial map (q 0–8, r 0–7) and every existing settlement/site, with a deterministic human grid reference A–I / 1–8 derived from q/r.",
+        "Create a canonical machine-readable map registry covering the current 9×8 pointy-top odd-r offset map (q 0–8, r 0–7) and every existing settlement/site, with a deterministic human grid reference A–I / 1–8 derived from q/r.",
         "Preserve all existing canonical settlement/site ids, names and q/r coordinates unless Josh explicitly approves a lore/geography change.",
         "Define map-canon statuses so labels visible only in generated concept art begin as PROPOSED rather than silently becoming canon.",
         "Document ownership: Director governs canon; Steward enforces schema/CI and rendering architecture; Storyteller reconciles lore/names; Lamplighter owns terrain atlas art; Wayfinder owns phone map interaction; Warden independently verifies player-visible geography.",
@@ -1878,12 +1878,12 @@
         "docs/DECISIONS.md",
         "AGENTS.md"
       ],
-      "notes": "Created by Agent 7 from Josh's explicit request to canonise Agent 4's Grey March map direction and prevent agents from randomly changing geography."
+      "notes": "Created by Agent 7 from Josh's explicit request to canonise Agent 4's Grey March map direction and prevent agents from randomly changing geography. Director verification corrected the earlier shorthand: the implementation uses q/r fields in a pointy-top odd-r offset grid and converts to cube coordinates for distance; it is not pure axial storage. Completed 4 Oct 2026 via PR #36; all 16 existing settlements/sites were preserved exactly, Map Canon v1 and the change protocol were merged, and Agent coordination run 299 passed on the exact PR head."
     },
     {
       "id": "LR-0070",
       "title": "Enforce map canon schema and protected geography in CI",
-      "status": "BLOCKED",
+      "status": "READY",
       "priority": 0,
       "exclusive_scope": "map-canon-enforcement",
       "depends_on": [
@@ -1892,7 +1892,7 @@
       "primary_agent": 1,
       "goal": "Make the canonical Grey March registry technically enforceable so ordinary feature PRs cannot silently rename, move, duplicate or orphan canonical places.",
       "acceptance_criteria": [
-        "Add a schema/validator for world/map-canon.json covering unique ids, unique canonical grid positions, valid A–I/1–8 derived references, recognised canon statuses and valid place types.",
+        "Add a schema/validator for world/map-canon.json covering unique ids, valid in-bounds q/r, correctly derived A–I/1–8 references, recognised canon statuses and valid place types; allow explicit shared-hex occupancy.",
         "Cross-check canonical settlement/site ids, names and q/r values against gameplay content until LR-0073 establishes a cleaner shared data path.",
         "Fail CI when an ordinary PR changes canonical place identity/coordinates without dedicated map-canon change metadata and fresh Director approval.",
         "Allow non-canonical PROPOSED art/lore labels to exist without becoming gameplay canon.",
@@ -1905,12 +1905,12 @@
         ".github/workflows/",
         ".agent-coordination/"
       ],
-      "notes": "Steward enforcement counterpart to LR-0069. Does not choose geography or names."
+      "notes": "Steward enforcement counterpart to LR-0069. Does not choose geography or names. Important: current canon intentionally allows multiple authored locations in one gameplay hex, so enforcement must not impose one-place-per-hex."
     },
     {
       "id": "LR-0071",
       "title": "Reconcile Grey March regional labels and location lore",
-      "status": "BLOCKED",
+      "status": "READY",
       "priority": 1,
       "exclusive_scope": "map-lore-reconciliation",
       "depends_on": [
@@ -1934,7 +1934,7 @@
     {
       "id": "LR-0072",
       "title": "Produce clean Grey March canonical terrain atlas",
-      "status": "BLOCKED",
+      "status": "READY",
       "priority": 1,
       "exclusive_scope": "grey-march-terrain-atlas",
       "depends_on": [
@@ -2376,5 +2376,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T16:27:00+11:00"
+  "updated_at": "2026-10-04T16:12:00+11:00"
 }
