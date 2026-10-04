@@ -1,6 +1,6 @@
 # Lantern Road multi-agent claim protocol
 
-Version: 1.0  
+Version: 1.1  
 Effective: 4 October 2026
 
 ## Goal
@@ -26,7 +26,7 @@ The queue is for task discovery and lifecycle. It is **not** the source of truth
 ## Claim algorithm
 
 1. Read `AGENTS.md`, this file, and `WORK-QUEUE.json`.
-2. Select a `READY` task whose `depends_on` tasks are all `DONE`.
+2. Confirm your assigned agent number in the queue roster, then select a `READY` task whose `depends_on` tasks are all `DONE` and whose `primary_agent` equals your agent number. A task may only move to another agent if Josh explicitly reassigns it or the queue's `primary_agent` is deliberately changed.
 3. Generate:
    - fresh UUIDv4 `session_id`
    - fresh UUIDv4 `claim_token`
@@ -37,6 +37,7 @@ The queue is for task discovery and lifecycle. It is **not** the source of truth
 8. Verify all of these fields match what you just created:
    - `task_id`
    - `exclusive_scope`
+   - `agent_number`
    - `session_id`
    - `claim_token`
 9. Create a feature branch from the current `main`:
@@ -52,7 +53,8 @@ Example:
   "schema_version": 1,
   "task_id": "LR-0004",
   "exclusive_scope": "character-relationships",
-  "agent": "ChatGPT Agent 4",
+  "agent_number": 2,
+  "agent": "The Storyteller",
   "session_id": "UUIDV4",
   "claim_token": "UUIDV4",
   "claimed_at": "2026-10-04T14:20:00+11:00",
@@ -63,6 +65,14 @@ Example:
 ```
 
 Use a 12-hour lease. If work continues longer, the owning agent may update only its own lock, preserving the same `session_id` and `claim_token`, and move `expires_at` forward by no more than another 12 hours.
+
+## Role ownership
+
+Every queue task has a `primary_agent`. The claim lock must contain the same integer as `agent_number`. This prevents an agent from accidentally claiming work belonging to another specialist role.
+
+A `supporting_agents` entry permits consultation, review or coordination only. It does not grant a second implementation claim on the primary task or its exclusive scope.
+
+If work genuinely needs to move to another role, change the queue deliberately first or receive an explicit reassignment from Josh; do not simply claim across roles.
 
 ## What counts as the same feature
 
