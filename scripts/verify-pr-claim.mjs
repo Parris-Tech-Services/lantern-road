@@ -206,14 +206,32 @@ if (branchLocks.length === 0) {
   if (!notes.includes(branch)) {
     fail(`${task.id}: parked queue notes do not name this PR branch "${branch}".`);
   }
-  if (!notes.includes(director.reviewedHead)) {
-    fail(`${task.id}: parked queue notes do not name the exact reviewed useful head ${director.reviewedHead}.`);
+  const parkedUsefulHeads = [director.reviewedHead];
+  try {
+    const reviewParent = git(["rev-parse", `${director.reviewedHead}^`]);
+    const reviewChanges = git(["diff", "--name-only", reviewParent, director.reviewedHead])
+      .split("\n")
+      .filter(Boolean);
+    const expectedMapCanonReview = `.agent-coordination/map-canon-reviews/${task.id}.json`;
+    if (reviewChanges.length === 1 && reviewChanges[0] === expectedMapCanonReview) {
+      parkedUsefulHeads.push(reviewParent);
+    }
+  } catch {
+    // Ordinary parked approvals need only the direct reviewed head.
+  }
+
+  const parkedHead = parkedUsefulHeads.find(candidate => notes.includes(candidate));
+  if (!parkedHead) {
+    fail(
+      `${task.id}: parked queue notes do not name an accepted reviewed useful head. ` +
+      `Expected one of: ${parkedUsefulHeads.join(", ")}.`
+    );
   }
 
   assertMergeGatesComplete();
 
   console.log(
-    `Parked PR Director approval verified without idle lock: ${task.id} / ${task.exclusive_scope} / ${branch} / reviewed ${director.reviewedHead}`
+    `Parked PR Director approval verified without idle lock: ${task.id} / ${task.exclusive_scope} / ${branch} / reviewed ${director.reviewedHead} / parked useful head ${parkedHead}`
   );
   process.exit(0);
 }
