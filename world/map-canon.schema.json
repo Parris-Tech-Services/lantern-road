@@ -1,0 +1,175 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://parris-tech-services.github.io/lantern-road/world/map-canon.schema.json",
+  "title": "Lantern Road Grey March Map Canon",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "canon_version",
+    "region",
+    "status_vocabulary",
+    "places",
+    "concept_regional_labels",
+    "invariants"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "canon_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "region": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "width",
+        "height",
+        "coordinate_system",
+        "human_grid",
+        "atlas_projection"
+      ],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "width": { "type": "integer", "minimum": 1 },
+        "height": { "type": "integer", "minimum": 1 },
+        "coordinate_system": {
+          "type": "object",
+          "required": ["storage", "implementation_fields", "q_range", "r_range"],
+          "properties": {
+            "storage": { "const": "odd-r offset" },
+            "implementation_fields": {
+              "type": "array",
+              "prefixItems": [{ "const": "q" }, { "const": "r" }],
+              "items": false
+            },
+            "note": { "type": "string" },
+            "q_range": {
+              "type": "array",
+              "prefixItems": [{ "type": "integer" }, { "type": "integer" }],
+              "items": false
+            },
+            "r_range": {
+              "type": "array",
+              "prefixItems": [{ "type": "integer" }, { "type": "integer" }],
+              "items": false
+            }
+          }
+        },
+        "human_grid": {
+          "type": "object",
+          "required": ["columns", "rows", "formula"],
+          "properties": {
+            "columns": {
+              "type": "array",
+              "items": { "type": "string", "minLength": 1 },
+              "minItems": 1
+            },
+            "rows": {
+              "type": "array",
+              "items": { "type": "integer", "minimum": 1 },
+              "minItems": 1
+            },
+            "formula": { "type": "string", "minLength": 1 },
+            "visual_note": { "type": "string" }
+          }
+        },
+        "atlas_projection": {
+          "type": "object",
+          "required": ["orientation", "offset_layout", "logical_canvas", "hex_size", "center_formula", "scaling_rule"],
+          "properties": {
+            "orientation": { "const": "pointy-top" },
+            "offset_layout": { "const": "odd-r" },
+            "logical_canvas": {
+              "type": "object",
+              "required": ["width", "height", "aspect_ratio"],
+              "properties": {
+                "width": { "type": "number", "exclusiveMinimum": 0 },
+                "height": { "type": "number", "exclusiveMinimum": 0 },
+                "aspect_ratio": { "type": "string", "minLength": 1 }
+              }
+            },
+            "hex_size": { "type": "number", "exclusiveMinimum": 0 },
+            "center_formula": {
+              "type": "object",
+              "required": ["x", "y"],
+              "properties": {
+                "x": { "type": "string", "minLength": 1 },
+                "y": { "type": "string", "minLength": 1 }
+              }
+            },
+            "scaling_rule": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    },
+    "status_vocabulary": {
+      "type": "object",
+      "required": ["CANON", "PROPOSED", "RETIRED"],
+      "properties": {
+        "CANON": { "type": "string" },
+        "PROPOSED": { "type": "string" },
+        "RETIRED": { "type": "string" }
+      }
+    },
+    "places": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "place_type",
+          "kind",
+          "q",
+          "r",
+          "grid_ref",
+          "status",
+          "hidden"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9_]+$"
+          },
+          "name": { "type": "string", "minLength": 1 },
+          "place_type": {
+            "enum": ["settlement", "site"]
+          },
+          "kind": { "type": "string", "minLength": 1 },
+          "q": { "type": "integer" },
+          "r": { "type": "integer" },
+          "grid_ref": { "type": "string", "minLength": 2 },
+          "status": {
+            "enum": ["CANON", "PROPOSED", "RETIRED"]
+          },
+          "starting_location": { "type": "boolean" },
+          "hidden": { "type": "boolean" }
+        }
+      }
+    },
+    "concept_regional_labels": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "status", "source"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "status": { "const": "PROPOSED" },
+          "source": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "invariants": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    }
+  }
+}
