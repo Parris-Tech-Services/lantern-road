@@ -2979,7 +2979,7 @@
     {
       "id": "LR-0114",
       "title": "Audit role boundaries and workload balance",
-      "status": "READY",
+      "status": "DONE",
       "priority": 1,
       "exclusive_scope": "aed-role-workload-audit",
       "depends_on": [],
@@ -2995,7 +2995,7 @@
         "audit/AED-ROLE-BALANCE.md",
         ".agent-coordination/WORK-QUEUE.json"
       ],
-      "notes": "AED task. Operational efficiency work only; do not take over a live specialist claim or create a new product/design approval gate."
+      "notes": "Merged via PR #69 at 7c73fddfa2f3a3c3b35c28cec7fe8740380e4d0b. audit/AED-ROLE-BALANCE.md separates raw from actionable workload, records overlap boundaries and routes future operational work to AED without reassigning live specialist claims."
     },
     {
       "id": "LR-0115",
@@ -3335,5 +3335,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T19:08:00+11:00"
+  "updated_at": "2026-10-04T19:12:00+11:00"
 }
