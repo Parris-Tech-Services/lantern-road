@@ -80,3 +80,24 @@ Static runtime integrity OK: 5 local HTML resources, 9 service-worker cache entr
 ```
 
 This confirms the prior LR-0107 failure for missing `save-system.js` in `APP_SHELL` is resolved without weakening the validator.
+
+
+## Current-main rebuild verification
+
+The hotfix was rebuilt from the then-current `main` after stale PR #90 was closed.
+
+GitHub Actions run: **37193340901**  
+Artifact: **11300176435** — `lr0145-current-main-verification`  
+Tested workflow head: **24b978b935e21680e802c6e335a96c7de8aa197f**
+
+Observed:
+
+```text
+Static runtime integrity OK: 5 local HTML resources, 9 service-worker cache entries, 18 first-party JavaScript files syntax-checked.
+PASS app shell contains save-system.js
+PASS first-install offline reload initialises LanternRoadSave and the game
+PASS offline campaign location: Hearthwick
+LR-0145 CURRENT-MAIN OFFLINE APP-SHELL TEST: PASS
+```
+
+This is the authoritative current-main replay for LR-0145.
