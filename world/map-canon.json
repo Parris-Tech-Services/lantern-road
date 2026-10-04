@@ -1,0 +1,310 @@
+{
+  "schema_version": 1,
+  "canon_version": "grey-march-map-v1",
+  "region": {
+    "id": "grey_march",
+    "name": "The Grey March",
+    "width": 9,
+    "height": 8,
+    "coordinate_system": {
+      "storage": "odd-r offset",
+      "implementation_fields": [
+        "q",
+        "r"
+      ],
+      "note": "Existing game code converts odd-r offset q/r to cube coordinates for distance. Do not reinterpret persisted q/r as pure axial coordinates.",
+      "q_range": [
+        0,
+        8
+      ],
+      "r_range": [
+        0,
+        7
+      ]
+    },
+    "human_grid": {
+      "columns": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I"
+      ],
+      "rows": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "formula": "grid_ref = columns[q] + String(r + 1)",
+      "visual_note": "Odd-numbered storage rows (r = 1,3,5,7) are rendered half a hex to the right, matching the existing pointy-top odd-r layout."
+    },
+    "atlas_projection": {
+      "orientation": "pointy-top",
+      "offset_layout": "odd-r",
+      "logical_canvas": {
+        "width": 1200,
+        "height": 900,
+        "aspect_ratio": "4:3"
+      },
+      "hex_size": 65,
+      "center_formula": {
+        "x": "65 * sqrt(3) * (q + 0.5 * (r & 1)) + 104",
+        "y": "65 * 1.5 * r + 110.5"
+      },
+      "scaling_rule": "The logical canvas may scale and pan/zoom, but the q/r-to-logical-coordinate formula is stable. Gameplay hit-testing uses q/r geometry, never painted pixels."
+    }
+  },
+  "status_vocabulary": {
+    "CANON": "Approved gameplay geography. Name/id/q/r are protected map canon.",
+    "PROPOSED": "Candidate name or geography. May appear in concept/lore working files but is not gameplay canon.",
+    "RETIRED": "Historical canonical geography deliberately removed through an approved map-canon change; id remains reserved."
+  },
+  "places": [
+    {
+      "id": "hearthwick",
+      "name": "Hearthwick",
+      "place_type": "settlement",
+      "kind": "village",
+      "q": 1,
+      "r": 5,
+      "grid_ref": "B6",
+      "status": "CANON",
+      "starting_location": true,
+      "hidden": false
+    },
+    {
+      "id": "greyfen",
+      "name": "Greyfen Market",
+      "place_type": "settlement",
+      "kind": "town",
+      "q": 4,
+      "r": 4,
+      "grid_ref": "E5",
+      "status": "CANON",
+      "hidden": false
+    },
+    {
+      "id": "candlemere",
+      "name": "Candlemere",
+      "place_type": "settlement",
+      "kind": "scholar-town",
+      "q": 7,
+      "r": 2,
+      "grid_ref": "H3",
+      "status": "CANON",
+      "hidden": false
+    },
+    {
+      "id": "alderwatch",
+      "name": "Alderwatch",
+      "place_type": "settlement",
+      "kind": "warden-post",
+      "q": 7,
+      "r": 6,
+      "grid_ref": "H7",
+      "status": "CANON",
+      "hidden": false
+    },
+    {
+      "id": "blacksalt",
+      "name": "Blacksalt Crossing",
+      "place_type": "settlement",
+      "kind": "river-port",
+      "q": 3,
+      "r": 7,
+      "grid_ref": "D8",
+      "status": "CANON",
+      "hidden": false
+    },
+    {
+      "id": "watchers_rest",
+      "name": "Watcher's Rest",
+      "place_type": "site",
+      "kind": "inn",
+      "q": 1,
+      "r": 1,
+      "grid_ref": "B2",
+      "status": "CANON",
+      "hidden": false
+    },
+    {
+      "id": "saint_rhel",
+      "name": "Saint Rhel's Shrine",
+      "place_type": "site",
+      "kind": "shrine",
+      "q": 2,
+      "r": 3,
+      "grid_ref": "C4",
+      "status": "CANON",
+      "hidden": false
+    },
+    {
+      "id": "old_barrow",
+      "name": "Old Barrow Keep",
+      "place_type": "site",
+      "kind": "ruin",
+      "q": 5,
+      "r": 3,
+      "grid_ref": "F4",
+      "status": "CANON",
+      "hidden": false
+    },
+    {
+      "id": "broken_span",
+      "name": "Broken Span",
+      "place_type": "site",
+      "kind": "bridge",
+      "q": 3,
+      "r": 5,
+      "grid_ref": "D6",
+      "status": "CANON",
+      "hidden": false
+    },
+    {
+      "id": "weeping_stones",
+      "name": "Weeping Stones",
+      "place_type": "site",
+      "kind": "wild",
+      "q": 6,
+      "r": 4,
+      "grid_ref": "G5",
+      "status": "CANON",
+      "hidden": false
+    },
+    {
+      "id": "redwater_ferry",
+      "name": "Redwater Ferry",
+      "place_type": "site",
+      "kind": "crossing",
+      "q": 2,
+      "r": 6,
+      "grid_ref": "C7",
+      "status": "CANON",
+      "hidden": false
+    },
+    {
+      "id": "moonmere",
+      "name": "Moonmere Tower",
+      "place_type": "site",
+      "kind": "tower",
+      "q": 8,
+      "r": 4,
+      "grid_ref": "I5",
+      "status": "CANON",
+      "hidden": false
+    },
+    {
+      "id": "mosslight",
+      "name": "Mosslight Ruins",
+      "place_type": "site",
+      "kind": "ruin",
+      "q": 5,
+      "r": 6,
+      "grid_ref": "F7",
+      "status": "CANON",
+      "hidden": false
+    },
+    {
+      "id": "hollowglass",
+      "name": "Hollowglass Cavern",
+      "place_type": "site",
+      "kind": "cave",
+      "q": 4,
+      "r": 1,
+      "grid_ref": "E2",
+      "status": "CANON",
+      "hidden": false
+    },
+    {
+      "id": "pilgrim_ford",
+      "name": "Pilgrim Ford",
+      "place_type": "site",
+      "kind": "ford",
+      "q": 0,
+      "r": 6,
+      "grid_ref": "A7",
+      "status": "CANON",
+      "hidden": true
+    },
+    {
+      "id": "smuggler_cache",
+      "name": "Smuggler's Cache",
+      "place_type": "site",
+      "kind": "cache",
+      "q": 4,
+      "r": 6,
+      "grid_ref": "E7",
+      "status": "CANON",
+      "hidden": true
+    }
+  ],
+  "concept_regional_labels": [
+    {
+      "name": "Ashen Ridge",
+      "status": "PROPOSED",
+      "source": "Josh-approved Grey March concept-map direction, 2026-10-04"
+    },
+    {
+      "name": "Duskwood",
+      "status": "PROPOSED",
+      "source": "Josh-approved Grey March concept-map direction, 2026-10-04"
+    },
+    {
+      "name": "Mourn Lake",
+      "status": "PROPOSED",
+      "source": "Josh-approved Grey March concept-map direction, 2026-10-04"
+    },
+    {
+      "name": "Hollowwold",
+      "status": "PROPOSED",
+      "source": "Josh-approved Grey March concept-map direction, 2026-10-04"
+    },
+    {
+      "name": "Reedmarsh",
+      "status": "PROPOSED",
+      "source": "Josh-approved Grey March concept-map direction, 2026-10-04"
+    },
+    {
+      "name": "Embermere",
+      "status": "PROPOSED",
+      "source": "Josh-approved Grey March concept-map direction, 2026-10-04"
+    },
+    {
+      "name": "Siltbrook Marsh",
+      "status": "PROPOSED",
+      "source": "Josh-approved Grey March concept-map direction, 2026-10-04"
+    },
+    {
+      "name": "Wyrthen Forest",
+      "status": "PROPOSED",
+      "source": "Josh-approved Grey March concept-map direction, 2026-10-04"
+    },
+    {
+      "name": "Blackfen Plains",
+      "status": "PROPOSED",
+      "source": "Josh-approved Grey March concept-map direction, 2026-10-04"
+    },
+    {
+      "name": "Stoneveil Mountains",
+      "status": "PROPOSED",
+      "source": "Josh-approved Grey March concept-map direction, 2026-10-04"
+    }
+  ],
+  "invariants": [
+    "Every CANON place id is stable and unique.",
+    "Every CANON place grid_ref is derived from q/r; agents do not hand-edit it independently.",
+    "Multiple places may intentionally share one gameplay hex; shared occupancy is not itself an error.",
+    "Generated-art text is never canon merely because it appears in an image.",
+    "Gameplay-critical labels, roads, sites, party position, discoveries/fog, quest markers and mutable world changes are dynamic overlays, not baked into the terrain atlas.",
+    "A raster atlas may be replaced without changing canonical q/r coordinates or save-state semantics."
+  ]
+}
