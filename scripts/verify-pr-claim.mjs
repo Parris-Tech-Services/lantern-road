@@ -170,8 +170,9 @@ function inspectDirectorApproval() {
   };
 }
 
+const reviewCapable = [1, 2, 3, 4, 5].includes(task.primary_agent);
 const needsDirectorReview = task.director_review === "REQUIRED";
-const director = needsDirectorReview ? inspectDirectorApproval() : null;
+const director = reviewCapable ? inspectDirectorApproval() : null;
 
 function assertMergeGatesComplete() {
   const incompleteGates = (task.merge_gate_depends_on ?? []).filter(
@@ -214,6 +215,13 @@ if (branchLocks.length === 0) {
 
     console.log(
       `Parked REQUIRED-review PR verified for direct merge without owner re-claim: ${task.id} / ${task.exclusive_scope} / ${branch} / reviewed ${director.reviewedHead}`
+    );
+    process.exit(0);
+  }
+
+  if (director?.valid && notes.includes(director.reviewedHead)) {
+    console.log(
+      `Parked NOT_REQUIRED-review PR with optional legacy Director approval verified for direct merge: ${task.id} / ${task.exclusive_scope} / ${branch} / reviewed ${director.reviewedHead}`
     );
     process.exit(0);
   }
