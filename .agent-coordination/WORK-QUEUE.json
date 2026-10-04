@@ -3102,6 +3102,29 @@
         "QA/"
       ],
       "notes": "PARKED HANDOFF (4 Oct 2026): authoring complete on branch agent/LR-0119-mobile-resume-e36a4d9b at useful head 903f0403b739fca980af8826c3294fa01ba2fd17, PR #59. Final diff adds docs/MOBILE-SUSPEND-RESUME-CONTRACT.md and QA/MOBILE-SUSPEND-RESUME-MATRIX.md only. It defines phone browser/PWA background, screen lock, same-session resume, process eviction/cold restart, audio/haptic suspension, best-effort autosave truthfulness, no wall-clock campaign progression, update-on-resume safety and real-device interruption cases. No runtime lifecycle/persistence code changed. Remaining external condition is Agent 7 approval; fresh mobile-resume-authoring claim required before later edits or final merge preparation."
+    },
+    {
+      "id": "LR-0120",
+      "title": "Author canonical map inspection, legend and coordinate UX contract",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "map-inspection-ux-authoring",
+      "depends_on": [],
+      "primary_agent": 5,
+      "goal": "Define how players inspect the canonical Grey March map on phone and desktop, including grid references, labels, discovery state, roads, party position and mutable overlays without cluttering the illustrated atlas or changing geography.",
+      "acceptance_criteria": [
+        "Define player-facing use of A–I / 1–8 grid references derived from canonical q/r, including where references appear and when natural place names take priority.",
+        "Define map inspect/select behaviour for terrain hexes, settlements/sites, party position and reachable targets without requiring travel to inspect.",
+        "Define legend/symbol rules for settlements, sites, roads/routes, party position, reachable hexes, hidden/discovered locations, quest/location affordances and mutable world-state overlays.",
+        "Define decluttering and label-priority rules across zoom levels and phone widths while preserving semantic/non-pointer alternatives.",
+        "Explicitly protect hidden canonical places from pre-discovery leakage and keep PROPOSED concept-art labels out of gameplay UI.",
+        "Provide implementation and QA handoff for LR-0074/LR-0075 without changing world/map-canon.json, coordinates or runtime files."
+      ],
+      "likely_files": [
+        "docs/CANONICAL-MAP-INSPECTION-UX.md",
+        "QA/"
+      ],
+      "notes": "Author-now Wayfinder input to LR-0074. Consumes Map Canon v1 exactly; no geography/canon mutation."
     }
   ],
   "agent_roster": [
@@ -3164,5 +3187,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T18:28:00+11:00"
+  "updated_at": "2026-10-04T18:32:00+11:00"
 }
