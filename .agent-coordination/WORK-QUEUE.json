@@ -20,7 +20,10 @@
     "Warden findings must include reproduction steps/evidence, severity, player impact and the recommended owner agent. Check the existing queue before creating a new task.",
     "Small PR policy: one claimed task/scope per PR; avoid unrelated refactors. Split broad work into follow-up tasks instead of creating giant integration PRs.",
     "Subjective quality policy: agents may report evidence about clarity, pacing, repetition and friction, but Josh is the creative director and final judge of fun/premium feel.",
-    "All black-box Warden QA must drive a real browser (Playwright, agent-browser or equivalent). Reading source/DOM alone is not a playtest."
+    "All black-box Warden QA must drive a real browser (Playwright, agent-browser or equivalent). Reading source/DOM alone is not a playtest.",
+    "Agent 7 — The Director owns design governance, not specialist implementation. It reviews work against docs/VISION.md, docs/DECISIONS.md and canonical terminology, flags cross-task conflicts, and proposes queue/dependency corrections.",
+    "Josh remains final creative director. The Director may protect and interpret established pillars but must not materially change product direction without Josh's approval.",
+    "Before a specialist feature PR is treated as merge-ready, The Director should perform a design-coherence review and record any blocking conflict or terminology/tone issue in the PR or queue."
   ],
   "tasks": [
     {
@@ -867,6 +870,110 @@
         "docs/AUDIO-DIRECTION.md"
       ],
       "notes": "Second-wave Lamplighter task discovered during LR-0003. This is authored production audio and music, not a duplicate of the browser-audio foundation."
+    },
+    {
+      "id": "LR-0033",
+      "title": "Design governance baseline and terminology bible",
+      "status": "READY",
+      "priority": 0,
+      "exclusive_scope": "design-governance-baseline",
+      "depends_on": [],
+      "primary_agent": 7,
+      "goal": "Turn the product vision into a compact working design bible so every agent uses the same pillars, terminology, tone and product boundaries.",
+      "acceptance_criteria": [
+        "Review docs/VISION.md and docs/DECISIONS.md for contradictions, ambiguity and missing ownership boundaries.",
+        "Create a concise canonical terminology/tone guide covering world, party, factions, UI language, combat/progression vocabulary and naming conventions.",
+        "Define what counts as pillar drift versus an acceptable implementation variation.",
+        "Record a short design-review checklist that can be applied to every specialist PR.",
+        "Do not materially change product direction without explicit approval from Josh."
+      ],
+      "likely_files": [
+        "docs/VISION.md",
+        "docs/DECISIONS.md",
+        "docs/TERMINOLOGY.md",
+        ".agent-coordination/DESIGN-REVIEW-PROTOCOL.md"
+      ],
+      "notes": "Priority-0 Director foundation. Establishes the shared language and review standard; does not implement gameplay features."
+    },
+    {
+      "id": "LR-0034",
+      "title": "Cross-task conflict and dependency audit",
+      "status": "READY",
+      "priority": 0,
+      "exclusive_scope": "design-conflict-audit",
+      "depends_on": [],
+      "primary_agent": 7,
+      "goal": "Audit the whole Lantern Road work queue for hidden overlap, contradictory acceptance criteria, shared-file collision risk and missing dependencies before they become merge problems.",
+      "acceptance_criteria": [
+        "Review every non-DONE task against all other active/blocked tasks for overlapping ownership or contradictory goals.",
+        "Flag collisions in pricing/economy, save state, terminology, UI presentation, narrative consequence and other shared systems.",
+        "Add or adjust dependencies/ownership boundaries only where the conflict is concrete and documented.",
+        "Do not duplicate existing tasks; merge or clarify ambiguous scopes instead.",
+        "Record important governance decisions in docs/DECISIONS.md."
+      ],
+      "likely_files": [
+        ".agent-coordination/WORK-QUEUE.json",
+        "docs/DECISIONS.md"
+      ],
+      "notes": "Director-owned production/design audit. This is a coordination task, not code refactoring."
+    },
+    {
+      "id": "LR-0035",
+      "title": "First-wave design coherence review",
+      "status": "BLOCKED",
+      "priority": 1,
+      "exclusive_scope": "design-first-wave-review",
+      "depends_on": [
+        "LR-0005",
+        "LR-0006",
+        "LR-0009",
+        "LR-0010",
+        "LR-0011",
+        "LR-0013"
+      ],
+      "primary_agent": 7,
+      "goal": "Review the first specialist wave as one game and identify where individually good features have drifted apart in tone, terminology, player promises or product identity.",
+      "acceptance_criteria": [
+        "Review the merged character, consequence, progression, visual/audio and mobile foundations against all five design pillars.",
+        "Check terminology and tone consistency across UI, narrative, system labels and player feedback.",
+        "Identify cross-system promises that conflict, duplicate or undermine each other.",
+        "Route concrete implementation fixes to the responsible specialist rather than making broad feature changes inside this review.",
+        "Escalate genuinely subjective creative-direction decisions to Josh."
+      ],
+      "likely_files": [
+        "docs/",
+        "QA/",
+        ".agent-coordination/WORK-QUEUE.json"
+      ],
+      "notes": "Design review after the foundation wave. Agent 7 diagnoses and routes; specialists implement."
+    },
+    {
+      "id": "LR-0036",
+      "title": "Release design cohesion and scope audit",
+      "status": "BLOCKED",
+      "priority": 3,
+      "exclusive_scope": "design-release-cohesion",
+      "depends_on": [
+        "LR-0014",
+        "LR-0020",
+        "LR-0030",
+        "LR-0035"
+      ],
+      "primary_agent": 7,
+      "goal": "Perform the final design/production audit before release candidate sign-off, separating genuine product-identity problems from optional polish and scope creep.",
+      "acceptance_criteria": [
+        "Audit the release candidate against the five pillars, non-goals, terminology guide and decision log.",
+        "Identify tone drift, inconsistent terminology, duplicated systems, unresolved task conflicts and features that no longer justify their complexity.",
+        "Classify findings as release-blocking coherence issues, post-release polish, or intentional design variation.",
+        "Make no claim that the game is objectively fun; present creative trade-offs for Josh's final decision.",
+        "Produce a concise final design-cohesion recommendation for Josh."
+      ],
+      "likely_files": [
+        "docs/",
+        "QA/",
+        ".agent-coordination/WORK-QUEUE.json"
+      ],
+      "notes": "Final Director gate. Josh retains final creative sign-off."
     }
   ],
   "agent_roster": [
@@ -899,6 +1006,11 @@
       "number": 6,
       "name": "The Warden",
       "role": "QA, black-box playtesting and player experience. Repeatedly plays Lantern Road, tries to break it, identifies bugs, exploits, confusion, tedium, pacing and fun problems, and routes reproducible findings back to the appropriate specialist rather than implementing feature fixes."
+    },
+    {
+      "number": 7,
+      "name": "The Director",
+      "role": "Design direction and production governance. Owns the product vision, terminology and decision log; reviews feature work for pillar alignment, tone/coherence, scope drift and cross-task conflicts; does not replace Josh as final creative director."
     }
   ],
   "foundation_gates": {
