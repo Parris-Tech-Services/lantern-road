@@ -2959,7 +2959,7 @@
     {
       "id": "LR-0113",
       "title": "Build agent tooling and capability matrix",
-      "status": "READY",
+      "status": "DONE",
       "priority": 0,
       "exclusive_scope": "aed-agent-tooling-matrix",
       "depends_on": [],
@@ -2974,7 +2974,7 @@
       "likely_files": [
         "audit/AED-AGENT-TOOLING.md"
       ],
-      "notes": "AED task. Operational efficiency work only; do not take over a live specialist claim or create a new product/design approval gate."
+      "notes": "Merged via PR #68 at e9b07fbebab7c64dfd164800b3340256b1f7d14d. audit/AED-AGENT-TOOLING.md documents role-by-role required capabilities, gaps and fallback/handoff paths for browser QA, image/audio production, CI evidence and Josh-only Android validation."
     },
     {
       "id": "LR-0114",
@@ -3335,5 +3335,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T19:04:00+11:00"
+  "updated_at": "2026-10-04T19:08:00+11:00"
 }
