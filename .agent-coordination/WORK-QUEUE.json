@@ -1210,7 +1210,7 @@
     {
       "id": "LR-0043",
       "title": "Author the 18-day campaign beat sheet and ending matrix",
-      "status": "READY",
+      "status": "DONE",
       "priority": 1,
       "exclusive_scope": "campaign-authoring",
       "depends_on": [
@@ -1229,7 +1229,7 @@
         "story/campaign/",
         "docs/"
       ],
-      "notes": "Pure Storyteller authoring. No runtime/save changes. LR-0008 later integrates this material after foundation gates."
+      "notes": "Pure Storyteller authoring. No runtime/save changes. LR-0008 later integrates this material after foundation gates. Completed 4 Oct 2026 via PR #10: authored full 18-day campaign beat sheet and ending matrix; Director approved exact content head; CI passed."
     },
     {
       "id": "LR-0044",
