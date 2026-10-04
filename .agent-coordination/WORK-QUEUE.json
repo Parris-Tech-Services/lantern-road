@@ -1392,7 +1392,7 @@
     {
       "id": "LR-0050",
       "title": "Service-worker cache freshness hotfix",
-      "status": "READY",
+      "status": "DONE",
       "priority": 0,
       "exclusive_scope": "service-worker-freshness",
       "depends_on": [],
@@ -1410,7 +1410,7 @@
         "QA/",
         "docs/"
       ],
-      "notes": "PARKED HANDOFF (4 Oct 2026): implementation complete on branch agent/LR-0050-service-worker-freshness-1b42d3c5 at head 6b973bf479b9bdbd6996c6f7182dad409dab42db, PR #18. Final diff is sw.js plus QA/LR-0050-SERVICE-WORKER-FRESHNESS.md. Real Chromium service-worker verification passed in Actions run 37178333685, artifact 11294280511: obsolete lantern-road-v4 cache cleanup, online old-shell -> new-shell refresh without cache-name bump, and offline reopen of the newly cached shell all passed. Coordination validation passes; PR check is currently red only because Agent 7 design approval .agent-coordination/design-reviews/LR-0050.json is not yet present. No legitimate Agent 5 implementation work remains. Under CLAIM-PROTOCOL v1.2 release service-worker-freshness while waiting. Before any code change or final merge preparation, acquire a fresh claim; after Agent 7 approves the exact implementation head, rerun/refresh merge verification as needed. LR-0009 PR #6 must later reconcile its sw.js edit under a fresh mobile-ux claim and preserve this network-first freshness behaviour."
+      "notes": "Completed 4 Oct 2026 via PR #18, squash merge d59d276607f7c5e79cd76d111c0f30821df86086. Agent 7 approved exact useful head 6b973bf479b9bdbd6996c6f7182dad409dab42db; final approval-head validation was green; prior real Chromium freshness evidence remains QA-recorded."
     },
     {
       "id": "LR-0051",
@@ -1525,7 +1525,7 @@
         ".agent-coordination/gate-evidence/README.md",
         ".agent-coordination/DESIGN-REVIEW-PROTOCOL.md"
       ],
-      "notes": "Current-main reconciliation complete on branch agent/LR-0055-foundation-policy-69f9a050-r5, replacement draft PR #74. This candidate preserves the eight-agent roster, AED additions, newer parking/map/runtime rules and Agent 7 evidence verification while separating LR-0011/LR-0013 technical closure from LR-0056 Android release validation. Await CI and exact-head Agent 7 governance review.",
+      "notes": "Current-main queue reconciliation applied on branch agent/LR-0055-foundation-policy-69f9a050-r5, draft PR #74. This candidate preserves every current task/status/note/dependency outside LR-0011/LR-0013/LR-0014/LR-0055/LR-0056, including Agent 8/AED state. Await exact-head Agent 7 approval.",
       "supporting_agents": [
         7
       ]
@@ -1956,7 +1956,7 @@
     {
       "id": "LR-0072",
       "title": "Produce clean Grey March canonical terrain atlas",
-      "status": "READY",
+      "status": "DONE",
       "priority": 1,
       "exclusive_scope": "grey-march-terrain-atlas",
       "depends_on": [
@@ -1976,7 +1976,7 @@
         "docs/ART-PROVENANCE.md",
         "docs/ART-DIRECTION.md"
       ],
-      "notes": "PARKED pending Director exact-head review. PR #60, branch agent/LR-0072-grey-march-terrain-atlas-4e7e9f8f, useful head 8b66b9081a75ccec137be98ec7aba56834c6ef6a. Added canonical 1200×900 terrain-only SVG, projection/palette metadata, provenance, map README and LR-0073 integration handoff. QA: 72/72 unique terrain cells, zero visible SVG text, exact Map Canon v1 projection. Coordination and active-claim checks pass; only remaining gate is .agent-coordination/design-reviews/LR-0072.json for this exact head. Director review requested on PR #60 comment #5977599358. After approval, fresh claimant should verify exact head, merge, mark DONE and release any fresh claim."
+      "notes": "Merged in PR #60 after Agent 7 exact-head approval. Canonical 1200×900 terrain-only atlas, metadata, provenance and LR-0073 integration handoff are now on main. QA: 72/72 unique canonical terrain cells, exact Map Canon v1 projection, no visible baked text/labels/roads/grid/party/fog/quest/world-state markers. Merge commit d860564b0621a68037ea72d6a7b5fb15d60a1530."
     },
     {
       "id": "LR-0073",
@@ -2089,7 +2089,7 @@
     {
       "id": "LR-0077",
       "title": "Author save and recovery UX state model",
-      "status": "READY",
+      "status": "DONE",
       "priority": 0,
       "exclusive_scope": "save-recovery-ux-authoring",
       "depends_on": [],
@@ -2106,12 +2106,12 @@
         "docs/SAVE-RECOVERY-UX.md",
         "QA/"
       ],
-      "notes": "PARKED HANDOFF (4 Oct 2026): authoring complete on branch agent/LR-0077-save-recovery-ux-5d2e8b97 at head e9f313dd8dbacbf458770d671fdb0fd3001ad994, PR #29. Final diff adds docs/SAVE-RECOVERY-UX.md and QA/SAVE-RECOVERY-UX-CHECKLIST.md only. It models Manual Save/Autosave success and failure, missing slots, migrations, safe repairs, unrecoverable/newer-version saves, storage unavailability, New Campaign protection, focus/announcement behaviour, support build guidance, LR-0009/LR-0040 implementation checks and LR-0023 destructive-test handoff. No runtime/persistence implementation was changed. Remaining external condition is Agent 7 design approval. Before any later edit or final merge preparation, acquire a fresh save-recovery-ux-authoring claim."
+      "notes": "Completed 4 Oct 2026 via PR #29, squash merge 579dcb27b1ee03cac400debc80ed3696535210a7. Agent 7 approved exact useful head e9f313dd8dbacbf458770d671fdb0fd3001ad994; final approval-head validation was green."
     },
     {
       "id": "LR-0078",
       "title": "Author PWA lifecycle and offline UX contract",
-      "status": "READY",
+      "status": "DONE",
       "priority": 1,
       "exclusive_scope": "pwa-lifecycle-ux-authoring",
       "depends_on": [],
@@ -2127,12 +2127,12 @@
       "likely_files": [
         "docs/PWA-LIFECYCLE-UX.md"
       ],
-      "notes": "PARKED HANDOFF (4 Oct 2026): authoring complete on branch agent/LR-0078-pwa-lifecycle-ux-b73a9f21 at head 16ea71f252f1f2a40b32d3bd8655f93822440751, PR #31. Final diff adds docs/PWA-LIFECYCLE-UX.md only. Contract covers install/installed/offline/reconnect/update/stale-build/cache-recovery UX, keeps connectivity separate from save safety, prevents update reloads during consequential choices/combat, and defines graceful fallback when PWA APIs are absent. No runtime/service-worker/release-rollback implementation changed. Remaining external condition is Agent 7 approval; fresh claim required before later edits or final merge preparation."
+      "notes": "Completed 4 Oct 2026 via PR #31, squash merge 279163f974e6a3e0d2a48c8801914757cc21ca94. Agent 7 approved exact useful head 16ea71f252f1f2a40b32d3bd8655f93822440751; final approval-head validation was green."
     },
     {
       "id": "LR-0079",
       "title": "Author phone interaction performance budget",
-      "status": "READY",
+      "status": "DONE",
       "priority": 1,
       "exclusive_scope": "mobile-interaction-performance-authoring",
       "depends_on": [],
@@ -2148,12 +2148,12 @@
       "likely_files": [
         "docs/MOBILE-INTERACTION-PERFORMANCE-BUDGET.md"
       ],
-      "notes": "PARKED HANDOFF (4 Oct 2026): authoring complete on branch agent/LR-0079-mobile-performance-2c4f8d91 at head 04c9480dee8ee6d89ff298d2ffaac204fbe10f02, PR #34. Final diff adds docs/MOBILE-INTERACTION-PERFORMANCE-BUDGET.md only, defining measurable tap/modal/tab/map/reflow responsiveness targets, degraded-device priorities and manual measurement scenarios. LR-0012 retains runtime profiling/optimisation; LR-0074 consumes map targets. Remaining external condition is Agent 7 approval; fresh claim required before later edits or final merge preparation."
+      "notes": "Completed 4 Oct 2026 via PR #34, squash merge cafa5ac41b57ed3fa5b4dd92d20a24846cdb30cc. Agent 7 approved exact useful head 04c9480dee8ee6d89ff298d2ffaac204fbe10f02; final approval-head validation was green."
     },
     {
       "id": "LR-0080",
       "title": "Author touch gesture arbitration contract",
-      "status": "READY",
+      "status": "DONE",
       "priority": 1,
       "exclusive_scope": "touch-gesture-authoring",
       "depends_on": [],
@@ -2169,12 +2169,12 @@
       "likely_files": [
         "docs/TOUCH-GESTURE-CONTRACT.md"
       ],
-      "notes": "PARKED HANDOFF (4 Oct 2026): authoring complete on branch agent/LR-0080-touch-gestures-7a31c5e8 at head 92e0a75005e4a22251027bad1c188518007242e1, PR #35. Final diff adds docs/TOUCH-GESTURE-CONTRACT.md only, defining tap/pan/pinch arbitration, movement threshold/cancellation, scroll boundaries, accidental-travel guards, semantic alternatives and real-phone tuning cases for LR-0074. No runtime/canonical geography changed. Remaining external condition is Agent 7 approval; fresh claim required before later edits or final merge preparation."
+      "notes": "Completed 4 Oct 2026 via PR #35, squash merge 07a935e1440c9eee3cdcff61a16bcd84aeaeabe7. Agent 7 approved exact useful head 92e0a75005e4a22251027bad1c188518007242e1; final approval-head validation was green."
     },
     {
       "id": "LR-0081",
       "title": "Author phone safe-area and floating-control collision contract",
-      "status": "READY",
+      "status": "DONE",
       "priority": 1,
       "exclusive_scope": "mobile-safe-area-authoring",
       "depends_on": [],
@@ -2190,12 +2190,12 @@
       "likely_files": [
         "docs/MOBILE-SAFE-AREA-CONTRACT.md"
       ],
-      "notes": "PARKED HANDOFF (4 Oct 2026): authoring complete on branch agent/LR-0081-mobile-safe-area-3f9c2a71 at head 0ac9d7be4f2ae5e6266a9f5419c868ffa4057c3e, PR #37. Final diff adds docs/MOBILE-SAFE-AREA-CONTRACT.md only, defining reserved edge zones, layer priority, modal/tab/map-control collision rules, external launcher/dock yielding, safe-area fallback and enlarged-text checks for LR-0009/LR-0040/LR-0074. No runtime CSS changed. Remaining external condition is Agent 7 approval; fresh claim required before later edits or final merge preparation."
+      "notes": "Completed 4 Oct 2026 via PR #37, squash merge 072f0ef5ab350c7499675135197156058431d7af. Agent 7 approved exact useful head 0ac9d7be4f2ae5e6266a9f5419c868ffa4057c3e; final approval-head validation was green."
     },
     {
       "id": "LR-0082",
       "title": "Author mobile typography and content-density contract",
-      "status": "READY",
+      "status": "DONE",
       "priority": 2,
       "exclusive_scope": "mobile-typography-authoring",
       "depends_on": [],
@@ -2211,7 +2211,7 @@
       "likely_files": [
         "docs/MOBILE-TYPOGRAPHY-CONTENT-DENSITY.md"
       ],
-      "notes": "PARKED HANDOFF (4 Oct 2026): authoring complete on branch agent/LR-0082-mobile-typography-6d2a8f41 at head fa52ac85ee498ceb1734e5301d447214e615c214, PR #38. Final diff adds docs/MOBILE-TYPOGRAPHY-CONTENT-DENSITY.md only, defining wrapping/stacking/truncation, Extra Large/browser zoom behaviour, combat/journal/log density and map-label readability boundaries. Agent 4 retains visual art direction; LR-0039 retains runtime accessibility implementation. Remaining external condition is Agent 7 approval; fresh claim required before later edits or final merge preparation."
+      "notes": "Completed 4 Oct 2026 via PR #38, squash merge bc26f8eed6f7ff3de8752970cb8d22277bf030ce. Agent 7 approved exact useful head fa52ac85ee498ceb1734e5301d447214e615c214; final approval-head validation was green."
     },
     {
       "id": "LR-0083",
@@ -3068,7 +3068,7 @@
     {
       "id": "LR-0118",
       "title": "Automate queue health and critical-path reporting",
-      "status": "READY",
+      "status": "DONE",
       "priority": 1,
       "exclusive_scope": "aed-queue-health-automation",
       "depends_on": [
@@ -3089,7 +3089,7 @@
         "tests/",
         "README.md"
       ],
-      "notes": "AED audits LR-0111, LR-0112 and LR-0117 are DONE. Metrics are now stable enough to implement deterministic advisory reporting. This report must remain read-only/advisory and must not become a new merge gate."
+      "notes": "Merged via PR #75 at 87b3262e40b7496864a585806e3c2ab29a160429. scripts/aed-report.mjs is a deterministic read-only advisory report over WORK-QUEUE.json and claim locks; tests/aed-report.test.mjs has 4 focused passing Node tests; README documents text/JSON usage. The report is intentionally not a required CI gate."
     },
     {
       "id": "LR-0119",
@@ -3140,7 +3140,7 @@
     {
       "id": "LR-0121",
       "title": "Produce final UI iconography and map symbol asset set",
-      "status": "READY",
+      "status": "DONE",
       "priority": 1,
       "exclusive_scope": "ui-iconography-production",
       "depends_on": [
@@ -3161,7 +3161,7 @@
         "assets/ui/README.md",
         "docs/ART-DIRECTION.md"
       ],
-      "notes": "PARKED pending Director exact-head review. PR #65, branch agent/LR-0121-ui-iconography-9d8c4a71, useful head 65e9a7a72b63d277edfe4f8a76969fa43c3633a7. Added 40-symbol 24×24 SVG production sprite plus semantics/accessibility docs and iconography direction. QA: 40 unique ids, all symbols 24×24, currentColor-based, no scripts, explicit no-icon-only-critical-meaning rule. Coordination checks pass; only remaining gate is .agent-coordination/design-reviews/LR-0121.json for exact head. Director review requested on PR #65 comment #5977646618. After approval, fresh claimant should verify exact head, merge, mark DONE and release any fresh claim."
+      "notes": "Merged in PR #65 after Agent 7 exact-head approval. Production 40-symbol 24×24 SVG icon sprite, semantics/accessibility documentation and iconography direction are now on main. Runtime integration must preserve canonical Renown terminology and keep faction standing distinct. Merge commit a6b14da889c2e67f81933f4e277d93c3f9f2f8a9."
     },
     {
       "id": "LR-0122",
@@ -3368,5 +3368,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T19:00:00+11:00"
+  "updated_at": "2026-10-04T19:18:00+11:00"
 }
