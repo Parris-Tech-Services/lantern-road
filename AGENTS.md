@@ -72,6 +72,20 @@ Agent 6 — The Warden is an independent black-box QA/playtest role.
 - Report evidence about confusion, repetition, pacing, friction and enjoyment signals, but do not present “fun” as an objective QA score. Josh remains the creative director and final creative sign-off.
 
 
+## Continuous fun-loop rule
+
+Lantern Road must optimise for **playable improvement**, not merely merged output.
+
+- LR-0021 is the intentional historical Warden baseline. Its findings describe the old build it actually tested and must not be treated as evidence about current `main` unless independently retested.
+- LR-0140 is the standing current-build Warden lane. Agent 6 may claim it only when a meaningful player-facing merge has landed since `QA/FUN-LOOP-STATE.json:last_tested_main_sha`, or when Agent 7/Josh explicitly requests a targeted retest.
+- QA tooling may live on an Agent 6 branch, but the game-under-test for LR-0140 must be **current main or the current deployed build**, with the exact tested SHA/build recorded. Do not serve the Warden's stale tooling branch as the game-under-test.
+- Keep micro-playtests narrow: retest only materially affected loops (for example exploration/map, dialogue/social, combat, progression/economy, save/resume, presentation/mobile).
+- Confirmed non-duplicate findings use `QA/FINDING-SCHEMA.json` and live under `QA/findings/`.
+- `S0`/`S1` findings and reproducible `HIGH` player-impact fun/friction findings normally outrank filler, speculative polish and new authoring until they are routed and either fixed/retested or explicitly accepted by Agent 7/Josh.
+- A merged fix is not a resolved finding. Agent 6 retests the owning fix against a current build before setting the finding to `RESOLVED`.
+- Agent 6 reports observable confusion, repetition, pacing, friction, engagement risk and enjoyment signals; Josh remains final judge of whether the game is fun.
+- The Warden does not implement specialist fixes. Route them to the correct owner and preserve QA independence.
+
 ## Director governance rule
 
 Agent 7 — **The Director** owns design coherence and production governance.
