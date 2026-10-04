@@ -3833,7 +3833,7 @@
     {
       "id": "LR-0145",
       "title": "Cache save-system.js in the service-worker app shell",
-      "status": "READY",
+      "status": "DONE",
       "priority": 0,
       "exclusive_scope": "service-worker-save-shell-hotfix",
       "depends_on": [],
@@ -3852,7 +3852,7 @@
       "likely_files": [
         "sw.js"
       ],
-      "notes": "PARKED HANDOFF (4 Oct 2026): implementation complete on branch agent/LR-0145-save-shell-current-c2d86f51, useful head 566c3d5905f2d8bc427f070373657e72c62f836c, PR #92 (replaces closed stale PR #90). Production diff is one sw.js APP_SHELL entry adding ./save-system.js plus QA/LR-0145-SERVICE-WORKER-SAVE-SHELL.md. Exact LR-0107 validator replay and 390x844 Chromium first-install→offline→reload scenario both passed on current-main rebuild in Actions run 37193340901; artifact 11300176435. Validator result: 5 local HTML resources, 9 service-worker cache entries, 18 first-party JS files syntax-checked. Offline reload recreated LanternRoadSave and a playable Hearthwick campaign with no uncaught page errors. No network-first/cache-name/skipWaiting/clients.claim behaviour changed. Repo main is moving rapidly and PR #92 may require a fresh reconciliation claim before merge; do not weaken LR-0107 validator. Remaining external condition: Agent 7 exact-head approval, then fresh claim/reconcile if main has moved, merge, mark DONE, release."
+      "notes": "Completed 4 Oct 2026 via PR #92, squash merge e78f8c7400cc73fa447e1894e0b1ca778e4f9675. Production change adds ./save-system.js to sw.js APP_SHELL and preserves existing network-first/cache/skipWaiting/clients.claim behaviour. Current-main reconstruction had already passed exact LR-0107 static runtime validation and 390x844 Chromium first-install→offline→reload in Actions run 37193340901 / artifact 11300176435. Agent 7 approved useful head 566c3d5905f2d8bc427f070373657e72c62f836c; approval head a1adca8a799c58b7e2477adada23cce339b4bfc1 had green coordination validation."
     }
   ],
   "agent_roster": [
@@ -3915,5 +3915,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T21:02:32+11:00"
+  "updated_at": "2026-10-04T21:18:00+11:00"
 }
