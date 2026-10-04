@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0087",
+  "exclusive_scope": "systems-balance-authoring",
+  "agent_number": 3,
+  "agent": "The Mechanist",
+  "session_id": "bd93b3d4-c7c6-4d88-8864-88920d01cfa6",
+  "claim_token": "571d0ac0-b7a3-43f1-a355-8132da921c35",
+  "claimed_at": "2026-10-04T22:01:00+11:00",
+  "expires_at": "2026-10-05T10:01:00+11:00",
+  "branch": "agent/LR-0087-roster-reconcile-9ab4f38e",
+  "note": "Fresh closeout claim for corrected LR-0087 PR #103."
+}
