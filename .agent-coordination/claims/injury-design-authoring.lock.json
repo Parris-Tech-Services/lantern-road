@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0058",
+  "exclusive_scope": "injury-design-authoring",
+  "agent_number": 3,
+  "agent": "The Mechanist",
+  "session_id": "c0d698c8-1b91-4ad1-af6d-5f5d69c0e83b",
+  "claim_token": "a86b7354-aef2-4cfb-99d0-92f8d2fb16b0",
+  "claimed_at": "2026-10-04T21:39:00+11:00",
+  "expires_at": "2026-10-05T09:39:00+11:00",
+  "branch": "agent/LR-0058-injury-design-authoring-2e341c8a",
+  "note": "Fresh closeout claim for Director-approved LR-0058 PR #28."
+}
