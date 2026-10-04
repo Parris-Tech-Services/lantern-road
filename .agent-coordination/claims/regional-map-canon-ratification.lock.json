@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0104",
+  "exclusive_scope": "regional-map-canon-ratification",
+  "agent_number": 7,
+  "agent": "The Director",
+  "session_id": "7f3f1c2e-6d91-4b1e-8f72-c5c8fd879a31",
+  "claim_token": "d0a5c1fb-b1c6-47cb-9e8f-92fced739e44",
+  "claimed_at": "2026-10-04T21:37:00+11:00",
+  "expires_at": "2026-10-05T09:37:00+11:00",
+  "branch": "agent/LR-0104-regional-map-canon-7f3f1c2e",
+  "note": "Implementing only LR-0104."
+}
