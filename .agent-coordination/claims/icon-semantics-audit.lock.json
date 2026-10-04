@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0130",
+  "exclusive_scope": "icon-semantics-audit",
+  "agent_number": 5,
+  "agent": "The Wayfinder",
+  "session_id": "8a7c2d14-5e69-4fb0-9a31-6d8e2c5f7041",
+  "claim_token": "3f6a1c95-7d42-4e08-b531-9a6c2d7f8150",
+  "claimed_at": "2026-10-04T21:21:00+11:00",
+  "expires_at": "2026-10-05T09:21:00+11:00",
+  "branch": "agent/LR-0130-icon-semantics-d4e3b2a1",
+  "note": "Fresh Agent 5 finalisation claim after Agent 7 exact-head approval; branch diff is audit docs plus approval only and is clean against current main."
+}
