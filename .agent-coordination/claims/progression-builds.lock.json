@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0006",
+  "exclusive_scope": "progression-builds",
+  "agent_number": 3,
+  "agent": "The Mechanist",
+  "session_id": "914a37ff-26d1-4d5a-a39c-0f331e0526ff",
+  "claim_token": "1f56b78c-7110-45c7-8074-3e50f33df5b5",
+  "claimed_at": "2026-10-04T22:08:00+11:00",
+  "expires_at": "2026-10-05T10:08:00+11:00",
+  "branch": "agent/LR-0006-progression-builds-c751b94e",
+  "note": "Refreshing stale LR-0006 handoff after implementation was merged to main."
+}
