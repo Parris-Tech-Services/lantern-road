@@ -22,12 +22,12 @@ const consoleErrors = [];
     if (msg.type() === "error") consoleErrors.push(msg.text());
   });
 
-  await page.goto("http://127.0.0.1:4173/", { waitUntil: "networkidle" });
+  await page.goto("http://127.0.0.1:4173/", { waitUntil: "domcontentloaded", timeout: 15000 });
   await page.evaluate(() => {
     localStorage.clear();
     sessionStorage.clear();
   });
-  await page.reload({ waitUntil: "networkidle" });
+  await page.reload({ waitUntil: "domcontentloaded", timeout: 15000 });\n  await page.waitForTimeout(1000);
 
   async function snapshot(label) {
     await page.screenshot({ path: path.join(OUT, label + ".png"), fullPage: true });
