@@ -154,6 +154,9 @@ A fresh normal role-owned claim is still mandatory before:
 
 If another active lock has since claimed the same task/scope, the parked direct-merge path is unavailable until ownership is reconciled.
 
+
+If another active lock has since claimed the same task/scope, the parked direct-merge path is unavailable until ownership is reconciled.
+
 This rule does not permit bypassing merge gates, machine evidence, Director review, or the separate LR-0056 human release gate. It only prevents waiting from consuming an active agent/lock slot.
 
 ## Technical foundation versus human release gates
