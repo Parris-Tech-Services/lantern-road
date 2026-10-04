@@ -249,7 +249,7 @@
         "game.js",
         "manifest.webmanifest"
       ],
-      "notes": "Premium-gap area: mobile experience. Also owns the reported settings-gear overlap and a visible player/support-facing build/version identifier so stale cached builds are obvious. Save boundary: LR-0009 owns autosave/save UX and may call the shared persistence API; LR-0011 owns save schema versioning, migration, validation and compatibility policy. LR-0009 must not introduce a parallel save format.",
+      "notes": "Premium-gap area: mobile experience. Also owns the reported settings-gear overlap and a visible player/support-facing build/version identifier so stale cached builds are obvious. Save boundary: LR-0009 owns autosave/save UX and may call the shared persistence API; LR-0011 owns save schema versioning, migration, validation and compatibility policy. LR-0009 must not introduce a parallel save format. Under the LR-0049 parked-claim policy, once the current LR-0009 branch has no legitimate work left beyond LR-0011/LR-0013 reconciliation/sign-off, its owner should record the exact handoff and release the mobile-ux lock so Agent 5 can take other READY work. A fresh claim is required before later reconciliation or code changes.",
       "primary_agent": 5,
       "merge_gate_depends_on": [
         "LR-0011",
@@ -1303,7 +1303,7 @@
     {
       "id": "LR-0047",
       "title": "Author premium scene packs for the six core quests",
-      "status": "BLOCKED",
+      "status": "READY",
       "priority": 2,
       "exclusive_scope": "core-quest-authoring",
       "depends_on": [
@@ -1322,7 +1322,7 @@
       "likely_files": [
         "story/quests/"
       ],
-      "notes": "Author-now task for the six existing local questlines. Distinct from LR-0043 regional campaign structure, LR-0044 hero arcs, LR-0045 recurring NPC callbacks and LR-0046 travel/camp events. Depends on LR-0043 so quest scenes reinforce the agreed campaign spine rather than inventing a competing one."
+      "notes": "Author-now task for the six existing local questlines. Distinct from LR-0043 regional campaign structure, LR-0044 hero arcs, LR-0045 recurring NPC callbacks and LR-0046 travel/camp events. Depends on LR-0043 so quest scenes reinforce the agreed campaign spine rather than inventing a competing one. Lifecycle corrected by LR-0049: LR-0043 is DONE, so this authoring task is now eligible."
     },
     {
       "id": "LR-0048",
@@ -1379,6 +1379,117 @@
         "docs/DECISIONS.md"
       ],
       "notes": "Director coordination task created from Josh's explicit request to reduce idle agents after reviewing Claude Code's queue feedback against the current live repository."
+    },
+    {
+      "id": "LR-0050",
+      "title": "Service-worker cache freshness hotfix",
+      "status": "READY",
+      "priority": 0,
+      "exclusive_scope": "service-worker-freshness",
+      "depends_on": [],
+      "primary_agent": 5,
+      "goal": "Stop installed/browser sessions from being stranded on stale Lantern Road HTML/JS/CSS while preserving a useful offline fallback.",
+      "acceptance_criteria": [
+        "Replace the current cache-first behaviour for navigations and core app-shell resources with a freshness strategy that prefers the network when online and falls back to cached content when offline.",
+        "Ensure obsolete Lantern Road caches are cleaned up and a newly deployed shell does not require a manual hard-coded cache-name bump to become visible to an online player.",
+        "Verify with a real browser/service worker scenario that a client starting from an older cached shell receives the newer shell when online and can still reopen a usable cached build when offline.",
+        "Keep this task narrowly about cache freshness/recovery. Do not duplicate LR-0009's visible build/version identifier or LR-0040's broader installability, lifecycle and offline UX work.",
+        "Because PR #6 also touches sw.js, merge this hotfix independently first where practical and require LR-0009 to reconcile/rebase its service-worker edit under a fresh claim before its eventual merge."
+      ],
+      "likely_files": [
+        "sw.js",
+        "QA/",
+        "docs/"
+      ],
+      "notes": "Created from Claude Code feedback and verified against live main: sw.js is cache-first with hard-coded CACHE_NAME lantern-road-v4. This is an immediate stale-build defect, not a reason to unblock the broader LR-0040 PWA task."
+    },
+    {
+      "id": "LR-0051",
+      "title": "Author accessibility interaction contract and phone test matrix",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "accessibility-contract",
+      "depends_on": [],
+      "primary_agent": 5,
+      "goal": "Produce an implementation-ready accessibility and mobile interaction specification now so deeper parity work can proceed quickly after architecture integration.",
+      "acceptance_criteria": [
+        "Define keyboard and non-pointer equivalents for travel, tabs, shops, dialogue/site choices and combat without implementing them in runtime code.",
+        "Define modal focus entry, containment, close/escape behaviour and focus return rules, plus useful screen-reader labels/announcements for map, travel and important state changes.",
+        "Specify touch-target, one-handed reach, text-size, contrast and reduced-motion expectations across representative phone widths and accessibility settings.",
+        "Create a concise manual test matrix covering touch, keyboard, screen-reader semantics and enlarged text that LR-0039, LR-0022 and LR-0029 can consume.",
+        "Do not edit game.js, style.css or index.html in this authoring task; runtime implementation remains LR-0039 and independent black-box validation remains Agent 6."
+      ],
+      "likely_files": [
+        "docs/ACCESSIBILITY-INTERACTION-SPEC.md",
+        "QA/"
+      ],
+      "notes": "Author-now counterpart to LR-0039. It creates durable UX/a11y contracts without waiting for LR-0010 and without duplicating Warden QA."
+    },
+    {
+      "id": "LR-0052",
+      "title": "Author economy baseline model and target ranges",
+      "status": "READY",
+      "priority": 2,
+      "exclusive_scope": "economy-model-authoring",
+      "depends_on": [],
+      "primary_agent": 3,
+      "goal": "Model Lantern Road's current 18-day resource economy and define explicit balance targets before LR-0016 changes runtime prices and resource pressure.",
+      "acceptance_criteria": [
+        "Inventory current gold/ration income, common costs, rest/healing costs, rewards and repeatable resource sources from the live game.",
+        "Model several representative 18-day spending/travel paths and identify likely surplus, starvation, grind and unrecoverable-spiral regions.",
+        "Define target ranges/guardrails for gold, rations, rest affordability and recovery pressure across early, mid and late campaign.",
+        "Keep faction-specific modifiers conceptually separate from global base economy targets in line with the recorded LR-0005/LR-0016 ownership boundary.",
+        "Produce declarative balance assumptions and tables only; do not rebalance content.js/game.js in this task. LR-0016 consumes the model later."
+      ],
+      "likely_files": [
+        "systems/economy/",
+        "docs/"
+      ],
+      "notes": "Mechanist author-now work feeding LR-0016. Useful even while progression/save/architecture gates are unresolved."
+    },
+    {
+      "id": "LR-0053",
+      "title": "Author compact-combat depth and enemy-intent specification",
+      "status": "READY",
+      "priority": 2,
+      "exclusive_scope": "combat-design-authoring",
+      "depends_on": [],
+      "primary_agent": 3,
+      "goal": "Design the next combat-depth layer and enemy behaviour vocabulary without editing the shared runtime while foundation work is still in flight.",
+      "acceptance_criteria": [
+        "Define distinct enemy archetype priorities and readable intent/telegraph patterns that create different player decisions without a tactical grid.",
+        "Define the main decision axes for party turns: targeting, defence, tempo, status use and resource trade-offs, including how existing Guard, Bless, Exposed and Weakened vocabulary should remain readable.",
+        "Identify dominant-action risks and specify counterplay or opportunity costs rather than simply increasing enemy stats.",
+        "Outline a small set of signature encounter patterns that LR-0019 can later author against the finished combat system.",
+        "Record assumptions from the current LR-0006 progression work explicitly and mark them for later reconciliation; do not edit game.js/content.js or the parked LR-0006 branch in this task."
+      ],
+      "likely_files": [
+        "systems/combat/",
+        "docs/"
+      ],
+      "notes": "Mechanist design-now counterpart to LR-0015/LR-0019. Keeps the role productive without colliding in game.js/content.js."
+    },
+    {
+      "id": "LR-0054",
+      "title": "Build reusable Warden black-box scenario catalogue",
+      "status": "READY",
+      "priority": 2,
+      "exclusive_scope": "qa-scenario-catalog",
+      "depends_on": [],
+      "primary_agent": 6,
+      "goal": "Turn current game loops and Warden observations into a reusable manual black-box scenario library that future regression and specialist QA can consume.",
+      "acceptance_criteria": [
+        "Create concise player-driven scenarios for new campaign, travel/map, modal/navigation, save/reload, combat, quest/site interaction, shops/resources and mobile-oriented use.",
+        "For each scenario record setup, player actions, observable invariant/expected outcome, evidence to capture and severity guidance for failure.",
+        "Include adversarial sequences such as repeated actions, interrupted flows, reload timing and revisiting resolved content without implementing specialist fixes.",
+        "Map scenarios to existing Warden tasks and identify a small automation-candidate subset for Agent 1's LR-0013 without taking ownership of CI or Playwright implementation.",
+        "Keep this as QA methodology/evidence material under QA/; do not edit specialist game code."
+      ],
+      "likely_files": [
+        "QA/SCENARIO-CATALOG.md",
+        "QA/"
+      ],
+      "notes": "Independent QA preparation that can be claimed after LR-0021 is parked/completed; does not replace real-browser execution or Agent 1's automated harness."
     }
   ],
   "agent_roster": [
@@ -1436,5 +1547,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T15:48:00+11:00"
+  "updated_at": "2026-10-04T15:55:00+11:00"
 }
