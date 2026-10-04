@@ -233,6 +233,9 @@
       if (amount === 0) addLog(`${FACTION_MAP[id].name} standing remains ${after}.`);
       return;
     }
+    if (!Array.isArray(state.factionHistory)) state.factionHistory = [];
+    state.factionHistory.push({ id, before, after, day: state.day });
+    state.factionHistory = state.factionHistory.slice(-24);
     addLog(`${FACTION_MAP[id].name} standing ${after > before ? "improved" : "fell"} from ${before} to ${after}.`);
     showFeedback(
       "Faction standing",
@@ -1133,11 +1136,11 @@
 
   function directMarketMultiplier(settlementId) {
     if (settlementId === "greyfen" && questOutcome("missing_ledger") === "returned_to_guild") return 0.9;
-    if (settlementId === "blacksalt" && ["buried_by_veil", "brokered_with_veil"].includes(
-      settlementId === "blacksalt" && questOutcome("ash_in_marsh") === "brokered_with_veil"
-        ? "brokered_with_veil"
-        : questOutcome("missing_ledger")
-    )) return 0.9;
+    if (settlementId === "blacksalt") {
+      const veilHelped = questOutcome("missing_ledger") === "buried_by_veil"
+        || questOutcome("ash_in_marsh") === "brokered_with_veil";
+      if (veilHelped) return 0.9;
+    }
     return 1;
   }
 
@@ -1171,6 +1174,13 @@
       return `${FACTION_MAP[factionId].name} standing is costing you at local counters.`;
     }
     return `${FACTION_MAP[factionId].name} standing is not changing prices here yet.`;
+  }
+
+  function latestFactionChangeText(factionId) {
+    const history = Array.isArray(state.factionHistory) ? state.factionHistory : [];
+    const latest = [...history].reverse().find(entry => entry.id === factionId);
+    if (!latest) return "";
+    return `Last changed on day ${latest.day}: ${latest.before} → ${latest.after}.`;
   }
 
   function factionPracticalEffectText(factionId) {
@@ -1291,7 +1301,7 @@
       ? "Yor offers a tired smile; the crate you brought bought Alderwatch breathing room."
       : "Yor's shelves and his tone both remember that the promised crate did not arrive cleanly.";
     if (npcId === "sen_marrow" && chart === "chart_to_archive") return "Sen says the Moonmere chart has already reopened arguments that had been dormant for a generation.";
-    if (npcId === "magister_holt" && ["archived_as_evidence", "recorded_as_evidence"].includes(ledger) || npcId === "magister_holt" && marsh === "recorded_as_evidence") {
+    if (npcId === "magister_holt" && (ledger === "archived_as_evidence" || marsh === "recorded_as_evidence")) {
       return "Holt is visibly pleased that at least one dangerous truth now has a catalogue number and witnesses.";
     }
     if (npcId === "edda_briar" && marsh) {
@@ -1490,6 +1500,7 @@
         </div>
         <p>${f.description}</p>
         <p><em>${factionPracticalEffectText(f.id)}</em></p>
+        ${latestFactionChangeText(f.id) ? `<p class="muted">${latestFactionChangeText(f.id)}</p>` : ""}
       </div>
     `).join("");
 
