@@ -1,0 +1,39 @@
+name: Warden LR-0021 browser probe
+
+on:
+  push:
+    branches:
+      - agent/LR-0021-qa-full-campaign-baseline-30957b31
+    paths:
+      - "QA/**"
+      - ".github/workflows/warden-lr0021.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  black-box-probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Serve Lantern Road
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/lantern-road-http.log 2>&1 &
+          sleep 2
+      - name: Run real-browser black-box probe
+        run: node QA/LR-0021-browser-probe.cjs
+      - name: Upload Warden evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lr-0021-browser-evidence
+          path: QA/evidence/LR-0021/
+          if-no-files-found: warn
