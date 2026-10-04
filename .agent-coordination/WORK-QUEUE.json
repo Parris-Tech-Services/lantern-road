@@ -3041,7 +3041,7 @@
     {
       "id": "LR-0117",
       "title": "Audit claim, parking, PR and review lifecycle efficiency",
-      "status": "READY",
+      "status": "DONE",
       "priority": 1,
       "exclusive_scope": "aed-claim-pr-lifecycle-audit",
       "depends_on": [],
@@ -3057,7 +3057,7 @@
         "audit/AED-CLAIM-PR-LIFECYCLE.md",
         ".agent-coordination/CLAIM-PROTOCOL.md"
       ],
-      "notes": "AED task. Operational efficiency work only; do not take over a live specialist claim or create a new product/design approval gate."
+      "notes": "Merged via PR #72 at 7f4ce24356443bba979e6ce5b86ed68d592c3723. audit/AED-CLAIM-PR-LIFECYCLE.md preserves create-only/exact-head safety, identifies read-only automation opportunities and specifies regression coverage required before stronger lifecycle automation."
     },
     {
       "id": "LR-0118",
@@ -3362,5 +3362,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T19:20:00+11:00"
+  "updated_at": "2026-10-04T19:24:00+11:00"
 }
