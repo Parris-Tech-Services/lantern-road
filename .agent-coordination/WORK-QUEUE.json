@@ -46,7 +46,7 @@
     {
       "id": "LR-0002",
       "title": "Coherent visual identity foundation",
-      "status": "READY",
+      "status": "DONE",
       "priority": 1,
       "exclusive_scope": "visual-identity",
       "depends_on": [],
@@ -64,7 +64,7 @@
         "content.js",
         "assets/"
       ],
-      "notes": "Premium-gap area: art/presentation.",
+      "notes": "Merged in PR #3. Reusable art slots, clearer map iconography, restrained visual feedback, reduced-motion support and docs/ART-DIRECTION.md.",
       "primary_agent": 4
     },
     {
@@ -734,6 +734,32 @@
         ".agent-coordination/WORK-QUEUE.json"
       ],
       "notes": "The Warden's final premium-indie quality gate."
+    },
+    {
+      "id": "LR-0031",
+      "title": "Authored illustration and asset production pass",
+      "status": "READY",
+      "priority": 2,
+      "exclusive_scope": "authored-art-production",
+      "depends_on": [
+        "LR-0002"
+      ],
+      "primary_agent": 4,
+      "goal": "Replace the visual foundation's fallback sigils with a coherent, production-ready illustrated asset set while keeping mobile download cost controlled.",
+      "acceptance_criteria": [
+        "Create final art for all four party members and the most frequently encountered named NPCs.",
+        "Create one strong illustration for each major settlement and adventure site.",
+        "Create readable art for all enemy archetypes and a prioritised item-icon set.",
+        "Use the existing reusable art-slot contract without changing gameplay logic.",
+        "Compress assets for phone browsers and retain graceful fallbacks when any asset is unavailable.",
+        "Perform a consistency pass for silhouette, palette, crop, contrast and small-screen legibility."
+      ],
+      "likely_files": [
+        "assets/art/",
+        "style.css",
+        "docs/ART-DIRECTION.md"
+      ],
+      "notes": "Second-wave Lamplighter task discovered during LR-0002. This is production artwork, not a duplicate of the visual-system foundation."
     }
   ],
   "agent_roster": [
