@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0083",
+  "exclusive_scope": "system-feedback-copy-authoring",
+  "agent_number": 5,
+  "agent": "The Wayfinder",
+  "session_id": "1e7b4c93-5a26-4f81-b3d0-8c2e6a9f5741",
+  "claim_token": "7c3a9e51-2d68-4b04-a7f2-1e6c5d8b3940",
+  "claimed_at": "2026-10-04T17:48:00+11:00",
+  "expires_at": "2026-10-05T05:48:00+11:00",
+  "branch": "agent/LR-0083-system-feedback-copy-1e7b4c93",
+  "note": "Authoring only LR-0083 system-state feedback/recovery microcopy; no narrative or runtime implementation."
+}
