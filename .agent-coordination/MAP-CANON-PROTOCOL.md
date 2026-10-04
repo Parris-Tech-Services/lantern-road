@@ -203,4 +203,18 @@ If `josh_approval_required` is true, the record must also contain `josh_approved
 
 Any later code/canon commit after approval makes that approval stale.
 
+### Review ordering for Agent 1–5 implementation PRs
+
+A protected map-canon implementation owned by Agents 1–5 must satisfy both map-canon review and ordinary Director design review.
+
+Use this exact tail:
+
+1. final feature/canon implementation commit;
+2. Agent 7 map-canon review-only commit changing exactly `.agent-coordination/map-canon-reviews/<TASK-ID>.json`, whose `reviewed_head_sha` is the feature/canon commit;
+3. Agent 7 Director design-review-only commit changing exactly `.agent-coordination/design-reviews/<TASK-ID>.json`.
+
+The Director design review remains the final PR commit, satisfying normal implementation governance. The map-canon verifier is allowed to look through that one final design-review commit to verify the immediately preceding map-canon approval against the exact feature/canon head.
+
+Do not put both approval files in one commit, and do not add implementation changes after either approval.
+
 Deleting an existing protected id outright is rejected. Retire it so ids remain reserved for saves and historical references.
