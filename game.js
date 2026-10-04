@@ -17,7 +17,7 @@
   const RUMOUR_MAP = Object.fromEntries(C.rumours.map(r => [r.id, r]));
   C.region.tiles.forEach(t => TILE_MAP[`${t.q},${t.r}`] = t);
 
-  const SAVE_KEY = "lantern-road-save-v1";
+  // Keep the historical storage key so existing installs can discover and migrate raw v1 saves.\n  const SAVE_KEY = "lantern-road-save-v1";\n  const LEGACY_BACKUP_KEY = "lantern-road-save-v1-backup";\n  const SaveSystem = window.LanternRoadSave;
   const dom = {
     statusStrip: document.getElementById("statusStrip"),
     tabContent: document.getElementById("tabContent"),
