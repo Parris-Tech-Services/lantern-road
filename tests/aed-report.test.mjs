@@ -148,7 +148,7 @@ test("computes player-impact resolution, retest and rework metrics", () => {
   assert.equal(metrics.high_impact_resolution_rate_percent, 50);
   assert.equal(metrics.median_time_to_playable_improvement_hours, 6);
   assert.equal(metrics.reopened_findings, 1);
-  assert.equal(metrics.rework_rate_percent, 100 / 3);
+  assert(Math.abs(metrics.rework_rate_percent - (100 / 3)) < 1e-9);
 });
 
 test("derives parked-review age when parking timestamps exist", () => {
