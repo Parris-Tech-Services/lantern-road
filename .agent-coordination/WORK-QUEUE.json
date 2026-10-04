@@ -3373,7 +3373,8 @@
         ".agent-coordination/WORK-QUEUE.json",
         "scripts/aed-report.mjs",
         "tests/aed-report.test.mjs",
-        "docs/ARCHITECTURE-MODULARISATION-PLAN.md"
+        "docs/ARCHITECTURE-MODULARISATION-PLAN.md",
+        ".github/workflows/aed-report.yml"
       ],
       "notes": "Josh explicitly asked AED to solve the review/merge bottleneck and shared game.js collision problem. Operational coordination only; specialist code extraction remains Agent 1 ownership."
     },
