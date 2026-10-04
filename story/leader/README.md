@@ -29,6 +29,17 @@ The purpose is simple:
 
 > NPCs and companions should have enough information to address the player as a person without telling the player who that person must be.
 
+## Hard guardrails
+
+A background tag must **not**:
+
+- grant automatic faction loyalty or hostility;
+- establish fixed family history or other mandatory personal biography;
+- establish a fixed birthplace;
+- grant major mechanical superiority;
+- replace or duplicate the existing skill/progression systems;
+- become a hidden class, alignment or faction-selection system.
+
 ## Proposed background set
 
 - **No Stated Background**
