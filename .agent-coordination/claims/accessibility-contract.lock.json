@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0051",
+  "exclusive_scope": "accessibility-contract",
+  "agent_number": 5,
+  "agent": "The Wayfinder",
+  "session_id": "8f26a1c4-30fd-4d57-aad4-d33d5f43cb98",
+  "claim_token": "d9a15e60-940e-46b9-a9a6-d49a95815a2f",
+  "claimed_at": "2026-10-04T16:15:00+11:00",
+  "expires_at": "2026-10-05T04:15:00+11:00",
+  "branch": "agent/LR-0051-accessibility-contract-8f26a1c4",
+  "note": "Authoring only LR-0051 accessibility interaction contract and phone test matrix; no runtime edits."
+}
