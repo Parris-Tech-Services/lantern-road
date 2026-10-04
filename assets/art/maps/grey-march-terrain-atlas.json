@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0072",
+  "asset": "assets/art/maps/grey-march-terrain-atlas.svg",
+  "canvas": {
+    "width": 1200,
+    "height": 900,
+    "aspect_ratio": "4:3"
+  },
+  "projection": {
+    "orientation": "pointy-top",
+    "offset_layout": "odd-r",
+    "hex_size": 65,
+    "center_formula": {
+      "x": "65 * sqrt(3) * (q + 0.5 * (r & 1)) + 104",
+      "y": "65 * 1.5 * r + 110.5"
+    }
+  },
+  "source_of_truth": "world/map-canon.json + existing canonical terrain cells in content.js",
+  "terrain_palette": {
+    "plains": "#b6a36b",
+    "hills": "#95835a",
+    "mountain": "#777267",
+    "forest": "#4f5d43",
+    "swamp": "#657566"
+  },
+  "baked_content": [
+    "terrain colour masses",
+    "terrain-only topographic texture",
+    "paper/grain atmosphere"
+  ],
+  "deliberately_dynamic_not_baked": [
+    "hex grid",
+    "grid references",
+    "settlement and site labels",
+    "roads and routes",
+    "party position",
+    "reachable highlights",
+    "discovery/fog state",
+    "quest markers",
+    "mutable faction/world-state markers"
+  ],
+  "provenance": {
+    "author_role": "Agent 4 — The Lamplighter",
+    "method": "hand-authored deterministic SVG generated from canonical terrain cells",
+    "visual_reference": "Josh-approved first Grey March concept direction",
+    "date": "2026-10-04"
+  }
+}
