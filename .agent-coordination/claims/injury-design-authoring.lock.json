@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0058",
+  "exclusive_scope": "injury-design-authoring",
+  "agent_number": 3,
+  "agent": "The Mechanist",
+  "session_id": "2e341c8a-c49f-4d6d-a472-8b2c216bf76a",
+  "claim_token": "2ee3dfba-d41c-4c74-a8a5-8eaa80612ca5",
+  "claimed_at": "2026-10-04T16:10:00+11:00",
+  "expires_at": "2026-10-05T04:10:00+11:00",
+  "branch": "agent/LR-0058-injury-design-authoring-2e341c8a",
+  "note": "Implementing only LR-0058."
+}
