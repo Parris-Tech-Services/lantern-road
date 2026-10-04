@@ -73,7 +73,7 @@
     {
       "id": "LR-0003",
       "title": "Audio and atmosphere foundation",
-      "status": "READY",
+      "status": "DONE",
       "priority": 1,
       "exclusive_scope": "audio-atmosphere",
       "depends_on": [],
@@ -90,7 +90,7 @@
         "style.css",
         "assets/audio/"
       ],
-      "notes": "Premium-gap area: audio/atmosphere.",
+      "notes": "Merged in PR #4. Default-off Web Audio atmosphere, weather/location ambience, restrained action cues, persisted sound/ambience/volume controls, autoplay-safe gesture unlocking, and docs/AUDIO-DIRECTION.md.",
       "primary_agent": 4
     },
     {
@@ -841,6 +841,32 @@
         "docs/ART-DIRECTION.md"
       ],
       "notes": "Requires actual illustration assets. If the current agent environment cannot generate/import approved images and commit them, do not fake completion with placeholders; report the capability gap and leave the task unfinished."
+    },
+    {
+      "id": "LR-0032",
+      "title": "Bespoke soundscape and restrained score production pass",
+      "status": "READY",
+      "priority": 2,
+      "exclusive_scope": "authored-audio-production",
+      "depends_on": [
+        "LR-0003"
+      ],
+      "primary_agent": 4,
+      "goal": "Replace or augment the procedural audio foundation with a coherent authored soundscape and restrained adaptive score while preserving phone performance and player control.",
+      "acceptance_criteria": [
+        "Produce clean loopable ambience layers for core weather states and the main location families.",
+        "Produce a cohesive final UI, travel and combat cue set with controlled loudness and no cue spam.",
+        "Add a small restrained set of adaptive musical motifs or stems for road, safety, danger, revelation and late-campaign pressure.",
+        "Integrate authored audio through the existing master-volume, mute, ambience and autoplay-safe controls.",
+        "Keep procedural audio as a graceful fallback when authored assets are unavailable or fail.",
+        "Compress assets for phone browsers, verify clean looping/no clicks, and document source/licence provenance for every asset."
+      ],
+      "likely_files": [
+        "assets/audio/",
+        "game.js",
+        "docs/AUDIO-DIRECTION.md"
+      ],
+      "notes": "Second-wave Lamplighter task discovered during LR-0003. This is authored production audio and music, not a duplicate of the browser-audio foundation."
     }
   ],
   "agent_roster": [
