@@ -49,3 +49,4 @@ Keep this short. Record decisions that future agents would otherwise relitigate.
 Add one row when a task changes architecture, product direction, ownership boundaries, save compatibility, testing policy, or another choice that future agents are likely to revisit.
 
 Do not log ordinary implementation details.
+| 2026-10-05 | **Supersede the game-production/design-approval portions of LR-0150:** Agent 7 is CEO/executive oversight; Agent 1 (The Steward) is project lead, lead game designer, technical lead and program integrator with final internal game-production approval. Map canon and routine design/technical/integration decisions belong to Steward; Agent 7 is not a routine game or merge approval gate. | Separates executive company oversight from actual game-development leadership, removes duplicated approval authority, and makes one accountable lead responsible for turning specialist work into a coherent playable game. |
