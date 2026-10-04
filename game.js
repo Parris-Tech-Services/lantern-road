@@ -518,7 +518,9 @@
   }
 
   function advanceToMorning() {
-    const advance = state.hour < 22 ? (24 - state.hour + 7) : (31 - state.hour);
+    // If it is already after midnight but before 7am, sleep only until this morning.
+    // Otherwise, advance to 7am on the next day.
+    const advance = state.hour < 7 ? (7 - state.hour) : (24 - state.hour + 7);
     advanceTime(advance);
   }
 
