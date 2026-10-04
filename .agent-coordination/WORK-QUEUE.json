@@ -654,7 +654,7 @@
         "QA/",
         ".agent-coordination/WORK-QUEUE.json"
       ],
-      "notes": "The single intentional early QA pass. Establish a baseline before the foundations change; findings may become stale and must be retested later. Real-browser execution is required. HISTORICAL BASELINE clarification from LR-0139: record the exact old branch/build actually tested. Findings are useful before-state evidence but must not be treated as current-main defects without a current-build LR-0140 retest."
+      "notes": "The single intentional early QA pass. Establish a baseline before the foundations change; findings may become stale and must be retested later. Real-browser execution is required. HISTORICAL BASELINE clarification from LR-0139: record the exact old branch/build actually tested. Findings are useful before-state evidence but must not be treated as current-main defects without a current-build LR-0140 retest. When LR-0021 is completed/parked and its lock is released, promote LR-0140 to READY (LR-0139 is DONE) so Agent 6's next lane tests current main/current deployed rather than continuing on the historical branch."
     },
     {
       "id": "LR-0022",
@@ -3649,7 +3649,7 @@
     {
       "id": "LR-0139",
       "title": "Install continuous fun-loop and player-impact flow metrics",
-      "status": "READY",
+      "status": "DONE",
       "priority": 0,
       "exclusive_scope": "aed-continuous-fun-loop",
       "depends_on": [
@@ -3677,7 +3677,7 @@
         ".github/workflows/aed-report.yml",
         ".agent-coordination/CLAIM-PROTOCOL.md"
       ],
-      "notes": "Josh explicitly asked AED to implement continuous current-build playtesting, fun/friction priority and measurable flow/finding resolution. Preserve LR-0021 as the intentional historical baseline; do not modify its live claimed branch."
+      "notes": "Completed 4 Oct 2026 via PR #84, merge commit c5103162e17eb2429d9647f8cf9047496f67e02b. Installed current-build Warden fun loop, structured finding schema/state, high-impact fun/friction triage, parked_at handoff timestamps and AED player-impact/flow metrics. Exact-head Agent coordination run #809 and AED report tests run #13 both passed."
     },
     {
       "id": "LR-0140",
@@ -3803,5 +3803,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T20:44:00+11:00"
+  "updated_at": "2026-10-04T20:52:00+11:00"
 }
