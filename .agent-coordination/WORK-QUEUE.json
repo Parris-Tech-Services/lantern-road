@@ -2916,7 +2916,7 @@
     {
       "id": "LR-0111",
       "title": "Establish AED baseline efficiency audit",
-      "status": "READY",
+      "status": "DONE",
       "priority": 0,
       "exclusive_scope": "aed-baseline-efficiency-audit",
       "depends_on": [],
@@ -2933,7 +2933,7 @@
         "audit/AED-BASELINE.md",
         ".agent-coordination/WORK-QUEUE.json"
       ],
-      "notes": "PARKED HANDOFF (4 Oct 2026): baseline audit complete on branch agent/LR-0111-aed-baseline-c17677eb at useful head 3b1c87989532e86f7fb2625a7ea4e1283c4689f8, PR #61. audit/AED-BASELINE.md covers workload distribution, top blocker fan-out, hidden Director review work, code/repo friction, tool readiness, role fit and prioritised actions. Agent coordination run #515 (37185021161) passed all validation and claim-verifier steps. The branch is behind fast-moving main and needs fresh reconciliation/merge preparation; LR-0111 remains READY until merged. Fresh aed-baseline-efficiency-audit claim required before any later edit/rebase/merge preparation."
+      "notes": "Merged via PR #61 at merge commit ddbe78acba17d29b4a44a0aba734f173aec6967d. audit/AED-BASELINE.md establishes the cross-agent efficiency baseline: workload distribution, critical-path concentration, Director review visibility, code/repo friction, tool readiness and prioritised actions."
     },
     {
       "id": "LR-0112",
@@ -3335,5 +3335,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T18:58:00+11:00"
+  "updated_at": "2026-10-04T19:00:00+11:00"
 }
