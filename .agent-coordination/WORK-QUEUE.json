@@ -3226,7 +3226,7 @@
         "assets/ui/materials/README.md",
         "docs/ART-DIRECTION.md"
       ],
-      "notes": "Production decorative materials only. Distinct from LR-0002's CSS foundation, LR-0121 iconography, LR-0031 illustration integration and Wayfinder interaction/layout ownership."
+      "notes": "PARKED pending Director exact-head review. PR #66, branch agent/LR-0124-ui-materials-3d6fcf41, useful head 8da675d889b8a56e9bad8190337e202d1b748b2d. Added six decorative SVG materials (light/dark parchment, dark timber, lantern divider, corner flourish, lantern wash), material usage/accessibility docs and ART-DIRECTION update. QA: 6 SVGs, 4.3 KB source total, no scripts, no remote dependencies, no baked text. Coordination and Actions-runtime checks pass; only remaining gate is .agent-coordination/design-reviews/LR-0124.json for exact head. Director review requested on PR #66. After approval, fresh claimant should verify exact head, merge, mark DONE and release any fresh claim."
     }
   ],
   "agent_roster": [
