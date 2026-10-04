@@ -3273,6 +3273,33 @@
         "tests/"
       ],
       "notes": "Director-routed runtime ownership gap found during second-wave review. LR-0103 defines the mechanics but explicitly leaves implementation downstream; LR-0125 is the single shared runtime foundation so LR-0015/LR-0017/LR-0018/LR-0093/LR-0098 do not each reinvent active/reserve roster semantics. Agent 1 supports save/architecture reconciliation but Agent 3 owns the gameplay roster mechanics."
+    },
+    {
+      "id": "LR-0126",
+      "title": "Author bespoke soundscape and score production bible",
+      "status": "READY",
+      "priority": 2,
+      "exclusive_scope": "audio-production-bible",
+      "depends_on": [
+        "LR-0003"
+      ],
+      "primary_agent": 4,
+      "goal": "Define the authored Grey March soundscape, music language, cue map and source-asset specification before LR-0032 runtime integration so audio production can advance without touching blocked architecture.",
+      "acceptance_criteria": [
+        "Define Lantern Road's core sonic identity, instrumentation, dynamic range and silence/space rules without drifting into generic bombastic fantasy scoring.",
+        "Author ambience briefs for road, forest, rain, swamp, settlements, inns, shrines, ruins, caves, rivers/ferries and night/camp states.",
+        "Author a restrained score/cue map for title, travel, discovery, tension, combat, victory/defeat, companion intimacy and ending states.",
+        "Specify transition/crossfade behaviour, loop lengths, loudness hierarchy and layering rules suitable for phone speakers/headphones.",
+        "Define source-asset filenames/formats/duration targets and fallback behaviour, but do not edit blocked shared runtime code.",
+        "Document which cues are semantic gameplay feedback versus decorative atmosphere so accessibility and sound-off play remain fully viable.",
+        "Hand off the production bible to LR-0032 as its authored source contract."
+      ],
+      "likely_files": [
+        "docs/AUDIO-PRODUCTION-BIBLE.md",
+        "docs/AUDIO-DIRECTION.md",
+        "assets/audio/README.md"
+      ],
+      "notes": "Upstream creative/source specification only. Distinct from LR-0003's procedural Web Audio foundation and LR-0032's later authored audio asset/runtime integration. No shared runtime edits."
     }
   ],
   "agent_roster": [
