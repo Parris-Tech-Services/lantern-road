@@ -3301,6 +3301,33 @@
         "assets/audio/README.md"
       ],
       "notes": "Merged in PR #73 after Agent 7 exact-head approval. Authored soundscape/score production bible, audio source-asset contract and AUDIO-DIRECTION handoff are now on main. LR-0032 consumes this contract and remains gated by LR-0010 for runtime integration. Merge commit 97e8c0122b4b1d0e89b0abfce9ff8444b6890025."
+    },
+    {
+      "id": "LR-0127",
+      "title": "Author motion, transition and atmospheric VFX production language",
+      "status": "READY",
+      "priority": 2,
+      "exclusive_scope": "motion-vfx-production-language",
+      "depends_on": [
+        "LR-0002"
+      ],
+      "primary_agent": 4,
+      "goal": "Define and produce the lightweight motion/VFX language that makes Lantern Road feel premium and atmospheric without compromising phone performance, accessibility or Wayfinder-owned interaction semantics.",
+      "acceptance_criteria": [
+        "Define timing/easing/amplitude rules for scene reveals, travel, map focus, damage, healing, status, discovery, save confirmation and modal/sheet transitions.",
+        "Define weather/time atmosphere treatments for clear, drizzle, wind, storm, night/camp, sacred/uncanny and warm-safe interiors.",
+        "Create lightweight reusable decorative VFX source assets where helpful, with no gameplay semantics baked into them.",
+        "Provide a reduced-motion contract with static fallbacks for every effect family.",
+        "Keep camera shake, flashes and continuous movement restrained enough for one-handed phone play and long reading sessions.",
+        "Document ownership boundaries: Agent 4 owns visual choreography; Agent 5 owns interaction state/focus/touch/accessibility semantics; Agent 1 owns runtime integration.",
+        "Do not edit blocked shared runtime files."
+      ],
+      "likely_files": [
+        "docs/MOTION-VFX-DIRECTION.md",
+        "assets/ui/effects/",
+        "docs/ART-DIRECTION.md"
+      ],
+      "notes": "Upstream presentation/source package only. Distinct from LR-0001 interaction feedback and LR-0009 mobile UX: this task defines how valid state changes look, not when they occur or how controls behave."
     }
   ],
   "agent_roster": [
