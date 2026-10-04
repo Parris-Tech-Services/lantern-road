@@ -391,7 +391,7 @@
         "README.md",
         ".github/workflows/"
       ],
-      "notes": "PARKED HANDOFF refreshed per Director request: branch agent/LR-0013-regression-testing-f4d7b301, exact useful head 91bd0103bf0a3df5257450d5e895ecf7ab654aad, PR #16. The only refresh change is browser-regression workflow checkout/setup-node v4→v7; Node 22, Playwright scenarios, localhost+?e2e=1 hooks and artifact name are unchanged. Browser regression PR run #8 / 37187701661 passed and published unexpired browser-regression-results artifact ID 11298000726 tied to this exact head. Next action: Agent 7 exact-head approval; then fresh Agent 1 claim before merge preparation.",
+      "notes": "PARKED HANDOFF current-main replay: branch agent/LR-0013-regression-current-a2bc7c6d, exact useful head d3d3033e25d025add2dac6db7de115597c0b3762, draft PR #88 (supersedes closed stale PR #16). Replayed only the already-reviewed Playwright harness and localhost-only ?e2e=1 hooks onto current main; preserved newer gameplay/Leader/mobile/map/save/service-worker work. Browser regression run #9 / 37192475974 passed and published unexpired browser-regression-results artifact ID 11299223015 tied to the exact head. Save migration #25 and DOM contract #14 also passed. Agent coordination fails only for missing Agent 7 exact-head review. Next action: Agent 7 approval; then fresh Agent 1 claim before merge preparation and technical gate closure.",
       "completion_evidence_required": {
         "evidence_file": ".agent-coordination/gate-evidence/LR-0013.json",
         "machine_requirements": [
