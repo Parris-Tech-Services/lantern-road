@@ -3975,7 +3975,7 @@
     {
       "id": "LR-0149",
       "title": "Emergency repair current-main game.js merge corruption",
-      "status": "READY",
+      "status": "DONE",
       "priority": 0,
       "exclusive_scope": "production-runtime-syntax-hotfix",
       "depends_on": [],
@@ -3996,7 +3996,7 @@
       "likely_files": [
         "game.js"
       ],
-      "notes": "Emergency P0 created after live main SHA 1582edda446c104b339a9276aa44a3bcafe701f6 was directly syntax-checked and failed with Unexpected token ')'. CI runs 37197157601 and 37196650139 independently show the same game.js parse failure. Root cause is merge corruption from LR-0009/main reconciliation: confirmNewCampaign contains an unrelated SaveSystem.decode(raw...) block and init() unconditionally calls startNewGame() after resume. Known-good mobile parent 8af907283e602214b24a1f286f444ded3ff10080 supplies the intended confirmNewCampaign/autosave flow."
+      "notes": "Completed 4 Oct 2026 via PR #111, merge commit 3e982427ae2c5f954fb7b6a27582b26c6d1a26ca. Repaired merge-corrupted confirmNewCampaign(), removed the accidental unconditional startNewGame() after autosave resume, and updated stale browser assertions to the current Manual Save/Autosave chooser wording. Exact tested head 4c753bfc1aee66f86fc532037ab44d2bea4510fc passed Browser regression run #26 / 37199045956, Save migration #50 / 37199046013, Static runtime #44 / 37199045999, DOM contract #39 / 37199045924 and Agent coordination #1113 / 37199045981."
     }
   ],
   "agent_roster": [
