@@ -83,3 +83,15 @@ For the production gameplay atlas:
 - minor old-map inaccuracies or handwritten annotations may be used as authored flavour only when they do not misrepresent interaction-critical geography.
 
 This direction is now represented by LR-0069 (Director map canon), LR-0072 (Lamplighter canonical terrain atlas) and downstream integration work. Do not create a duplicate map architecture task.
+
+
+## Grey March map concept provenance
+
+Accepted concept reference:
+
+- `assets/art/source/grey-march-approved-concept.webp`
+- OpenAI image-generation id: `b3410a9d-8e18-43fb-8399-5108304d1045`
+- Status: **approved visual direction, non-canonical geography**
+- Josh preferred this first concept over the darker second alternative because it offers more open land and clearer terrain separation.
+
+Important: generated labels, roads, settlement placements and terrain geometry in this concept are **not canon**. LR-0069 owns canonical geography and LR-0072 will produce the clean gameplay-aligned atlas from that registry. This file is retained only as a visual-direction reference.
