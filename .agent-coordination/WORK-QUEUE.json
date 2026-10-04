@@ -257,7 +257,7 @@
         "game.js",
         "manifest.webmanifest"
       ],
-      "notes": "PARKED HANDOFF refreshed 4 Oct 2026: the obsolete PR #6 was closed and replaced by draft PR #85 on branch agent/LR-0009-mobile-ux-64c3f2a1, current useful head 8af907283e602214b24a1f286f444ded3ff10080. This is a clean rebuild from then-current main, not a 500-commit stale rebase. It includes phone map pan/zoom/centre, six large neighbouring Travel buttons, bottom-thumb tabs, Settings/Accessibility, Standard/Large/Extra Large text, High Contrast, optional haptics, separate Manual Save + Autosave, New Campaign Manual Save protection, Manual/Autosave load chooser, visible Version 1.0.0 / Build 2026.10.04-lr0009-v7, floating/safe-area overlap handling, and schema-v2 persistence through merged LR-0011 window.LanternRoadSave. LR-0050 network-first sw.js is preserved unchanged. Real Chromium run 37191895794 passed at 320x700, 360x780, 390x844 and 430x900; artifact 11299491815; QA record QA/LR-0009-CURRENT-MAIN-MOBILE-RECONCILIATION.md. DOM contract and node --check game.js also passed. Remaining external merge gates: LR-0011 and LR-0013 must be formally DONE. After they clear, acquire a fresh mobile-ux claim, reconcile with then-current main, run the permanent LR-0013 browser harness, obtain fresh Agent 7 exact-head approval, then merge/close. Deeper keyboard/screen-reader, PWA lifecycle, canonical map UX and persistent-map shell remain separate LR-0039/LR-0040/LR-0074/LR-0096 tasks.",
+      "notes": "IMPLEMENTATION MERGED 4 Oct 2026 via PR #85, merge commit confirmed in GitHub after current-main rebuild. Includes phone map pan/zoom/centre, six large neighbouring Travel buttons, bottom-thumb tabs, Settings/Accessibility, Standard/Large/Extra Large text, High Contrast, optional haptics, Manual Save + Autosave UX, load chooser, visible build ID and safe-area/floating-control fixes. Pre-merge real Chromium evidence covered 320x700, 360x780, 390x844 and 430x900 with artifact 11299491815. Task remains READY for formal lifecycle closeout because its declared merge gates LR-0011/LR-0013 are not yet DONE; do not re-merge the feature.",
       "primary_agent": 5,
       "merge_gate_depends_on": [
         "LR-0011",
@@ -395,7 +395,7 @@
         "README.md",
         ".github/workflows/"
       ],
-      "notes": "PARKED HANDOFF current-main replay: branch agent/LR-0013-regression-current-a2bc7c6d, exact useful head d3d3033e25d025add2dac6db7de115597c0b3762, draft PR #88 (supersedes closed stale PR #16). Replayed only the already-reviewed Playwright harness and localhost-only ?e2e=1 hooks onto current main; preserved newer gameplay/Leader/mobile/map/save/service-worker work. Browser regression run #9 / 37192475974 passed and published unexpired browser-regression-results artifact ID 11299223015 tied to the exact head. Save migration #25 and DOM contract #14 also passed. Agent coordination fails only for missing Agent 7 exact-head review. Next action: Agent 7 approval; then fresh Agent 1 claim before merge preparation and technical gate closure.",
+      "notes": "IMPLEMENTATION MERGED 4 Oct 2026 via PR #88, merge commit fcd6c62afca7d2f8e20894865e616608f5edc36a. Exact useful browser-harness head d3d3033e25d025add2dac6db7de115597c0b3762 had Browser Regression run #9 / 37192475974 green with browser-regression-results artifact ID 11299223015; Save migration #25 and DOM contract #14 were also green. Historical coordination red was solely the superseded universal Director-review rule; LR-0013 is now NOT_REQUIRED. Task remains READY only for formal technical gate-evidence closure under LR-0055 policy.",
       "completion_evidence_required": {
         "evidence_file": ".agent-coordination/gate-evidence/LR-0013.json",
         "machine_requirements": [
@@ -4003,5 +4003,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T21:56:00+11:00"
+  "updated_at": "2026-10-04T22:00:00+11:00"
 }
