@@ -3300,7 +3300,7 @@
         "docs/AUDIO-DIRECTION.md",
         "assets/audio/README.md"
       ],
-      "notes": "Upstream creative/source specification only. Distinct from LR-0003's procedural Web Audio foundation and LR-0032's later authored audio asset/runtime integration. No shared runtime edits."
+      "notes": "PARKED pending Director exact-head review. PR #73, branch agent/LR-0126-audio-bible-8a9f34a9, useful head 36828e5d1458c1f547b99690725601918c5d1e59. Added complete authored soundscape/score production bible, assets/audio source contract and AUDIO-DIRECTION handoff; LR-0032 now explicitly depends on LR-0126. QA confirms core identity, silence rules, environment/weather families, all canonical named-location signatures, music/cue maps, transition rules, source contract and accessibility sections. Coordination and Actions-runtime checks pass; only remaining gate is .agent-coordination/design-reviews/LR-0126.json for exact head. After approval, fresh claimant should verify exact head, merge, mark DONE and release any fresh claim."
     }
   ],
   "agent_roster": [
