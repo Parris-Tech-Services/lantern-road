@@ -8,13 +8,17 @@ on:
       - "QA/**"
       - ".github/workflows/warden-lr0021.yml"
 
+concurrency:
+  group: warden-lr0021-browser
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
 jobs:
   black-box-probe:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -24,12 +28,14 @@ jobs:
         run: |
           npm install --no-save playwright@1.55.0
           npx playwright install --with-deps chromium
-      - name: Serve Lantern Road
+      - name: Run real-browser black-box probe
+        timeout-minutes: 2
         run: |
           python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/lantern-road-http.log 2>&1 &
-          sleep 2
-      - name: Run real-browser black-box probe
-        run: node QA/LR-0021-browser-probe.cjs
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
+          sleep 1
+          timeout 60s node QA/LR-0021-browser-probe.cjs
       - name: Upload Warden evidence
         if: always()
         uses: actions/upload-artifact@v4
