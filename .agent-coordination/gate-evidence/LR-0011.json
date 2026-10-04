@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0011",
+  "status": "VERIFIED",
+  "candidate_commit_sha": "73998799b1574c9d6cf98e2aa9d8bb899c52539b",
+  "ci": {
+    "workflow_run_id": 37236741387,
+    "conclusion": "success",
+    "artifact_names": [
+      "save-migration-results"
+    ]
+  },
+  "steward_verification": {
+    "agent_number": 1,
+    "status": "VERIFIED",
+    "verified_at": "2026-10-05T09:12:00+11:00",
+    "notes": "Steward verified the exact candidate SHA, successful Save migration run #54, live required save-migration-results artifact, and committed legacy save fixtures. Josh-only LR-0056 remains separate."
+  }
+}

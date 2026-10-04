@@ -304,7 +304,7 @@
     {
       "id": "LR-0011",
       "title": "Save format versioning and migration hardening",
-      "status": "READY",
+      "status": "DONE",
       "priority": 0,
       "exclusive_scope": "save-versioning",
       "depends_on": [],
@@ -322,7 +322,7 @@
         "game.js",
         "README.md"
       ],
-      "notes": "PARKED HANDOFF 5 Oct 2026: merged save implementation remains intact; evidence-refresh support merged via PR #114, merge commit 76d7bf4c5e2e73669cd356fbef04d24198ff2749. Exact tested candidate head 73998799b1574c9d6cf98e2aa9d8bb899c52539b passed Save migration run #54 / 37236741387, Browser regression #28 / 37236741395 and Agent coordination #1124 / 37236741380. Successful save run published live unexpired save-migration-results artifact ID 11315976941 (expires 5 Oct 2026 21:35Z). The earlier LR-0011 design review remains historical and does not substitute for the separate technical evidence verification required by current policy. parked_at=2026-10-05T08:41:00+11:00. Remaining gate: Steward verifies this fresh machine evidence, then LR-0011 can add its gate-evidence record and close DONE without CEO approval.agent-coordination/gate-evidence/LR-0011.json and mark LR-0011 DONE. Josh Android validation remains separate LR-0056.",
+      "notes": "DONE 5 Oct 2026 under Steward game/technical authority from LR-0151. The merged LR-0011 save-versioning implementation is machine-verified at exact candidate head 73998799b1574c9d6cf98e2aa9d8bb899c52539b. Save migration workflow run #54 / 37236741387 completed successfully and published live required artifact save-migration-results (artifact ID 11315976941). Required legacy fixtures are present under tests/fixtures/saves/legacy/. Steward verified the exact-head evidence; Josh Android validation remains separate LR-0056 and was not inferred or completed.",
       "completion_evidence_required": {
         "evidence_file": ".agent-coordination/gate-evidence/LR-0011.json",
         "machine_requirements": [
@@ -4131,5 +4131,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-05T09:10:00+11:00"
+  "updated_at": "2026-10-05T09:12:00+11:00"
 }
