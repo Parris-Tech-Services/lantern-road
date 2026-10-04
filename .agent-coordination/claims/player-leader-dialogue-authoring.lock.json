@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0088",
+  "exclusive_scope": "player-leader-dialogue-authoring",
+  "agent_number": 2,
+  "agent": "The Storyteller",
+  "session_id": "d1c62c4b-8f67-49fe-9792-4fd3e2a7ec36",
+  "claim_token": "36de56c1-6e7d-49df-93d2-b2e7d058dc5c",
+  "claimed_at": "2026-10-04T16:29:00+11:00",
+  "expires_at": "2026-10-05T04:29:00+11:00",
+  "branch": "agent/LR-0088-player-leader-dialogue-d1c62c4b",
+  "note": "Implementing only LR-0088 player-leader and consequential dialogue authoring."
+}
