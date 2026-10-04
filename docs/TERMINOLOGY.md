@@ -11,6 +11,10 @@ This is the canonical working language guide for Lantern Road. It standardises p
 - **Grey March** — the frontier region.
 - **Party** — the four-person player group in UI/system language.
 - **Party member** — generic term for Garrick, Mira, Oren or Brindle.
+- **Leader** — the player’s in-world role and one of the four active adventurers. The Leader is the default external speaker and owns irreversible party-level story choices.
+- **Active companion** — one of the three companions currently travelling with the Leader.
+- **Reserve companion** — an available authored companion not currently in the four-person active adventuring party; reserve state does not erase Trust, personal-arc or character history.
+- **Companion roster** — all authored companions currently available to travel with the Leader.
 - **Settlement** — a populated service/social location.
 - **Site** or **adventure site** — a non-settlement authored location.
 - **Faction standing** — the player's relationship/reputation with a faction. Prefer this in player-facing system language; legacy implementation keys may still say `reputation`.

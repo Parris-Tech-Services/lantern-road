@@ -269,7 +269,8 @@
         "LR-0003",
         "LR-0005",
         "LR-0006",
-        "LR-0009"
+        "LR-0009",
+        "LR-0099"
       ],
       "primary_agent": 1,
       "goal": "After the already-in-flight specialist branches land, split the monolithic runtime/content hotspots into safer module boundaries so the next feature wave does not keep colliding in game.js and content.js.",
@@ -1215,7 +1216,7 @@
         "docs/ART-DIRECTION.md",
         "docs/ART-PROVENANCE.md"
       ],
-      "notes": "Active Lamplighter AI-art task. Hero style-lock batch is on PR #12 / branch agent/LR-0042-ai-art-d1f018ec with four hero portraits, lineup, ART-PROVENANCE and ART-SHOT-LIST. Hero batch is awaiting exact-head Director design review before merge. Josh approved the first Grey March map concept direction; map canon/terrain atlas are separately governed by LR-0069/LR-0072. Continue generating settlement/site/enemy/NPC/item art under the locked style; do not integrate runtime art slots here (LR-0031 owns downstream integration)."
+      "notes": "Active Lamplighter AI-art task. PR #12 / branch agent/LR-0042-ai-art-d1f018ec now contains the accepted hero style-lock set, Josh-approved non-canonical Grey March visual reference, ART-PROVENANCE.md, ART-SHOT-LIST.md and ART-MANIFEST.json. Latest working head requested for Director exact-head review: f8e4c35c66d7ab007e75a0c5a28d21725b7dbce9 (PR comment #5977073142). Recent settlement/NPC generation attempts were rejected because the image generator drifted into cartography; rejection IDs/reasons are recorded in ART-MANIFEST rather than lowering the quality bar. Continue clean settlement/site/enemy/NPC/item generation under the locked style; LR-0031 owns downstream runtime integration and LR-0069/LR-0072 own canonical map architecture/atlas."
     },
     {
       "id": "LR-0043",
@@ -2332,7 +2333,7 @@
     {
       "id": "LR-0089",
       "title": "Ratify player-led party roster and companion-agency boundaries",
-      "status": "READY",
+      "status": "DONE",
       "priority": 0,
       "exclusive_scope": "player-leader-party-governance",
       "depends_on": [],
@@ -2352,7 +2353,7 @@
         "docs/TERMINOLOGY.md",
         "design/"
       ],
-      "notes": "Director governance counterpart to LR-0088. Josh's intended active party is four total: player leader + three companions."
+      "notes": "Director governance counterpart to LR-0088. Josh's intended active party is four total: player leader + three companions. Completed 4 Oct 2026 via PR #47. Ratified Leader + three active companions, reserve rotation, minimal Leader identity and bounded companion autonomy; Agent coordination run 350 passed on the exact PR head."
     },
     {
       "id": "LR-0090",
@@ -2414,7 +2415,7 @@
     {
       "id": "LR-0092",
       "title": "Author companion willingness, autonomy and suggestion-resolution specification",
-      "status": "BLOCKED",
+      "status": "READY",
       "priority": 0,
       "exclusive_scope": "companion-autonomy-design",
       "depends_on": [
@@ -2598,6 +2599,52 @@
         "tests/"
       ],
       "notes": "Mechanist implementation of LR-0094 across combat and non-combat repeatability."
+    },
+    {
+      "id": "LR-0099",
+      "title": "Author modularisation blueprint and extraction sequence",
+      "status": "READY",
+      "priority": 0,
+      "exclusive_scope": "architecture-blueprint",
+      "depends_on": [],
+      "primary_agent": 1,
+      "goal": "Prepare LR-0010 with a concrete low-risk module map, extraction order and collision plan against the current codebase without editing shared runtime files.",
+      "acceptance_criteria": [
+        "Inventory current game.js/content.js responsibilities and identify the highest-collision seams used by queued feature work.",
+        "Define target modules and their public contracts for save/state, dialogue/scenes, combat/actions, map/travel, economy/services, party/companions and UI/rendering.",
+        "Define an extraction order that preserves a simple static-browser build and avoids a framework/bundler rewrite.",
+        "Map upcoming queued integration tasks to the modules they should own so they do not all return to game.js/content.js.",
+        "Identify temporary compatibility shims and exact tests required after each extraction step.",
+        "Produce a concise risk/rollback plan and explicit non-goals for LR-0010."
+      ],
+      "likely_files": [
+        "docs/ARCHITECTURE-MODULARISATION-PLAN.md"
+      ],
+      "notes": "Blueprint complete on branch agent/LR-0099-architecture-blueprint-f04eb4a6-r2, exact useful head 09558de15d4752f1aeb09f9215cfb8b98a634b51, draft PR #46. The 612-line plan inventories the 3,494-line/161-function game.js and 3,261-line content.js, defines browser-compatible module contracts, staged extraction order, queue-to-module ownership, temporary shims, test requirements, rollback and explicit non-goals. Agent coordination validation passed in run 37180851517; the only failing step is the intentional missing Agent 7 exact-head Director review. Next action: after Director approval, freshly claim LR-0099, verify current queue/CI, merge PR #46, mark DONE, release fresh claim."
+    },
+    {
+      "id": "LR-0100",
+      "title": "Author evolving rumour network and settlement gossip pack",
+      "status": "READY",
+      "priority": 2,
+      "exclusive_scope": "rumour-network-authoring",
+      "depends_on": [
+        "LR-0043"
+      ],
+      "primary_agent": 2,
+      "goal": "Turn Hear Rumours from a static text dispenser into authored social worldbuilding that changes with quest outcomes, campaign phase, faction pressure and where the player is listening, without touching runtime code yet.",
+      "acceptance_criteria": [
+        "Author a curated rumour/gossip pack for Hearthwick, Greyfen Market, Candlemere, Alderwatch and Blacksalt Crossing plus road/inn fallback material.",
+        "Give every core quest at least one pre-resolution rumour and at least one post-outcome or changed-state rumour so the world talks about what the player did.",
+        "Distinguish reliable information, faction-biased interpretation, hearsay and harmless local colour without using misinformation to make critical quest navigation unfair.",
+        "Define repeat behaviour so the same NPC/settlement does not simply replay one identical rumour forever; include exhausted-topic and changed-state fallbacks.",
+        "Use recognisable local voices and named consequences rather than generic fantasy gossip.",
+        "Document declarative trigger/source/reliability metadata for later LR-0038/LR-0005/LR-0008/LR-0090 integration; do not edit game.js, content.js or persisted state."
+      ],
+      "likely_files": [
+        "story/rumours/"
+      ],
+      "notes": "Pure author-now Storyteller work. Distinct from LR-0045 recurring NPC dialogue: this task owns settlement-level rumour/gossip content and its evolution. It complements LR-0001 feedback fixes by making Hear Rumours substantively worthwhile, not merely visibly responsive. Parked 4 Oct 2026 under the completed-work parking rule. Evolving rumour/gossip pack is complete on branch agent/LR-0100-rumour-authoring-7d9b59a7 at useful head 9aa80bac505ef1f4cd57c9ffbfca3f0f71e10d08, PR #48. Live acceptance criteria were rechecked: five settlements plus road/inn fallback, all six core quests have pre/post-state gossip, reliability/faction-bias metadata and repeat/exhausted-topic behaviour are authored, and branch changes only story/rumours/. Next action after Director approval: fresh Agent 2 claimant reacquires rumour-network-authoring, verifies approved head/CI, merges PR #48 if current, marks LR-0100 DONE, and releases the fresh lock."
     }
   ],
   "agent_roster": [
@@ -2655,5 +2702,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T16:42:00+11:00"
+  "updated_at": "2026-10-04T16:50:00+11:00"
 }

@@ -33,6 +33,10 @@ Keep this short. Record decisions that future agents would otherwise relitigate.
 | 2026-10-04 | Text generated inside concept-map artwork is PROPOSED, not canon. Existing canonical settlements/sites win until a controlled map-canon change is approved. | Prevents image-generation accidents from silently rewriting geography and story continuity. |
 | 2026-10-04 | Agent 7 governs canonical geography; Agent 1 enforces it technically; Agents 2/4 may propose lore/visual geography but cannot silently canonise it; Agents 5/6 consume and verify it. | Gives one clear authority path while keeping specialist work parallel and reviewable. |
 
+| 2026-10-04 | The active adventuring party is the player Leader plus three active companions. Garrick, Mira, Oren and Brindle all remain authored recruitable companions; when all four are available, one is reserve/rotation rather than deleted or rewritten into the Leader. | Josh wants the player embodied inside the party rather than acting as a disassociated controller, while preserving the existing companion work. |
+| 2026-10-04 | The Leader owns irreversible party-level story choices; companions may advise, interject, counter-offer, refuse personal/value-bound requests and take bounded character-grounded proactive actions, but may not silently seize major quest/faction decisions or unique-resource commitments. | Companion agency should create character drama without making the player feel they are not actually leading. |
+| 2026-10-04 | Leader identity stays deliberately light: player-chosen name, at most one small explicit background tag, plus emergent remembered leadership behaviour. No large character-creator biography is required by the core social model. | Gives dialogue a person to address without expanding the compact RPG into a new character-creation project. |
+
 ## How to add a decision
 
 Add one row when a task changes architecture, product direction, ownership boundaries, save compatibility, testing policy, or another choice that future agents are likely to revisit.
