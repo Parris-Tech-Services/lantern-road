@@ -8,6 +8,6 @@
   "claim_token": "d8c4e105-2a7f-4b96-a138-f5e9d0c7246b",
   "claimed_at": "2026-10-04T15:18:00+11:00",
   "expires_at": "2026-10-05T03:18:00+11:00",
-  "branch": "agent/LR-0011-save-versioning-3f2b1a6c",
-  "note": "Implementing only LR-0011."
+  "branch": "agent/LR-0011-save-versioning-3f2b1a6c-r2",
+  "note": "Implementing only LR-0011. Rebased onto current main via r2 branch; original branch preserved as backup."
 }
