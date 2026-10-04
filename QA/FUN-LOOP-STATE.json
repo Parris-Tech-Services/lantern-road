@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "purpose": "Standing state for LR-0140 current-build fun/friction micro-playtests.",
+  "last_tested_main_sha": null,
+  "last_tested_deployed_build": null,
+  "last_tested_at": null,
+  "last_triggering_merge_sha": null,
+  "last_report": null,
+  "note": "LR-0021 is an intentional historical baseline and does not populate this current-build state. LR-0140 updates this file only after testing current main/current deployed code."
+}
