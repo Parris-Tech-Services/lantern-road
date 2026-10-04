@@ -25,7 +25,9 @@
     "Josh remains final creative director. The Director may protect and interpret established pillars but must not materially change product direction without Josh's approval.",
     "Before a specialist feature PR is treated as merge-ready, The Director should perform a design-coherence review and record any blocking conflict or terminology/tone issue in the PR or queue.",
     "Narrative authoring may proceed ahead of runtime/save integration when it is isolated to story/docs assets. Blocking engine integration must not unnecessarily idle the Storyteller.",
-    "Agent 1 follow-on engineering tasks should remain mostly blocked behind the relevant foundations; LR-0059 is the intentionally independent current lane so Steward work can continue without colliding with parked feature branches."
+    "Agent 1 follow-on engineering tasks should remain mostly blocked behind the relevant foundations; LR-0059 is the intentionally independent current lane so Steward work can continue without colliding with parked feature branches.",
+    "Josh's 4 Oct playtest direction: the player should exist in-world as party leader; active adventuring composition is leader + three companions; companions should have bounded personality-driven agency; dialogue should remember prior conversations/choices; action repeatability must be explicit; and the phone core loop should not require whole-page scroll shuttling between map and outcome.",
+    "BG3 is a reference for player-avatar-centred companion approval/dialogue and legible action-resource costs. Inkle's Sorcery! is a structural reference for remembered narrative state and map-centric cross-platform/mobile presentation. Adapt principles only; do not clone copyrighted dialogue, UI art or D&D rules."
   ],
   "tasks": [
     {
@@ -452,7 +454,8 @@
       "depends_on": [
         "LR-0010",
         "LR-0011",
-        "LR-0013"
+        "LR-0013",
+        "LR-0094"
       ],
       "primary_agent": 3,
       "goal": "Make combat decisions substantially more interesting without turning Lantern Road into a grid tactics game.",
@@ -461,7 +464,8 @@
         "Party actions create meaningful choices around targeting, defence, tempo, status effects and resource use.",
         "Enemy intent or other readable telegraphing gives players enough information to make informed decisions.",
         "Combat avoids obvious dominant-action loops and unnecessary click repetition.",
-        "Existing encounters remain completable and save/load is not broken."
+        "Existing encounters remain completable and save/load is not broken.",
+        "Combat consumes the approved compact action-cost/recharge vocabulary so repeating one action indefinitely is not the default or optimal interaction pattern."
       ],
       "likely_files": [
         "game.js",
@@ -776,7 +780,9 @@
         "LR-0008",
         "LR-0010",
         "LR-0011",
-        "LR-0013"
+        "LR-0013",
+        "LR-0090",
+        "LR-0093"
       ],
       "primary_agent": 6,
       "goal": "Play branching narrative paths after the Storyteller foundation is complete and find dialogue, memory, consequence and ending contradictions.",
@@ -1082,14 +1088,17 @@
         "LR-0010",
         "LR-0011",
         "LR-0013",
-        "LR-0045"
+        "LR-0045",
+        "LR-0088",
+        "LR-0090"
       ],
       "goal": "Make the Grey March's recurring NPCs feel like people who notice history, faction shifts and the player's reputation rather than static quest dispensers.",
       "acceptance_criteria": [
         "Key recurring NPCs gain multiple post-decision or faction-sensitive dialogue states beyond quest acceptance and turn-in text.",
         "Repeated conversations react to named campaign history, faction standing or settlement changes instead of looping one generic line.",
         "Dialogue choices can reveal character, local lore or small narrative consequences without taking over Mechanist economy/balance scope.",
-        "The added dialogue is curated and voice-consistent; do not pad the game with interchangeable filler."
+        "The added dialogue is curated and voice-consistent; do not pad the game with interchangeable filler.",
+        "Recurring NPC conversations distinguish first meeting, repeat contact and changed-world-state dialogue so named NPCs remember prior conversations instead of replaying identical text."
       ],
       "likely_files": [
         "story/",
@@ -2319,6 +2328,276 @@
         "story/dialogue/"
       ],
       "notes": "Pure author-now Storyteller work responding to Josh's playtest feedback that the player feels disassociated from the four-person party and dialogue lacks BG3-like depth/memory. Distinct from LR-0045 NPC callback prose: this task defines the player-leader role, choice grammar, companion autonomy and conversation-state authoring contract. Later implementation should be consumed by the existing character/NPC/core-quest integration lanes rather than creating a parallel dialogue engine."
+    },
+    {
+      "id": "LR-0089",
+      "title": "Ratify player-led party roster and companion-agency boundaries",
+      "status": "READY",
+      "priority": 0,
+      "exclusive_scope": "player-leader-party-governance",
+      "depends_on": [],
+      "primary_agent": 7,
+      "goal": "Turn Josh's playtest direction into canonical party rules so all agents build the same player-led social model.",
+      "acceptance_criteria": [
+        "Record the active adventuring party as the player leader plus three active companions.",
+        "Preserve Garrick, Mira, Oren and Brindle as authored recruitable companions; when all four are available, support a reserve/rotation model rather than deleting existing character work.",
+        "Define the minimal player-leader identity needed for dialogue and social checks, such as name and a small number of background/attitude tags, without expanding into a large character-creator feature.",
+        "The leader remains the default speaker and owner of irreversible story choices; companions may advise, object, refuse personal requests or act according to established traits within clear guardrails.",
+        "Define the boundary between companion agency and frustrating loss of player control, including when a companion may refuse, counter-offer, interject or act proactively.",
+        "Update vision/decision/terminology documentation so Storyteller, Mechanist, Wayfinder and Steward all consume the same contract."
+      ],
+      "likely_files": [
+        "docs/VISION.md",
+        "docs/DECISIONS.md",
+        "docs/TERMINOLOGY.md",
+        "design/"
+      ],
+      "notes": "Director governance counterpart to LR-0088. Josh's intended active party is four total: player leader + three companions."
+    },
+    {
+      "id": "LR-0090",
+      "title": "Implement stateful dialogue graph and conversation-memory runtime",
+      "status": "BLOCKED",
+      "priority": 1,
+      "exclusive_scope": "stateful-dialogue-runtime",
+      "depends_on": [
+        "LR-0010",
+        "LR-0011",
+        "LR-0013",
+        "LR-0088",
+        "LR-0089"
+      ],
+      "primary_agent": 1,
+      "goal": "Provide a reusable data-driven conversation runtime for deep branching dialogue, repeat conversations and remembered social state.",
+      "acceptance_criteria": [
+        "Support dialogue nodes/options conditioned by seen topics, prior choices, NPC attitude, quests, world flags, faction state, leader tags, companion trust and campaign timing where relevant.",
+        "Support effects that mark topics seen, remember leader choices/tone, unlock/close topics, alter NPC attitude, set world flags and request companion reactions.",
+        "Provide distinct first-meeting, repeat-contact and changed-world-state greetings with a safe fallback so exhausted dialogue does not replay the whole first meeting.",
+        "Support both NPC and companion conversations through one stable dialogue contract where practical.",
+        "Persist conversation memory through the shared versioned save system with migration coverage.",
+        "Add automated tests for first talk, repeat talk, remembered choice, closed topic and changed-world-state paths."
+      ],
+      "likely_files": [
+        "src/dialogue/",
+        "game.js",
+        "content.js",
+        "tests/"
+      ],
+      "notes": "Steward runtime integration. Agent 2 owns prose/choice authoring; Agent 1 owns the reusable conversation engine."
+    },
+    {
+      "id": "LR-0091",
+      "title": "Author full direct-companion conversation and advice pack",
+      "status": "BLOCKED",
+      "priority": 1,
+      "exclusive_scope": "companion-direct-dialogue-authoring",
+      "depends_on": [
+        "LR-0044",
+        "LR-0088",
+        "LR-0089"
+      ],
+      "primary_agent": 2,
+      "goal": "Expand the representative LR-0088 material into full direct conversations so the leader can talk to companions as people throughout the journey.",
+      "acceptance_criteria": [
+        "Author direct conversation trees for Garrick, Mira, Oren and Brindle with greetings that vary by trust, personal-arc state, recent events and current condition.",
+        "Give each companion recurring topics about themselves, the road, other companions, factions and recent major choices without endlessly repeating identical text.",
+        "Include leader prompts for advice before/after important decisions and companion-specific interjections/callbacks.",
+        "Write personality-consistent acceptance, refusal and counter-offer dialogue for requests such as treatment, rest or risky plans; mechanics remain owned by The Mechanist.",
+        "A guarded companion may be harder to draw out, a proud companion may resist help, and a bold companion may push for decisive action, but behaviour must come from established characterization rather than random obstruction."
+      ],
+      "likely_files": [
+        "story/companions/",
+        "story/dialogue/"
+      ],
+      "notes": "Full authored companion-social layer following LR-0088's framework."
+    },
+    {
+      "id": "LR-0092",
+      "title": "Author companion willingness, autonomy and suggestion-resolution specification",
+      "status": "BLOCKED",
+      "priority": 0,
+      "exclusive_scope": "companion-autonomy-design",
+      "depends_on": [
+        "LR-0089"
+      ],
+      "primary_agent": 3,
+      "goal": "Turn companions from puppets into understandable people who respond to the leader's suggestions according to personality, trust and circumstance.",
+      "acceptance_criteria": [
+        "Define a compact willingness model using stable personality traits plus trust/relationship, fatigue, injury/condition, stakes and recent treatment.",
+        "Model suggestions rather than absolute commands for personal decisions such as accepting treatment, taking a risky role, retreating or using a scarce resource.",
+        "Define accept, reluctant accept, refuse and counter-offer outcomes with clear player-facing reasons.",
+        "Specify bounded proactive tendencies, including bold characters volunteering/charging, guarded characters withholding, or proud characters refusing help, without arbitrary behaviour.",
+        "Irreversible quest choices and rare-resource spending may not be silently taken away from the player leader.",
+        "Define predictable persuasion/trust/override hooks and anti-frustration rules so companion agency creates character drama instead of random loss of control."
+      ],
+      "likely_files": [
+        "systems/companions/"
+      ],
+      "notes": "Mechanist design layer. Storyteller supplies voice/personality; Director owns the player-agency boundary."
+    },
+    {
+      "id": "LR-0093",
+      "title": "Integrate companion autonomy and leader-suggestion mechanics",
+      "status": "BLOCKED",
+      "priority": 1,
+      "exclusive_scope": "companion-autonomy-runtime",
+      "depends_on": [
+        "LR-0006",
+        "LR-0010",
+        "LR-0011",
+        "LR-0013",
+        "LR-0091",
+        "LR-0092"
+      ],
+      "primary_agent": 3,
+      "goal": "Implement the leader/companion relationship mechanically so companions can meaningfully accept, resist or proactively respond to suggestions.",
+      "acceptance_criteria": [
+        "Treatment, recovery and selected tactical/expedition suggestions resolve through the willingness model rather than direct puppet control.",
+        "A companion refusal/counter-offer is visible, character-specific and tied to inspectable circumstances.",
+        "Companion tendencies can influence battle or expedition behaviour in bounded, telegraphed ways while preserving player authority over irreversible story choices.",
+        "Prior successful/failed requests may become remembered relationship context.",
+        "Direct companion dialogue can explain or negotiate behaviour where authored content exists.",
+        "Save/load and real-browser regression cover representative accept/refuse/counter-offer/proactive cases."
+      ],
+      "likely_files": [
+        "src/companions/",
+        "game.js",
+        "tests/"
+      ],
+      "notes": "Mechanist integration after player-leader, authored social and progression/save foundations."
+    },
+    {
+      "id": "LR-0094",
+      "title": "Author BG3-inspired compact action-economy and repeatability specification",
+      "status": "READY",
+      "priority": 0,
+      "exclusive_scope": "action-economy-design",
+      "depends_on": [],
+      "primary_agent": 3,
+      "goal": "Replace repeat-the-same-action behaviour with a readable resource/recharge model inspired by BG3's action economy but scaled to Lantern Road.",
+      "acceptance_criteria": [
+        "Define a compact per-turn combat economy with clearly named primary, secondary and reactive resources, or an equally legible Lantern Road equivalent.",
+        "Every combat ability declares its cost and recharge rhythm such as per turn, per encounter, recovery/rest or limited charge.",
+        "Using an action visibly consumes its resource so the same action cannot be repeated indefinitely in one turn unless an explicit feature grants that capability.",
+        "Define situational actions that appear only when their condition is true rather than permanently cluttering the interface.",
+        "Define a non-combat repeatability policy: consequential scene/site/service actions are explicitly once-per-scene, once-per-day, costed repeatable or otherwise stateful rather than accidentally farmable.",
+        "Keep combat fast and phone-readable; do not import D&D rules wholesale."
+      ],
+      "likely_files": [
+        "systems/combat/",
+        "systems/actions/"
+      ],
+      "notes": "Research basis: BG3 commonly spends Action, Bonus Action and Reaction resources and uses limited/recharging special resources. Lantern Road should translate the principle, not clone D&D."
+    },
+    {
+      "id": "LR-0095",
+      "title": "Research desktop-versus-phone narrative RPG play shells",
+      "status": "READY",
+      "priority": 0,
+      "exclusive_scope": "responsive-rpg-ui-research",
+      "depends_on": [],
+      "primary_agent": 5,
+      "goal": "Research how strong narrative/map RPGs present the same core loop on phones versus larger screens and recommend a Lantern Road layout that stops constant map-to-result scrolling.",
+      "acceptance_criteria": [
+        "Compare at least three relevant interfaces, including Inkle's Sorcery! mobile/desktop presentation, another narrative/map RPG and a larger-screen/controller RPG dialogue/action presentation.",
+        "Document what should remain persistent during the core loop: map, current context/result, leader/party state and available actions.",
+        "Produce phone and desktop wireframes/recommendations rather than assuming one long responsive page.",
+        "Explicitly address Josh's observed loop of scrolling up to the map, down to see what happened, then back up again.",
+        "Evaluate a phone pattern such as persistent map viewport plus independently scrollable/snap bottom sheet, and a larger-screen split-pane equivalent.",
+        "Assess touch reachability, text density, dialogue choice presentation, action feedback and preservation of map context."
+      ],
+      "likely_files": [
+        "research/ui/",
+        "docs/"
+      ],
+      "notes": "Wayfinder research task. External games are references only; final recommendation must fit Lantern Road."
+    },
+    {
+      "id": "LR-0096",
+      "title": "Implement persistent-map responsive play shell",
+      "status": "BLOCKED",
+      "priority": 1,
+      "exclusive_scope": "responsive-play-shell",
+      "depends_on": [
+        "LR-0009",
+        "LR-0010",
+        "LR-0013",
+        "LR-0095"
+      ],
+      "primary_agent": 5,
+      "goal": "Replace the scroll-shuttle core loop with a responsive play shell that keeps geography and consequences visible together.",
+      "acceptance_criteria": [
+        "On phones, core play does not require repeatedly scrolling the whole document between map and outcome/context; map and interaction use coordinated persistent regions such as a map viewport plus snap/scroll bottom sheet.",
+        "On desktop/tablet, use the larger canvas for a stable split or adjacent map/context presentation rather than stretching the phone stack vertically.",
+        "Action results, dialogue and combat feedback appear in the active interaction region without making the player hunt for what changed.",
+        "The map can expand when desired but returns to the previous context without losing focus/scroll state.",
+        "Leader/party access is reachable without obscuring dialogue or map controls.",
+        "Real-browser tests cover representative phone widths and desktop layout with no inaccessible controls or accidental nested-scroll traps."
+      ],
+      "likely_files": [
+        "index.html",
+        "style.css",
+        "src/ui/",
+        "tests/e2e/"
+      ],
+      "notes": "Major layout follow-up to LR-0009; intentionally waits for architecture and research."
+    },
+    {
+      "id": "LR-0097",
+      "title": "Black-box responsive-world, dialogue and companion-agency audit",
+      "status": "BLOCKED",
+      "priority": 2,
+      "exclusive_scope": "qa-responsive-world-dialogue",
+      "depends_on": [
+        "LR-0038",
+        "LR-0090",
+        "LR-0093",
+        "LR-0096"
+      ],
+      "primary_agent": 6,
+      "goal": "Independently test whether the new social/world systems actually feel responsive in play rather than merely storing flags.",
+      "acceptance_criteria": [
+        "Talk to the same NPC before and after prior conversations/world changes and verify greetings/topics/callbacks evolve appropriately.",
+        "Directly converse with each active companion and verify relationship/personal-state differences are visible.",
+        "Exercise companion accept/refuse/counter-offer/proactive behaviours and check that reasons are understandable rather than arbitrary.",
+        "Test the phone core loop without repeatedly scrolling between map and results.",
+        "Identify dialogue loops, forgotten choices, stale repeated text, accidental action farming and moments where companion agency feels like loss of player control.",
+        "Route reproducible findings to the correct specialist without implementing fixes in the QA task."
+      ],
+      "likely_files": [
+        "QA/"
+      ],
+      "notes": "Warden validation after the responsive-world systems land."
+    },
+    {
+      "id": "LR-0098",
+      "title": "Implement action costs, recharge and repeat-use guardrails",
+      "status": "BLOCKED",
+      "priority": 1,
+      "exclusive_scope": "action-repeatability-runtime",
+      "depends_on": [
+        "LR-0010",
+        "LR-0011",
+        "LR-0013",
+        "LR-0094"
+      ],
+      "primary_agent": 3,
+      "goal": "Make action availability stateful and readable so combat and world interactions cannot be mindlessly repeated for unlimited benefit.",
+      "acceptance_criteria": [
+        "Implement the approved compact combat action-resource/recharge model and expose remaining resources clearly to the UI.",
+        "Tag consequential world/site/service actions with explicit repeat policies such as once-per-scene, once-per-day, costed repeatable or unlimited.",
+        "After a non-repeatable action is used, its control disappears, disables with an explanation, or evolves into the next appropriate state instead of silently firing again.",
+        "Repeatable services/actions incur their intended time/resource/currency cost every time.",
+        "Prevent obvious reward/healing/reputation farming loops caused solely by re-clicking the same action.",
+        "Add automated tests for per-turn action exhaustion, recharge, once-per-context actions and legitimate repeatable services."
+      ],
+      "likely_files": [
+        "src/actions/",
+        "game.js",
+        "content.js",
+        "tests/"
+      ],
+      "notes": "Mechanist implementation of LR-0094 across combat and non-combat repeatability."
     }
   ],
   "agent_roster": [
