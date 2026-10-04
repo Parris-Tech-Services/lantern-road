@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0011",
+  "exclusive_scope": "save-versioning",
+  "agent_number": 1,
+  "agent": "The Steward",
+  "session_id": "3f2e33a7-68bb-4a19-bd4c-98bdc6eb23a2",
+  "claim_token": "58fae21c-f390-4ec2-9f5d-42a95ec9f61b",
+  "claimed_at": "2026-10-05T09:11:00+11:00",
+  "expires_at": "2026-10-05T21:11:00+11:00",
+  "branch": "agent/LR-0011-steward-closure-3f2e33a7",
+  "note": "Steward technical closure of already-merged LR-0011 using fresh exact-head machine evidence under LR-0151 authority."
+}
