@@ -3385,7 +3385,7 @@
         "assets/art/ASSET-SPECS.json",
         "docs/ART-DIRECTION.md"
       ],
-      "notes": "Upstream production contract only. Distinct from LR-0042 image generation, LR-0031 final curation/compression/integration and LR-0065 CI budget enforcement."
+      "notes": "PARKED pending Director exact-head review. PR #77, branch agent/LR-0129-art-production-contract-5a2b7347, useful head 778f1e4d41cbe4a4091c4cb260d576afbb3664ff. Added exact composition/crop/export contract and machine-readable ASSET-SPECS.json grounded in 58 px entry, 76–92 px card and ~112 px wide-phone art cases. QA: all category/crop/export/provenance sections present and JSON parses across eight asset categories. Coordination checks pass; only remaining gate is .agent-coordination/design-reviews/LR-0129.json."
     },
     {
       "id": "LR-0130",
