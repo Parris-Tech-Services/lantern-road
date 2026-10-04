@@ -457,7 +457,8 @@
         "LR-0011",
         "LR-0013",
         "LR-0094",
-        "LR-0103"
+        "LR-0103",
+        "LR-0125"
       ],
       "primary_agent": 3,
       "goal": "Make combat decisions substantially more interesting without turning Lantern Road into a grid tactics game.",
@@ -473,7 +474,7 @@
         "game.js",
         "content.js"
       ],
-      "notes": "Mechanist-owned. Preserve Lantern Road's compact card/target combat identity; deepen decisions rather than adding a tactical grid. Leader-roster boundary: consume LR-0103 before runtime implementation so the canonical active party is Leader + three companions rather than silently preserving the four-companion prototype."
+      "notes": "Mechanist-owned. Preserve Lantern Road's compact card/target combat identity; deepen decisions rather than adding a tactical grid. Leader-roster boundary: consume LR-0103 before runtime implementation so the canonical active party is Leader + three companions rather than silently preserving the four-companion prototype. Runtime roster boundary: consume LR-0125's single Leader + three-active-companion foundation rather than implementing roster/Leader actor semantics independently."
     },
     {
       "id": "LR-0016",
@@ -513,7 +514,8 @@
         "LR-0010",
         "LR-0011",
         "LR-0013",
-        "LR-0103"
+        "LR-0103",
+        "LR-0125"
       ],
       "primary_agent": 3,
       "goal": "Expand LR-0006's equipment/build foundation into a small but expressive item ecosystem with meaningful trade-offs.",
@@ -528,7 +530,7 @@
         "content.js",
         "game.js"
       ],
-      "notes": "Blocked on LR-0006 so it extends rather than competes with the progression foundation. Economy boundary: LR-0017 owns item categories, effects, availability and equip/reward plumbing; LR-0016 owns global base prices/income/resource-pressure targets, with LR-0020 providing final whole-system tuning. Leader-roster boundary: consume LR-0103 before runtime implementation so the canonical active party is Leader + three companions rather than silently preserving the four-companion prototype."
+      "notes": "Blocked on LR-0006 so it extends rather than competes with the progression foundation. Economy boundary: LR-0017 owns item categories, effects, availability and equip/reward plumbing; LR-0016 owns global base prices/income/resource-pressure targets, with LR-0020 providing final whole-system tuning. Leader-roster boundary: consume LR-0103 before runtime implementation so the canonical active party is Leader + three companions rather than silently preserving the four-companion prototype. Runtime roster boundary: consume LR-0125's single Leader + three-active-companion foundation rather than implementing roster/Leader actor semantics independently."
     },
     {
       "id": "LR-0018",
@@ -542,7 +544,8 @@
         "LR-0011",
         "LR-0013",
         "LR-0016",
-        "LR-0103"
+        "LR-0103",
+        "LR-0125"
       ],
       "primary_agent": 3,
       "goal": "Turn the progression foundation's injury/condition hooks into memorable persistent consequences that affect expedition decisions.",
@@ -557,7 +560,7 @@
         "content.js",
         "game.js"
       ],
-      "notes": "Blocked on LR-0006. This is the full recovery loop, not a duplicate of LR-0006's foundational persistent-state hook. Economy boundary: recovery costs and resource drains must consume the target assumptions established by LR-0016; LR-0018 owns injury/recovery mechanics, not global economy rebalance. Leader-roster boundary: consume LR-0103 before runtime implementation so the canonical active party is Leader + three companions rather than silently preserving the four-companion prototype."
+      "notes": "Blocked on LR-0006. This is the full recovery loop, not a duplicate of LR-0006's foundational persistent-state hook. Economy boundary: recovery costs and resource drains must consume the target assumptions established by LR-0016; LR-0018 owns injury/recovery mechanics, not global economy rebalance. Leader-roster boundary: consume LR-0103 before runtime implementation so the canonical active party is Leader + three companions rather than silently preserving the four-companion prototype. Runtime roster boundary: consume LR-0125's single Leader + three-active-companion foundation rather than implementing roster/Leader actor semantics independently."
     },
     {
       "id": "LR-0019",
@@ -2453,7 +2456,8 @@
         "LR-0013",
         "LR-0091",
         "LR-0092",
-        "LR-0103"
+        "LR-0103",
+        "LR-0125"
       ],
       "primary_agent": 3,
       "goal": "Implement the leader/companion relationship mechanically so companions can meaningfully accept, resist or proactively respond to suggestions.",
@@ -2470,7 +2474,7 @@
         "game.js",
         "tests/"
       ],
-      "notes": "Mechanist integration after player-leader, authored social and progression/save foundations. Leader-roster boundary: consume LR-0103 before runtime implementation so the canonical active party is Leader + three companions rather than silently preserving the four-companion prototype."
+      "notes": "Mechanist integration after player-leader, authored social and progression/save foundations. Leader-roster boundary: consume LR-0103 before runtime implementation so the canonical active party is Leader + three companions rather than silently preserving the four-companion prototype. Runtime roster boundary: consume LR-0125's single Leader + three-active-companion foundation rather than implementing roster/Leader actor semantics independently."
     },
     {
       "id": "LR-0094",
@@ -2586,7 +2590,8 @@
         "LR-0011",
         "LR-0013",
         "LR-0094",
-        "LR-0103"
+        "LR-0103",
+        "LR-0125"
       ],
       "primary_agent": 3,
       "goal": "Make action availability stateful and readable so combat and world interactions cannot be mindlessly repeated for unlimited benefit.",
@@ -2604,7 +2609,7 @@
         "content.js",
         "tests/"
       ],
-      "notes": "Mechanist implementation of LR-0094 across combat and non-combat repeatability. Leader-roster boundary: consume LR-0103 before runtime implementation so the canonical active party is Leader + three companions rather than silently preserving the four-companion prototype."
+      "notes": "Mechanist implementation of LR-0094 across combat and non-combat repeatability. Leader-roster boundary: consume LR-0103 before runtime implementation so the canonical active party is Leader + three companions rather than silently preserving the four-companion prototype. Runtime roster boundary: consume LR-0125's single Leader + three-active-companion foundation rather than implementing roster/Leader actor semantics independently."
     },
     {
       "id": "LR-0099",
@@ -3227,6 +3232,47 @@
         "docs/ART-DIRECTION.md"
       ],
       "notes": "PARKED pending Director exact-head review. PR #66, branch agent/LR-0124-ui-materials-3d6fcf41, useful head 8da675d889b8a56e9bad8190337e202d1b748b2d. Added six decorative SVG materials (light/dark parchment, dark timber, lantern divider, corner flourish, lantern wash), material usage/accessibility docs and ART-DIRECTION update. QA: 6 SVGs, 4.3 KB source total, no scripts, no remote dependencies, no baked text. Coordination and Actions-runtime checks pass; only remaining gate is .agent-coordination/design-reviews/LR-0124.json for exact head. Director review requested on PR #66. After approval, fresh claimant should verify exact head, merge, mark DONE and release any fresh claim."
+    },
+    {
+      "id": "LR-0125",
+      "title": "Implement Leader actor and active/reserve roster foundation",
+      "status": "BLOCKED",
+      "priority": 0,
+      "exclusive_scope": "leader-roster-runtime",
+      "depends_on": [
+        "LR-0006",
+        "LR-0010",
+        "LR-0011",
+        "LR-0013",
+        "LR-0094",
+        "LR-0103",
+        "LR-0106"
+      ],
+      "primary_agent": 3,
+      "supporting_agents": [
+        1
+      ],
+      "goal": "Implement the canonical four-person active party as player Leader + three active companions, with a persistent fourth companion in reserve, so later combat/equipment/injury/autonomy systems share one roster and actor foundation instead of independently patching the old four-companion prototype.",
+      "acceptance_criteria": [
+        "Represent the player Leader as a real mechanical actor using the final LR-0103 contract, including approved stats/check participation, combat actions/focus, equipment and injury compatibility.",
+        "Represent Garrick, Mira, Oren and Brindle as the persistent companion roster while exactly three are active in field play and one may be reserve when all four are available.",
+        "Implement safe-point roster rotation according to the final Director-approved reserve fiction, with no mid-danger swap, rotation heal, duplicate equipment effect or resource exploit.",
+        "Preserve Trust, personal-arc state, injuries/conditions, equipment and other character-owned persistent state for reserve companions.",
+        "Migrate existing four-active-companion saves without losing any companion state and without silently erasing or rewriting a companion; use the final LR-0103 migration rule and LR-0011 persistence contract.",
+        "Audit existing party iteration/check/combat/render code so active-party mechanics use Leader + active companions while roster/history/relationship surfaces can still address all available companions appropriately.",
+        "Consume LR-0106 specialist-fallback findings so placing a companion in reserve cannot soft-lock required travel, site or core-quest progress.",
+        "Use the LR-0094 action-resource contract for the Leader rather than creating a parallel turn economy.",
+        "Add automated state/save/browser coverage for new campaign, migrated campaign, each companion in reserve, rotation, combat/check participation and save/reload persistence."
+      ],
+      "likely_files": [
+        "src/party/",
+        "src/state/",
+        "src/combat/",
+        "game.js",
+        "content.js",
+        "tests/"
+      ],
+      "notes": "Director-routed runtime ownership gap found during second-wave review. LR-0103 defines the mechanics but explicitly leaves implementation downstream; LR-0125 is the single shared runtime foundation so LR-0015/LR-0017/LR-0018/LR-0093/LR-0098 do not each reinvent active/reserve roster semantics. Agent 1 supports save/architecture reconciliation but Agent 3 owns the gameplay roster mechanics."
     }
   ],
   "agent_roster": [
@@ -3289,5 +3335,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T18:38:00+11:00"
+  "updated_at": "2026-10-04T18:58:00+11:00"
 }
