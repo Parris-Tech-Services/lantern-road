@@ -380,7 +380,7 @@
         "README.md",
         ".github/workflows/"
       ],
-      "notes": "Priority-0 safety gate. Keep tooling light, but the test must drive a real browser. Gate completion is evidence-driven: owner implementation alone is insufficient to mark DONE. Implementation complete and machine-tested on branch agent/LR-0013-regression-testing-b7a4f2d1, head 19766fa6cdacb93de26de702578bbe4e8cae381f, draft PR #14. Browser regression Actions run 37177916987 passed all four Chromium phone-browser flows plus syntax checks; artifact browser-regression-results id 11293224022 is unexpired. Parked pending governance/merge reconciliation; under the forthcoming two-stage gate policy, Josh's Android smoke test belongs to release validation rather than technical foundation completion.",
+      "notes": "Priority-0 safety gate. Keep tooling light, but the test must drive a real browser. Gate completion is evidence-driven: owner implementation alone is insufficient to mark DONE. Implementation complete and machine-tested on branch agent/LR-0013-regression-testing-b7a4f2d1, head 19766fa6cdacb93de26de702578bbe4e8cae381f, draft PR #14. Browser regression Actions run 37177916987 passed all four Chromium phone-browser flows plus syntax checks; artifact browser-regression-results id 11293224022 is unexpired. Parked pending governance/merge reconciliation; under the forthcoming two-stage gate policy, Josh's Android smoke test belongs to release validation rather than technical foundation completion. Current refresh is PR #16; browser CI passed; awaiting Director review.",
       "completion_evidence_required": {
         "evidence_file": ".agent-coordination/gate-evidence/LR-0013.json",
         "machine_requirements": [
@@ -1516,7 +1516,7 @@
         ".agent-coordination/gate-evidence/README.md",
         ".agent-coordination/DESIGN-REVIEW-PROTOCOL.md"
       ],
-      "notes": "Steward-owned coordination-system change requested explicitly by Josh. This changes the critical path but must not weaken machine verification."
+      "notes": "Policy implementation complete on branch agent/LR-0055-foundation-gate-policy-a1f55c62-r3, head 92260604dd28318a41a9bde66b1edd5af19cdb57, PR #17. Queue/docs/validator now separate machine technical closure from Josh Android release validation. Structurally reconciled with the live queue. Parked awaiting mandatory Agent 7 exact-head Director review/approval; after approval, merge PR #17 and then mark LR-0055 DONE."
     },
     {
       "id": "LR-0056",
