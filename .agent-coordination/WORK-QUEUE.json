@@ -3112,7 +3112,7 @@
     {
       "id": "LR-0120",
       "title": "Author canonical map inspection, legend and coordinate UX contract",
-      "status": "READY",
+      "status": "DONE",
       "priority": 1,
       "exclusive_scope": "map-inspection-ux-authoring",
       "depends_on": [],
@@ -3130,7 +3130,7 @@
         "docs/CANONICAL-MAP-INSPECTION-UX.md",
         "QA/"
       ],
-      "notes": "PARKED HANDOFF (4 Oct 2026): authoring complete on branch agent/LR-0120-map-inspection-2f8b4d6a at useful head c20f5ef083b1e460d928bf6a20a8ce267fa242e7, PR #63. Final diff adds docs/CANONICAL-MAP-INSPECTION-UX.md and QA/CANONICAL-MAP-INSPECTION-MATRIX.md only. It defines natural-name/grid-ref hierarchy, inspect-vs-travel behaviour, legend/symbol semantics, zoom decluttering, shared-hex handling, hidden-site protection, PROPOSED-label exclusion, dynamic overlay priority and screen-reader map summaries. Consumes Map Canon v1 exactly; no canonical geography or runtime files changed. Remaining external condition is Agent 7 approval; fresh map-inspection-ux-authoring claim required before later edits or final merge preparation."
+      "notes": "Completed 4 Oct 2026 via PR #63, squash merge 120b4dc000f582892003abc947d8b90b5d44b758. Agent 7 approved exact useful head c20f5ef083b1e460d928bf6a20a8ce267fa242e7; final approval-head validation was green."
     },
     {
       "id": "LR-0121",
