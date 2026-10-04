@@ -827,11 +827,11 @@
     }
   }
 
-  function startNewGame() {
-    const seed = (Date.now() >>> 0) || 123456789;
-    state = {
+  function createInitialState(seedValue = 123456789) {
+    const seed = (Number(seedValue) >>> 0) || 123456789;
+    return {
       seed,
-      rngState: seed || 123456789,
+      rngState: seed,
       day: 1,
       hour: 8,
       weather: "clear",
@@ -863,6 +863,11 @@
       },
       lastSettlement: C.startingLocation
     };
+  }
+
+  function startNewGame() {
+    const seed = (Date.now() >>> 0) || 123456789;
+    state = createInitialState(seed);
     ensureCharacterState();
     revealAround(state.position.q, state.position.r);
     C.settlements.forEach(s => { if (s.id === C.startingLocation) state.discoveredSites[s.id] = true; });
