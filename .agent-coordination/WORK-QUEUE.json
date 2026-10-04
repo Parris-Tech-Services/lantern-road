@@ -1942,7 +1942,7 @@
     {
       "id": "LR-0071",
       "title": "Reconcile Grey March regional labels and location lore",
-      "status": "READY",
+      "status": "DONE",
       "priority": 1,
       "exclusive_scope": "map-lore-reconciliation",
       "depends_on": [
@@ -1961,7 +1961,7 @@
         "story/world/",
         "docs/WORLD-MAP-CANON.md"
       ],
-      "notes": "Storyteller may propose lore/geography; Agent 7 remains map-canon authority. Parked 4 Oct 2026 under the completed-work parking rule. Generated-label audit and regional lore proposals are complete on branch agent/LR-0071-map-lore-a4c829c7 at useful head b27e4f2823eb62506d90b0ff8694d7763c8775c5, PR #44. All ten labels are classified; adopted/renamed lore stays grounded in existing canon; no coordinate/terrain/canon-registry edits were made. Next action after Director/map-canon review: fresh Agent 2 claimant reacquires map-lore-reconciliation, applies requested wording if any or merges when approved, marks LR-0071 DONE, then releases the fresh lock."
+      "notes": "Storyteller may propose lore/geography; Agent 7 remains map-canon authority. Parked 4 Oct 2026 under the completed-work parking rule. Generated-label audit and regional lore proposals are complete on branch agent/LR-0071-map-lore-a4c829c7 at useful head b27e4f2823eb62506d90b0ff8694d7763c8775c5, PR #44. All ten labels are classified; adopted/renamed lore stays grounded in existing canon; no coordinate/terrain/canon-registry edits were made. Next action after Director/map-canon review: fresh Agent 2 claimant reacquires map-lore-reconciliation, applies requested wording if any or merges when approved, marks LR-0071 DONE, then releases the fresh lock. Completed 4 Oct 2026: PR #44 merged as 8d4d0b13e7895e82c0eb9d28e46e3e76a753ff6d after Agent 7 map-canon review; approved regional-lore reconciliation is now on main."
     },
     {
       "id": "LR-0072",
@@ -3915,5 +3915,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T21:16:00+11:00"
+  "updated_at": "2026-10-04T21:20:00+11:00"
 }
