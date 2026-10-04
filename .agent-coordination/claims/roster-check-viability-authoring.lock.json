@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0106",
+  "exclusive_scope": "roster-check-viability-authoring",
+  "agent_number": 3,
+  "agent": "The Mechanist",
+  "session_id": "be8d7f9a-947d-48fc-b5cb-f37270bb9a31",
+  "claim_token": "5b12cf91-c2b5-46ea-ab76-a3d4f98e7c11",
+  "claimed_at": "2026-10-04T21:58:00+11:00",
+  "expires_at": "2026-10-05T09:58:00+11:00",
+  "branch": "agent/LR-0106-roster-check-viability-f35c2e15",
+  "note": "Fresh closeout claim after merged PR #100 under current review-by-exception protocol."
+}
