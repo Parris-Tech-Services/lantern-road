@@ -1,4 +1,4 @@
-const CACHE_NAME = "lantern-road-v4";
+const CACHE_NAME = "lantern-road-v5";
 const FILES = [
   "./",
   "./index.html",
