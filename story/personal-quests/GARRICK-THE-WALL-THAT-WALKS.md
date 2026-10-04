@@ -35,7 +35,7 @@ At a half-collapsed crossing, he ordered the rest of the group to move civilians
 
 The plan worked.
 
-A younger Warden named **Perrin Holt** saw Garrick stay and copied him at the next bottleneck. Perrin was badly injured.
+A younger Warden named **Perrin Dace** saw Garrick stay and copied him at the next bottleneck. Perrin was badly injured.
 
 Garrick has carried the wrong lesson from that day:
 
