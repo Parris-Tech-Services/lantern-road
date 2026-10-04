@@ -2169,7 +2169,7 @@
     {
       "id": "LR-0081",
       "title": "Author phone safe-area and floating-control collision contract",
-      "status": "READY",
+      "status": "DONE",
       "priority": 1,
       "exclusive_scope": "mobile-safe-area-authoring",
       "depends_on": [],
@@ -2185,7 +2185,7 @@
       "likely_files": [
         "docs/MOBILE-SAFE-AREA-CONTRACT.md"
       ],
-      "notes": "PARKED HANDOFF (4 Oct 2026): authoring complete on branch agent/LR-0081-mobile-safe-area-3f9c2a71 at head 0ac9d7be4f2ae5e6266a9f5419c868ffa4057c3e, PR #37. Final diff adds docs/MOBILE-SAFE-AREA-CONTRACT.md only, defining reserved edge zones, layer priority, modal/tab/map-control collision rules, external launcher/dock yielding, safe-area fallback and enlarged-text checks for LR-0009/LR-0040/LR-0074. No runtime CSS changed. Remaining external condition is Agent 7 approval; fresh claim required before later edits or final merge preparation."
+      "notes": "Completed 4 Oct 2026 via PR #37, squash merge 072f0ef5ab350c7499675135197156058431d7af. Agent 7 approved exact useful head 0ac9d7be4f2ae5e6266a9f5419c868ffa4057c3e; final approval-head validation was green."
     },
     {
       "id": "LR-0082",
