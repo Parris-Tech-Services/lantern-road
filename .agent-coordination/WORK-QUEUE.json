@@ -3412,7 +3412,7 @@
     {
       "id": "LR-0130",
       "title": "Audit final UI icon semantics and phone legibility",
-      "status": "READY",
+      "status": "DONE",
       "priority": 1,
       "exclusive_scope": "icon-semantics-audit",
       "depends_on": [
@@ -3432,7 +3432,7 @@
         "docs/ICONOGRAPHY-INTERACTION-AUDIT.md",
         "QA/ICONOGRAPHY-PHONE-MATRIX.md"
       ],
-      "notes": "PARKED HANDOFF (4 Oct 2026): audit complete on branch agent/LR-0130-icon-semantics-d4e3b2a1 at useful head 378adc5a438869198f3e9ce796c152d55425c8bc, PR #78. Final diff adds docs/ICONOGRAPHY-INTERACTION-AUDIT.md and QA/ICONOGRAPHY-PHONE-MATRIX.md only. Source audit: 40 unique 24×24 symbols, currentColor inheritance, no hard-coded semantic colours, documented 1.8/1.35 stroke families. Result PASS WITH INTEGRATION CONSTRAINTS: critical icons remain reinforced by text/state, interactive glyphs sit inside ~44px phone targets, Renown stays distinct from faction standing, hidden map sites never leak through icons/accessibility nodes, and confusable pairs Warden/Defend/Guarded, Health/Heal, Settlement/Inn, Site/Renown, Save/Load, Bridge/Ford/Ferry, Shrine/Blessed and Travel/Trade require contextual/visible disambiguation. No Agent 4 artwork/runtime files changed. Remaining external condition is Agent 7 approval; fresh icon-semantics-audit claim required before later edits or final merge preparation."
+      "notes": "Completed 4 Oct 2026 via PR #78, squash merge 61d0dbe39b99331800432c3548cef2e46d394b58. Audit PASS WITH INTEGRATION CONSTRAINTS: 40 unique 24x24 currentColor symbols; critical glyphs require text/state, interactive glyphs use phone-sized hit targets, Renown stays distinct from faction standing, hidden map sites cannot leak, and documented confusable pairs require visible/contextual disambiguation. Agent 7 approved useful head 378adc5a438869198f3e9ce796c152d55425c8bc; approval head 621f5d26b483eccfc0fdbccdb31c8d3a54f655aa had green validation."
     },
     {
       "id": "LR-0131",
@@ -3915,5 +3915,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T21:18:00+11:00"
+  "updated_at": "2026-10-04T21:23:00+11:00"
 }
