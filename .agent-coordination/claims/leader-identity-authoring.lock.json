@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0102",
+  "exclusive_scope": "leader-identity-authoring",
+  "agent_number": 2,
+  "agent": "The Storyteller",
+  "session_id": "a2b93e88-0e8a-4e78-baf0-48ddf2ba0be4",
+  "claim_token": "93b1f7cf-7fdc-4d16-b9e4-9dd6e4931ee2",
+  "claimed_at": "2026-10-04T21:30:00+11:00",
+  "expires_at": "2026-10-05T09:30:00+11:00",
+  "branch": "agent/LR-0102-leader-identity-6ac9c59b",
+  "note": "Fresh post-review merge-reconciliation claim."
+}
