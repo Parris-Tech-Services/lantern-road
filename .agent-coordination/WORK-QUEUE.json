@@ -1298,7 +1298,7 @@
       "likely_files": [
         "story/events/"
       ],
-      "notes": "Pure authored-content task. LR-0007 remains the later gated engine/content integration pass."
+      "notes": "Pure authored-content task. LR-0007 remains the later gated engine/content integration pass. Parked 4 Oct 2026 under the completed-work parking rule. Authored event pack is complete on branch agent/LR-0046-event-pack-authoring-5b2d2f12 at useful head c59cb34664b4d2104e83979e276b7f56ebd36602, PR #22. Live acceptance criteria were rechecked: 12 travel + 10 camp events, condition breadth covers party/Trust/relationship/weather/faction/item/injury/quest/time/campaign phase, and branch changes only story/events/. Next action after Director approval: fresh Agent 2 claimant reacquires event-pack-authoring, verifies approved head/CI, merges PR #22 if current, marks LR-0046 DONE, and releases the fresh lock."
     },
     {
       "id": "LR-0047",
@@ -1597,5 +1597,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T16:59:00+11:00"
+  "updated_at": "2026-10-04T17:04:00+11:00"
 }
