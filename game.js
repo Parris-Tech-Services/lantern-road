@@ -704,6 +704,12 @@
   }
 
   function ensureProgressionState() {
+    const previousProgression = state.progression;
+    const migrateLegacyEquipment = !previousProgression
+      || typeof previousProgression !== "object"
+      || !previousProgression.equipment
+      || typeof previousProgression.equipment !== "object";
+
     if (!state.progression || typeof state.progression !== "object") state.progression = {};
     if (!state.progression.builds || typeof state.progression.builds !== "object") state.progression.builds = {};
     if (!state.progression.equipment || typeof state.progression.equipment !== "object") state.progression.equipment = {};
@@ -734,7 +740,7 @@
       if (equipped && (!hasItem(equipped) || ITEM_MAP[equipped]?.hero !== hero.id)) {
         state.progression.equipment[hero.id] = null;
       }
-      if (!state.progression.equipment[hero.id] && hasItem(legacyGear[hero.id])) {
+      if (migrateLegacyEquipment && !state.progression.equipment[hero.id] && hasItem(legacyGear[hero.id])) {
         state.progression.equipment[hero.id] = legacyGear[hero.id];
       }
     });
