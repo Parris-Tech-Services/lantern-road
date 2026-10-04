@@ -974,6 +974,63 @@
         ".agent-coordination/WORK-QUEUE.json"
       ],
       "notes": "Final Director gate. Josh retains final creative sign-off."
+    },
+    {
+      "id": "LR-0037",
+      "title": "Hero-specific personal questlines",
+      "status": "BLOCKED",
+      "priority": 3,
+      "exclusive_scope": "personal-character-quests",
+      "depends_on": [
+        "LR-0004",
+        "LR-0005",
+        "LR-0008",
+        "LR-0010",
+        "LR-0011",
+        "LR-0013"
+      ],
+      "goal": "Turn the personal-story hooks for Garrick, Mira, Oren and Brindle into authored side arcs that deepen attachment without bloating the main campaign.",
+      "acceptance_criteria": [
+        "Each of the four heroes gets a distinct multi-step personal quest or substantial personal thread unlocked by trust, memories or prior choices.",
+        "Each personal arc contains at least one meaningful decision that changes that hero, a party relationship, or a visible world consequence.",
+        "Personal arcs reuse the existing character memory/bond system and do not duplicate the main 18-day campaign plot.",
+        "Avoid generic fetch-quest structure; each arc must reveal character, create a trade-off, and have a remembered outcome."
+      ],
+      "likely_files": [
+        "story/",
+        "content.js",
+        "game.js"
+      ],
+      "notes": "Follow-up to LR-0004. Distinct from LR-0007 general travel/camp events and LR-0008 main campaign arc.",
+      "primary_agent": 2
+    },
+    {
+      "id": "LR-0038",
+      "title": "Living NPC dialogue and recurring relationship depth",
+      "status": "BLOCKED",
+      "priority": 3,
+      "exclusive_scope": "npc-dialogue-relationships",
+      "depends_on": [
+        "LR-0005",
+        "LR-0008",
+        "LR-0010",
+        "LR-0011",
+        "LR-0013"
+      ],
+      "goal": "Make the Grey March's recurring NPCs feel like people who notice history, faction shifts and the player's reputation rather than static quest dispensers.",
+      "acceptance_criteria": [
+        "Key recurring NPCs gain multiple post-decision or faction-sensitive dialogue states beyond quest acceptance and turn-in text.",
+        "Repeated conversations react to named campaign history, faction standing or settlement changes instead of looping one generic line.",
+        "Dialogue choices can reveal character, local lore or small narrative consequences without taking over Mechanist economy/balance scope.",
+        "The added dialogue is curated and voice-consistent; do not pad the game with interchangeable filler."
+      ],
+      "likely_files": [
+        "story/",
+        "content.js",
+        "game.js"
+      ],
+      "notes": "Separate from LR-0005 consequence infrastructure: this is authored social depth using that infrastructure. Separate from LR-0007 event expansion.",
+      "primary_agent": 2
     }
   ],
   "agent_roster": [
@@ -1030,5 +1087,6 @@
       "LR-0011",
       "LR-0013"
     ]
-  }
+  },
+  "updated_at": "2026-10-04T14:52:00+11:00"
 }
