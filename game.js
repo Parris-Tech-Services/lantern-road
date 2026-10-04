@@ -1426,13 +1426,15 @@
       showFeedback("Nothing to sell", `You no longer carry ${item.name}.`);
       return;
     }
+    const equippedHeroId = Object.keys(state.progression?.equipment || {}).find(heroId => state.progression.equipment[heroId] === itemId) || null;
     const price = Math.max(2, Math.floor(item.value * 0.5));
     state.gold += price;
     changeItem(itemId, -1, false);
     addLog(`Sold ${item.name}.`);
     renderAll();
     renderModal();
-    showFeedback("Sale complete", `${item.name} • +${price} gold • ${state.gold} gold total`, "good");
+    const equipmentNote = equippedHeroId ? ` • unequipped from ${getPartyBase(equippedHeroId).name}` : "";
+    showFeedback("Sale complete", `${item.name} • +${price} gold • ${state.gold} gold total${equipmentNote}`, "good");
   }
 
   function applyEffects(effects) {
