@@ -714,6 +714,142 @@ window.CONTENT = {
       }
     }
   ],
+  "heroBuilds": {
+    "garrick": {
+      "unlockRenown": 2,
+      "choices": [
+        {
+          "id": "bastion",
+          "name": "Bastion",
+          "description": "Become the party's immovable shield: +2 max HP and Hold Fast blocks 2 extra damage.",
+          "effects": {
+            "maxHpBonus": 2,
+            "guardReduction": 2
+          }
+        },
+        {
+          "id": "breaker",
+          "name": "Breaker",
+          "description": "Turn defence into force: Garrick deals +2 damage with offensive attacks.",
+          "effects": {
+            "damageBonus": 2
+          }
+        }
+      ]
+    },
+    "mira": {
+      "unlockRenown": 2,
+      "choices": [
+        {
+          "id": "ghost",
+          "name": "Ghost",
+          "description": "Lean into infiltration: +1 Scout, +1 Guile and +2 combat initiative.",
+          "effects": {
+            "skillBonus": {
+              "scout": 1,
+              "guile": 1
+            },
+            "initiativeBonus": 2
+          }
+        },
+        {
+          "id": "duelist",
+          "name": "Duelist",
+          "description": "Commit to close precision: Mira deals +1 damage with offensive attacks.",
+          "effects": {
+            "damageBonus": 1
+          }
+        }
+      ]
+    },
+    "oren": {
+      "unlockRenown": 2,
+      "choices": [
+        {
+          "id": "seer",
+          "name": "Seer",
+          "description": "Read the world more deeply: +1 Wits.",
+          "effects": {
+            "skillBonus": {
+              "wits": 1
+            }
+          }
+        },
+        {
+          "id": "warder",
+          "name": "Warder",
+          "description": "Make every sigil defensive: +1 defence and Bind weakens attacks by 1 extra.",
+          "effects": {
+            "defenseBonus": 1,
+            "bindBonus": 1
+          }
+        }
+      ]
+    },
+    "brindle": {
+      "unlockRenown": 2,
+      "choices": [
+        {
+          "id": "beacon",
+          "name": "Beacon",
+          "description": "Become the party's anchor: Lantern Grace heals +2 HP and Bless grants +1 extra attack.",
+          "effects": {
+            "healBonus": 2,
+            "blessBonus": 1
+          }
+        },
+        {
+          "id": "zealot",
+          "name": "Zealot",
+          "description": "Carry the Lamp into danger: +1 Spirit and +1 offensive damage.",
+          "effects": {
+            "skillBonus": {
+              "spirit": 1
+            },
+            "damageBonus": 1
+          }
+        }
+      ]
+    }
+  },
+  "injuries": [
+    {
+      "id": "bruised_ribs",
+      "name": "Bruised Ribs",
+      "description": "Breathing hurts and leverage suffers.",
+      "skill": "might",
+      "skillPenalty": 1,
+      "maxHpPenalty": 2,
+      "restNights": 2
+    },
+    {
+      "id": "sprained_ankle",
+      "name": "Sprained Ankle",
+      "description": "Every quick step has to be measured.",
+      "skill": "scout",
+      "skillPenalty": 1,
+      "maxHpPenalty": 0,
+      "restNights": 2
+    },
+    {
+      "id": "concussion",
+      "name": "Concussion",
+      "description": "Light and hard thinking both sting.",
+      "skill": "wits",
+      "skillPenalty": 1,
+      "maxHpPenalty": 1,
+      "restNights": 2
+    },
+    {
+      "id": "shaken",
+      "name": "Shaken",
+      "description": "The body remembers the last blow before the mind can dismiss it.",
+      "skill": "spirit",
+      "skillPenalty": 1,
+      "maxHpPenalty": 0,
+      "restNights": 2
+    }
+  ],
   "items": [
     {
       "id": "rations",
@@ -785,7 +921,11 @@ window.CONTENT = {
       "kind": "gear",
       "value": 42,
       "stack": false,
-      "description": "An optically ground lens. Oren gains +1 Wits checks while carried."
+      "description": "An optically ground lens. Oren gains +1 Wits while this is equipped.",
+      "hero": "oren",
+      "skillBonus": {
+        "wits": 1
+      }
     },
     {
       "id": "mail_patch",
@@ -793,7 +933,9 @@ window.CONTENT = {
       "kind": "gear",
       "value": 40,
       "stack": false,
-      "description": "Reinforced plates and straps. Garrick gains +2 max HP while carried."
+      "description": "Reinforced plates and straps. Garrick gains +2 max HP while this is equipped.",
+      "hero": "garrick",
+      "maxHpBonus": 2
     },
     {
       "id": "healer_satchel",
@@ -801,7 +943,9 @@ window.CONTENT = {
       "kind": "gear",
       "value": 44,
       "stack": false,
-      "description": "Bandages, herbs, and tiny hooks. Brindle's healing improves."
+      "description": "Bandages, herbs, and tiny hooks. Brindle's healing restores +2 HP while this is equipped.",
+      "hero": "brindle",
+      "healBonus": 2
     },
     {
       "id": "trail_charms",
@@ -809,7 +953,55 @@ window.CONTENT = {
       "kind": "gear",
       "value": 36,
       "stack": false,
-      "description": "Knotted tokens and bells. Mira gains +1 Scout checks while carried."
+      "description": "Knotted tokens and bells. Mira gains +1 Scout while these are equipped.",
+      "hero": "mira",
+      "skillBonus": {
+        "scout": 1
+      }
+    },
+    {
+      "id": "iron_vambrace",
+      "name": "Iron Vambrace",
+      "kind": "gear",
+      "value": 40,
+      "stack": false,
+      "hero": "garrick",
+      "defenseBonus": 1,
+      "description": "A heavy forearm guard. Garrick gains +1 defence while equipped."
+    },
+    {
+      "id": "quickstep_blade",
+      "name": "Quickstep Blade",
+      "kind": "gear",
+      "value": 40,
+      "stack": false,
+      "hero": "mira",
+      "damageBonus": 1,
+      "description": "A balanced fighting knife. Mira deals +1 offensive damage while equipped."
+    },
+    {
+      "id": "ward_chalk",
+      "name": "Warder Chalk",
+      "kind": "gear",
+      "value": 42,
+      "stack": false,
+      "hero": "oren",
+      "defenseBonus": 1,
+      "bindBonus": 1,
+      "description": "Silvered chalk for fast protective sigils. Oren gains +1 defence and stronger Bind while equipped."
+    },
+    {
+      "id": "lamp_censer",
+      "name": "Lamp Censer",
+      "kind": "gear",
+      "value": 44,
+      "stack": false,
+      "hero": "brindle",
+      "blessBonus": 1,
+      "skillBonus": {
+        "spirit": 1
+      },
+      "description": "A travelling censer with a steady flame. Brindle gains +1 Spirit and stronger Bless while equipped."
     },
     {
       "id": "bog_amber",
@@ -1124,7 +1316,8 @@ window.CONTENT = {
         "bandage",
         "rope",
         "lantern_oil",
-        "trail_charms"
+        "trail_charms",
+        "quickstep_blade"
       ],
       "npcs": [
         "mayor_rowan",
@@ -1153,7 +1346,8 @@ window.CONTENT = {
         "healing_tonic",
         "lockpicks",
         "mail_patch",
-        "sealed_letter"
+        "sealed_letter",
+        "iron_vambrace"
       ],
       "npcs": [
         "oswin_marris",
@@ -1180,7 +1374,9 @@ window.CONTENT = {
         "bandage",
         "lantern_oil",
         "keen_lens",
-        "healer_satchel"
+        "healer_satchel",
+        "ward_chalk",
+        "lamp_censer"
       ],
       "npcs": [
         "sen_marrow",
