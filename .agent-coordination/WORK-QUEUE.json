@@ -3733,27 +3733,24 @@
     {
       "id": "LR-0141",
       "title": "Integrate Lamplighter UI icons, materials and atmospheric VFX",
-      "status": "BLOCKED",
+      "status": "READY",
       "priority": 1,
       "exclusive_scope": "lamplighter-presentation-runtime-integration",
       "depends_on": [
         "LR-0121",
-        "LR-0124",
         "LR-0127",
-        "LR-0130",
-        "LR-0137"
+        "LR-0130"
       ],
       "primary_agent": 1,
-      "goal": "Wire the approved Lamplighter presentation assets into the live game after the UI/render seam exists: custom icon sprite, restrained parchment/timber/lantern materials, and atmospheric/reduced-motion VFX, while preserving Wayfinder semantics and accessibility.",
+      "goal": "Wire the already-accepted four hero portraits and the existing Lamplighter UI icon/material/VFX assets into the current live shell now, without waiting for LR-0137, while preserving fallbacks, accessibility and later architecture migration.",
       "acceptance_criteria": [
-        "Replace temporary/generic glyph presentation with assets/ui/icons.svg where appropriate without removing visible/accessibly named text or confusing Renown with faction standing.",
-        "Apply the approved parchment/timber/divider/lantern material assets selectively to shell, journal/panel and major structural surfaces according to the Lamplighter material-use rules; do not decorate every component.",
-        "Integrate rain, fog, ember, lantern-bloom and sacred-halo effects only in the states authorised by docs/MOTION-VFX-DIRECTION.md.",
-        "Implement every continuous/decorative effect with the specified reduced-motion/static fallback and ensure gameplay meaning never depends on the effect loading.",
-        "Keep runtime icon/material/VFX code behind the extracted LR-0137 presentation seam instead of re-entangling mechanics with render code.",
-        "Consume LR-0130's icon semantics/phone-legibility audit before final wiring so confusable symbols remain visibly disambiguated.",
-        "Verify smallest-phone readability and performance; no decorative layer may obscure labels, text, focus indication or touch targets.",
-        "If an asset fails to load, controls and gameplay remain usable and semantically complete."
+        "Map Garrick, Mira, Oren and Brindle accepted WebP portraits into the existing CSS --art-image art-slot contract with sigil fallbacks preserved; do not take over LR-0031's broader NPC/location/enemy/item illustration integration.",
+        "Reference assets/ui/icons.svg for selected existing controls while preserving visible text/accessibly named controls and keeping Renown distinct from faction standing.",
+        "Apply the existing parchment/timber/lantern material assets selectively to major shell/reading surfaces without obscuring text, focus indication or touch targets.",
+        "Integrate at least one contextual atmospheric VFX treatment from assets/ui/effects/ using the approved motion language, with prefers-reduced-motion/static fallback and no gameplay meaning depending on the effect.",
+        "Add every newly runtime-referenced first-party asset to the service-worker app shell so offline/cache behaviour remains complete.",
+        "Keep the change presentation-only: no gameplay balance, save schema, quest logic or authored prose changes.",
+        "Run static/DOM checks plus the real-browser regression suite and verify a phone-sized layout remains usable."
       ],
       "likely_files": [
         "game.js",
@@ -3763,7 +3760,7 @@
         "assets/ui/materials/",
         "assets/ui/effects/"
       ],
-      "notes": "Steward-owned runtime integration task created by Agent 4 to make already-produced Lamplighter assets visibly land in the game. Agent 4 retains art/VFX direction; Agent 5 retains interaction/accessibility semantics; Agent 1 owns runtime wiring. Do not duplicate LR-0031 hero/location art integration or LR-0032 authored audio integration."
+      "notes": "Josh creative-director override 5 Oct 2026: early presentation wiring is explicitly allowed before LR-0137 because the current art-slot contract already supports CSS --art-image and the accepted hero/UI source assets are already present on main. This task now owns only the narrow current-shell wiring; broader LR-0031 art delivery and later LR-0137 architecture extraction remain separate. Agent 4 reviews visual quality; Agent 5 retains interaction/accessibility semantics."
     },
     {
       "id": "LR-0142",
