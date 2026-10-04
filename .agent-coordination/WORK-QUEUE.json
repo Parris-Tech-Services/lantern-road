@@ -1967,7 +1967,7 @@
         "docs/ART-PROVENANCE.md",
         "docs/ART-DIRECTION.md"
       ],
-      "notes": "Lamplighter owns atlas production; identity/coordinates come from LR-0069, not generated text in concept art."
+      "notes": "PARKED pending Director exact-head review. PR #60, branch agent/LR-0072-grey-march-terrain-atlas-4e7e9f8f, useful head 8b66b9081a75ccec137be98ec7aba56834c6ef6a. Added canonical 1200×900 terrain-only SVG, projection/palette metadata, provenance, map README and LR-0073 integration handoff. QA: 72/72 unique terrain cells, zero visible SVG text, exact Map Canon v1 projection. Coordination and active-claim checks pass; only remaining gate is .agent-coordination/design-reviews/LR-0072.json for this exact head. Director review requested on PR #60 comment #5977599358. After approval, fresh claimant should verify exact head, merge, mark DONE and release any fresh claim."
     },
     {
       "id": "LR-0073",
