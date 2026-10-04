@@ -1,180 +1,230 @@
 const { chromium } = require("playwright");
 const fs = require("fs");
 const path = require("path");
+
 const OUT = path.join("QA", "evidence", "LR-0021");
 fs.mkdirSync(OUT, { recursive: true });
 
+const errors = [];
+const consoleErrors = [];
+const journey = [];
+let browser;
+
+function compact(text) {
+  return String(text || "").replace(/\s+/g, " ").trim();
+}
+
 (async () => {
-  const browser = await chromium.launch({ headless: true });
+  browser = await chromium.launch({ headless: true });
   const context = await browser.newContext({
-    viewport: { width: 390, height: 844 }, deviceScaleFactor: 1, hasTouch: true, isMobile: true,
+    viewport: { width: 390, height: 844 },
+    deviceScaleFactor: 1,
+    hasTouch: true,
+    isMobile: true,
   });
   const page = await context.newPage();
-  page.setDefaultTimeout(4000);
-  page.setDefaultNavigationTimeout(10000);
-  const pageErrors = [], consoleErrors = [];
-  page.on("pageerror", err => pageErrors.push(String(err)));
-  page.on("console", msg => { if (msg.type() === "error") consoleErrors.push(msg.text()); });
-  const settle = () => page.waitForTimeout(350);
+  page.setDefaultTimeout(6000);
+  page.on("pageerror", err => errors.push(String(err)));
+  page.on("console", msg => {
+    if (msg.type() === "error") consoleErrors.push(msg.text());
+  });
 
-  async function snapshot(label) {
+  await page.goto("http://127.0.0.1:4173/", { waitUntil: "networkidle" });
+  await page.evaluate(() => { localStorage.clear(); sessionStorage.clear(); });
+  await page.reload({ waitUntil: "networkidle" });
+
+  async function bodyText() {
+    return await page.locator("body").innerText();
+  }
+
+  function visibleState(text) {
+    const one = compact(text);
+    const day = one.match(/Day\s+(\d+),\s*([^•]+)\s*•\s*([^A-Z]+?)(?= LOCATION|$)/i);
+    const location = one.match(/LOCATION\s+(.+?)(?= RESOURCES|$)/i);
+    const resources = one.match(/RESOURCES\s+(.+?)(?= PRESSURE|$)/i);
+    const pressure = one.match(/PRESSURE\s+(.+?)(?= GOAL|$)/i);
+    return {
+      day: day ? Number(day[1]) : null,
+      clock: day ? compact(day[2]) : null,
+      weather: day ? compact(day[3]) : null,
+      location: location ? compact(location[1]) : null,
+      resources: resources ? compact(resources[1]) : null,
+      pressure: pressure ? compact(pressure[1]) : null,
+    };
+  }
+
+  async function record(action, extra = {}) {
+    const text = await bodyText();
+    const state = visibleState(text);
+    journey.push({ action, ...state, ...extra });
+    console.log("WARDEN_STEP", JSON.stringify(journey[journey.length - 1]));
+  }
+
+  async function screenshot(label) {
     await page.screenshot({ path: path.join(OUT, label + ".png"), fullPage: true });
-    const body = (await page.locator("body").innerText()).replace(/\n{3,}/g, "\n\n");
-    const buttons = await page.getByRole("button").evaluateAll(btns => btns.map((b, i) => ({
-      i, text:(b.innerText||b.getAttribute("aria-label")||"").trim(), disabled:b.disabled,
-      visible:!!(b.offsetWidth||b.offsetHeight||b.getClientRects().length)
-    })));
-    console.log("\n=== SNAPSHOT " + label + " ===");
-    console.log("BODY:\n" + body.slice(0,16000));
-    console.log("BUTTONS:", JSON.stringify(buttons));
   }
-  async function clickExact(name, label=name) {
-    const loc=page.getByRole("button",{name,exact:true});
-    if(!await loc.count()){ console.log("ACTION_MISSING",label); return false; }
-    console.log("ACTION",label);
-    await loc.first().click(); await settle(); return true;
+
+  async function modalVisible() {
+    return await page.locator("#modalRoot").evaluate(el => !el.hidden && getComputedStyle(el).display !== "none");
   }
-  async function closeModal() {
-    const loc=page.locator("#modalRoot").getByRole("button",{name:"Close",exact:true});
-    if(await loc.count()){ console.log("ACTION close modal"); await loc.first().click(); await settle(); return true; }
+
+  async function dismissOrAdvanceModal(tag = "modal") {
+    let steps = 0;
+    let last = "";
+    let stagnant = 0;
+    while (await modalVisible() && steps < 30) {
+      steps++;
+      const modal = page.locator("#modalRoot");
+      const text = compact(await modal.innerText());
+      if (text === last) stagnant++; else stagnant = 0;
+      last = text;
+      console.log("WARDEN_MODAL", JSON.stringify({tag, steps, text: text.slice(0, 1200)}));
+
+      const buttons = modal.getByRole("button").filter({ visible: true });
+      const count = await buttons.count();
+      if (!count) break;
+
+      const labels = [];
+      for (let i = 0; i < count; i++) {
+        const b = buttons.nth(i);
+        labels.push({ i, text: compact(await b.innerText()), disabled: await b.isDisabled() });
+      }
+      console.log("WARDEN_MODAL_BUTTONS", JSON.stringify(labels));
+
+      let chosen = null;
+      const preferred = [
+        /set out/i, /continue/i, /accept/i, /agree/i, /investigate/i, /help/i,
+        /attack/i, /strike/i, /guard/i, /heal/i, /use/i, /take/i, /leave/i,
+        /close/i
+      ];
+      for (const re of preferred) {
+        for (const x of labels) {
+          if (!x.disabled && re.test(x.text)) { chosen = x; break; }
+        }
+        if (chosen) break;
+      }
+      if (!chosen) chosen = labels.find(x => !x.disabled) || null;
+      if (!chosen) break;
+
+      // If a modal is visibly stuck on one choice, try a different enabled button.
+      if (stagnant >= 2) {
+        const alt = labels.find(x => !x.disabled && x.i !== chosen.i);
+        if (alt) chosen = alt;
+      }
+
+      await buttons.nth(chosen.i).click();
+      await page.waitForTimeout(180);
+    }
+    await record(tag + "-resolved", { modal_steps: steps });
+  }
+
+  await screenshot("00-intro");
+  await record("fresh-campaign");
+  if (await modalVisible()) await dismissOrAdvanceModal("intro");
+  await screenshot("01-after-intro");
+
+  // Baseline information tabs as a normal curious first-time player.
+  for (const tab of ["Context", "Journal", "Party", "Log"]) {
+    const b = page.getByRole("button", { name: tab, exact: true });
+    if (await b.count()) {
+      await b.click();
+      await page.waitForTimeout(120);
+      await record("view-" + tab.toLowerCase());
+    }
+  }
+  await page.getByRole("button", { name: "Context", exact: true }).click();
+
+  // Try the obvious starting-town actions before setting off.
+  for (const action of ["Hear rumours", "Talk", "Visit the market"]) {
+    const b = page.getByRole("button", { name: action, exact: true }).first();
+    if (await b.count() && await b.isVisible() && await b.isEnabled()) {
+      await b.click();
+      await page.waitForTimeout(150);
+      await record("click-" + action.toLowerCase().replace(/\s+/g, "-"));
+      if (await modalVisible()) await dismissOrAdvanceModal(action);
+    }
+  }
+
+  // Save once as a normal player before travelling.
+  const save = page.getByRole("button", { name: "Save", exact: true });
+  if (await save.count()) {
+    await save.click();
+    await page.waitForTimeout(120);
+    await record("manual-save");
+  }
+
+  async function tryCanvasTravel() {
+    const canvas = page.locator("#mapCanvas");
+    const box = await canvas.boundingBox();
+    if (!box) return false;
+    const before = visibleState(await bodyText());
+
+    // A human taps the highlighted neighbour. The probe searches visible canvas positions,
+    // never game internals, until one behaves as a legal adjacent move.
+    const xs = [0.22,0.34,0.46,0.58,0.70,0.82];
+    const ys = [0.18,0.30,0.42,0.54,0.66,0.78,0.88];
+    for (const yf of ys) {
+      for (const xf of xs) {
+        await page.mouse.click(box.x + box.width * xf, box.y + box.height * yf);
+        await page.waitForTimeout(120);
+        if (await modalVisible()) await dismissOrAdvanceModal("travel-event");
+        const after = visibleState(await bodyText());
+        if (after.location && (after.location !== before.location || after.day !== before.day || after.clock !== before.clock)) {
+          await record("travel-by-map", { from: before.location });
+          return true;
+        }
+      }
+    }
+    await record("map-travel-attempt-no-move");
     return false;
   }
 
+  let loops = 0;
+  while (loops < 55) {
+    loops++;
+    if (await modalVisible()) await dismissOrAdvanceModal("ambient-modal");
+
+    const state = visibleState(await bodyText());
+    if (state.day && state.day >= 18) break;
+
+    // At settlements, interact lightly rather than rushing straight through.
+    const rumour = page.getByRole("button", { name: "Hear rumours", exact: true });
+    if (await rumour.count() && await rumour.first().isVisible() && await rumour.first().isEnabled() && loops % 4 === 0) {
+      await rumour.first().click();
+      await page.waitForTimeout(120);
+      await record("hear-rumour-during-run");
+      if (await modalVisible()) await dismissOrAdvanceModal("rumour");
+    }
+
+    const moved = await tryCanvasTravel();
+    if (!moved) {
+      const camp = page.getByRole("button", { name: "Camp", exact: true });
+      if (await camp.count() && await camp.isVisible() && await camp.isEnabled()) {
+        await camp.click();
+        await page.waitForTimeout(140);
+        await record("camp");
+        if (await modalVisible()) await dismissOrAdvanceModal("camp-event");
+      } else {
+        break;
+      }
+    }
+
+    if (loops % 10 === 0) await screenshot("progress-" + String(loops).padStart(2,"0"));
+  }
+
+  await screenshot("99-final");
+  await record("final");
+
+  const result = { journey, errors, consoleErrors };
+  fs.writeFileSync(path.join(OUT, "journey.json"), JSON.stringify(result, null, 2));
+  console.log("\n=== WARDEN_RESULT ===\n" + JSON.stringify(result, null, 2));
+})().catch(err => {
+  errors.push(String(err && err.stack || err));
+  console.error("WARDEN_PROBE_FATAL", err);
   try {
-    await page.goto("http://127.0.0.1:4173/",{waitUntil:"commit",timeout:10000});
-    await page.waitForLoadState("domcontentloaded",{timeout:5000}).catch(()=>{});
-    await page.evaluate(()=>{localStorage.clear();sessionStorage.clear();});
-    await page.reload({waitUntil:"commit",timeout:10000});
-    await page.waitForLoadState("domcontentloaded",{timeout:5000}).catch(()=>{});
-    await settle();
-
-    await snapshot("00-fresh-start");
-    await clickExact("Set out from Hearthwick.","opening: set out");
-
-    await clickExact("Hear rumours","Hearthwick: hear rumours");
-    await snapshot("01-rumours");
-    await closeModal();
-
-    const talks=page.getByRole("button",{name:"Talk",exact:true});
-    console.log("ACTION Rowan Pike: talk");
-    await talks.first().click(); await settle();
-    await snapshot("02-rowan-offer");
-    await clickExact("Take the road trouble job.","Rowan: take road trouble job");
-    await snapshot("03-road-job-accepted");
-    await closeModal();
-
-    await clickExact("Journal","tab: Journal after quest");
-    await snapshot("04-journal-after-quest");
-    await clickExact("Context","tab: Context");
-
-    await clickExact("Camp","camp at Hearthwick");
-    await snapshot("05-camp-first-watch");
-    await clickExact("Tell him the weight can be shared.","camp: share Garrick's weight");
-    await snapshot("06-camp-response");
-    await closeModal();
-
-    const canvas=page.locator("#mapCanvas");
-    console.log("ACTION travel visually to Redwater Ferry adjacent hex");
-    await canvas.scrollIntoViewIfNeeded();
-    const mapBox=await canvas.boundingBox();
-    console.log("CANVAS_BOX",JSON.stringify(mapBox));
-    await page.touchscreen.tap(mapBox.x+102,mapBox.y+212);
-    await settle();
-    await snapshot("07-redwater-arrival");
-
-    const modal=page.locator("#modalRoot");
-    const modalText=(await modal.innerText()).trim();
-    if(modalText){
-      const mb=modal.getByRole("button");
-      const labels=await mb.evaluateAll(bs=>bs.filter(b=>!b.disabled && (b.offsetWidth||b.offsetHeight||b.getClientRects().length)).map(b=>(b.innerText||"").trim()));
-      console.log("ARRIVAL_MODAL_BUTTONS",JSON.stringify(labels));
-      const choices=labels.filter(x=>x && x!=="Close" && x!=="⚙");
-      if(choices.length){
-        await clickExact(choices[0],"arrival/event first visible choice");
-        await snapshot("08-arrival-choice-result");
-      }
-      await closeModal();
-    }
-
-    await clickExact("Context","tab: Context at destination");
-    await snapshot("09-destination-context");
-    await clickExact("Inspect the mooring posts and tally marks","Redwater: inspect mooring");
-    await snapshot("10-redwater-inspection");
-    const redModal=page.locator("#modalRoot");
-    const redLabels=await redModal.getByRole("button").evaluateAll(bs=>bs.filter(b=>!b.disabled && (b.offsetWidth||b.offsetHeight||b.getClientRects().length)).map(b=>(b.innerText||"").trim()));
-    console.log("REDWATER_MODAL_BUTTONS",JSON.stringify(redLabels));
-    const redChoices=redLabels.filter(x=>x && x!=="Close" && x!=="⚙");
-    if(redChoices.length){
-      await clickExact(redChoices[0],"Redwater investigation: first visible choice");
-      await snapshot("11-redwater-investigation-result");
-    }
-    await closeModal();
-
-    await clickExact("Journal","tab: Journal after Redwater");
-    await snapshot("12-redwater-journal");
-    await clickExact("Context","tab: Context before exploration");
-
-    const exploreCanvas=page.locator("#mapCanvas");
-    await exploreCanvas.scrollIntoViewIfNeeded();
-    const exploreBox=await exploreCanvas.boundingBox();
-    console.log("ACTION explore east from Redwater",JSON.stringify(exploreBox));
-    await page.touchscreen.tap(exploreBox.x+136,exploreBox.y+212);
-    await settle();
-    await snapshot("13-explore-east");
-
-    const exploreModal=page.locator("#modalRoot");
-    const exploreText=(await exploreModal.innerText()).trim();
-    if(exploreText){
-      const eLabels=await exploreModal.getByRole("button").evaluateAll(bs=>bs.filter(b=>!b.disabled && (b.offsetWidth||b.offsetHeight||b.getClientRects().length)).map(b=>(b.innerText||"").trim()));
-      console.log("EXPLORE_MODAL_BUTTONS",JSON.stringify(eLabels));
-    }
-
-    await clickExact("Make camp here","camp on the plains at 2am");
-    await snapshot("14-plains-camp");
-    const campModal=page.locator("#modalRoot");
-    const campLabels=await campModal.getByRole("button").evaluateAll(bs=>bs.filter(b=>!b.disabled && (b.offsetWidth||b.offsetHeight||b.getClientRects().length)).map(b=>(b.innerText||"").trim()));
-    console.log("PLAINS_CAMP_BUTTONS",JSON.stringify(campLabels));
-    const campChoices=campLabels.filter(x=>x && x!=="Close" && x!=="⚙");
-    if(campChoices.length){
-      await clickExact(campChoices[0],"plains camp: first visible choice");
-      await snapshot("15-plains-camp-result");
-    }
-    await closeModal();
-
-    async function tapMap(x,y,label,snap){
-      const cv=page.locator("#mapCanvas");
-      await cv.scrollIntoViewIfNeeded();
-      const bx=await cv.boundingBox();
-      console.log("ACTION "+label,JSON.stringify({x,y,box:bx}));
-      await page.touchscreen.tap(bx.x+x,bx.y+y);
-      await settle();
-      await snapshot(snap);
-      const md=page.locator("#modalRoot");
-      const txt=(await md.innerText()).trim();
-      if(txt){
-        const labs=await md.getByRole("button").evaluateAll(bs=>bs.filter(b=>!b.disabled && (b.offsetWidth||b.offsetHeight||b.getClientRects().length)).map(b=>(b.innerText||"").trim()));
-        console.log("TRAVEL_MODAL_BUTTONS",JSON.stringify(labs));
-      }
-    }
-
-    await tapMap(170,212,"continue east across the plains","16-east-step-2");
-    await tapMap(204,212,"continue east again","17-east-step-3");
-
-    await clickExact("Follow the green lights into the ruins","Mosslight: follow green lights");
-    await snapshot("18-mosslight-entry");
-    const mossModal=page.locator("#modalRoot");
-    const mossText=(await mossModal.innerText()).trim();
-    if(mossText){
-      const mLabels=await mossModal.getByRole("button").evaluateAll(bs=>bs.filter(b=>!b.disabled && (b.offsetWidth||b.offsetHeight||b.getClientRects().length)).map(b=>(b.innerText||"").trim()));
-      console.log("MOSSLIGHT_MODAL_BUTTONS",JSON.stringify(mLabels));
-      const mChoices=mLabels.filter(x=>x && x!=="Close" && x!=="⚙");
-      if(mChoices.length){
-        await clickExact(mChoices[0],"Mosslight: first visible choice");
-        await snapshot("19-mosslight-choice-result");
-      }
-    }
-
-    console.log("\n=== BROWSER ERRORS ===");
-    console.log(JSON.stringify({pageErrors,consoleErrors},null,2));
-  } finally { await browser.close(); }
-})().catch(err=>{console.error("WARDEN_PROBE_FATAL",err);process.exitCode=1;});
+    fs.writeFileSync(path.join(OUT, "fatal.json"), JSON.stringify({ errors, consoleErrors, journey }, null, 2));
+  } catch {}
+  process.exitCode = 1;
+}).finally(async () => {
+  if (browser) await browser.close().catch(() => {});
+});
