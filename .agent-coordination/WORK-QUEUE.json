@@ -2062,6 +2062,217 @@
         "story/endings/"
       ],
       "notes": "Pure author-now follow-up to LR-0043. LR-0043 defines the structure/matrix; LR-0076 supplies finished modular epilogue copy. LR-0008 later integrates both after its foundation dependencies clear."
+    },
+    {
+      "id": "LR-0077",
+      "title": "Author save and recovery UX state model",
+      "status": "READY",
+      "priority": 0,
+      "exclusive_scope": "save-recovery-ux-authoring",
+      "depends_on": [],
+      "primary_agent": 5,
+      "goal": "Define the complete player-facing save, autosave, load and recovery behaviour so LR-0009/LR-0040 can integrate with LR-0011 without inventing inconsistent error states.",
+      "acceptance_criteria": [
+        "Model Manual Save, Autosave, successful load, missing slot, corrupted/repairable save, unsupported newer save, blocked storage and storage-write failure as explicit player-facing states.",
+        "Define destructive-confirmation and recovery paths that protect Manual Save and never imply data was written when persistence failed.",
+        "Define concise status/feedback copy and focus behaviour for each save/recovery state without specifying schema or migration internals owned by LR-0011.",
+        "Define how build/version provenance should be surfaced when a save/support problem may be caused by stale code, while leaving build-manifest implementation to LR-0063.",
+        "Produce an implementation checklist consumable by LR-0009, LR-0040 and Warden LR-0023; do not edit runtime or persistence code."
+      ],
+      "likely_files": [
+        "docs/SAVE-RECOVERY-UX.md",
+        "QA/"
+      ],
+      "notes": "Author-now Wayfinder input. LR-0011 owns persistence/schema; this task owns only player-facing save/recovery behaviour."
+    },
+    {
+      "id": "LR-0078",
+      "title": "Author PWA lifecycle and offline UX contract",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "pwa-lifecycle-ux-authoring",
+      "depends_on": [],
+      "primary_agent": 5,
+      "goal": "Specify how Lantern Road should communicate install, update, offline, reconnect and cache-recovery states before LR-0040 runtime integration.",
+      "acceptance_criteria": [
+        "Define player-visible states for first installability, already-installed use, update available/applied, offline start, connection loss, reconnect and stale-build recovery.",
+        "Separate transient connectivity from saved-campaign safety so offline messaging never falsely implies save loss.",
+        "Define update prompts and reload timing that avoid interrupting an active choice/combat or silently discarding unsaved in-memory state.",
+        "Define graceful fallback when install prompts or PWA APIs are unavailable.",
+        "Keep service-worker strategy implementation in LR-0050/LR-0040 and release rollback operations in LR-0068; this task authors UX only."
+      ],
+      "likely_files": [
+        "docs/PWA-LIFECYCLE-UX.md"
+      ],
+      "notes": "Durable authoring input for LR-0040, informed by LR-0050 but not duplicating service-worker code."
+    },
+    {
+      "id": "LR-0079",
+      "title": "Author phone interaction performance budget",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "mobile-interaction-performance-authoring",
+      "depends_on": [],
+      "primary_agent": 5,
+      "goal": "Define user-perceived responsiveness targets for phone interaction so Agent 1 performance work and later Wayfinder map/PWA work optimise against a shared experience budget.",
+      "acceptance_criteria": [
+        "Define measurable responsiveness targets for tap feedback, modal opening, tab switching, map pan/zoom response and orientation/viewport reflow.",
+        "Define acceptable visual stability/jank expectations at 320, 360, 390 and 430 px representative widths.",
+        "Distinguish critical interaction latency from background work so performance optimisations do not remove necessary feedback.",
+        "Define degraded-device expectations and a manual measurement checklist without implementing profiling infrastructure.",
+        "Route runtime optimisation/profiling to LR-0012 and canonical-map implementation to LR-0073/LR-0074."
+      ],
+      "likely_files": [
+        "docs/MOBILE-INTERACTION-PERFORMANCE-BUDGET.md"
+      ],
+      "notes": "Wayfinder experience budget; Steward retains runtime performance ownership."
+    },
+    {
+      "id": "LR-0080",
+      "title": "Author touch gesture arbitration contract",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "touch-gesture-authoring",
+      "depends_on": [],
+      "primary_agent": 5,
+      "goal": "Define deterministic tap, pan, pinch, scroll and drag arbitration for the phone map and modal surfaces before canonical atlas interaction lands.",
+      "acceptance_criteria": [
+        "Define when a pointer sequence becomes tap versus pan, including movement thresholds and cancellation behaviour.",
+        "Define pinch-zoom, one-finger pan, browser scroll and nested modal-scroll interactions without requiring precision gestures.",
+        "Specify rules preventing accidental travel while panning/zooming and accidental page scroll while deliberately manipulating the map.",
+        "Define keyboard/semantic alternatives so gesture use is never mandatory for a critical action.",
+        "Produce implementation-ready rules for LR-0074 without editing canonical map rendering or geography."
+      ],
+      "likely_files": [
+        "docs/TOUCH-GESTURE-CONTRACT.md"
+      ],
+      "notes": "Detailed map/phone gesture contract; complements rather than duplicates LR-0051's general accessibility rules."
+    },
+    {
+      "id": "LR-0081",
+      "title": "Author phone safe-area and floating-control collision contract",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "mobile-safe-area-authoring",
+      "depends_on": [],
+      "primary_agent": 5,
+      "goal": "Define reserved phone interaction zones so Lantern Road controls, browser safe areas and shared external launchers cannot cover one another.",
+      "acceptance_criteria": [
+        "Define top, bottom and corner reserved zones for narrow portrait layouts including safe-area insets.",
+        "Define collision rules for bottom tabs, modal Close, map controls, transient feedback and shared podcast/settings launchers.",
+        "Define z-index/layer ownership conceptually without hard-coding implementation values.",
+        "Cover Standard/Large/Extra Large text and 320/360/390/430 px widths.",
+        "Produce a reconciliation checklist for LR-0009, LR-0040 and LR-0074; do not edit runtime CSS."
+      ],
+      "likely_files": [
+        "docs/MOBILE-SAFE-AREA-CONTRACT.md"
+      ],
+      "notes": "Formalises the collision problem found during LR-0009 so future surfaces do not regress it."
+    },
+    {
+      "id": "LR-0082",
+      "title": "Author mobile typography and content-density contract",
+      "status": "READY",
+      "priority": 2,
+      "exclusive_scope": "mobile-typography-authoring",
+      "depends_on": [],
+      "primary_agent": 5,
+      "goal": "Define readable phone content density and reflow rules for story, actions, combat and system UI across accessibility text sizes.",
+      "acceptance_criteria": [
+        "Define line-length, wrapping, spacing and vertical-density expectations for dialogue, choice lists, cards, logs and compact combat.",
+        "Define when content should stack, collapse secondary detail or scroll rather than shrink text.",
+        "Define truncation rules that never hide gameplay-critical labels, costs, status or requirements.",
+        "Cover Standard/Large/Extra Large text at 320/360/390/430 px and browser zoom.",
+        "Keep visual art direction with Agent 4 and runtime accessibility implementation with LR-0039; this task specifies Wayfinder readability behaviour."
+      ],
+      "likely_files": [
+        "docs/MOBILE-TYPOGRAPHY-CONTENT-DENSITY.md"
+      ],
+      "notes": "Phone readability contract, intentionally separate from Lamplighter visual style."
+    },
+    {
+      "id": "LR-0083",
+      "title": "Author system-state feedback and recovery microcopy catalogue",
+      "status": "READY",
+      "priority": 2,
+      "exclusive_scope": "system-feedback-copy-authoring",
+      "depends_on": [],
+      "primary_agent": 5,
+      "goal": "Create consistent concise player-facing wording for technical/system states that otherwise risk silent failure or confusing browser jargon.",
+      "acceptance_criteria": [
+        "Cover save/load failures, offline/reconnect, unavailable browser features, storage blocked/full, stale build/update and unsupported action states.",
+        "Use short concrete player language and avoid implementation terms such as localStorage, service worker or schema version unless shown in an explicit support/details surface.",
+        "Pair each message with severity, whether it interrupts play, and the recommended recovery action.",
+        "Avoid narrative/world prose and do not duplicate Storyteller dialogue ownership.",
+        "Provide copy inputs for LR-0009, LR-0040, LR-0039 and support surfaces without implementing them."
+      ],
+      "likely_files": [
+        "docs/SYSTEM-FEEDBACK-MICROCOPY.md"
+      ],
+      "notes": "System/interaction copy only; not narrative authoring."
+    },
+    {
+      "id": "LR-0084",
+      "title": "Author accessibility preference precedence and persistence contract",
+      "status": "READY",
+      "priority": 2,
+      "exclusive_scope": "accessibility-preferences-authoring",
+      "depends_on": [],
+      "primary_agent": 5,
+      "goal": "Define how in-game accessibility preferences interact with platform/browser preferences and device-local persistence.",
+      "acceptance_criteria": [
+        "Define precedence for in-game text size, High Contrast, reduced motion and optional haptics versus platform/browser signals.",
+        "Define safe defaults and behaviour when preference storage is unavailable or cleared.",
+        "Keep accessibility preferences separate from campaign save data and define what should persist across campaigns.",
+        "Define how setting changes are announced and applied without requiring reload or causing focus loss.",
+        "Do not implement preference storage; LR-0039/LR-0040 consume this contract later."
+      ],
+      "likely_files": [
+        "docs/ACCESSIBILITY-PREFERENCE-CONTRACT.md"
+      ],
+      "notes": "Complements LR-0051 by defining preference lifecycle/precedence rather than interaction semantics."
+    },
+    {
+      "id": "LR-0085",
+      "title": "Author one-handed compact-combat interaction contract",
+      "status": "READY",
+      "priority": 2,
+      "exclusive_scope": "mobile-combat-interaction-authoring",
+      "depends_on": [],
+      "primary_agent": 5,
+      "goal": "Define phone-first control flow for compact combat without changing Mechanist-owned combat rules, balance or enemy behaviour.",
+      "acceptance_criteria": [
+        "Define reachability/order for current-turn context, action selection, target selection, status inspection and combat log access.",
+        "Specify how selected action and valid targets remain obvious without relying on colour alone.",
+        "Define one-handed scrolling/focus behaviour for long enemy/party lists and Extra Large text.",
+        "Keep combat mechanics, action values and AI entirely with Agent 3; this task owns interaction presentation only.",
+        "Provide implementation/QA inputs for LR-0015, LR-0039 and LR-0028 without runtime edits."
+      ],
+      "likely_files": [
+        "docs/MOBILE-COMBAT-INTERACTION.md"
+      ],
+      "notes": "Interaction-layer companion to Mechanist combat design, not a combat-system task."
+    },
+    {
+      "id": "LR-0086",
+      "title": "Author Android/browser capability and graceful-fallback matrix",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "browser-capability-authoring",
+      "depends_on": [],
+      "primary_agent": 5,
+      "goal": "Document the browser/device capability assumptions and fallback behaviour needed for Lantern Road to remain playable across modern Android/mobile browsers.",
+      "acceptance_criteria": [
+        "Catalogue game-relevant capabilities including Pointer Events, vibration, Fullscreen, Service Worker/Cache API, install prompts, safe-area env values, reduced-motion/contrast signals and storage availability.",
+        "For each capability define required, optional or progressive-enhancement status and a playable fallback when unavailable.",
+        "Separate support requirements from implementation details and avoid claiming unverified browser compatibility.",
+        "Define a minimal manual compatibility matrix for representative Chromium Android and a non-Chromium/mobile fallback browser where practical.",
+        "Feed LR-0039, LR-0040 and LR-0074 without duplicating Agent 1's deployed smoke/CI ownership."
+      ],
+      "likely_files": [
+        "docs/MOBILE-BROWSER-CAPABILITY-MATRIX.md"
+      ],
+      "notes": "Capability/fallback contract for Wayfinder implementation; no runtime code or CI automation."
     }
   ],
   "agent_roster": [
@@ -2119,5 +2330,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T16:00:00+11:00"
+  "updated_at": "2026-10-04T17:18:00+11:00"
 }
