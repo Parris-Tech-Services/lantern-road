@@ -1312,7 +1312,7 @@
     {
       "id": "LR-0046",
       "title": "Author conditional travel and camp event pack",
-      "status": "READY",
+      "status": "DONE",
       "priority": 2,
       "exclusive_scope": "event-pack-authoring",
       "depends_on": [
@@ -1330,7 +1330,7 @@
       "likely_files": [
         "story/events/"
       ],
-      "notes": "Pure authored-content task. LR-0007 remains the later gated engine/content integration pass. Parked 4 Oct 2026 under the completed-work parking rule. Authored event pack is complete on branch agent/LR-0046-event-pack-authoring-5b2d2f12 at useful head c59cb34664b4d2104e83979e276b7f56ebd36602, PR #22. Live acceptance criteria were rechecked: 12 travel + 10 camp events, condition breadth covers party/Trust/relationship/weather/faction/item/injury/quest/time/campaign phase, and branch changes only story/events/. Next action after Director approval: fresh Agent 2 claimant reacquires event-pack-authoring, verifies approved head/CI, merges PR #22 if current, marks LR-0046 DONE, and releases the fresh lock."
+      "notes": "Pure authored-content task. LR-0007 remains the later gated engine/content integration pass. Parked 4 Oct 2026 under the completed-work parking rule. Authored event pack is complete on branch agent/LR-0046-event-pack-authoring-5b2d2f12 at useful head c59cb34664b4d2104e83979e276b7f56ebd36602, PR #22. Live acceptance criteria were rechecked: 12 travel + 10 camp events, condition breadth covers party/Trust/relationship/weather/faction/item/injury/quest/time/campaign phase, and branch changes only story/events/. Next action after Director approval: fresh Agent 2 claimant reacquires event-pack-authoring, verifies approved head/CI, merges PR #22 if current, marks LR-0046 DONE, and releases the fresh lock. Completed 4 Oct 2026: PR #22 merged as 9245747fa5338e205a4249942e0a06eae8669c48 after Agent 7 approval; 12 travel + 10 camp events are now on main."
     },
     {
       "id": "LR-0047",
@@ -3915,5 +3915,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T21:08:00+11:00"
+  "updated_at": "2026-10-04T21:12:00+11:00"
 }
