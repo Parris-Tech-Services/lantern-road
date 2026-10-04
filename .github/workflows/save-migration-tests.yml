@@ -47,4 +47,4 @@ jobs:
           name: save-migration-results
           path: test-results/save-migration/
           if-no-files-found: error
-          retention-days: 30
+          retention-days: 1
