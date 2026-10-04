@@ -3359,6 +3359,33 @@
         "docs/ARCHITECTURE-MODULARISATION-PLAN.md"
       ],
       "notes": "Josh explicitly asked AED to solve the review/merge bottleneck and shared game.js collision problem. Operational coordination only; specialist code extraction remains Agent 1 ownership."
+    },
+    {
+      "id": "LR-0129",
+      "title": "Author illustration composition, crop and export production contract",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "art-asset-production-contract",
+      "depends_on": [
+        "LR-0002"
+      ],
+      "primary_agent": 4,
+      "goal": "Define exact composition, crop-safety, export and phone-readability standards for every Lantern Road art-slot family so LR-0042 generation and LR-0031 curation stop relying on ad-hoc crops.",
+      "acceptance_criteria": [
+        "Specify master and delivery aspect ratios, focal safe zones and minimum readable subject scale for party portraits, NPC portraits, settlement/site landscapes, enemies, items and title/key art.",
+        "Ground the spec in the current 58–92 px portrait and 112–138 px wide phone art-slot sizes rather than desktop-only assumptions.",
+        "Define edge/crop safety rules for CSS background-size: cover and responsive slot variation.",
+        "Define recommended master pixel dimensions, delivery formats and provisional per-file size targets suitable for later LR-0065 enforcement.",
+        "Define contrast/lighting/background-complexity requirements for small-screen readability.",
+        "Define provenance/naming requirements and rejection criteria for inconsistent or un-croppable generations.",
+        "Keep actual image curation/compression/integration in LR-0031 and CI enforcement in LR-0065."
+      ],
+      "likely_files": [
+        "docs/ART-ASSET-PRODUCTION-CONTRACT.md",
+        "assets/art/ASSET-SPECS.json",
+        "docs/ART-DIRECTION.md"
+      ],
+      "notes": "Upstream production contract only. Distinct from LR-0042 image generation, LR-0031 final curation/compression/integration and LR-0065 CI budget enforcement."
     }
   ],
   "agent_roster": [
