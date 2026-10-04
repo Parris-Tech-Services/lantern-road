@@ -42,6 +42,8 @@ Keep this short. Record decisions that future agents would otherwise relitigate.
 
 | 2026-10-04 | **Supersede universal Agent 1–5 Director review with review-by-exception:** only tasks explicitly marked `director_review: REQUIRED` need Agent 7 approval; missing/`NOT_REQUIRED` defaults to no review. Frozen parked PRs may merge without waking the owner, and Agent 7 may approve+merge a frozen REQUIRED-review PR in one session. | Josh explicitly chose to err on the side of fewer reviews. Review the design-setting contract once, then let routine implementation/tooling/asset production flow; keep exact-head review only for genuine creative/canon/player-promise risk. |
 
+| 2026-10-05 | Josh delegates **CEO-style operational production authority** to Agent 7 — The Director: set queue priority, sequence/reroute work, direct Agents 1–8 within their existing role/lock/ownership rules, and deliberately reassign tasks when no conflicting live lock exists and the reason is recorded. Josh remains final creative director. | Removes routine production-management ping-pong while preserving specialist ownership, lock safety, QA independence, exact-head/evidence gates and Josh's final authority on genuine creative decisions. |
+
 ## How to add a decision
 
 Add one row when a task changes architecture, product direction, ownership boundaries, save compatibility, testing policy, or another choice that future agents are likely to revisit.
