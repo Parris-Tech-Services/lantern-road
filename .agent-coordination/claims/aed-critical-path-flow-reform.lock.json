@@ -8,6 +8,6 @@
   "claim_token": "1a2e7c9f-58b7-41d3-83fb-8a30d9e6c4b2",
   "claimed_at": "2026-10-04T19:35:00+11:00",
   "expires_at": "2026-10-05T07:35:00+11:00",
-  "branch": "agent/LR-0128-critical-flow-v2-9df49c23",
-  "note": "Rebuilt from latest main after queue race; implementing LR-0128 critical-path drain rule, staged dependency narrowing and AED flow inbox on v2 branch."
+  "branch": "agent/LR-0128-critical-flow-v3-9df49c23",
+  "note": "LR-0128 v3 conflict-free rebuild from current main; same session/token, staged architecture and critical-path flow reform only."
 }
