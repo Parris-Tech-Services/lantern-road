@@ -4,6 +4,7 @@
 **Build/commit tested:**  
 **Branch/environment:**  
 **Device/browser:**  
+**Browser automation method:** Playwright / agent-browser / other real browser  
 **Campaign seed/save:**  
 **Playtest goal:**  
 
@@ -33,6 +34,8 @@
 **Observed**
 
 **Player impact**
+
+**Creative-director review needed?** Yes / No — explain if this is primarily a subjective fun/tone judgement.
 
 **Evidence / state notes**
 
