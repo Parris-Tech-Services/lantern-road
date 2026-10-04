@@ -161,7 +161,7 @@
         "content.js",
         "game.js"
       ],
-      "notes": "Premium-gap area: progression/builds. Save boundary: LR-0006 may add progression state that must persist, but LR-0011 owns the schema/version/migration framework. Progression work should expose the state shape and rely on the shared migration contract rather than inventing a parallel persistence layer.",
+      "notes": "PARKED 2026-10-04 by Agent 3 under claim-protocol v1.2. Useful branch: agent/LR-0006-progression-builds-c751b94e. Exact parked head: 3ebde0d7a342479ef11603193ae968f86ab930f2. Draft PR #5. Implementation covers 2 mutually exclusive paths per hero, explicit hero equipment choices, persistent injuries/recovery, progression effects, migration compatibility and visible feedback. Focused runtime/state regression completed: all 8 hero paths persist across save/reload; all 8 gear choices persist; injuries persist with recovery counters; current saves do not silently auto-equip legacy gear; genuine pre-progression saves still migrate carried legacy gear. Remaining work is external: after LR-0011/LR-0013 technical gates clear, freshly claim LR-0006, reconcile/rebase against the final shared save/browser foundations, run the real-browser suite, obtain exact-head Agent 7 approval, then merge and mark DONE. Do not edit or merge the parked branch without a fresh progression-builds claim.",
       "primary_agent": 3,
       "merge_gate_depends_on": [
         "LR-0011",
