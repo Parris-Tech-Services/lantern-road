@@ -43,7 +43,7 @@ test("ranks critical-path flow inbox and distinguishes review from owner merge",
     {
       id: "LR-0002", title: "Critical review", status: "READY", primary_agent: 1, steward_review: "REQUIRED", priority: 0,
       depends_on: [], exclusive_scope: "b",
-      notes: "PARKED HANDOFF. Next action: Agent 7 exact-head approval."
+      notes: "PARKED HANDOFF. Next action: Agent 1 Steward exact-head approval."
     },
     {
       id: "LR-0003", title: "Owner merge", status: "READY", primary_agent: 2, steward_review: "REQUIRED", priority: 0,
