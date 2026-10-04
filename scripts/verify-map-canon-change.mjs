@@ -133,25 +133,50 @@ for (const [id] of afterRegions) {
   if (!beforeRegions.has(id)) changedRegionIds.add(id);
 }
 
-const parentSha = git(["rev-parse", `${headSha}^`]);
-const finalChanges = git(["diff", "--name-only", parentSha, headSha])
+const finalParentSha = git(["rev-parse", `${headSha}^`]);
+const finalChanges = git(["diff", "--name-only", finalParentSha, headSha])
   .split("\n")
   .filter(Boolean);
 
-const reviewFiles = finalChanges.filter(file =>
+const designReviewMatch =
+  finalChanges.length === 1 &&
+  finalChanges[0].match(/^\.agent-coordination\/design-reviews\/(LR-\d{4})\.json$/);
+
+let mapReviewCommitSha = headSha;
+let reviewedFeatureSha = finalParentSha;
+let mapReviewChanges = finalChanges;
+
+if (designReviewMatch) {
+  mapReviewCommitSha = finalParentSha;
+  reviewedFeatureSha = git(["rev-parse", `${mapReviewCommitSha}^`]);
+  mapReviewChanges = git(["diff", "--name-only", reviewedFeatureSha, mapReviewCommitSha])
+    .split("\n")
+    .filter(Boolean);
+}
+
+const reviewFiles = mapReviewChanges.filter(file =>
   /^\.agent-coordination\/map-canon-reviews\/LR-\d{4}\.json$/.test(file)
 );
 
-if (reviewFiles.length !== 1 || finalChanges.length !== 1) {
+if (reviewFiles.length !== 1 || mapReviewChanges.length !== 1) {
   console.error(
-    "Protected map-canon changes require one final review-only commit. " +
-    `Expected exactly one .agent-coordination/map-canon-reviews/LR-xxxx.json file in the final commit; found: ${finalChanges.join(", ") || "nothing"}.`
+    "Protected map-canon changes require one map-canon review-only commit. " +
+    "For Agent 1–5 implementation PRs, an optional final Director design-review-only commit may follow it. " +
+    `Expected exactly one .agent-coordination/map-canon-reviews/LR-xxxx.json file in the map review commit; found: ${mapReviewChanges.join(", ") || "nothing"}.`
   );
   process.exit(1);
 }
 
 const reviewFile = reviewFiles[0];
 const fileTaskId = path.basename(reviewFile, ".json");
+
+if (designReviewMatch && designReviewMatch[1] !== fileTaskId) {
+  console.error(
+    `Final Director design review task ${designReviewMatch[1]} does not match map-canon review task ${fileTaskId}.`
+  );
+  process.exit(1);
+}
+
 const review = readJsonAt(headSha, reviewFile);
 
 const allowedTypes = new Set(["ADD", "MOVE", "RENAME", "RETIRE", "IDENTITY", "GRID", "PROJECTION"]);
@@ -168,9 +193,9 @@ if (review.reviewer_agent_number !== 7 || review.status !== "APPROVED") {
   console.error(`${reviewFile}: requires Agent 7 with status APPROVED.`);
   process.exit(1);
 }
-if (review.reviewed_head_sha !== parentSha) {
+if (review.reviewed_head_sha !== reviewedFeatureSha) {
   console.error(
-    `${reviewFile}: stale approval. reviewed_head_sha=${review.reviewed_head_sha || "missing"}, expected exact code/canon head ${parentSha}.`
+    `${reviewFile}: stale approval. reviewed_head_sha=${review.reviewed_head_sha || "missing"}, expected exact code/canon head ${reviewedFeatureSha}.`
   );
   process.exit(1);
 }
@@ -228,5 +253,5 @@ if (!(queue.tasks || []).some(task => task.id === review.task_id)) {
 }
 
 console.log(
-  `Protected map-canon change approved for ${review.task_id}; ${changedPlaceIds.size} place id(s) and ${changedRegionIds.size} regional label id(s) changed, exact reviewed head ${parentSha}.`
+  `Protected map-canon change approved for ${review.task_id}; ${changedPlaceIds.size} place id(s) and ${changedRegionIds.size} regional label id(s) changed, exact reviewed feature head ${reviewedFeatureSha}${designReviewMatch ? ", followed by final Director design review" : ""}.`
 );
