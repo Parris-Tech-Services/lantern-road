@@ -1,0 +1,39 @@
+name: Static runtime integrity
+
+on:
+  push:
+    paths:
+      - "index.html"
+      - "style.css"
+      - "content.js"
+      - "game.js"
+      - "sw.js"
+      - "manifest.webmanifest"
+      - "scripts/**"
+      - ".github/workflows/static-runtime-integrity.yml"
+  pull_request:
+    paths:
+      - "index.html"
+      - "style.css"
+      - "content.js"
+      - "game.js"
+      - "sw.js"
+      - "manifest.webmanifest"
+      - "scripts/**"
+      - ".github/workflows/static-runtime-integrity.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate-static-runtime:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate app shell references, cache wiring and JavaScript syntax
+        run: node scripts/validate-static-runtime.mjs
