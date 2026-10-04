@@ -1,7 +1,7 @@
 # Lantern Road multi-agent claim protocol
 
-Version: 1.3  
-Effective: 4 October 2026
+Version: 1.4  
+Effective: 5 October 2026
 
 ## Goal
 
@@ -72,7 +72,7 @@ Every queue task has a `primary_agent`. The claim lock must contain the same int
 
 A `supporting_agents` entry permits consultation, review or coordination only. It does not grant a second implementation claim on the primary task or its exclusive scope.
 
-If work genuinely needs to move to another role, change the queue deliberately first. Josh may explicitly reassign work, and Agent 7 may do so under the Director's delegated operational authority when there is **no conflicting live task/scope lock**, the new owner is reasonably within role boundaries, and the task notes record why the reassignment was made. Never simply claim across roles.
+If work genuinely needs to move to another role, change the queue deliberately first. Josh may explicitly reassign work. Agent 7 as CEO may make executive resourcing reassignments, and Agent 1 as project lead may make game-production ownership reassignments, only when there is **no conflicting live task/scope lock**, the new owner is reasonably within role boundaries, and the task notes record why. Never simply claim across roles.
 
 ## What counts as the same feature
 
@@ -100,82 +100,63 @@ Do not put the full claim token in public PR prose.
 
 ## Parking completed implementation behind external gates
 
-A task may be fully implemented but unable to merge because it is waiting only on `merge_gate_depends_on`, required machine evidence, Director review, or another external closure condition. Josh's Android release validation is tracked separately by LR-0056 and must not consume an unrelated specialist's active claim.
+A task may be fully implemented but unable to merge because it is waiting only on `merge_gate_depends_on`, required machine evidence, required Steward game review, Josh-only validation, or another external closure condition.
 
 Do **not** hold an active scope lock merely to wait.
 
 When there is no material work left that the current owner can legitimately perform:
 
-1. Re-fetch `WORK-QUEUE.json` and confirm the task itself is still `READY` and the remaining blocker is external to the implementation work.
-2. Record a precise handoff in the task `notes`: `parked_at=<ISO-8601 timestamp>`, branch, exact useful head SHA, PR if any, tests/evidence already completed, remaining gates, and the next action after those gates clear. The timestamp lets AED measure review/merge waiting age without guessing.
+1. Re-fetch `WORK-QUEUE.json` and confirm the task itself is still `READY` and the remaining blocker is external to implementation work.
+2. Record a precise handoff in task `notes`: `parked_at=<ISO-8601 timestamp>`, branch, exact useful head SHA, PR if any, tests/evidence already completed, remaining gates, and next action.
 3. Leave the task `READY`; parking is neither `DONE` nor `BLOCKED` when its normal dependencies are satisfied.
 4. Re-fetch the lock and verify it still belongs to your `session_id` and `claim_token`.
 5. Delete **your own** scope lock.
-6. Keep the useful branch/PR. Do not discard tested work merely because it is waiting.
-7. The agent may immediately claim another eligible task assigned to its role.
+6. Keep the useful branch/PR.
+7. Immediately claim another eligible task if one exists.
 
-Before any later code/content change, rebase/reconciliation, final-PR refresh, or merge preparation on the parked task, a fresh claimant must acquire the normal create-only scope lock. A parked branch does not confer continuing ownership.
+Before later code/content change, rebase/reconciliation, conflict resolution or refreshed implementation work on the parked task, a fresh role-owned claimant must reacquire the normal create-only scope lock.
 
 ### Frozen parked PR merge path
 
-Parking freezes useful implementation so waiting does not consume an active lock.
+Steward game review is review-by-exception. Read `steward_review`:
 
-Director review is **not automatic**. Read the task's `director_review` field:
+- `REQUIRED` — exact-head Agent 1 Steward review is required.
+- missing or `NOT_REQUIRED` — no separate Steward review commit is required.
 
-- `REQUIRED` — exact-head Agent 7 review is required.
-- missing or `NOT_REQUIRED` — no Director approval is required.
+Agent 1-owned tasks must not require a separate self-review file.
 
-A parked PR may merge **without reacquiring the implementation lock** when all of these are true:
+A parked PR may merge **without reacquiring the implementation lock** when:
 
 - the task is still `READY`;
-- there is no active lock for that task or exclusive scope;
+- no active lock owns that task or scope;
 - all `merge_gate_depends_on` tasks are `DONE`;
-- queue notes clearly identify the work as parked/frozen and name the exact branch;
-- no implementation/content/rebase/reconciliation change has occurred after the recorded frozen head.
+- queue notes identify the frozen branch and exact useful head;
+- no implementation/content/rebase/reconciliation change occurred after parking.
 
-For a `NOT_REQUIRED` task, queue notes must name the exact current PR head. An optional legacy Director approval commit is also acceptable when it validly reviews the exact recorded useful feature head.
+For a specialist task with `steward_review: REQUIRED`, Agent 1 may append one review-only commit without taking the specialist implementation lock. That commit may change only:
 
-For a `REQUIRED` task, Agent 7 may append the review-only approval commit to the parked branch without an implementation lock. The approval commit may change only:
-
-```
+```text
 .agent-coordination/design-reviews/<TASK-ID>.json
 ```
 
-CI verifies the exact reviewed head. If every merge gate is DONE, **Agent 7 may merge the approved frozen PR immediately in the same review session**. Do not send it back to the implementation owner merely to press merge.
+The review must identify Agent 1 / The Steward, status `APPROVED`, and the exact immediately preceding feature head. If every other gate is satisfied, Agent 1 may merge the approved frozen PR immediately in the same review session and close the task where no separate evidence rule prevents closure.
 
-After a frozen parked PR merges, the merger may perform the queue-only closeout to mark the task `DONE` when no separate completion-evidence policy prevents closure.
+For a task with no required Steward review, queue notes must name the exact current parked PR head. Historical Agent 7 review-only commits may remain on old parked branches; they are historical evidence only and do not create a new CEO approval requirement.
 
 A fresh normal role-owned claim is still mandatory before:
 
 - any feature/code/content edit;
 - any rebase or reconciliation;
-- changing the frozen implementation after review/parking;
+- changing frozen implementation after review/parking;
 - resolving a merge conflict that changes branch content.
 
-If another active lock has since claimed the same task/scope, the parked direct-merge path is unavailable until ownership is reconciled.
-
-
-If another active lock has since claimed the same task/scope, the parked direct-merge path is unavailable until ownership is reconciled.
-
-This rule does not permit bypassing merge gates, machine evidence, Director review, or the separate LR-0056 human release gate. It only prevents waiting from consuming an active agent/lock slot.
+This rule never bypasses merge gates, machine evidence, map-canon protection or Josh-only human evidence.
 
 ## Technical foundation versus human release gates
 
-LR-0011 and LR-0013 are technical development gates. They become `DONE` only after merged implementation plus independently verified CI/artifact evidence and Agent 7 evidence verification. Once they are `DONE`, normal dependencies on them are satisfied and specialist agents may proceed.
+LR-0011 and LR-0013 are technical development gates. They become `DONE` only after merged implementation plus a genuinely successful exact-commit CI run, the required unexpired artifact, required repository paths and **Agent 1 Steward verification** recorded in the gate-evidence file. The machine evidence is independently checked by CI.
 
-Josh's Android validation is deliberately separate in LR-0056. LR-0056 may remain incomplete while specialist development continues. Final integration/release tasks may depend on LR-0056.
-
-This rule does not permit bypassing merge gates, machine evidence, Director review, or the separate LR-0056 human release gate. It only prevents waiting from consuming an active agent/lock slot.
-
-## Technical foundation versus human release gates
-
-LR-0011 and LR-0013 are technical development gates. They become `DONE` only after merged implementation plus independently verified CI/artifact evidence and Agent 7 evidence verification. Once they are `DONE`, normal dependencies on them are satisfied and specialist agents may proceed.
-
-Josh's Android validation is deliberately separate in LR-0056. LR-0056 may remain incomplete while specialist development continues. Final integration/release tasks may depend on LR-0056.
-
-No agent may self-assert Josh's validation. The human validation record may be completed only after Josh explicitly reports the check passed.
-No agent may self-assert Josh's validation. The human validation record may be completed only after Josh explicitly reports the check passed.
-This rule never bypasses merge gates, required CI evidence, map canon or Josh-only human evidence. It removes only unnecessary ownership/review ping-pong.
+Josh's Android validation is deliberately separate in LR-0056. No agent may self-assert, infer or fabricate it. LR-0056 may remain incomplete while technically eligible specialist development continues, but final integration/release tasks may depend on it.
 
 ## Completing work
 
@@ -228,9 +209,9 @@ Queue edits are limited to:
 - priority,
 - acceptance criteria,
 - notes,
-- deliberate `primary_agent` reassignment by Josh or Agent 7 under the Director operational-authority rule.
+- deliberate `primary_agent` reassignment by Josh, Agent 1 for game-production ownership, or Agent 7 for executive resourcing.
 
-Agent 7 may also direct production sequencing across Agents 1–8 and change priorities without taking over the underlying specialist implementation scope. A `primary_agent` reassignment must never be used to steal an actively locked task: verify there is no conflicting live task/scope lock first, keep the new owner within a reasonable role boundary, and record the reason in task notes.
+Agent 1 owns routine playable-game sequencing and critical-path production. Agent 7 may set company-level priorities and resourcing constraints. Neither may steal an actively locked task: verify there is no conflicting live task/scope lock, keep the new owner within a reasonable role boundary, and record the reason in task notes.
 
 If an update to `WORK-QUEUE.json` conflicts with another concurrent update, fetch the newest version, reconcile both changes, then retry. Do not force-overwrite someone else's queue edit.
 
