@@ -14,6 +14,7 @@ Keep this short. Record decisions that future agents would otherwise relitigate.
 | 2026-10-04 | LR-0010 modularises the monolith **after** the grandfathered wave and gates the next wave. | Splitting game.js/content.js underneath active branches would create the very conflicts we are trying to avoid. |
 | 2026-10-04 | Storyteller owns faction consequence/modifier logic; Mechanist owns global base economy/prices. | Prevents LR-0005 and LR-0016 from both “balancing prices”. |
 | 2026-10-04 | LR-0031 requires real committed illustration assets. | A second placeholder/sigil layer does not satisfy art production. |
+| 2026-10-04 | Manual Save and Autosave are separate device-local slots; starting a new campaign may replace Autosave but never overwrites Manual Save unless the player presses Save Manual. | Makes phone resume convenient without turning autosave into a destructive or ambiguous checkpoint. |
 
 ## How to add a decision
 
