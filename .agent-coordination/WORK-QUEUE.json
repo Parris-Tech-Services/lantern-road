@@ -2644,7 +2644,7 @@
       "likely_files": [
         "story/rumours/"
       ],
-      "notes": "Pure author-now Storyteller work. Distinct from LR-0045 recurring NPC dialogue: this task owns settlement-level rumour/gossip content and its evolution. It complements LR-0001 feedback fixes by making Hear Rumours substantively worthwhile, not merely visibly responsive."
+      "notes": "Pure author-now Storyteller work. Distinct from LR-0045 recurring NPC dialogue: this task owns settlement-level rumour/gossip content and its evolution. It complements LR-0001 feedback fixes by making Hear Rumours substantively worthwhile, not merely visibly responsive. Parked 4 Oct 2026 under the completed-work parking rule. Evolving rumour/gossip pack is complete on branch agent/LR-0100-rumour-authoring-7d9b59a7 at useful head 9aa80bac505ef1f4cd57c9ffbfca3f0f71e10d08, PR #48. Live acceptance criteria were rechecked: five settlements plus road/inn fallback, all six core quests have pre/post-state gossip, reliability/faction-bias metadata and repeat/exhausted-topic behaviour are authored, and branch changes only story/rumours/. Next action after Director approval: fresh Agent 2 claimant reacquires rumour-network-authoring, verifies approved head/CI, merges PR #48 if current, marks LR-0100 DONE, and releases the fresh lock."
     }
   ],
   "agent_roster": [
@@ -2702,5 +2702,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T16:52:00+11:00"
+  "updated_at": "2026-10-04T16:50:00+11:00"
 }
