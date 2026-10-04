@@ -8,6 +8,6 @@
   "claim_token": "4ac19b36-af31-4ef6-97e1-822b0334a1e8",
   "claimed_at": "2026-10-04T19:16:00+11:00",
   "expires_at": "2026-10-05T07:16:00+11:00",
-  "branch": "agent/LR-0055-foundation-policy-69f9a050-r4",
-  "note": "Rebuilding stale PR #17 policy from current eight-agent main; preserving newer coordination rules."
+  "branch": "agent/LR-0055-foundation-policy-69f9a050-r5",
+  "note": "Rebuilt stale PR #17 policy from latest eight-agent main; preserves Agent 8/AED and concurrent queue additions."
 }
