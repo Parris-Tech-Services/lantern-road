@@ -9,8 +9,7 @@ export function isParked(task) {
 }
 
 export function isReviewReady(task) {
-  if (!isParked(task)) return false;
-  return /(director\s+(review|approval)|agent\s*7.*(review|approval)|exact-head.*(review|approval)|awaiting.*(review|approval))/i.test(String(task.notes ?? ""));
+  return flowState(task) === "DIRECTOR_REVIEW";
 }
 
 export function flowState(task) {
