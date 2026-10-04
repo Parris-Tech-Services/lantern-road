@@ -3177,6 +3177,30 @@
         "docs/ART-DIRECTION.md"
       ],
       "notes": "Blocked until LR-0042 locks the authored illustration set so title art does not establish a competing style."
+    },
+    {
+      "id": "LR-0123",
+      "title": "Add DOM wiring and accessibility-reference integrity checks",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "dom-contract-integrity",
+      "depends_on": [],
+      "primary_agent": 1,
+      "goal": "Catch broken HTML↔runtime element wiring and stale label/ARIA references before UI changes reach players.",
+      "acceptance_criteria": [
+        "Fail on duplicate non-empty id attributes in index.html.",
+        "Validate label for, aria-controls, aria-labelledby and aria-describedby references resolve to existing ids.",
+        "Scan first-party runtime JavaScript for literal document.getElementById and #id querySelector/querySelectorAll references and fail when the target id is missing.",
+        "Ignore dynamic/non-literal selectors rather than guessing.",
+        "Report exact file/line or HTML reference context where practical.",
+        "Run in GitHub Actions and document the local command in a dedicated validation doc without redesigning UI/accessibility behaviour."
+      ],
+      "likely_files": [
+        "scripts/validate-dom-contract.mjs",
+        ".github/workflows/dom-contract-integrity.yml",
+        "docs/VALIDATION.md"
+      ],
+      "notes": "Independent Steward safety net for current UI and future LR-0010/LR-0096 refactors. Wayfinder retains UX/accessibility design ownership; this task only detects broken wiring."
     }
   ],
   "agent_roster": [
