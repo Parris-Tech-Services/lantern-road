@@ -102,6 +102,16 @@ https://YOUR-USERNAME.github.io/YOUR-REPO/
 - Save and load with the buttons in the top bar.
 - Press `F` or use the top-bar button to toggle fullscreen.
 
+## Static runtime integrity
+
+Before merging changes to the browser shell, run:
+
+```bash
+node scripts/validate-static-runtime.mjs
+```
+
+The check verifies local scripts/styles/manifest references from `index.html`, PWA manifest start/icon paths, service-worker cache coverage for the current local app shell, and JavaScript syntax across first-party `.js`, `.mjs`, and `.cjs` files. GitHub Actions runs the same validator when relevant files change.
+
 ## Runtime inspection
 
 - `window.render_game_to_text()` returns a concise JSON summary of the campaign, active quests, and combat.
