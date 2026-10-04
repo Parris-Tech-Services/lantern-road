@@ -1979,7 +1979,8 @@
         "LR-0010",
         "LR-0069",
         "LR-0070",
-        "LR-0072"
+        "LR-0072",
+        "LR-0105"
       ],
       "primary_agent": 1,
       "goal": "Render the canonical axial gameplay map over the authored Grey March terrain atlas while keeping game logic/data independent from raster artwork.",
@@ -1998,7 +1999,7 @@
         "assets/art/maps/",
         "tests/"
       ],
-      "notes": "Steward rendering architecture. The painting is never authoritative game data."
+      "notes": "Steward rendering architecture. The painting is never authoritative game data. Regional-label boundary: wait for LR-0105 so dynamic atlas overlays consume machine-protected canonical regions rather than Storyteller proposal files."
     },
     {
       "id": "LR-0074",
@@ -2729,6 +2730,62 @@
         "design/PLAYER-LEADER-PARTY-CONTRACT.md"
       ],
       "notes": "Director-routed gap after LR-0089. Social/player-agency canon is settled, but existing combat/progression/equipment/injury systems were authored around Garrick, Mira, Oren and Brindle as the active four. This task supplies the missing Mechanist design contract before runtime integration and must preserve the compact premium-indie scope."
+    },
+    {
+      "id": "LR-0104",
+      "title": "Ratify Grey March regional labels as protected map canon",
+      "status": "BLOCKED",
+      "priority": 1,
+      "exclusive_scope": "regional-map-canon-ratification",
+      "depends_on": [
+        "LR-0071"
+      ],
+      "primary_agent": 7,
+      "goal": "Convert the approved LR-0071 regional-name recommendations into an explicit Director-owned canon specification without inventing new gameplay nodes or changing place coordinates.",
+      "acceptance_criteria": [
+        "Ratify Hollowwold, Reedmarsh, Barrow Ridge, Watcherwood, Greyfen Plain and Stoneveil Heights as the first canonical non-node regional labels.",
+        "Record Embermere and Siltbrook Marsh as rejected generated labels so they are not reintroduced accidentally.",
+        "Keep Mourn Lake and Wyrthen Forest explicitly deferred/non-canon until atlas/topology evidence supports a controlled geography decision.",
+        "Define each canonical region by existing-map relationship/description rather than inventing a new settlement, route or coordinate solely to justify the label.",
+        "Specify the machine-readable regional-label record shape and hierarchy relative to canonical places, ready for LR-0105 enforcement.",
+        "Do not move any CANON place, alter q/r semantics, add lake terrain or expand the playable grid."
+      ],
+      "likely_files": [
+        "docs/WORLD-MAP-CANON.md",
+        ".agent-coordination/MAP-CANON-PROTOCOL.md",
+        "design/"
+      ],
+      "notes": "Director follow-up to LR-0071. Canon decisions pre-reviewed on PR #44: six promote, two reject, two defer. Machine registry/enforcement is deliberately separated into LR-0105."
+    },
+    {
+      "id": "LR-0105",
+      "title": "Add machine-enforced canonical regional labels",
+      "status": "BLOCKED",
+      "priority": 1,
+      "exclusive_scope": "regional-map-canon-enforcement",
+      "depends_on": [
+        "LR-0070",
+        "LR-0104"
+      ],
+      "primary_agent": 1,
+      "goal": "Extend Map Canon so approved regional labels are machine-readable and protected by schema/CI without turning regions into fake gameplay locations.",
+      "acceptance_criteria": [
+        "Add a canonical regional-label collection/shape to world/map-canon.json that implements the exact LR-0104 Director ratification.",
+        "Extend world/map-canon.schema.json and map-canon validation to distinguish protected non-node regions from settlements/sites and from still-PROPOSED generated labels.",
+        "Extend protected-change verification so add/rename/retire/identity changes to canonical regional labels require fresh Agent 7 exact-head map-canon approval.",
+        "Keep regional labels non-clickable/non-node data unless a separate future task explicitly creates gameplay geography.",
+        "Preserve all 16 existing canonical place ids/names/q/r/grid refs exactly.",
+        "Document how LR-0073 dynamic overlays consume canonical regional labels without baking them into the terrain atlas."
+      ],
+      "likely_files": [
+        "world/map-canon.json",
+        "world/map-canon.schema.json",
+        "scripts/validate-map-canon.mjs",
+        "scripts/verify-map-canon-change.mjs",
+        "docs/WORLD-MAP-CANON.md",
+        ".agent-coordination/MAP-CANON-PROTOCOL.md"
+      ],
+      "notes": "Steward enforcement follow-on. Do not infer extra names beyond the exact LR-0104 ratification."
     }
   ],
   "agent_roster": [
@@ -2786,5 +2843,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T17:18:00+11:00"
+  "updated_at": "2026-10-04T17:24:00+11:00"
 }
