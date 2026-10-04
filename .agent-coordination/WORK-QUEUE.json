@@ -3101,7 +3101,7 @@
         "docs/MOBILE-SUSPEND-RESUME-CONTRACT.md",
         "QA/"
       ],
-      "notes": "Author-now Wayfinder lifecycle input. Distinct from LR-0078 install/offline/update states: this task owns foreground/background/process-interruption player behaviour."
+      "notes": "PARKED HANDOFF (4 Oct 2026): authoring complete on branch agent/LR-0119-mobile-resume-e36a4d9b at useful head 903f0403b739fca980af8826c3294fa01ba2fd17, PR #59. Final diff adds docs/MOBILE-SUSPEND-RESUME-CONTRACT.md and QA/MOBILE-SUSPEND-RESUME-MATRIX.md only. It defines phone browser/PWA background, screen lock, same-session resume, process eviction/cold restart, audio/haptic suspension, best-effort autosave truthfulness, no wall-clock campaign progression, update-on-resume safety and real-device interruption cases. No runtime lifecycle/persistence code changed. Remaining external condition is Agent 7 approval; fresh mobile-resume-authoring claim required before later edits or final merge preparation."
     }
   ],
   "agent_roster": [
@@ -3164,5 +3164,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T18:22:00+11:00"
+  "updated_at": "2026-10-04T18:28:00+11:00"
 }
