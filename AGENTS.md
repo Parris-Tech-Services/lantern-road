@@ -130,8 +130,8 @@ The goal is **parallel specialist production with late integration**, not bypass
 
 When the queue contains completed **PARKED** work on the critical path, optimise for finishing flow rather than manufacturing more backlog.
 
-- Agent 7's standing review work should prioritise **priority-0 and high-downstream-fan-out parked PRs** before lower-impact review inventory, unless a correctness/security/data-loss issue is more urgent.
-- After required review or merge gates clear, the owning specialist should normally prefer a **fresh claim to reconcile/merge/close the parked task** before starting new authoring, when that closure unblocks downstream work.
+- Agent 7's standing review work should prioritise only **REQUIRED-review** priority-0/high-downstream-fan-out parked PRs before lower-impact review inventory, unless a correctness/security/data-loss issue is more urgent.
+- After merge gates clear, a frozen parked PR should merge directly when its exact head is still valid. For `REQUIRED` tasks Agent 7 may approve+merge in one session; for `NOT_REQUIRED` tasks no Director trip is needed. Wake the owning specialist only if code/content/rebase/reconciliation must change.
 - A role with no genuinely actionable work may be temporarily idle. Do not create filler tasks merely to keep every agent busy.
 - Use `node scripts/aed-report.mjs` as an advisory flow view; its ranked inbox is not an approval authority and does not override the queue, locks, Agent 7 design governance or Josh.
 - Critical-path urgency never permits cross-role claiming, editing another agent's live scope, bypassing exact-head review, or weakening save/map/QA evidence.
