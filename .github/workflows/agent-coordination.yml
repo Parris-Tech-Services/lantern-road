@@ -1,0 +1,22 @@
+name: Agent coordination
+
+on:
+  push:
+    paths:
+      - "AGENTS.md"
+      - ".agent-coordination/**"
+      - "scripts/validate-agent-coordination.mjs"
+      - ".github/workflows/agent-coordination.yml"
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Validate agent task coordination
+        run: node scripts/validate-agent-coordination.mjs
