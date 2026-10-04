@@ -3278,7 +3278,7 @@
     {
       "id": "LR-0126",
       "title": "Author bespoke soundscape and score production bible",
-      "status": "READY",
+      "status": "DONE",
       "priority": 2,
       "exclusive_scope": "audio-production-bible",
       "depends_on": [
@@ -3300,7 +3300,7 @@
         "docs/AUDIO-DIRECTION.md",
         "assets/audio/README.md"
       ],
-      "notes": "PARKED pending Director exact-head review. PR #73, branch agent/LR-0126-audio-bible-8a9f34a9, useful head 36828e5d1458c1f547b99690725601918c5d1e59. Added complete authored soundscape/score production bible, assets/audio source contract and AUDIO-DIRECTION handoff; LR-0032 now explicitly depends on LR-0126. QA confirms core identity, silence rules, environment/weather families, all canonical named-location signatures, music/cue maps, transition rules, source contract and accessibility sections. Coordination and Actions-runtime checks pass; only remaining gate is .agent-coordination/design-reviews/LR-0126.json for exact head. After approval, fresh claimant should verify exact head, merge, mark DONE and release any fresh claim."
+      "notes": "Merged in PR #73 after Agent 7 exact-head approval. Authored soundscape/score production bible, audio source-asset contract and AUDIO-DIRECTION handoff are now on main. LR-0032 consumes this contract and remains gated by LR-0010 for runtime integration. Merge commit 97e8c0122b4b1d0e89b0abfce9ff8444b6890025."
     }
   ],
   "agent_roster": [
