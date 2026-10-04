@@ -609,3 +609,30 @@ LR-0010 does **not**:
 Its success condition is simpler:
 
 > the next specialist wave can add dialogue, companion agency, action economy, economy/progression, canonical map rendering and responsive UI mostly inside stable owned modules instead of all editing the same two monolithic files.
+
+
+## Queue staging adopted by LR-0128
+
+AED converted this blueprint into smaller execution gates so second-wave specialists do not wait for the entire architecture programme when only one stable seam is required.
+
+| Stage | Task | Scope | Main downstream lanes |
+|---|---|---|---|
+| Core state / persistence adapter / effects | LR-0131 | `architecture-core-state-effects` | invariants and all later extraction stages |
+| World map / travel model | LR-0132 | `architecture-world-map-travel` | canonical atlas rendering, responsive map |
+| Party / relationships / dialogue | LR-0133 | `architecture-party-dialogue` | Leader/roster, companion autonomy, stateful dialogue |
+| Compact combat / actions | LR-0134 | `architecture-combat-actions` | combat depth, action costs/recharge |
+| Economy / inventory / services | LR-0135 | `architecture-economy-services` | economy, equipment, injury/recovery |
+| UI / render / presentation shell | LR-0136 | `architecture-ui-render-shell` | accessibility, responsive shell, art/audio integration |
+| Authored content / narrative split | LR-0137 | `architecture-content-narrative` | quest/event/dialogue content integrations |
+
+### Stage baseline
+
+LR-0131 does not start until the existing first-wave/foundation baseline is complete: LR-0003, LR-0005, LR-0006, LR-0009, LR-0011, LR-0013 and LR-0099. This preserves the original rule against moving architecture underneath live grandfathered runtime branches.
+
+After LR-0131, independent seams may be extracted sequentially by Agent 1. Because the Steward holds only one active lock, implementation remains controlled, but a completed seam can unblock its specialist consumers immediately.
+
+### Parent LR-0010
+
+LR-0010 is now the **final architecture completion and integration audit**, not a single giant extraction PR. It closes only after all staged extraction tasks are DONE, the full save/browser/content/module test baseline is green, temporary shims are reconciled, and the remaining specialist ownership map is coherent.
+
+Cross-system tasks such as final integration, whole-system balance, broad diagnostics and architecture QA continue to depend on LR-0010 itself. Narrow specialist tasks depend on the smallest sufficient stage.
