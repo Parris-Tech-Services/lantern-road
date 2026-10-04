@@ -3386,6 +3386,31 @@
         "docs/ART-DIRECTION.md"
       ],
       "notes": "Upstream production contract only. Distinct from LR-0042 image generation, LR-0031 final curation/compression/integration and LR-0065 CI budget enforcement."
+    },
+    {
+      "id": "LR-0130",
+      "title": "Audit final UI icon semantics and phone legibility",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "icon-semantics-audit",
+      "depends_on": [
+        "LR-0121"
+      ],
+      "primary_agent": 5,
+      "goal": "Audit the final production icon sprite from a Wayfinder perspective and define safe runtime semantics so icons remain legible, correctly named and non-essential to understanding at phone sizes.",
+      "acceptance_criteria": [
+        "Verify the production sprite structure, symbol inventory, viewBox consistency, colour inheritance and obvious integration hazards without modifying Agent 4 artwork.",
+        "Classify every icon family by whether visible text is required, accessible naming is sufficient, or the icon is decorative only in a given context.",
+        "Identify visually/semantically confusable pairs at small phone sizes and require disambiguating text/state treatment where needed.",
+        "Protect canonical terminology, especially Renown versus faction standing, and map discovery/canon boundaries.",
+        "Define icon display-size and touch-target rules so a small glyph never becomes a small control.",
+        "Produce an implementation checklist and real-browser QA matrix for Agent 1/5 integration and Agent 6 validation; no runtime edits."
+      ],
+      "likely_files": [
+        "docs/ICONOGRAPHY-INTERACTION-AUDIT.md",
+        "QA/ICONOGRAPHY-PHONE-MATRIX.md"
+      ],
+      "notes": "Author-now Wayfinder audit unlocked by LR-0121. Agent 4 retains drawn icon ownership; this task owns interaction semantics/accessibility/phone-use constraints only."
     }
   ],
   "agent_roster": [
@@ -3448,5 +3473,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T19:34:00+11:00"
+  "updated_at": "2026-10-04T19:16:00+11:00"
 }
