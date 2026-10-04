@@ -21,7 +21,7 @@
     {
       "id": "LR-0001",
       "title": "Immediate action feedback and meaningful button responses",
-      "status": "READY",
+      "status": "DONE",
       "priority": 0,
       "exclusive_scope": "interaction-feedback",
       "depends_on": [],
@@ -38,7 +38,7 @@
         "style.css",
         "content.js"
       ],
-      "notes": "Highest-priority polish/bug task from observed play.",
+      "notes": "Completed 4 Oct 2026 via PR #1: retained the existing salvage/inn/rumour feedback pass, added explicit feedback for non-adjacent map taps, and added a defensive visible failure for unhandled controls.",
       "primary_agent": 5
     },
     {
