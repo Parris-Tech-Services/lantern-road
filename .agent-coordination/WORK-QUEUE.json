@@ -2084,7 +2084,7 @@
     {
       "id": "LR-0077",
       "title": "Author save and recovery UX state model",
-      "status": "READY",
+      "status": "DONE",
       "priority": 0,
       "exclusive_scope": "save-recovery-ux-authoring",
       "depends_on": [],
@@ -2101,7 +2101,7 @@
         "docs/SAVE-RECOVERY-UX.md",
         "QA/"
       ],
-      "notes": "PARKED HANDOFF (4 Oct 2026): authoring complete on branch agent/LR-0077-save-recovery-ux-5d2e8b97 at head e9f313dd8dbacbf458770d671fdb0fd3001ad994, PR #29. Final diff adds docs/SAVE-RECOVERY-UX.md and QA/SAVE-RECOVERY-UX-CHECKLIST.md only. It models Manual Save/Autosave success and failure, missing slots, migrations, safe repairs, unrecoverable/newer-version saves, storage unavailability, New Campaign protection, focus/announcement behaviour, support build guidance, LR-0009/LR-0040 implementation checks and LR-0023 destructive-test handoff. No runtime/persistence implementation was changed. Remaining external condition is Agent 7 design approval. Before any later edit or final merge preparation, acquire a fresh save-recovery-ux-authoring claim."
+      "notes": "Completed 4 Oct 2026 via PR #29, squash merge 579dcb27b1ee03cac400debc80ed3696535210a7. Agent 7 approved exact useful head e9f313dd8dbacbf458770d671fdb0fd3001ad994; final approval-head validation was green."
     },
     {
       "id": "LR-0078",
@@ -3363,5 +3363,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T19:03:00+11:00"
+  "updated_at": "2026-10-04T19:05:00+11:00"
 }
