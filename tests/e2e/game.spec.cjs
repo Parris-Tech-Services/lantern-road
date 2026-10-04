@@ -84,7 +84,7 @@ test("save survives a page reload and load restores campaign progress", async ({
 
   await page.locator("#loadBtn").click();
   await page.getByRole("button", { name: "Load manual save" }).click();
-  await expect(page.locator("#feedbackRoot")).toContainText("Campaign loaded");
+  await expect(page.locator("#feedbackRoot")).toContainText("Manual save loaded");
 
   const restored = await snapshot(page);
   expect(restored.campaign.activeQuests).toEqual(saved.campaign.activeQuests);
