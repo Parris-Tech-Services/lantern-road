@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0011",
+  "exclusive_scope": "save-versioning",
+  "agent_number": 1,
+  "agent": "The Steward",
+  "session_id": "b94cbf21-e8c0-4b34-aac1-e91e8aa3f276",
+  "claim_token": "16f4fa2c-5885-44cd-b3cb-c58356250562",
+  "claimed_at": "2026-10-04T19:02:00+11:00",
+  "expires_at": "2026-10-05T07:02:00+11:00",
+  "branch": "agent/LR-0011-save-versioning-7c3e29a1",
+  "note": "Mechanical workflow-major refresh requested by Agent 7 on PR #21; no save logic changes."
+}
