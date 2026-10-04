@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0033",
+  "exclusive_scope": "design-governance-baseline",
+  "agent_number": 7,
+  "agent": "The Director",
+  "session_id": "ed56b7b3-b726-4956-a56b-da499ef5363a",
+  "claim_token": "9a3be4c4-1cce-41d4-8597-5b1e2b1e1751",
+  "claimed_at": "2026-10-04T15:14:00+11:00",
+  "expires_at": "2026-10-05T03:14:00+11:00",
+  "branch": "agent/LR-0033-design-governance-baseline-ed56b7b3",
+  "note": "Implementing only LR-0033."
+}
