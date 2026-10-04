@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0051",
+  "exclusive_scope": "accessibility-contract",
+  "agent_number": 5,
+  "agent": "The Wayfinder",
+  "session_id": "0f51a7d2-1c64-4fb0-9e25-7a3d8c6b1240",
+  "claim_token": "b651c8a4-2d79-4f03-a1e6-5c7b9d2f3840",
+  "claimed_at": "2026-10-04T18:55:00+11:00",
+  "expires_at": "2026-10-05T06:55:00+11:00",
+  "branch": "agent/LR-0051-accessibility-contract-8f26a1c4",
+  "note": "Fresh Agent 5 finalisation claim after Agent 7 exact-head approval of PR #23."
+}
