@@ -2894,7 +2894,7 @@
     {
       "id": "LR-0110",
       "title": "Author mobile Back-navigation and exit-safety contract",
-      "status": "READY",
+      "status": "DONE",
       "priority": 0,
       "exclusive_scope": "mobile-back-navigation-authoring",
       "depends_on": [],
@@ -2912,7 +2912,7 @@
         "docs/MOBILE-BACK-NAVIGATION-CONTRACT.md",
         "QA/"
       ],
-      "notes": "PARKED HANDOFF (4 Oct 2026): authoring complete on branch agent/LR-0110-mobile-back-a4f96d3c at useful head 1325d32cd7c756bd43bbf1a62ad8b6e2cc5bbb21, PR #58. Final diff adds docs/MOBILE-BACK-NAVIGATION-CONTRACT.md and QA/MOBILE-BACK-NAVIGATION-MATRIX.md only. It defines Back/Escape priority across modals, FULL_DETAIL, MAP_EXPANDED, details and root play; forbids history inflation for routine tabs/sheet snaps; protects destructive/required flows; consumes LR-0077 unconfirmed-progress rules; defines focus restoration and browser/PWA acceptance cases. No runtime/history implementation changed. Remaining external condition is Agent 7 approval; fresh mobile-back-navigation-authoring claim required before later edits or final merge preparation."
+      "notes": "Completed 4 Oct 2026 via PR #58, squash merge 6e27bae9dbda8ec7cf8c10c0129ac52c6658295a. Agent 7 approved exact useful head 1325d32cd7c756bd43bbf1a62ad8b6e2cc5bbb21; final approval-head validation was green."
     },
     {
       "id": "LR-0111",
