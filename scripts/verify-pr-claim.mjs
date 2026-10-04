@@ -170,8 +170,9 @@ function inspectDirectorApproval() {
   };
 }
 
-const needsDirectorReview = [1, 2, 3, 4, 5].includes(task.primary_agent);
-const director = needsDirectorReview ? inspectDirectorApproval() : null;
+const reviewCapable = [1, 2, 3, 4, 5].includes(task.primary_agent);
+const needsDirectorReview = task.director_review === "REQUIRED";
+const director = reviewCapable ? inspectDirectorApproval() : null;
 
 function assertMergeGatesComplete() {
   const incompleteGates = (task.merge_gate_depends_on ?? []).filter(
@@ -183,37 +184,57 @@ function assertMergeGatesComplete() {
 }
 
 if (branchLocks.length === 0) {
-  // The only legal no-lock Agent PR is a final Director review commit for work
-  // that was explicitly parked under CLAIM-PROTOCOL v1.2.
-  if (!needsDirectorReview) {
-    fail(`Agent PR branch "${branch}" has no active scope lock. Only parked Agent 1–5 Director review-only commits may use the no-lock exception.`);
-  }
-  if (!director?.valid) {
-    fail(director?.error || `${task.id}: missing valid Director approval.`);
-  }
+  // A frozen parked PR may merge without waking the implementation owner back up.
+  // REQUIRED-review tasks need an exact final Director approval commit.
+  // NOT_REQUIRED (or omitted) tasks may merge at the exact parked feature head.
   if (task.status !== "READY") {
-    fail(`${task.id}: parked Director review exception requires task status READY; found ${task.status}.`);
+    fail(`${task.id}: parked no-lock merge requires task status READY; found ${task.status}.`);
   }
   if (taskOrScopeLocks.length !== 0) {
-    fail(`${task.id}: parked branch cannot use the no-lock review exception while another active lock owns the task/scope.`);
+    fail(`${task.id}: parked branch cannot use the no-lock merge exception while another active lock owns the task/scope.`);
   }
 
   const notes = String(task.notes || "");
-  const parkedMarker = /(parked|parking|fresh(?:ly)?\s+(?:re-)?claim|re-claim|release(?:d)?\s+(?:the\s+)?(?:own\s+)?lock)/i;
+  const parkedMarker = /(parked|parking|fresh(?:ly)?\s+(?:re-)?claim|re-claim|release(?:d)?\s+(?:the\s+)?(?:own\s+)?lock|partial\s+handoff)/i;
   if (!parkedMarker.test(notes)) {
-    fail(`${task.id}: queue notes do not identify this work as parked under the claim protocol.`);
+    fail(`${task.id}: queue notes do not identify this work as parked/frozen under the claim protocol.`);
   }
   if (!notes.includes(branch)) {
     fail(`${task.id}: parked queue notes do not name this PR branch "${branch}".`);
   }
-  if (!notes.includes(director.reviewedHead)) {
-    fail(`${task.id}: parked queue notes do not name the exact reviewed useful head ${director.reviewedHead}.`);
-  }
 
   assertMergeGatesComplete();
 
+  if (needsDirectorReview) {
+    if (!director?.valid) {
+      fail(director?.error || `${task.id}: missing valid Director approval.`);
+    }
+    if (!notes.includes(director.reviewedHead)) {
+      fail(`${task.id}: parked queue notes do not name the exact reviewed useful head ${director.reviewedHead}.`);
+    }
+
+    console.log(
+      `Parked REQUIRED-review PR verified for direct merge without owner re-claim: ${task.id} / ${task.exclusive_scope} / ${branch} / reviewed ${director.reviewedHead}`
+    );
+    process.exit(0);
+  }
+
+  if (director?.valid && notes.includes(director.reviewedHead)) {
+    console.log(
+      `Parked NOT_REQUIRED-review PR with optional legacy Director approval verified for direct merge: ${task.id} / ${task.exclusive_scope} / ${branch} / reviewed ${director.reviewedHead}`
+    );
+    process.exit(0);
+  }
+
+  if (!prHead) {
+    fail(`${task.id}: PR_HEAD_SHA is unavailable; cannot verify frozen parked no-review head.`);
+  }
+  if (!notes.includes(prHead)) {
+    fail(`${task.id}: parked queue notes do not name exact current PR head ${prHead}; fresh ownership is required before reconciliation/rebase changes.`);
+  }
+
   console.log(
-    `Parked PR Director approval verified without idle lock: ${task.id} / ${task.exclusive_scope} / ${branch} / reviewed ${director.reviewedHead}`
+    `Parked NOT_REQUIRED-review PR verified for direct merge without owner re-claim: ${task.id} / ${task.exclusive_scope} / ${branch} / head ${prHead}`
   );
   process.exit(0);
 }
