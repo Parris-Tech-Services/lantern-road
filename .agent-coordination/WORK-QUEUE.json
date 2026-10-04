@@ -4056,7 +4056,7 @@
     {
       "id": "LR-0152",
       "title": "Codify Director operating cadence and safe chat handover",
-      "status": "READY",
+      "status": "DONE",
       "priority": 0,
       "exclusive_scope": "director-operating-cadence-handover",
       "depends_on": [
@@ -4078,7 +4078,7 @@
         "docs/DECISIONS.md"
       ],
       "director_review": "NOT_REQUIRED",
-      "notes": "Created at Josh's explicit request when the current Agent 7 chat reached practical context length. This is Director-role durability, not an AED efficiency audit and not a specialist feature task."
+      "notes": "Created at Josh's explicit request when the current Agent 7 chat reached practical context length. This is Director-role durability, not an AED efficiency audit and not a specialist feature task. Completed 5 Oct 2026 via PR #117, squash merge d67934572aca37ddd1e7a6994c5960c7ebd8d793. Durable Director cadence and chat-handover rules added to AGENTS/DECISIONS. Agent coordination run #1149 and browser regression run #31 passed on the exact PR head."
     }
   ],
   "agent_roster": [
@@ -4141,5 +4141,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-05T08:58:00+11:00"
+  "updated_at": "2026-10-05T09:04:00+11:00"
 }
