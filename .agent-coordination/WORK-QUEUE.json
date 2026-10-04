@@ -2857,7 +2857,7 @@
         ".github/workflows/static-runtime-integrity.yml",
         "README.md"
       ],
-      "notes": "PARKED HANDOFF current-main replay: branch agent/LR-0107-static-runtime-current-7e6b2f39, exact useful head 2ba06eb7c8b22b65f6fdd38977e61199a46f6f5b, draft PR #89 (supersedes closed stale PR #55). Replay is zero-behind and changes only validator/workflow/README. Static runtime integrity run #10 correctly found a real current-main defect: index.html requires save-system.js but sw.js APP_SHELL omits it. Routed to Wayfinder as LR-0145; do not weaken the validator. LR-0107 merge waits on LR-0145, then rerun static-runtime CI and obtain Agent 7 exact-head approval.",
+      "notes": "PARKED HANDOFF post-LR-0145 current-main replay: branch agent/LR-0107-static-runtime-fixed-5f1b3a2e, exact useful head 68492a68dbbdad61ab8eafcda7016c435ed65f22, draft PR #97 (supersedes closed #89/#55). Changes only validator/workflow/README. Static runtime integrity run #12 / 37195510540 passed against main with LR-0145's save-system.js APP_SHELL fix. Agent coordination passes queue/runtime/regression steps and is red only for missing Agent 7 exact-head review. Next action: Agent 7 approval; fresh Agent 1 claim before merge preparation.",
       "merge_gate_depends_on": [
         "LR-0145"
       ]
@@ -3889,6 +3889,38 @@
         "scripts/validate-agent-coordination.mjs"
       ],
       "notes": "Josh explicitly directed the system to err on the side of fewer reviews. Review remains available for real creative/design risk; routine specialist work should flow without a universal Agent 7 tollbooth."
+    },
+    {
+      "id": "LR-0147",
+      "title": "Author runtime integration index for merged narrative content",
+      "status": "READY",
+      "priority": 0,
+      "exclusive_scope": "narrative-integration-index",
+      "depends_on": [
+        "LR-0043",
+        "LR-0044",
+        "LR-0045",
+        "LR-0046",
+        "LR-0047",
+        "LR-0076",
+        "LR-0088",
+        "LR-0100",
+        "LR-0102"
+      ],
+      "primary_agent": 2,
+      "goal": "Give runtime owners a concise content-side map from Lantern Road's merged Storyteller assets to their existing integration tasks, state inputs, trigger families and smallest playable slices so authored work can reach the game without rereading or re-authoring the source packs.",
+      "acceptance_criteria": [
+        "Inventory each merged Storyteller content pack with exact source paths and the existing runtime/integration task that should consume it.",
+        "For each pack, list required state/trigger inputs and the smallest player-visible slice that can ship first without changing the authored contract.",
+        "Define an implementation order that prioritises immediate player-visible value and high-fan-out dependencies.",
+        "Identify explicit non-overlap boundaries so Agent 2 does not redefine LR-0138 architecture, LR-0090 dialogue runtime, LR-0093 autonomy mechanics or Mechanist tuning.",
+        "Include a concise verification checklist showing how QA can prove each authored pack is actually reachable in-game rather than merely present in the repository.",
+        "Do not edit game.js, content.js, save code or architecture modules."
+      ],
+      "likely_files": [
+        "story/integration/"
+      ],
+      "notes": "Acceleration task created after Josh explicitly asked to get merged Storyteller work into the playable game ASAP. Content-side handoff/index only; does not duplicate LR-0138 data-seam architecture or runtime ownership. LR-0091 can be appended after it reaches DONE, but LR-0147 does not depend on unapproved content."
     }
   ],
   "agent_roster": [
@@ -3951,5 +3983,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T21:29:00+11:00"
+  "updated_at": "2026-10-04T21:33:00+11:00"
 }

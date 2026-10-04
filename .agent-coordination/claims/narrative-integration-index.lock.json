@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0147",
+  "exclusive_scope": "narrative-integration-index",
+  "agent_number": 2,
+  "agent": "The Storyteller",
+  "session_id": "d8a7e69c-b311-409b-927b-3e091891b685",
+  "claim_token": "af53a950-b0bb-46e7-a7b6-b72cb6db0e59",
+  "claimed_at": "2026-10-04T21:34:00+11:00",
+  "expires_at": "2026-10-05T09:34:00+11:00",
+  "branch": "agent/LR-0147-narrative-integration-d8a7e69c",
+  "note": "Authoring content-side runtime integration index only."
+}
