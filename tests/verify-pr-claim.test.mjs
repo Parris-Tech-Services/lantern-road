@@ -326,3 +326,36 @@ test("accepts an optional legacy Director approval on a now-NOT_REQUIRED parked 
   assert.equal(result.status, 0, result.stderr);
   assert.match(result.stdout, /optional legacy Director approval verified for direct merge/);
 });
+
+
+test("rejects parked direct merge when another active lock owns the scope", () => {
+  const branch = "agent/LR-0124-frozen-test";
+  const cwd = setupRepo(parkedTask("LR-0124", branch, "", "NOT_REQUIRED"));
+  const featureHead = commitFile(cwd, "assets/ui/material.svg", "<svg/>\n", "asset pack");
+
+  writeJson(cwd, ".agent-coordination/WORK-QUEUE.json", {
+    schema_version: 1,
+    tasks: [parkedTask(
+      "LR-0124",
+      branch,
+      `PARKED HANDOFF: branch ${branch}, exact useful head ${featureHead}.`,
+      "NOT_REQUIRED"
+    )]
+  });
+  writeJson(cwd, ".agent-coordination/claims/fixture-scope.lock.json", {
+    schema_version: 1,
+    task_id: "LR-0124",
+    exclusive_scope: "fixture-scope",
+    agent_number: 2,
+    agent: "The Storyteller",
+    session_id: "77777777-7777-4777-8777-777777777777",
+    claim_token: "88888888-8888-4888-8888-888888888888",
+    claimed_at: "2026-10-04T17:00:00+11:00",
+    expires_at: "2999-01-01T00:00:00Z",
+    branch: "agent/LR-0124-new-owner-77777777"
+  });
+
+  const result = runVerifier(cwd, branch, featureHead);
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /another active lock owns the task\/scope/i);
+});
