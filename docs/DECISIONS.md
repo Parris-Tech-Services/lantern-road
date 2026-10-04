@@ -14,10 +14,10 @@ Keep this short. Record decisions that future agents would otherwise relitigate.
 | 2026-10-04 | LR-0010 modularises the monolith **after** the grandfathered wave and gates the next wave. | Splitting game.js/content.js underneath active branches would create the very conflicts we are trying to avoid. |
 | 2026-10-04 | Storyteller owns faction consequence/modifier logic; Mechanist owns global base economy/prices. | Prevents LR-0005 and LR-0016 from both “balancing prices”. |
 | 2026-10-04 | LR-0031 requires real committed illustration assets. | A second placeholder/sigil layer does not satisfy art production. |
-
 | 2026-10-04 | Implementation PRs from Agents 1–5 require a final Director approval commit tied to the exact reviewed code head. | Prevents tone/terminology/scope drift and makes later code changes invalidate stale design approval. |
-
 | 2026-10-04 | LR-0011 and LR-0013 cannot close on owner assertion: they require verified GitHub Actions evidence/artifacts, Agent 7 evidence review, and Josh's explicit Android phone check. | These are foundation gates for later save-changing work; machine evidence plus a real-device human check is stronger than AI self-attestation. |
+| 2026-10-04 | Director review distinguishes **pillar drift** from local implementation variation; only changes that materially alter or undermine a vision promise, non-goal or recorded decision are design-governance blockers. | Prevents governance from turning ordinary implementation preference into product-direction authority while still catching real identity/scope drift. |
+| 2026-10-04 | Canonical player-facing terminology may differ from legacy internal identifiers; cosmetic governance work must not rename persisted ids/save keys without an owning migration task. | Keeps UI language coherent without creating accidental save-compatibility or cross-agent work. |
 
 ## How to add a decision
 
