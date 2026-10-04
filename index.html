@@ -20,6 +20,14 @@
         <button class="top-button" id="saveBtn">Save</button>
         <button class="top-button" id="loadBtn">Load</button>
         <button class="top-button" id="fullscreenBtn">Fullscreen (F)</button>
+        <div class="audio-controls" aria-label="Audio controls">
+          <button class="top-button audio-toggle" id="soundToggleBtn" type="button" aria-pressed="false">Sound: Off</button>
+          <button class="top-button audio-toggle" id="ambienceToggleBtn" type="button" aria-pressed="true" disabled>Ambience: On</button>
+          <label class="volume-control" for="volumeSlider">
+            <span>Vol</span>
+            <input id="volumeSlider" type="range" min="0" max="1" step="0.05" value="0.28" disabled aria-label="Sound volume" />
+          </label>
+        </div>
       </div>
     </header>
 
