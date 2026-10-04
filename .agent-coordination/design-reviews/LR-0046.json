@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0046",
+  "reviewer_agent_number": 7,
+  "reviewer": "The Director",
+  "status": "APPROVED",
+  "reviewed_head_sha": "c59cb34664b4d2104e83979e276b7f56ebd36602",
+  "reviewed_at": "2026-10-04T18:00:00+11:00",
+  "pillars_checked": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "terminology_checked": true,
+  "decision_log_checked": true,
+  "scope_conflicts_checked": true,
+  "notes": "Curated travel/camp events are authored consequence, not generic procedural filler, and do not canonise generated concept-map labels. Integration must interpret party-member-presence conditions as actual active/present companion state or plausible later telling."
+}

@@ -36,7 +36,7 @@ Examples:
 | Blacksalt Crossing | 3,7 | **D8** |
 | Moonmere Tower | 8,4 | **I5** |
 
-The complete registry is `world/map-canon.json`.
+The complete **place and regional-label** registry is `world/map-canon.json`. LR-0104's protected regional-label decisions are defined below and in `design/REGIONAL-MAP-CANON-CONTRACT.md`; LR-0105 mirrors those decisions into the machine-readable registry/schema and CI enforcement.
 
 ### Map Canon v1 place index
 
@@ -90,22 +90,32 @@ What we are carrying forward from it:
 - enough breathing room that roads and settlements feel embedded in geography rather than floating on a UI;
 - restrained fog/atmosphere that supports navigation rather than obscuring it.
 
-The generated labels on that concept are **not automatically canon**.
+The generated labels on that concept were **not automatically canon**. LR-0071 reconciled them and LR-0104 ratified the Director decision.
 
-These currently remain PROPOSED pending LR-0071 Storyteller reconciliation and Director/Josh approval where needed:
+### Canonical non-node regional labels
 
-- Ashen Ridge
-- Duskwood
-- Mourn Lake
-- Hollowwold
-- Reedmarsh
-- Embermere
-- Siltbrook Marsh
-- Wyrthen Forest
-- Blackfen Plains
-- Stoneveil Mountains
+These landscape names are now CANON:
 
-If a generated label conflicts with existing Lantern Road material, existing canon wins until a controlled change is approved.
+- **Hollowwold** — north-central upland around Hollowglass Cavern;
+- **Reedmarsh** — southern river-and-reed country around the existing ford/ferry/crossing/marsh network;
+- **Barrow Ridge** — high ground around Old Barrow Keep;
+- **Watcherwood** — western/north-western wooded approaches anchored by Watcher's Rest;
+- **Greyfen Plain** — central open road country around Greyfen Market;
+- **Stoneveil Heights** — existing northern hill/mountain high-country and horizon.
+
+They are orientation/lore labels only. They do not create gameplay nodes, coordinates or new territory. Their machine-readable records live in `world/map-canon.json.regional_labels`; each record is non-clickable, coordinate-free, and may anchor only to existing CANON places. See `design/REGIONAL-MAP-CANON-CONTRACT.md`.
+
+Resolved concept-map names:
+
+- **Ashen Ridge → Barrow Ridge**
+- **Duskwood → Watcherwood**
+- **Blackfen Plains → Greyfen Plain**
+- **Stoneveil Mountains → Stoneveil Heights**
+- **Hollowwold** and **Reedmarsh** are adopted unchanged.
+- **Embermere** and **Siltbrook Marsh** are rejected.
+- **Mourn Lake** and **Wyrthen Forest** are deferred and remain non-canon.
+
+A generated or deferred label may not be treated as established geography merely because it appears in concept art or proposal prose.
 
 ## Illustrated map architecture
 
@@ -147,6 +157,7 @@ The game draws these separately over the atlas:
 - mathematically exact hex grid;
 - A–I / 1–8 references where useful;
 - canonical settlement and site labels/symbols;
+- canonical regional labels as secondary orientation text sourced from `regional_labels`;
 - roads and route affordances;
 - party marker;
 - reachable-hex outlines;
@@ -155,6 +166,8 @@ The game draws these separately over the atlas:
 - world-state changes.
 
 That allows the game world to change visibly without repainting the base atlas.
+
+For LR-0073 rendering, regional labels are subordinate to place labels, never clickable, never authoritative for travel, and must not reveal hidden site ids. REJECT/DEFER concept labels are excluded from canonical overlays.
 
 ## Projection contract
 

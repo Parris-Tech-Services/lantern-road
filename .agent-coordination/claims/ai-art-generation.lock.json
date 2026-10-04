@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0042",
+  "exclusive_scope": "ai-art-generation",
+  "agent_number": 4,
+  "agent": "The Lamplighter",
+  "session_id": "a4f264b7-4ced-49bb-9664-2cb2b48e7a11",
+  "claim_token": "a47aac5d-a4a5-4c62-ab8f-9cce391d8bb1",
+  "claimed_at": "2026-10-04T20:12:00+11:00",
+  "expires_at": "2026-10-05T08:12:00+11:00",
+  "branch": "agent/LR-0042-ai-art-d1f018ec",
+  "note": "Fresh claim to resume incomplete settlement/site/enemy/NPC/item image generation while preserving the Director-approved hero/style-lock batch."
+}

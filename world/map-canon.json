@@ -251,52 +251,68 @@
     {
       "name": "Ashen Ridge",
       "status": "PROPOSED",
-      "source": "Josh-approved Grey March concept-map direction, 2026-10-04"
+      "source": "Josh-approved Grey March concept-map direction, 2026-10-04",
+      "disposition": "RENAME",
+      "canonical_region_id": "barrow_ridge"
     },
     {
       "name": "Duskwood",
       "status": "PROPOSED",
-      "source": "Josh-approved Grey March concept-map direction, 2026-10-04"
+      "source": "Josh-approved Grey March concept-map direction, 2026-10-04",
+      "disposition": "RENAME",
+      "canonical_region_id": "watcherwood"
     },
     {
       "name": "Mourn Lake",
       "status": "PROPOSED",
-      "source": "Josh-approved Grey March concept-map direction, 2026-10-04"
+      "source": "Josh-approved Grey March concept-map direction, 2026-10-04",
+      "disposition": "DEFER"
     },
     {
       "name": "Hollowwold",
       "status": "PROPOSED",
-      "source": "Josh-approved Grey March concept-map direction, 2026-10-04"
+      "source": "Josh-approved Grey March concept-map direction, 2026-10-04",
+      "disposition": "ADOPT",
+      "canonical_region_id": "hollowwold"
     },
     {
       "name": "Reedmarsh",
       "status": "PROPOSED",
-      "source": "Josh-approved Grey March concept-map direction, 2026-10-04"
+      "source": "Josh-approved Grey March concept-map direction, 2026-10-04",
+      "disposition": "ADOPT",
+      "canonical_region_id": "reedmarsh"
     },
     {
       "name": "Embermere",
       "status": "PROPOSED",
-      "source": "Josh-approved Grey March concept-map direction, 2026-10-04"
+      "source": "Josh-approved Grey March concept-map direction, 2026-10-04",
+      "disposition": "REJECT"
     },
     {
       "name": "Siltbrook Marsh",
       "status": "PROPOSED",
-      "source": "Josh-approved Grey March concept-map direction, 2026-10-04"
+      "source": "Josh-approved Grey March concept-map direction, 2026-10-04",
+      "disposition": "REJECT"
     },
     {
       "name": "Wyrthen Forest",
       "status": "PROPOSED",
-      "source": "Josh-approved Grey March concept-map direction, 2026-10-04"
+      "source": "Josh-approved Grey March concept-map direction, 2026-10-04",
+      "disposition": "DEFER"
     },
     {
       "name": "Blackfen Plains",
       "status": "PROPOSED",
-      "source": "Josh-approved Grey March concept-map direction, 2026-10-04"
+      "source": "Josh-approved Grey March concept-map direction, 2026-10-04",
+      "disposition": "RENAME",
+      "canonical_region_id": "greyfen_plain"
     },
     {
       "name": "Stoneveil Mountains",
       "status": "PROPOSED",
-      "source": "Josh-approved Grey March concept-map direction, 2026-10-04"
+      "source": "Josh-approved Grey March concept-map direction, 2026-10-04",
+      "disposition": "RENAME",
+      "canonical_region_id": "stoneveil_heights"
     }
   ],
   "invariants": [
@@ -306,5 +322,82 @@
     "Generated-art text is never canon merely because it appears in an image.",
     "Gameplay-critical labels, roads, sites, party position, discoveries/fog, quest markers and mutable world changes are dynamic overlays, not baked into the terrain atlas.",
     "A raster atlas may be replaced without changing canonical q/r coordinates or save-state semantics."
+  ],
+  "regional_labels": [
+    {
+      "id": "hollowwold",
+      "name": "Hollowwold",
+      "status": "CANON",
+      "place_type": "region-label",
+      "gameplay_node": false,
+      "anchor_place_ids": [
+        "hollowglass"
+      ],
+      "description": "Rough north-central upland and wind-cut country around Hollowglass Cavern.",
+      "source_task": "LR-0104"
+    },
+    {
+      "id": "reedmarsh",
+      "name": "Reedmarsh",
+      "status": "CANON",
+      "place_type": "region-label",
+      "gameplay_node": false,
+      "anchor_place_ids": [
+        "pilgrim_ford",
+        "redwater_ferry",
+        "blacksalt",
+        "smuggler_cache",
+        "mosslight"
+      ],
+      "description": "Low southern river-and-reed country around the existing ford, ferry, crossing, cache and marsh-route network.",
+      "source_task": "LR-0104"
+    },
+    {
+      "id": "barrow_ridge",
+      "name": "Barrow Ridge",
+      "status": "CANON",
+      "place_type": "region-label",
+      "gameplay_node": false,
+      "anchor_place_ids": [
+        "old_barrow"
+      ],
+      "description": "Stony rise and high ground around Old Barrow Keep.",
+      "source_task": "LR-0104"
+    },
+    {
+      "id": "watcherwood",
+      "name": "Watcherwood",
+      "status": "CANON",
+      "place_type": "region-label",
+      "gameplay_node": false,
+      "anchor_place_ids": [
+        "watchers_rest"
+      ],
+      "description": "Western and north-western wooded approaches associated with Watcher's Rest.",
+      "source_task": "LR-0104"
+    },
+    {
+      "id": "greyfen_plain",
+      "name": "Greyfen Plain",
+      "status": "CANON",
+      "place_type": "region-label",
+      "gameplay_node": false,
+      "anchor_place_ids": [
+        "greyfen",
+        "broken_span"
+      ],
+      "description": "Central open road country around Greyfen Market and the wider Broken Span route pressure.",
+      "source_task": "LR-0104"
+    },
+    {
+      "id": "stoneveil_heights",
+      "name": "Stoneveil Heights",
+      "status": "CANON",
+      "place_type": "region-label",
+      "gameplay_node": false,
+      "anchor_place_ids": [],
+      "description": "Existing northern mountain and hill high-country and horizon.",
+      "source_task": "LR-0104"
+    }
   ]
 }

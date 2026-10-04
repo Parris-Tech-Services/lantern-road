@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0045",
+  "reviewer_agent_number": 7,
+  "reviewer": "The Director",
+  "status": "APPROVED",
+  "reviewed_head_sha": "8887dc316c71373de49adc3edbd26bcdae018e01",
+  "reviewed_at": "2026-10-04T18:00:00+11:00",
+  "pillars_checked": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "terminology_checked": true,
+  "decision_log_checked": true,
+  "scope_conflicts_checked": true,
+  "notes": "Recurring NPC callback pack covers established NPCs with distinct motives/voices and visible consequence states while staying inside existing Grey March canon. During LR-0038 integration, companion-specific callbacks must respect active/witness state or explicit later telling under the Leader + three-companion roster."
+}

@@ -6,11 +6,17 @@ on:
       - "scripts/aed-report.mjs"
       - "tests/aed-report.test.mjs"
       - ".github/workflows/aed-report.yml"
+      - "QA/FINDING-SCHEMA.json"
+      - "QA/FUN-LOOP-STATE.json"
+      - "QA/findings/**"
   pull_request:
     paths:
       - "scripts/aed-report.mjs"
       - "tests/aed-report.test.mjs"
       - ".github/workflows/aed-report.yml"
+      - "QA/FINDING-SCHEMA.json"
+      - "QA/FUN-LOOP-STATE.json"
+      - "QA/findings/**"
 
 permissions:
   contents: read

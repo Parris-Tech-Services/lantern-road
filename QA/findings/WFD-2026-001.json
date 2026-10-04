@@ -1,0 +1,33 @@
+{
+  "finding_id": "WFD-2026-001",
+  "title": "Zero-ration camping still allows sustained recovery through the campaign deadline",
+  "status": "ROUTED",
+  "severity": "S2",
+  "player_impact": "HIGH",
+  "experience_tags": [
+    "BALANCE",
+    "EXPLOIT",
+    "PACING"
+  ],
+  "tested_commit": "54ef2802e3a47e2f8cecfa77f7f7a8603e873dd4",
+  "tested_source": "CURRENT_MAIN",
+  "observed_at": "2026-10-04T09:56:38Z",
+  "resolved_at": null,
+  "reproduction": "Start a fresh campaign on current main, repeatedly use Camp at Hearthwick, allow rations to reach 0 on Day 7, then continue camping to Day 19. The party remains able to camp and finishes at 0 rations, Fatigue 0/6 and 93% health.",
+  "player_impact_summary": "The supplies loop can be largely bypassed by repeatedly camping with no food, weakening expedition pressure and making the 18-day clock easier to waste without a sustained survival trade-off.",
+  "recommended_owner_agent": 3,
+  "routed_task": "LR-0016",
+  "evidence_refs": [
+    "GitHub Actions run 37193714501",
+    "artifact 11299079820",
+    "current-final.png",
+    "current-main-result.json"
+  ],
+  "retest": {
+    "tested_commit": null,
+    "tested_at": null,
+    "outcome": "PENDING"
+  },
+  "reopen_count": 0,
+  "notes": "Matches existing Mechanist task LR-0016; no duplicate task created. Current main is slightly harsher than the LR-0021 historical baseline (93% rather than 100% health), but the core no-ration pressure loophole remains."
+}
