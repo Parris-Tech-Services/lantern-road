@@ -1299,6 +1299,61 @@
         "story/events/"
       ],
       "notes": "Pure authored-content task. LR-0007 remains the later gated engine/content integration pass."
+    },
+    {
+      "id": "LR-0047",
+      "title": "Author premium scene packs for the six core quests",
+      "status": "BLOCKED",
+      "priority": 2,
+      "exclusive_scope": "core-quest-authoring",
+      "depends_on": [
+        "LR-0043"
+      ],
+      "primary_agent": 2,
+      "goal": "Deepen Lantern Road's six existing questlines into memorable authored local stories that can carry the stronger campaign spine without changing runtime code yet.",
+      "acceptance_criteria": [
+        "Author expanded scene/dialogue material for Lanterns on the Old Road, The Missing Ledger, The Pilgrim's Reliquary, Fever on the South Road, The Silent Tower and Ash in the Marsh.",
+        "Each quest includes a distinctive offer/opening, at least one investigative or complication beat, a meaningful decision or resolution scene, and a consequence-aware turn-in or aftermath.",
+        "Author failure, late, partial-success or refusal material where the existing quest structure permits it so non-ideal outcomes still feel intentional rather than like missing content.",
+        "Give important quest NPCs recognisable motives and voices while avoiding duplication of LR-0045's broader recurring-NPC callback work.",
+        "Tie scenes to the LR-0043 campaign themes and named ending callbacks without turning any local quest into a mandatory main-quest step.",
+        "Document required conditions/outcomes declaratively for later integration; do not edit game.js, content.js or persisted state in this authoring task."
+      ],
+      "likely_files": [
+        "story/quests/"
+      ],
+      "notes": "Author-now task for the six existing local questlines. Distinct from LR-0043 regional campaign structure, LR-0044 hero arcs, LR-0045 recurring NPC callbacks and LR-0046 travel/camp events. Depends on LR-0043 so quest scenes reinforce the agreed campaign spine rather than inventing a competing one."
+    },
+    {
+      "id": "LR-0048",
+      "title": "Integrate enriched core quest scenes and outcome branches",
+      "status": "BLOCKED",
+      "priority": 3,
+      "exclusive_scope": "core-quest-integration",
+      "depends_on": [
+        "LR-0047",
+        "LR-0005",
+        "LR-0010",
+        "LR-0011",
+        "LR-0013"
+      ],
+      "primary_agent": 2,
+      "goal": "Integrate the LR-0047 authored quest scenes into the playable six core questlines after the shared architecture, consequence, save and browser-test foundations are ready.",
+      "acceptance_criteria": [
+        "Integrate the authored opening, complication, decision and aftermath scenes for all six existing core quests without changing their canonical identities.",
+        "Support authored non-ideal outcomes such as refusal, delay, partial success or failure where specified by LR-0047, with meaningful visible feedback.",
+        "Quest dialogue and outcomes consume LR-0005 consequence hooks and the shared persistence/migration framework rather than creating parallel state systems.",
+        "Preserve route freedom: no core quest becomes an artificial mandatory step solely to serve the campaign spine.",
+        "Add real-browser regression coverage for the new quest branches and verify old saves remain valid through the LR-0011 contract.",
+        "Obtain fresh Director approval on the final implementation head before merge."
+      ],
+      "likely_files": [
+        "story/quests/",
+        "content.js",
+        "game.js",
+        "tests/"
+      ],
+      "notes": "Integration counterpart to LR-0047. Distinct from LR-0008, which owns the regional 18-day campaign beats/endings, and LR-0025, which independently QA-tests quest-state integrity."
     }
   ],
   "agent_roster": [
@@ -1356,5 +1411,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T15:33:00+11:00"
+  "updated_at": "2026-10-04T15:36:00+11:00"
 }
