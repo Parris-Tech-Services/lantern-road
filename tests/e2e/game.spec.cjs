@@ -50,9 +50,9 @@ test("canvas travel changes the party position", async ({ page }) => {
   const target = await page.evaluate(() => window.__lanternRoadTest.adjacentHexCenter());
   expect(target).not.toBeNull();
 
-  const canvas = await page.locator("#mapCanvas").boundingBox();
-  expect(canvas).not.toBeNull();
-  await page.mouse.click(canvas.x + target.x, canvas.y + target.y);
+  await page.locator("#mapCanvas").click({
+    position: { x: target.x, y: target.y }
+  });
 
   await expect.poll(async () => {
     const state = await snapshot(page);
