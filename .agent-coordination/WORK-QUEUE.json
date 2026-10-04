@@ -929,7 +929,8 @@
       "exclusive_scope": "authored-audio-production",
       "depends_on": [
         "LR-0003",
-        "LR-0010"
+        "LR-0010",
+        "LR-0126"
       ],
       "primary_agent": 4,
       "goal": "Replace or augment the procedural audio foundation with a coherent authored soundscape and restrained adaptive score while preserving phone performance and player control.",
@@ -946,7 +947,7 @@
         "game.js",
         "docs/AUDIO-DIRECTION.md"
       ],
-      "notes": "Second-wave Lamplighter task discovered during LR-0003. This is authored production audio and music, not a duplicate of the browser-audio foundation. Dependency audit: authored audio production may be planned/source-prepared separately, but this queued task includes game.js integration and therefore waits for LR-0010 rather than editing the monolith during the grandfathered foundation wave."
+      "notes": "Second-wave Lamplighter authored-audio integration task. LR-0126 now owns the upstream soundscape/score production bible and source-asset contract; LR-0032 consumes that approved contract for final authored audio assets/runtime integration. It still waits for LR-0010 before touching shared runtime architecture."
     },
     {
       "id": "LR-0033",
