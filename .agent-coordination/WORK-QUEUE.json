@@ -350,6 +350,152 @@
         ".agent-coordination/WORK-QUEUE.json"
       ],
       "notes": "Blocked until the first specialist foundation wave is complete."
+    },
+    {
+      "id": "LR-0015",
+      "title": "Tactical combat depth and enemy behaviour",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "combat-depth-ai",
+      "depends_on": [],
+      "primary_agent": 3,
+      "goal": "Make combat decisions substantially more interesting without turning Lantern Road into a grid tactics game.",
+      "acceptance_criteria": [
+        "Different enemy archetypes pursue visibly different tactical priorities rather than sharing near-identical behaviour.",
+        "Party actions create meaningful choices around targeting, defence, tempo, status effects and resource use.",
+        "Enemy intent or other readable telegraphing gives players enough information to make informed decisions.",
+        "Combat avoids obvious dominant-action loops and unnecessary click repetition.",
+        "Existing encounters remain completable and save/load is not broken."
+      ],
+      "likely_files": [
+        "game.js",
+        "content.js"
+      ],
+      "notes": "Mechanist-owned. Preserve Lantern Road's compact card/target combat identity; deepen decisions rather than adding a tactical grid."
+    },
+    {
+      "id": "LR-0016",
+      "title": "Economy, supplies and expedition pressure balance",
+      "status": "READY",
+      "priority": 2,
+      "exclusive_scope": "economy-supplies",
+      "depends_on": [],
+      "primary_agent": 3,
+      "goal": "Make gold, rations, rest, shops and expedition resources create sustained but fair pressure across the 18-day campaign.",
+      "acceptance_criteria": [
+        "Audit income, prices, ration use, rest costs and common resource drains across representative runs.",
+        "Reduce trivial infinite-value or obviously bad-value transactions and resource loops.",
+        "Make settlement services and purchases create real trade-offs without requiring grind.",
+        "Ensure poor early luck does not routinely create an unrecoverable campaign spiral.",
+        "Document target balance assumptions so later content can price rewards consistently."
+      ],
+      "likely_files": [
+        "content.js",
+        "game.js"
+      ],
+      "notes": "Mechanist-owned economy/balance work; distinct from LR-0005's narrative/faction consequences."
+    },
+    {
+      "id": "LR-0017",
+      "title": "Equipment ecosystem and meaningful itemisation",
+      "status": "BLOCKED",
+      "priority": 2,
+      "exclusive_scope": "equipment-itemisation",
+      "depends_on": [
+        "LR-0006"
+      ],
+      "primary_agent": 3,
+      "goal": "Expand LR-0006's equipment/build foundation into a small but expressive item ecosystem with meaningful trade-offs.",
+      "acceptance_criteria": [
+        "Equipment categories/slots from the progression foundation are used consistently.",
+        "Add a curated set of distinct equipment choices rather than straight numerical upgrades.",
+        "Items support different hero/build identities and situational strategies.",
+        "Rare or powerful items have opportunity costs, constraints or meaningful competition.",
+        "Shop, reward and save/load flows correctly support the expanded equipment data."
+      ],
+      "likely_files": [
+        "content.js",
+        "game.js"
+      ],
+      "notes": "Blocked on LR-0006 so it extends rather than competes with the progression foundation."
+    },
+    {
+      "id": "LR-0018",
+      "title": "Persistent injuries, conditions and recovery loop",
+      "status": "BLOCKED",
+      "priority": 2,
+      "exclusive_scope": "injury-condition-system",
+      "depends_on": [
+        "LR-0006"
+      ],
+      "primary_agent": 3,
+      "goal": "Turn the progression foundation's injury/condition hooks into memorable persistent consequences that affect expedition decisions.",
+      "acceptance_criteria": [
+        "Define a compact set of distinct injuries/conditions with mechanical and narrative-facing effects.",
+        "Conditions can arise from understandable risks rather than arbitrary punishment.",
+        "Recovery has meaningful costs, choices or time pressure instead of a single automatic reset.",
+        "Party members remain viable; injuries create stories and adaptation rather than routine run-ending snowballs.",
+        "Persistence and migration behave correctly through save/load."
+      ],
+      "likely_files": [
+        "content.js",
+        "game.js"
+      ],
+      "notes": "Blocked on LR-0006. This is the full recovery loop, not a duplicate of LR-0006's foundational persistent-state hook."
+    },
+    {
+      "id": "LR-0019",
+      "title": "Encounter variety, elites and signature fights",
+      "status": "BLOCKED",
+      "priority": 2,
+      "exclusive_scope": "combat-encounter-variety",
+      "depends_on": [
+        "LR-0015"
+      ],
+      "primary_agent": 3,
+      "goal": "Use the deeper combat rules to create encounters that feel authored and mechanically distinct rather than permutations of the same fight.",
+      "acceptance_criteria": [
+        "Create encounter compositions that demand different tactical responses.",
+        "Add a small number of elite/signature enemies or fight modifiers with recognisable identities.",
+        "Major encounters can use bespoke rules or phases where justified without creating one-off engine fragility.",
+        "Difficulty escalation is readable and appropriate to campaign timing.",
+        "Encounter rewards and risks remain consistent with economy/progression expectations."
+      ],
+      "likely_files": [
+        "content.js",
+        "game.js"
+      ],
+      "notes": "Blocked on LR-0015 because encounter design should exploit the finished combat-depth vocabulary."
+    },
+    {
+      "id": "LR-0020",
+      "title": "Build viability and whole-system balance pass",
+      "status": "BLOCKED",
+      "priority": 3,
+      "exclusive_scope": "systems-balance",
+      "depends_on": [
+        "LR-0006",
+        "LR-0015",
+        "LR-0016",
+        "LR-0017",
+        "LR-0018",
+        "LR-0019"
+      ],
+      "primary_agent": 3,
+      "goal": "Balance the completed Mechanist systems as one coherent game so multiple strategies remain viable across a full campaign.",
+      "acceptance_criteria": [
+        "Test representative campaigns using materially different hero builds and spending strategies.",
+        "Identify and correct dominant, trap and non-functional choices.",
+        "Check difficulty, resource pressure and progression pacing across early, mid and late campaign.",
+        "Ensure combat rewards, equipment, recovery costs and economy reinforce rather than undermine each other.",
+        "Record remaining balance uncertainties and create targeted follow-up tasks instead of endless unscoped tweaking."
+      ],
+      "likely_files": [
+        "content.js",
+        "game.js",
+        "tests/"
+      ],
+      "notes": "Mechanist capstone task. Blocked until its underlying systems exist."
     }
   ],
   "agent_roster": [
