@@ -1,0 +1,60 @@
+name: Warden LR-0140 current-main probe
+
+on:
+  push:
+    branches:
+      - agent/LR-0140-current-build-fun-loop-ed2f4260
+    paths:
+      - "QA/LR-0140-current-probe.cjs"
+      - ".github/workflows/warden-lr0140.yml"
+
+concurrency:
+  group: warden-lr0140-current-main
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  current-main-probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout Warden QA tooling
+        uses: actions/checkout@v4
+        with:
+          path: qa-tool
+      - name: Checkout exact current-main game under test
+        uses: actions/checkout@v4
+        with:
+          ref: 54ef2802e3a47e2f8cecfa77f7f7a8603e873dd4
+          path: game-under-test
+      - name: Verify game SHA
+        run: |
+          test "$(git -C game-under-test rev-parse HEAD)" = "54ef2802e3a47e2f8cecfa77f7f7a8603e873dd4"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Serve exact current-main build and run Warden probe
+        timeout-minutes: 2
+        env:
+          GAME_SHA: 54ef2802e3a47e2f8cecfa77f7f7a8603e873dd4
+          BASE_URL: http://127.0.0.1:4173/
+          WARDEN_OUT: ${{ github.workspace }}/qa-output
+        run: |
+          (cd game-under-test && python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/lantern-road-http.log 2>&1) &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
+          sleep 1
+          node qa-tool/QA/LR-0140-current-probe.cjs
+      - name: Upload Warden current-main evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lr-0140-current-main-evidence
+          path: qa-output/
+          if-no-files-found: warn
