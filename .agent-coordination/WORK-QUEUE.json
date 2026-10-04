@@ -3437,7 +3437,7 @@
     {
       "id": "LR-0131",
       "title": "Audit mobile audio controls and sensory-accessibility UX",
-      "status": "READY",
+      "status": "DONE",
       "priority": 1,
       "exclusive_scope": "mobile-audio-controls-audit",
       "depends_on": [
@@ -3458,7 +3458,7 @@
         "docs/MOBILE-AUDIO-CONTROLS-AUDIT.md",
         "QA/MOBILE-AUDIO-CONTROLS-MATRIX.md"
       ],
-      "notes": "PARKED HANDOFF (4 Oct 2026): audit complete on branch agent/LR-0131-mobile-audio-f3a1b7c2 at useful head 1613678dbf1455965c59dae5917a70828cad669c, PR #80. Final diff adds docs/MOBILE-AUDIO-CONTROLS-AUDIT.md and QA/MOBILE-AUDIO-CONTROLS-MATRIX.md only. Findings: current Sound-Off-by-default/autoplay-safe/ambience-split foundation is good, but runtime integration must add foreground/background lifecycle handling, reconcile actual AudioContext.state instead of trusting stale audioUnlocked, retain resume retry after transient failure, clarify disabled Ambience-under-master-Sound semantics, expose intuitive Volume percent/touch semantics, avoid claiming preference persistence when local storage fails, and distinguish generic press cues from confirmed outcome cues. No runtime/audio-asset files changed. Remaining external condition is Agent 7 approval; fresh mobile-audio-controls-audit claim required before later edits or final merge preparation."
+      "notes": "Completed 4 Oct 2026 via PR #80, squash merge 9e466e42a7d16199a81e6c868827ba2cd925ba75. Mobile audio audit preserves Sound-Off/autoplay safety, requires authoritative AudioContext resume state, retry-safe unlock, clear ambience-under-master semantics, percent-volume/touch accessibility, truthful preference persistence messaging and separation of press cues from confirmed outcomes. Agent 7 approved useful head 1613678dbf1455965c59dae5917a70828cad669c; approval head 9eca3eccdfce6c564c28e5d2c4a82f22331ac53d had green validation."
     },
     {
       "id": "LR-0132",
@@ -3951,5 +3951,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T21:28:00+11:00"
+  "updated_at": "2026-10-04T21:26:00+11:00"
 }
