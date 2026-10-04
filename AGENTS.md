@@ -31,6 +31,7 @@ These rules are mandatory for every coding/research agent working in this reposi
 - **Small PRs are mandatory:** one claimed task/scope per PR, no unrelated cleanup or opportunistic refactors. Split broad work into follow-up tasks.
 - If a task has `merge_gate_depends_on`, work may proceed while claimed but its PR must not merge until every merge-gate task is `DONE`.
 - Architectural/product/ownership decisions that future agents may relitigate must be surfaced to The Director and recorded briefly in `docs/DECISIONS.md`.
+- Re-fetch `WORK-QUEUE.json` immediately before declaring a task complete or opening its final PR; verify its current acceptance criteria, dependencies and merge gates have not changed while you were working.
 - Before merging, run `node scripts/validate-agent-coordination.mjs` plus relevant game checks.
 - After a successful merge, mark the queue task `DONE` **before** deleting its lock.
 - If abandoning work, leave the task `READY` and delete only your own lock.
