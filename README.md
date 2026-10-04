@@ -111,6 +111,16 @@ The world is deliberately small so choices can echo cleanly.
 
 The engine is intentionally data-driven where it matters, while keeping quest/site/NPC logic readable.
 
+### Content integrity checks
+
+Run the authored-content validator before merging changes to `content.js`:
+
+```bash
+node scripts/validate-content.mjs
+```
+
+It checks duplicate IDs, map bounds/coordinates, core cross-references between settlements/NPCs/factions/quests/rumours/items/enemies/encounters, event actor/effect references, and character reaction references. GitHub Actions runs the same validator automatically when the relevant files change.
+
 ## Quest System Overview
 
 Included questlines:
