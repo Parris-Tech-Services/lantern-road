@@ -190,23 +190,16 @@ This keeps danger meaningful without turning the whole game into a tactics engin
 
 ## Save / Load Approach
 
-Save data is stored in `localStorage`.
+Campaign saves remain in the historical localStorage key `lantern-road-save-v1` so existing installs can find their old campaigns, while the stored payload uses an explicit **save schema v2 envelope** containing `schemaVersion`, `gameVersion`, `savedAt`, and `state`.
 
-It preserves:
+Raw pre-versioning saves are treated as legacy schema v1 and migrated through `save-system.js`. The migration layer fills newly introduced defaults without discarding recognised legacy fields, validates core campaign state, preserves intentional null UI state, and rejects saves from a newer unsupported schema.
 
-- seed and RNG state
-- day, hour, weather
-- position
-- discovered map and sites
-- inventory
-- gold, fatigue, renown
-- faction standings
-- quest state
-- party HP and statuses
-- combat state
-- logs
-- world flags
-- active data scenes
+On the first successful legacy migration, Lantern Road keeps the untouched raw payload at `lantern-road-save-v1-backup` where browser storage permits. A failed or unsupported load does not overwrite the stored campaign.
+
+The saved state preserves map/progress resources, faction and quest state, party HP/statuses, character trust memories/relationships, combat state, logs, world state, active scenes and UI state.
+
+Migration coverage lives in `tests/save-migrations.test.cjs` with representative legacy fixtures under `tests/fixtures/saves/legacy/`. CI publishes `save-migration-results` as machine gate evidence.
+
 
 ## Mobile / Touch Approach
 
