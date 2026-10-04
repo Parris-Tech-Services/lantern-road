@@ -1,4 +1,4 @@
-const CACHE_NAME = "lantern-road-v5";
+const CACHE_NAME = "lantern-road-2026.10.04-lr0009-v6";
 const FILES = [
   "./",
   "./index.html",
