@@ -868,7 +868,7 @@
     {
       "id": "LR-0031",
       "title": "Authored illustration and asset production pass",
-      "status": "READY",
+      "status": "BLOCKED",
       "priority": 2,
       "exclusive_scope": "authored-art-production",
       "depends_on": [
@@ -890,7 +890,7 @@
         "style.css",
         "docs/ART-DIRECTION.md"
       ],
-      "notes": "Second-wave Lamplighter integration task. AI image generation itself is split into LR-0042 to avoid mixing generation with curation, optimisation and repo integration."
+      "notes": "Second-wave Lamplighter integration task. AI image generation itself is split into LR-0042 to avoid mixing generation with curation, optimisation and repo integration. Blocked until LR-0042 is DONE."
     },
     {
       "id": "LR-0032",
