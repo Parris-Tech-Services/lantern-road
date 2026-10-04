@@ -507,7 +507,17 @@
     let after = before + qty;
     if (after < 0) after = 0;
     state.inventory[id] = after;
-    if (after === 0) delete state.inventory[id];
+    if (after === 0) {
+      delete state.inventory[id];
+      const equipment = state.progression?.equipment;
+      if (equipment) {
+        const equippedHeroId = Object.keys(equipment).find(heroId => equipment[heroId] === id);
+        if (equippedHeroId) {
+          equipment[equippedHeroId] = null;
+          addLog(`${getPartyBase(equippedHeroId).name} no longer has ${ITEM_MAP[id]?.name || id} equipped.`);
+        }
+      }
+    }
     if (logIt && qty !== 0) {
       const item = ITEM_MAP[id];
       addLog(`${qty > 0 ? "Gained" : "Lost"} ${Math.abs(qty)} × ${item.name}.`);
@@ -737,7 +747,9 @@
 
   function getEquippedItem(memberId) {
     const itemId = state.progression?.equipment?.[memberId];
-    return itemId ? ITEM_MAP[itemId] || null : null;
+    if (!itemId || !hasItem(itemId)) return null;
+    const item = ITEM_MAP[itemId];
+    return item?.hero === memberId ? item : null;
   }
 
   function getInjury(memberId) {
@@ -1363,7 +1375,7 @@
       return;
     }
     if (itemId === "bandage") {
-      const amount = 4 + (hasItem("healer_satchel") ? 1 : 0);
+      const amount = 4 + getProgressionEffect("brindle", "consumableHealBonus");
       const name = getPartyBase(memberId).name;
       const before = getPartyMember(memberId).hp;
       healMember(memberId, amount);
