@@ -1851,6 +1851,193 @@
         ".github/workflows/"
       ],
       "notes": "Late-stage operational resilience after PWA/cache foundations."
+    },
+    {
+      "id": "LR-0069",
+      "title": "Establish Grey March canonical map registry and governance",
+      "status": "READY",
+      "priority": 0,
+      "exclusive_scope": "world-map-canon",
+      "depends_on": [],
+      "primary_agent": 7,
+      "goal": "Freeze a single canonical Grey March geography that maps every existing gameplay hex/location to a stable human grid reference and defines how future map changes are proposed, approved and consumed.",
+      "acceptance_criteria": [
+        "Create a canonical machine-readable map registry covering the current 9×8 axial map (q 0–8, r 0–7) and every existing settlement/site, with a deterministic human grid reference A–I / 1–8 derived from q/r.",
+        "Preserve all existing canonical settlement/site ids, names and q/r coordinates unless Josh explicitly approves a lore/geography change.",
+        "Define map-canon statuses so labels visible only in generated concept art begin as PROPOSED rather than silently becoming canon.",
+        "Document ownership: Director governs canon; Steward enforces schema/CI and rendering architecture; Storyteller reconciles lore/names; Lamplighter owns terrain atlas art; Wayfinder owns phone map interaction; Warden independently verifies player-visible geography.",
+        "Define the illustrated map architecture: authored terrain base contains no gameplay-critical labels/markers; hex grid, labels, roads, sites, party marker, discovery/fog and world changes render dynamically from canonical data.",
+        "Define a controlled map-change protocol requiring a dedicated map-canon task plus Director approval for canonical place rename/move/add/delete operations.",
+        "Update terminology and decision records so all agents know the canonical coordinate and map vocabulary."
+      ],
+      "likely_files": [
+        "world/map-canon.json",
+        "docs/WORLD-MAP-CANON.md",
+        ".agent-coordination/MAP-CANON-PROTOCOL.md",
+        "docs/TERMINOLOGY.md",
+        "docs/DECISIONS.md",
+        "AGENTS.md"
+      ],
+      "notes": "Created by Agent 7 from Josh's explicit request to canonise Agent 4's Grey March map direction and prevent agents from randomly changing geography."
+    },
+    {
+      "id": "LR-0070",
+      "title": "Enforce map canon schema and protected geography in CI",
+      "status": "BLOCKED",
+      "priority": 0,
+      "exclusive_scope": "map-canon-enforcement",
+      "depends_on": [
+        "LR-0069"
+      ],
+      "primary_agent": 1,
+      "goal": "Make the canonical Grey March registry technically enforceable so ordinary feature PRs cannot silently rename, move, duplicate or orphan canonical places.",
+      "acceptance_criteria": [
+        "Add a schema/validator for world/map-canon.json covering unique ids, unique canonical grid positions, valid A–I/1–8 derived references, recognised canon statuses and valid place types.",
+        "Cross-check canonical settlement/site ids, names and q/r values against gameplay content until LR-0073 establishes a cleaner shared data path.",
+        "Fail CI when an ordinary PR changes canonical place identity/coordinates without dedicated map-canon change metadata and fresh Director approval.",
+        "Allow non-canonical PROPOSED art/lore labels to exist without becoming gameplay canon.",
+        "Document the approved workflow for adding, moving, renaming or retiring geography without breaking saves or story references."
+      ],
+      "likely_files": [
+        "scripts/",
+        "world/",
+        "package.json",
+        ".github/workflows/",
+        ".agent-coordination/"
+      ],
+      "notes": "Steward enforcement counterpart to LR-0069. Does not choose geography or names."
+    },
+    {
+      "id": "LR-0071",
+      "title": "Reconcile Grey March regional labels and location lore",
+      "status": "BLOCKED",
+      "priority": 1,
+      "exclusive_scope": "map-lore-reconciliation",
+      "depends_on": [
+        "LR-0069"
+      ],
+      "primary_agent": 2,
+      "goal": "Reconcile generated-map regional labels with existing Lantern Road canon and author concise lore for approved regions without allowing concept-art text to become canon by accident.",
+      "acceptance_criteria": [
+        "Audit concept-map labels Ashen Ridge, Duskwood, Mourn Lake, Hollowwold, Reedmarsh, Embermere, Siltbrook Marsh, Wyrthen Forest, Blackfen Plains and Stoneveil Mountains against existing quests, rumours, settlements and campaign material.",
+        "Classify each generated label as ADOPT, RENAME, REJECT or HOLD FOR JOSH rather than silently accepting it.",
+        "For adopted regional names, author concise grounded lore and relationships to existing settlements/sites/routes without relocating canonical gameplay places.",
+        "Identify conflicts with existing story references and propose controlled map-canon changes rather than editing canonical coordinates directly.",
+        "Keep the Grey March dense and learnable; do not expand the game into a giant empty open world merely because the painting depicts broad territory."
+      ],
+      "likely_files": [
+        "story/world/",
+        "docs/WORLD-MAP-CANON.md"
+      ],
+      "notes": "Storyteller may propose lore/geography; Agent 7 remains map-canon authority."
+    },
+    {
+      "id": "LR-0072",
+      "title": "Produce clean Grey March canonical terrain atlas",
+      "status": "BLOCKED",
+      "priority": 1,
+      "exclusive_scope": "grey-march-terrain-atlas",
+      "depends_on": [
+        "LR-0069"
+      ],
+      "primary_agent": 4,
+      "goal": "Turn the approved first-map direction into a clean illustrated terrain base aligned to canonical hex topology without baking gameplay-critical labels or interaction markers into the raster art.",
+      "acceptance_criteria": [
+        "Use Josh's approved first Grey March concept as the visual direction, favouring its open land and clear terrain separation.",
+        "Create a clean terrain atlas aligned to the canonical 9×8 axial layout/projection and fixed world-map canvas defined by LR-0069.",
+        "Do not permanently bake settlement/site names, roads, hex lines, party position, discovery state, fog, quest markers or mutable world-state markers into the gameplay terrain base.",
+        "Preserve major terrain readability at phone zoom levels and leave visual breathing room for dynamic labels, symbols and grid overlays.",
+        "Record source/provenance/style metadata and hand off final terrain assets for LR-0073 integration."
+      ],
+      "likely_files": [
+        "assets/art/maps/",
+        "docs/ART-PROVENANCE.md",
+        "docs/ART-DIRECTION.md"
+      ],
+      "notes": "Lamplighter owns atlas production; identity/coordinates come from LR-0069, not generated text in concept art."
+    },
+    {
+      "id": "LR-0073",
+      "title": "Implement atlas-backed canonical hex map rendering",
+      "status": "BLOCKED",
+      "priority": 1,
+      "exclusive_scope": "canonical-map-rendering",
+      "depends_on": [
+        "LR-0010",
+        "LR-0069",
+        "LR-0070",
+        "LR-0072"
+      ],
+      "primary_agent": 1,
+      "goal": "Render the canonical axial gameplay map over the authored Grey March terrain atlas while keeping game logic/data independent from raster artwork.",
+      "acceptance_criteria": [
+        "Preserve existing canonical q/r gameplay coordinates and travel/save compatibility.",
+        "Establish a fixed atlas canvas/projection that deterministically maps every axial hex centre to the illustrated terrain layer.",
+        "Render hex grid, canonical labels/grid references, settlement/site symbols, roads, reachable-hex affordances, party marker, discovery/fog and mutable world-state overlays dynamically rather than baking them into the atlas.",
+        "Keep interaction hit-testing mathematically tied to canonical q/r hexes rather than image pixels or painted labels.",
+        "Provide a data/rendering boundary so future atlas replacements do not require gameplay-coordinate migrations.",
+        "Add regression coverage for coordinate projection, clicking/travel target selection and canonical place placement."
+      ],
+      "likely_files": [
+        "game.js",
+        "content.js",
+        "world/",
+        "assets/art/maps/",
+        "tests/"
+      ],
+      "notes": "Steward rendering architecture. The painting is never authoritative game data."
+    },
+    {
+      "id": "LR-0074",
+      "title": "Phone-first canonical map navigation and coordinate UX",
+      "status": "BLOCKED",
+      "priority": 1,
+      "exclusive_scope": "canonical-map-mobile-ux",
+      "depends_on": [
+        "LR-0051",
+        "LR-0073"
+      ],
+      "primary_agent": 5,
+      "goal": "Make the illustrated canonical map comfortable to pan, zoom, inspect and navigate on a phone while exposing useful grid references without obscuring artwork.",
+      "acceptance_criteria": [
+        "Support smooth touch pan/zoom over the large illustrated atlas without breaking canonical hex tapping or reachable-hex selection.",
+        "Expose stable human grid references such as E5 alongside canonical location names where useful, without replacing natural place names in narrative prose.",
+        "Keep labels/symbols readable across representative phone widths and accessibility text sizes, with sensible collision/decluttering.",
+        "Ensure discovered/hidden locations, party position, roads and changing world overlays remain understandable without permanently covering terrain art.",
+        "Verify one-handed interaction, reset/centre-on-party behaviour and no accidental travel while panning/zooming."
+      ],
+      "likely_files": [
+        "game.js",
+        "style.css",
+        "index.html",
+        "QA/"
+      ],
+      "notes": "Wayfinder consumes canonical rendering and does not own geography."
+    },
+    {
+      "id": "LR-0075",
+      "title": "Black-box canonical map integrity audit",
+      "status": "BLOCKED",
+      "priority": 1,
+      "exclusive_scope": "qa-map-canon",
+      "depends_on": [
+        "LR-0070",
+        "LR-0073",
+        "LR-0074"
+      ],
+      "primary_agent": 6,
+      "goal": "Independently verify that the map a player sees and interacts with matches canonical geography, coordinates and route behaviour across desktop and phone browsers.",
+      "acceptance_criteria": [
+        "Verify every canonical settlement/site appears at its registry-defined grid reference and q/r hex with the correct name/type.",
+        "Check representative road/river/terrain relationships and travel interactions against canonical data rather than visual guesswork.",
+        "Attempt adversarial pan/zoom/tap sequences and confirm map movement cannot accidentally target the wrong hex or place.",
+        "Verify hidden/discovered locations and mutable overlays do not contradict canonical coordinates or leak hidden information.",
+        "Report artwork/data mismatches to the owning specialist; do not silently alter canon in QA."
+      ],
+      "likely_files": [
+        "QA/"
+      ],
+      "notes": "Independent Warden audit after canonical rendering/mobile UX lands."
     }
   ],
   "agent_roster": [
@@ -1908,5 +2095,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T16:22:00+11:00"
+  "updated_at": "2026-10-04T16:31:00+11:00"
 }
