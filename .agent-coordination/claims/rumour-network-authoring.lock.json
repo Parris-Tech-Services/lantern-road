@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0100",
+  "exclusive_scope": "rumour-network-authoring",
+  "agent_number": 2,
+  "agent": "The Storyteller",
+  "session_id": "7d9b59a7-40dd-4c69-8aa0-5c40d2e2e3ec",
+  "claim_token": "e02ae4e4-924f-4a49-84cc-b42a4d57df3d",
+  "claimed_at": "2026-10-04T16:49:00+11:00",
+  "expires_at": "2026-10-05T04:49:00+11:00",
+  "branch": "agent/LR-0100-rumour-authoring-7d9b59a7",
+  "note": "Implementing only LR-0100 evolving rumour/gossip authoring."
+}
