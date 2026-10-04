@@ -2706,7 +2706,7 @@
     {
       "id": "LR-0102",
       "title": "Author minimal Leader identity and reactive background pack",
-      "status": "READY",
+      "status": "DONE",
       "priority": 1,
       "exclusive_scope": "leader-identity-authoring",
       "depends_on": [
@@ -2725,7 +2725,7 @@
       "likely_files": [
         "story/leader/"
       ],
-      "notes": "Pure author-now Storyteller follow-up to DONE LR-0089 and authored LR-0088. Must stay within the Director's explicit light-identity rule: player-chosen name, at most one small background tag, emergent behaviour. No large character creator. Parked 4 Oct 2026 under the completed-work parking rule. Minimal Leader identity/background authoring is complete on branch agent/LR-0102-leader-identity-6ac9c59b at useful head 5740f2ceea2b2ad7e62b797531d203ae8f85f6e9, PR #52. All live criteria pass: optional No Stated Background + four small tags, hard no-character-creator/faction/biography/stat guardrails, companion + named-NPC reactions, emergent leadership behaviour, reserve continuity and LR-0090/LR-0091/UI handoff; branch changes only story/leader/. Next action after Director approval: fresh Agent 2 claimant reacquires leader-identity-authoring, verifies approved head/CI, merges PR #52 if current, marks LR-0102 DONE, then releases the fresh lock."
+      "notes": "Pure author-now Storyteller follow-up to DONE LR-0089 and authored LR-0088. Must stay within the Director's explicit light-identity rule: player-chosen name, at most one small background tag, emergent behaviour. No large character creator. Parked 4 Oct 2026 under the completed-work parking rule. Minimal Leader identity/background authoring is complete on branch agent/LR-0102-leader-identity-6ac9c59b at useful head 5740f2ceea2b2ad7e62b797531d203ae8f85f6e9, PR #52. All live criteria pass: optional No Stated Background + four small tags, hard no-character-creator/faction/biography/stat guardrails, companion + named-NPC reactions, emergent leadership behaviour, reserve continuity and LR-0090/LR-0091/UI handoff; branch changes only story/leader/. Next action after Director approval: fresh Agent 2 claimant reacquires leader-identity-authoring, verifies approved head/CI, merges PR #52 if current, marks LR-0102 DONE, then releases the fresh lock. Completed 4 Oct 2026: PR #52 merged as 3610aa3b05ee14de9df5d3feca64c44435595d28 after Agent 7 approval; minimal Leader identity/background authoring is now on main."
     },
     {
       "id": "LR-0103",
@@ -3915,5 +3915,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T21:28:00+11:00"
+  "updated_at": "2026-10-04T21:32:00+11:00"
 }
