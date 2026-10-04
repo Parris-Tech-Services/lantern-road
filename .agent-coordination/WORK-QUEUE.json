@@ -3760,7 +3760,7 @@
         "assets/ui/materials/",
         "assets/ui/effects/"
       ],
-      "notes": "Josh creative-director override 5 Oct 2026: early presentation wiring is explicitly allowed before LR-0137 because the current art-slot contract already supports CSS --art-image and the accepted hero/UI source assets are already present on main. This task now owns only the narrow current-shell wiring; broader LR-0031 art delivery and later LR-0137 architecture extraction remain separate. Agent 4 reviews visual quality; Agent 5 retains interaction/accessibility semantics."
+      "notes": "PARKED HANDOFF 5 Oct 2026: Josh-directed early current-shell presentation integration implemented on branch agent/LR-0141-early-visual-wiring-2c2fd694, exact useful head 12082a50870bd00f40b20acca8b769ef960ab916, PR #115. Player-visible work includes accepted Garrick/Mira/Oren/Brindle portraits via existing CSS art slots, authored icons on selected visible controls, restrained parchment/lantern material treatment, contextual rain/fog/sacred VFX with reduced-motion/high-contrast fallbacks, build id 2026.10.05-lr0141-v1, and service-worker caching for every new runtime asset. CI green on exact head: Browser regression #29 / 37237342547, Static runtime #50 / 37237342542, DOM contract #43 / 37237342515, Save migration #58 / 37237342482, Agent coordination #1129 / 37237342499. parked_at=2026-10-05T08:47:00+11:00. Remaining gate from Josh's team brief: Agent 4 visual review of PR #115; after approval, frozen PR may merge if head remains unchanged. Broader LR-0031 art delivery remains separate."
     },
     {
       "id": "LR-0142",
