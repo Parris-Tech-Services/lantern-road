@@ -1031,6 +1031,87 @@
       ],
       "notes": "Separate from LR-0005 consequence infrastructure: this is authored social depth using that infrastructure. Separate from LR-0007 event expansion.",
       "primary_agent": 2
+    },
+    {
+      "id": "LR-0039",
+      "title": "Keyboard and screen-reader interaction parity",
+      "status": "BLOCKED",
+      "priority": 2,
+      "exclusive_scope": "accessibility-navigation",
+      "depends_on": [
+        "LR-0009",
+        "LR-0010"
+      ],
+      "primary_agent": 5,
+      "goal": "Make every critical Lantern Road loop operable and understandable without precise pointer input, including keyboard and assistive-technology use.",
+      "acceptance_criteria": [
+        "Keyboard-only players can travel, switch information tabs, use shops, choose dialogue/site actions and complete combat without pointer-only dead ends.",
+        "Modal focus enters the active modal, cannot escape behind it unintentionally, and returns sensibly when the modal closes.",
+        "Map state, travel alternatives and important status changes expose useful semantic labels and announcements without excessive live-region noise.",
+        "Focus order, visible focus treatment and contrast remain clear at Standard, Large and Extra Large text settings.",
+        "Reduced-motion and platform accessibility preferences are respected without removing necessary feedback."
+      ],
+      "likely_files": [
+        "index.html",
+        "style.css",
+        "game.js"
+      ],
+      "notes": "Discovered during LR-0009 after queue de-duplication. This is deeper interaction parity, not a repeat of LR-0009's phone layout/settings work or Warden black-box QA."
+    },
+    {
+      "id": "LR-0040",
+      "title": "PWA install, offline and mobile lifecycle polish",
+      "status": "BLOCKED",
+      "priority": 2,
+      "exclusive_scope": "pwa-offline-mobile",
+      "depends_on": [
+        "LR-0009",
+        "LR-0011",
+        "LR-0012"
+      ],
+      "primary_agent": 5,
+      "goal": "Make installed and intermittent-connectivity phone play behave like a deliberate app rather than a cached webpage.",
+      "acceptance_criteria": [
+        "Verify installability and manifest/service-worker behaviour on supported Android browsers, including icon/name/theme presentation.",
+        "Provide a clear offline state and recovery path instead of silently serving stale or failed content.",
+        "Verify background/foreground, reload and interrupted-session behaviour preserves campaign safety through the versioned save layer.",
+        "Define cache-update behaviour so a new release does not strand players on an old shell or incompatible asset mix.",
+        "Document browser limitations and keep the experience graceful where install prompts or storage are unavailable."
+      ],
+      "likely_files": [
+        "manifest.webmanifest",
+        "sw.js",
+        "index.html",
+        "style.css",
+        "game.js"
+      ],
+      "notes": "Discovered during LR-0009 after queue de-duplication. Deliberately waits for save hardening and runtime baseline rather than duplicating those Steward tasks."
+    },
+    {
+      "id": "LR-0041",
+      "title": "Contextual onboarding and first-run mobile guidance",
+      "status": "BLOCKED",
+      "priority": 2,
+      "exclusive_scope": "mobile-onboarding",
+      "depends_on": [
+        "LR-0026"
+      ],
+      "primary_agent": 5,
+      "goal": "Turn fresh-player confusion found by Warden QA into lightweight, replayable phone-first onboarding without front-loading a tutorial wall.",
+      "acceptance_criteria": [
+        "Teach the campaign goal, neighbouring-hex travel, map pan/zoom, save model and primary information tabs through short contextual guidance.",
+        "Guidance appears at the moment a system becomes relevant rather than as a long opening manual.",
+        "Players can skip, dismiss and later replay help without affecting campaign progress.",
+        "Onboarding remains readable and operable with accessibility text sizes, keyboard input and touch.",
+        "Coordinate wording with Storyteller-owned narrative content without moving story ownership into this task."
+      ],
+      "likely_files": [
+        "index.html",
+        "style.css",
+        "game.js",
+        "content.js"
+      ],
+      "notes": "Discovered during LR-0009. Intentionally depends on LR-0026 fresh-player black-box evidence so implementation responds to observed confusion rather than guessing."
     }
   ],
   "agent_roster": [
