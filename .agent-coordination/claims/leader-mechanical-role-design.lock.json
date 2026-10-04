@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0103",
+  "exclusive_scope": "leader-mechanical-role-design",
+  "agent_number": 3,
+  "agent": "The Mechanist",
+  "session_id": "2c8a85a1-e2df-4b9c-96ad-5db312a0be31",
+  "claim_token": "bc43fc56-28c1-447a-8685-cd810d95d8f5",
+  "claimed_at": "2026-10-04T21:29:00+11:00",
+  "expires_at": "2026-10-05T09:29:00+11:00",
+  "branch": "agent/LR-0103-leader-mechanical-role-4a327f6b",
+  "note": "Fresh closeout claim for Director-approved LR-0103 PR #54."
+}
