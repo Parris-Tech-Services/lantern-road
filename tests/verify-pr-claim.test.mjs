@@ -108,6 +108,50 @@ test("accepts exact final Director approval for a parked READY task without an i
   assert.match(result.stdout, /Parked REQUIRED-review PR verified for direct merge without owner re-claim/);
 });
 
+test("accepts parked map-canon review followed by final Director approval while notes retain the feature head", () => {
+  const branch = "agent/LR-0105-regional-canon-test";
+  const cwd = setupRepo(parkedTask("LR-0105", branch));
+
+  const featureHead = commitFile(cwd, "world/map-canon.json", "{\"regional_labels\":[]}\n", "map canon feature work");
+
+  writeJson(cwd, ".agent-coordination/WORK-QUEUE.json", {
+    schema_version: 1,
+    tasks: [parkedTask(
+      "LR-0105",
+      branch,
+      `PARKED HANDOFF: implementation complete on branch ${branch}, exact useful head ${featureHead}. Fresh claim required before later edits or merge preparation.`
+    )]
+  });
+
+  writeJson(cwd, ".agent-coordination/map-canon-reviews/LR-0105.json", {
+    schema_version: 1,
+    task_id: "LR-0105",
+    reviewer_agent_number: 7,
+    status: "APPROVED",
+    reviewed_head_sha: featureHead
+  });
+  git(cwd, ["add", ".agent-coordination/map-canon-reviews/LR-0105.json"]);
+  git(cwd, ["commit", "-m", "map canon approval"]);
+  const mapReviewHead = git(cwd, ["rev-parse", "HEAD"]);
+
+  writeJson(cwd, ".agent-coordination/design-reviews/LR-0105.json", {
+    schema_version: 1,
+    task_id: "LR-0105",
+    reviewer_agent_number: 7,
+    reviewer: "The Director",
+    status: "APPROVED",
+    reviewed_head_sha: mapReviewHead,
+    reviewed_at: "2026-10-04T21:30:00+11:00"
+  });
+  git(cwd, ["add", ".agent-coordination/design-reviews/LR-0105.json"]);
+  git(cwd, ["commit", "-m", "Director approval"]);
+  const approvalHead = git(cwd, ["rev-parse", "HEAD"]);
+
+  const result = runVerifier(cwd, branch, approvalHead);
+  assert.equal(result.status, 0, result.stderr);
+  assert.match(result.stdout, /parked useful head/);
+});
+
 test("rejects an unlocked feature commit", () => {
   const branch = "agent/LR-0044-personal-arc-test";
   const cwd = setupRepo(parkedTask("LR-0044", branch));
@@ -325,4 +369,37 @@ test("accepts an optional legacy Director approval on a now-NOT_REQUIRED parked 
   const result = runVerifier(cwd, branch, approvalHead);
   assert.equal(result.status, 0, result.stderr);
   assert.match(result.stdout, /optional legacy Director approval verified for direct merge/);
+});
+
+
+test("rejects parked direct merge when another active lock owns the scope", () => {
+  const branch = "agent/LR-0124-frozen-test";
+  const cwd = setupRepo(parkedTask("LR-0124", branch, "", "NOT_REQUIRED"));
+  const featureHead = commitFile(cwd, "assets/ui/material.svg", "<svg/>\n", "asset pack");
+
+  writeJson(cwd, ".agent-coordination/WORK-QUEUE.json", {
+    schema_version: 1,
+    tasks: [parkedTask(
+      "LR-0124",
+      branch,
+      `PARKED HANDOFF: branch ${branch}, exact useful head ${featureHead}.`,
+      "NOT_REQUIRED"
+    )]
+  });
+  writeJson(cwd, ".agent-coordination/claims/fixture-scope.lock.json", {
+    schema_version: 1,
+    task_id: "LR-0124",
+    exclusive_scope: "fixture-scope",
+    agent_number: 2,
+    agent: "The Storyteller",
+    session_id: "77777777-7777-4777-8777-777777777777",
+    claim_token: "88888888-8888-4888-8888-888888888888",
+    claimed_at: "2026-10-04T17:00:00+11:00",
+    expires_at: "2999-01-01T00:00:00Z",
+    branch: "agent/LR-0124-new-owner-77777777"
+  });
+
+  const result = runVerifier(cwd, branch, featureHead);
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /another active lock owns the task\/scope/i);
 });

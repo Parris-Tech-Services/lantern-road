@@ -15,11 +15,15 @@
   const ENCOUNTER_MAP = Object.fromEntries(C.encounters.map(e => [e.id, e]));
   const ENEMY_MAP = Object.fromEntries(C.enemyArchetypes.map(e => [e.id, e]));
   const RUMOUR_MAP = Object.fromEntries(C.rumours.map(r => [r.id, r]));
+  const INJURY_MAP = Object.fromEntries((C.injuries || []).map(i => [i.id, i]));
   C.region.tiles.forEach(t => TILE_MAP[`${t.q},${t.r}`] = t);
 
-  // Keep the historical storage key so existing installs can discover and migrate raw v1 saves.
+  // Keep the historical manual key so existing installs can discover and migrate raw v1 saves.
   const SAVE_KEY = "lantern-road-save-v1";
+  const AUTOSAVE_KEY = "lantern-road-autosave-v1";
   const LEGACY_BACKUP_KEY = "lantern-road-save-v1-backup";
+  const PREFS_KEY = "lantern-road-ui-prefs-v1";
+  const BUILD_ID = "2026.10.04-lr0009-v7";
   const SaveSystem = window.LanternRoadSave;
   if (!SaveSystem) throw new Error("Lantern Road save system failed to load.");
   const dom = {
@@ -32,19 +36,200 @@
     newGameBtn: document.getElementById("newGameBtn"),
     saveBtn: document.getElementById("saveBtn"),
     loadBtn: document.getElementById("loadBtn"),
+    accessibilityBtn: document.getElementById("accessibilityBtn"),
     fullscreenBtn: document.getElementById("fullscreenBtn"),
+    saveStatus: document.getElementById("saveStatus"),
     soundToggleBtn: document.getElementById("soundToggleBtn"),
     ambienceToggleBtn: document.getElementById("ambienceToggleBtn"),
     volumeSlider: document.getElementById("volumeSlider"),
     campBtn: document.getElementById("campBtn"),
     focusHereBtn: document.getElementById("focusHereBtn"),
-    mapHint: document.getElementById("mapHint")
+    mapZoomOutBtn: document.getElementById("mapZoomOutBtn"),
+    mapResetBtn: document.getElementById("mapResetBtn"),
+    mapZoomInBtn: document.getElementById("mapZoomInBtn"),
+    mapHint: document.getElementById("mapHint"),
+    nearbyTravel: document.getElementById("nearbyTravel"),
+    sidePanel: document.getElementById("sidePanel")
   };
   const ctx = dom.mapCanvas.getContext("2d");
   let state = null;
   let hexLayout = [];
   let feedbackTimer = null;
   let visualFxTimer = null;
+  let autosaveTimer = null;
+  let settingsOpen = false;
+  let prefs = {
+    textScale: "normal",
+    highContrast: false,
+    haptics: false
+  };
+  let mapView = {
+    zoom: 1,
+    panX: 0,
+    panY: 0,
+    initialized: false
+  };
+  let mapPointer = null;
+
+  function setSaveStatus(text) {
+    if (dom.saveStatus) dom.saveStatus.textContent = text;
+  }
+
+  function loadPrefs() {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(PREFS_KEY) || "null");
+      if (parsed && typeof parsed === "object") prefs = { ...prefs, ...parsed };
+    } catch (err) {
+      console.warn("Could not read Lantern Road UI preferences.", err);
+    }
+    if (!["normal", "large", "xlarge"].includes(prefs.textScale)) prefs.textScale = "normal";
+    prefs.highContrast = !!prefs.highContrast;
+    prefs.haptics = !!prefs.haptics;
+    applyPrefs();
+  }
+
+  function savePrefs() {
+    try {
+      localStorage.setItem(PREFS_KEY, JSON.stringify(prefs));
+    } catch (err) {
+      console.warn("Could not save Lantern Road UI preferences.", err);
+      showFeedback("Preference not saved", "This browser blocked local preference storage.", "bad");
+    }
+  }
+
+  function applyPrefs() {
+    document.documentElement.dataset.textScale = prefs.textScale;
+    document.documentElement.classList.toggle("high-contrast", prefs.highContrast);
+  }
+
+  function pulseHaptic(pattern = 10) {
+    if (!prefs.haptics || typeof navigator.vibrate !== "function") return;
+    try {
+      navigator.vibrate(pattern);
+    } catch {
+      // Optional haptics must never block play.
+    }
+  }
+
+  function storageHas(key) {
+    try {
+      return !!localStorage.getItem(key);
+    } catch {
+      return false;
+    }
+  }
+
+  function writeStoredState(key) {
+    if (!state) return false;
+    try {
+      localStorage.setItem(key, serializeState());
+      return true;
+    } catch (err) {
+      console.error(err);
+      return false;
+    }
+  }
+
+  function scheduleAutosave() {
+    if (!state) return;
+    if (autosaveTimer) clearTimeout(autosaveTimer);
+    autosaveTimer = setTimeout(() => {
+      if (writeStoredState(AUTOSAVE_KEY)) {
+        setSaveStatus("Autosaved · manual save separate");
+      } else {
+        setSaveStatus("Autosave unavailable · use Save Manual");
+      }
+    }, 350);
+  }
+
+  function normaliseLoadedState(next) {
+    if (!next || typeof next !== "object" || !next.position || !Array.isArray(next.party)) {
+      throw new Error("Saved campaign is missing required state.");
+    }
+    state = next;
+    if (!state.ui) state.ui = { tab: "context", focus: null, dialogue: null, shop: null };
+    state.ui.dialogue = null;
+    state.ui.shop = null;
+    settingsOpen = false;
+    mapView.initialized = false;
+    ensureCharacterState();
+    clampPartyHp();
+  }
+
+  function loadStoredState(key, label, { silent = false, recordLog = true } = {}) {
+    let raw = null;
+    try {
+      raw = localStorage.getItem(key);
+    } catch (err) {
+      console.error(err);
+    }
+    if (!raw) {
+      if (!silent && state) openMessage("No Save Found", `There is no ${label.toLowerCase()} on this device.`);
+      return false;
+    }
+
+    try {
+      const result = SaveSystem.decode(raw, createInitialState(123456789));
+
+      if (key === SAVE_KEY && result.migrated) {
+        try {
+          if (!localStorage.getItem(LEGACY_BACKUP_KEY)) localStorage.setItem(LEGACY_BACKUP_KEY, raw);
+        } catch (backupError) {
+          console.warn("Lantern Road could not preserve a legacy Manual Save backup.", backupError);
+        }
+      }
+
+      normaliseLoadedState(result.state);
+
+      if (result.migrated || result.warnings.length) {
+        try {
+          localStorage.setItem(key, serializeState());
+        } catch (upgradeError) {
+          console.warn(`Lantern Road loaded ${label} but could not persist the upgraded save.`, upgradeError);
+        }
+      }
+
+      if (recordLog) addLog(`${label} loaded.`);
+      renderAll();
+
+      if (!silent) {
+        const loc = currentLocation();
+        const locationLabel = loc ? loc.data.name : getTerrainDef(currentTile()).name;
+        if (result.migrated) {
+          showFeedback(
+            "Campaign upgraded",
+            `${label} was upgraded safely from save schema v${result.sourceVersion}. ${timeLabel()} • ${locationLabel}`,
+            "good"
+          );
+        } else if (result.warnings.length) {
+          showFeedback(
+            "Campaign repaired",
+            `${result.warnings.length} saved field${result.warnings.length === 1 ? "" : "s"} were restored safely. ${timeLabel()} • ${locationLabel}`,
+            "good"
+          );
+        } else {
+          showFeedback(`${label} loaded`, `${timeLabel()} • ${locationLabel}`, "good");
+        }
+      }
+      return true;
+    } catch (err) {
+      console.error(err);
+      if (!silent && state) {
+        if (err && err.code === "SAVE_VERSION_NEWER") {
+          openMessage(
+            "Save From Newer Version",
+            `This ${label.toLowerCase()} was created by a newer Lantern Road build. It has not been changed. Update the game before trying again.`
+          );
+        } else {
+          openMessage(
+            "Save Could Not Be Loaded",
+            `This ${label.toLowerCase()} was left unchanged because Lantern Road could not recover it safely. Your other save slot was not changed.`
+          );
+        }
+      }
+      return false;
+    }
+  }
 
   const ART_GLYPHS = {
     settlement: "◆",
@@ -385,6 +570,14 @@
     }, 3400);
   }
 
+  function clearFeedback() {
+    if (!dom.feedbackRoot) return;
+    if (feedbackTimer) clearTimeout(feedbackTimer);
+    feedbackTimer = null;
+    dom.feedbackRoot.classList.remove("visible");
+    dom.feedbackRoot.innerHTML = "";
+  }
+
   function hasBlockingFeedback() {
     return !!(state && (state.combat || state.activeScene || state.ui?.dialogue || state.ui?.shop));
   }
@@ -510,7 +703,17 @@
     let after = before + qty;
     if (after < 0) after = 0;
     state.inventory[id] = after;
-    if (after === 0) delete state.inventory[id];
+    if (after === 0) {
+      delete state.inventory[id];
+      const equipment = state.progression?.equipment;
+      if (equipment) {
+        const equippedHeroId = Object.keys(equipment).find(heroId => equipment[heroId] === id);
+        if (equippedHeroId) {
+          equipment[equippedHeroId] = null;
+          addLog(`${getPartyBase(equippedHeroId).name} no longer has ${ITEM_MAP[id]?.name || id} equipped.`);
+        }
+      }
+    }
     if (logIt && qty !== 0) {
       const item = ITEM_MAP[id];
       addLog(`${qty > 0 ? "Gained" : "Lost"} ${Math.abs(qty)} × ${item.name}.`);
@@ -696,11 +899,90 @@
     }
   }
 
+  function ensureProgressionState() {
+    const previousProgression = state.progression;
+    const migrateLegacyEquipment = !previousProgression
+      || typeof previousProgression !== "object"
+      || !previousProgression.equipment
+      || typeof previousProgression.equipment !== "object";
+
+    if (!state.progression || typeof state.progression !== "object") state.progression = {};
+    if (!state.progression.builds || typeof state.progression.builds !== "object") state.progression.builds = {};
+    if (!state.progression.equipment || typeof state.progression.equipment !== "object") state.progression.equipment = {};
+    if (!state.progression.injuries || typeof state.progression.injuries !== "object") state.progression.injuries = {};
+
+    const legacyGear = {
+      garrick: "mail_patch",
+      mira: "trail_charms",
+      oren: "keen_lens",
+      brindle: "healer_satchel"
+    };
+
+    C.party.forEach(hero => {
+      if (!(hero.id in state.progression.builds)) state.progression.builds[hero.id] = null;
+      if (!(hero.id in state.progression.equipment)) state.progression.equipment[hero.id] = null;
+      if (!(hero.id in state.progression.injuries)) state.progression.injuries[hero.id] = null;
+
+      const injury = state.progression.injuries[hero.id];
+      if (typeof injury === "string") {
+        const def = INJURY_MAP[injury];
+        state.progression.injuries[hero.id] = {
+          id: injury,
+          restRemaining: def?.restNights || 2
+        };
+      }
+
+      const equipped = state.progression.equipment[hero.id];
+      if (equipped && (!hasItem(equipped) || ITEM_MAP[equipped]?.hero !== hero.id)) {
+        state.progression.equipment[hero.id] = null;
+      }
+      if (migrateLegacyEquipment && !state.progression.equipment[hero.id] && hasItem(legacyGear[hero.id])) {
+        state.progression.equipment[hero.id] = legacyGear[hero.id];
+      }
+    });
+  }
+
+  function getBuildChoice(memberId) {
+    const id = state.progression?.builds?.[memberId];
+    return C.heroBuilds?.[memberId]?.choices?.find(choice => choice.id === id) || null;
+  }
+
+  function getEquippedItem(memberId) {
+    const itemId = state.progression?.equipment?.[memberId];
+    if (!itemId || !hasItem(itemId)) return null;
+    const item = ITEM_MAP[itemId];
+    return item?.hero === memberId ? item : null;
+  }
+
+  function getInjury(memberId) {
+    const injury = state.progression?.injuries?.[memberId];
+    if (!injury) return null;
+    const def = INJURY_MAP[injury.id];
+    return def ? { ...injury, def } : null;
+  }
+
+  function getBuildEffects(memberId) {
+    return getBuildChoice(memberId)?.effects || {};
+  }
+
+  function getProgressionEffect(memberId, key) {
+    const build = getBuildEffects(memberId);
+    const gear = getEquippedItem(memberId);
+    return (build[key] || 0) + (gear?.[key] || 0);
+  }
+
+  function getProgressionSkillBonus(memberId, skill) {
+    const build = getBuildEffects(memberId);
+    const gear = getEquippedItem(memberId);
+    return (build.skillBonus?.[skill] || 0) + (gear?.skillBonus?.[skill] || 0);
+  }
+
   function getMaxHp(memberId) {
     const base = getPartyBase(memberId).maxHp;
-    let bonus = 0;
-    if (memberId === "garrick" && hasItem("mail_patch")) bonus += 2;
-    return base + bonus;
+    const injury = getInjury(memberId);
+    const maxHpBonus = getProgressionEffect(memberId, "maxHpBonus");
+    const injuryPenalty = injury?.def.maxHpPenalty || 0;
+    return Math.max(1, base + maxHpBonus - injuryPenalty);
   }
 
   function clampPartyHp() {
@@ -722,11 +1004,46 @@
     state.party.forEach(m => healMember(m.id, amount));
   }
 
+  function maybeApplyInjury(memberId) {
+    ensureProgressionState();
+    if (state.progression.injuries[memberId]) return null;
+    const pool = C.injuries || [];
+    if (!pool.length) return null;
+    const def = pickRandom(pool);
+    state.progression.injuries[memberId] = {
+      id: def.id,
+      restRemaining: def.restNights || 2
+    };
+    const message = `${getPartyBase(memberId).name} suffers ${def.name}.`;
+    addLog(message);
+    if (state.combat) addCombatLog(message);
+    return def;
+  }
+
+  function recoverInjuriesAtInn() {
+    ensureProgressionState();
+    const updates = [];
+    C.party.forEach(hero => {
+      const injury = state.progression.injuries[hero.id];
+      if (!injury) return;
+      injury.restRemaining = Math.max(0, (injury.restRemaining || 1) - 1);
+      const def = INJURY_MAP[injury.id];
+      if (injury.restRemaining <= 0) {
+        state.progression.injuries[hero.id] = null;
+        updates.push(`${hero.name}'s ${def?.name || "injury"} has healed.`);
+      } else {
+        updates.push(`${hero.name}'s ${def?.name || "injury"} needs ${injury.restRemaining} more proper rest${injury.restRemaining === 1 ? "" : "s"}.`);
+      }
+    });
+    return updates;
+  }
+
   function damageMember(memberId, amount) {
     const m = getPartyMember(memberId);
     const before = m.hp;
     m.hp = Math.max(0, m.hp - amount);
     if (m.hp < before) signalVisualEffect("hit");
+    if (before > 0 && m.hp === 0) maybeApplyInjury(memberId);
   }
 
   function damageAll(amount) {
@@ -751,10 +1068,76 @@
 
   function getSkill(memberId, skill) {
     const base = getPartyBase(memberId).skills[skill] || 0;
-    let bonus = 0;
-    if (memberId === "oren" && skill === "wits" && hasItem("keen_lens")) bonus += 1;
-    if (memberId === "mira" && skill === "scout" && hasItem("trail_charms")) bonus += 1;
-    return base + bonus + fatiguePenalty();
+    const injury = getInjury(memberId);
+    const injuryPenalty = injury?.def.skill === skill ? (injury.def.skillPenalty || 0) : 0;
+    return base + getProgressionSkillBonus(memberId, skill) - injuryPenalty + fatiguePenalty();
+  }
+
+  function buildUnlockRenown(memberId) {
+    return C.heroBuilds?.[memberId]?.unlockRenown ?? 2;
+  }
+
+  function chooseBuild(memberId, buildId) {
+    ensureProgressionState();
+    const hero = getPartyBase(memberId);
+    const config = C.heroBuilds?.[memberId];
+    const choice = config?.choices?.find(entry => entry.id === buildId);
+    if (!choice) {
+      showFeedback("Path unavailable", "That path does not exist.", "bad");
+      return;
+    }
+    if (state.progression.builds[memberId]) {
+      const existing = getBuildChoice(memberId);
+      showFeedback("Path already chosen", `${hero.name} is already committed to ${existing?.name || "a path"}.`);
+      return;
+    }
+    if (state.renown < buildUnlockRenown(memberId)) {
+      showFeedback("Path still locked", `Reach ${buildUnlockRenown(memberId)} renown before committing ${hero.name} to a path.`);
+      return;
+    }
+
+    state.progression.builds[memberId] = buildId;
+    clampPartyHp();
+    addLog(`${hero.name} commits to the ${choice.name} path.`);
+    playCue("ui");
+    renderAll();
+    showFeedback("Path chosen", `${hero.name}: ${choice.name}. This choice is permanent for this campaign.`, "good");
+  }
+
+  function equipGear(itemId) {
+    ensureProgressionState();
+    const item = ITEM_MAP[itemId];
+    if (!item || item.kind !== "gear" || !item.hero) {
+      showFeedback("Cannot equip", "That item is not hero equipment.", "bad");
+      return;
+    }
+    if (!hasItem(itemId)) {
+      showFeedback("Gear unavailable", `You do not currently carry ${item.name}.`, "bad");
+      return;
+    }
+
+    const hero = getPartyBase(item.hero);
+    if (state.progression.equipment[item.hero] === itemId) {
+      showFeedback("Already equipped", `${hero.name} is already using ${item.name}.`);
+      return;
+    }
+
+    const previous = getEquippedItem(item.hero);
+    state.progression.equipment[item.hero] = itemId;
+    clampPartyHp();
+    addLog(`${hero.name} equips ${item.name}${previous ? `, replacing ${previous.name}` : ""}.`);
+    playCue("ui");
+    renderAll();
+    showFeedback("Gear equipped", `${hero.name} now uses ${item.name}.`, "good");
+  }
+
+  function maybeAnnounceBuildUnlock(previousRenown) {
+    const thresholds = Object.values(C.heroBuilds || {}).map(entry => entry.unlockRenown ?? 2);
+    const threshold = thresholds.length ? Math.min(...thresholds) : Infinity;
+    if (previousRenown < threshold && state.renown >= threshold) {
+      addLog("Your growing renown has opened permanent hero paths. Choose them in the Party tab.");
+      showFeedback("Hero paths unlocked", "Open Party to choose one permanent path for each hero.", "good");
+    }
   }
 
   function rollCheck(actor, skill, dc) {
@@ -802,7 +1185,9 @@
     q.stage = "completed";
     q.outcome = outcome || "";
     q.completedDay = state.day;
+    const previousRenown = state.renown;
     state.renown += 2;
+    maybeAnnounceBuildUnlock(previousRenown);
     addLog(`Completed quest: ${QUEST_MAP[id].title}.`);
   }
 
@@ -851,6 +1236,11 @@
         relationships: {},
         seenCampMoments: []
       },
+      progression: {
+        builds: Object.fromEntries(C.party.map(p => [p.id, null])),
+        equipment: Object.fromEntries(C.party.map(p => [p.id, null])),
+        injuries: Object.fromEntries(C.party.map(p => [p.id, null]))
+      },
       logs: [],
       worldFlags: {},
       activeScene: null,
@@ -866,9 +1256,12 @@
   }
 
   function startNewGame() {
+    settingsOpen = false;
+    mapView = { zoom: 1, panX: 0, panY: 0, initialized: false };
     const seed = (Date.now() >>> 0) || 123456789;
     state = createInitialState(seed);
     ensureCharacterState();
+    ensureProgressionState();
     revealAround(state.position.q, state.position.r);
     C.settlements.forEach(s => { if (s.id === C.startingLocation) state.discoveredSites[s.id] = true; });
     addLog("You begin in Hearthwick with a little coin, enough food for a few days, and a road full of trouble.");
@@ -892,24 +1285,45 @@
 
   function saveGame() {
     if (!state) return;
-    try {
-      localStorage.setItem(SAVE_KEY, serializeState());
-      addLog("Campaign saved.");
-      renderAll();
-      openMessage("Saved", `Your campaign was saved on this device using save schema v${SaveSystem.CURRENT_SCHEMA_VERSION}.`);
-    } catch (err) {
-      console.error(err);
-      openMessage("Save Failed", "The browser could not store this campaign. Your current run is still open, but this save was not written.");
+    if (!writeStoredState(SAVE_KEY)) {
+      openMessage(
+        "Manual Save Failed",
+        "Lantern Road could not update your Manual Save. Your current run is still open and the previous confirmed Manual Save was not intentionally replaced."
+      );
+      return;
     }
+    addLog("Manual save updated.");
+    renderAll();
+    setSaveStatus("Manual Save updated · Autosave separate");
+    pulseHaptic(20);
+    openMessage(
+      "Manual Save Updated",
+      "Your Manual Save is stored on this device and remains separate from Autosave. Starting a new campaign will not intentionally overwrite it."
+    );
   }
 
   function loadGame() {
-    const raw = localStorage.getItem(SAVE_KEY);
-    if (!raw) {
-      openMessage("No Save Found", "There is no saved Lantern Road campaign on this device yet.");
+    const manual = storageHas(SAVE_KEY);
+    const auto = storageHas(AUTOSAVE_KEY);
+    if (!manual && !auto) {
+      openMessage("No Save Found", "There is no manual save or autosave on this device yet.");
       return;
     }
+    const choices = [];
+    if (manual) choices.push({ key: "loadManual", label: "Load manual save" });
+    if (auto) choices.push({ key: "loadAutosave", label: "Load autosave" });
+    choices.push({ key: "close", label: "Keep current campaign" });
+    openDialogue({
+      title: "Load Campaign",
+      text: "Manual Save is the checkpoint you choose. Autosave follows your latest play. Loading either one leaves the Manual Save slot untouched until you press Save Manual again.",
+      choices
+    });
+  }
 
+  function confirmNewCampaign() {
+    if (!state && !storageHas(AUTOSAVE_KEY) && !storageHas(SAVE_KEY)) {
+      startNewGame();
+      return;
     try {
       const result = SaveSystem.decode(raw, createInitialState(123456789));
 
@@ -923,6 +1337,7 @@
 
       state = result.state;
       ensureCharacterState();
+      ensureProgressionState();
       clampPartyHp();
 
       if (result.migrated || result.warnings.length) {
@@ -968,6 +1383,14 @@
         "The saved campaign could not be migrated or repaired safely. The stored save was left untouched so it can be recovered or inspected later."
       );
     }
+    openDialogue({
+      title: "Start New Campaign?",
+      text: "A new campaign will replace the current Autosave. Your Manual Save will stay unchanged.",
+      choices: [
+        { key: "newCampaignConfirm", label: "Start new campaign" },
+        { key: "close", label: "Keep current campaign" }
+      ]
+    });
   }
 
   function openMessage(title, text) {
@@ -1023,6 +1446,67 @@
     renderModal();
   }
 
+  function openAccessibility() {
+    clearFeedback();
+    settingsOpen = true;
+    renderModal();
+  }
+
+  function closeAccessibility() {
+    settingsOpen = false;
+    renderModal();
+  }
+
+  function renderAccessibilityModal() {
+    const hapticsSupported = typeof navigator.vibrate === "function";
+    const gameVersion = C.version || "development";
+    return `
+      <div class="modal settings-modal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+        <div class="modal-header">
+          <div>
+            <h2 id="settingsTitle">Settings</h2>
+            <p class="subtle">Accessibility and phone preferences stay on this device and are separate from campaign saves.</p>
+          </div>
+          <button class="close-btn" data-action="close-accessibility">Close</button>
+        </div>
+        <div class="accessibility-options">
+          <div class="setting-row">
+            <div>
+              <strong>Text size</strong>
+              <p class="subtle">Increase interface and story text together.</p>
+            </div>
+            <div class="setting-actions" aria-label="Text size">
+              <button class="small" data-action="set-text-scale" data-value="normal" aria-pressed="${prefs.textScale === "normal"}">Standard</button>
+              <button class="small" data-action="set-text-scale" data-value="large" aria-pressed="${prefs.textScale === "large"}">Large</button>
+              <button class="small" data-action="set-text-scale" data-value="xlarge" aria-pressed="${prefs.textScale === "xlarge"}">Extra large</button>
+            </div>
+          </div>
+          <div class="setting-row">
+            <div>
+              <strong>High contrast</strong>
+              <p class="subtle">Use stronger borders, brighter text and simpler surfaces.</p>
+            </div>
+            <button data-action="toggle-contrast" aria-pressed="${prefs.highContrast}">${prefs.highContrast ? "On" : "Off"}</button>
+          </div>
+          <div class="setting-row">
+            <div>
+              <strong>Haptic taps</strong>
+              <p class="subtle">${hapticsSupported ? "Optional short vibration on supported phones." : "This browser does not expose vibration controls."}</p>
+            </div>
+            <button data-action="toggle-haptics" aria-pressed="${prefs.haptics}" ${hapticsSupported ? "" : "disabled"}>${prefs.haptics ? "On" : "Off"}</button>
+          </div>
+          <div class="setting-row settings-about" data-settings-target>
+            <div>
+              <strong>About Lantern Road</strong>
+              <p class="subtle">Version ${gameVersion} · Build <span class="build-id">${BUILD_ID}</span></p>
+              <p class="subtle">Share this build identifier when reporting stale or cached behaviour.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
   function getVisibleRumoursForSettlement(settlementId) {
     const settlement = SETTLEMENT_MAP[settlementId];
     const ids = settlement.npcs.flatMap(id => NPC_MAP[id].rumours || []);
@@ -1057,13 +1541,17 @@
     const beforeRations = getItemQty("rations");
     state.gold -= settlement.innCost;
     state.fatigue = 0;
+    const injuryUpdates = recoverInjuriesAtInn();
     state.party.forEach(m => m.hp = getMaxHp(m.id));
     advanceToMorning();
     state.lastSettlement = settlementId;
     addLog(`You rest properly in ${settlement.name}.`);
+    injuryUpdates.forEach(message => addLog(message));
     renderAll();
+
     const rationUsed = Math.max(0, beforeRations - getItemQty("rations"));
-    const summary = `Paid ${settlement.innCost} gold. The party is fully healed, fatigue is cleared, and you wake at ${timeLabel()}.${rationUsed ? ` ${rationUsed} ration was consumed overnight.` : ""}`;
+    const injurySummary = injuryUpdates.length ? ` ${injuryUpdates.join(" ")}` : "";
+    const summary = `Paid ${settlement.innCost} gold. The party is fully healed, fatigue is cleared, and you wake at ${timeLabel()}.${rationUsed ? ` ${rationUsed} ration was consumed overnight.` : ""}${injurySummary}`;
     if (state.ui.dialogue) {
       showFeedback(`Rested at ${settlement.name}`, summary, "good");
     } else {
@@ -1162,6 +1650,7 @@
     const weather = C.weatherDefs[state.weather];
     const moveHours = Math.max(4, terrain.move - (tile.road ? 2 : 0) + weather.move);
     state.position = { q, r };
+    mapView.initialized = false;
     revealAround(q, r);
     state.ui.focus = null;
     advanceTime(moveHours);
@@ -1236,7 +1725,7 @@
       return;
     }
     if (itemId === "bandage") {
-      const amount = 4 + (hasItem("healer_satchel") ? 1 : 0);
+      const amount = 4 + getProgressionEffect("brindle", "consumableHealBonus");
       const name = getPartyBase(memberId).name;
       const before = getPartyMember(memberId).hp;
       healMember(memberId, amount);
@@ -1287,13 +1776,15 @@
       showFeedback("Nothing to sell", `You no longer carry ${item.name}.`);
       return;
     }
+    const equippedHeroId = Object.keys(state.progression?.equipment || {}).find(heroId => state.progression.equipment[heroId] === itemId) || null;
     const price = Math.max(2, Math.floor(item.value * 0.5));
     state.gold += price;
     changeItem(itemId, -1, false);
     addLog(`Sold ${item.name}.`);
     renderAll();
     renderModal();
-    showFeedback("Sale complete", `${item.name} • +${price} gold • ${state.gold} gold total`, "good");
+    const equipmentNote = equippedHeroId ? ` • unequipped from ${getPartyBase(equippedHeroId).name}` : "";
+    showFeedback("Sale complete", `${item.name} • +${price} gold • ${state.gold} gold total${equipmentNote}`, "good");
   }
 
   function applyEffects(effects) {
@@ -1343,10 +1834,13 @@
         case "startCombat":
           startCombat(a, b);
           break;
-        case "addRenown":
+        case "addRenown": {
+          const previousRenown = state.renown;
           state.renown += a;
+          maybeAnnounceBuildUnlock(previousRenown);
           addLog(`${a} renown gained.`);
           break;
+        }
       }
     });
     clampPartyHp();
@@ -1618,9 +2112,38 @@
     const story = characterState(memberId);
     const latestMemory = story.memories[story.memories.length - 1];
     const arcReady = personalArcReady(memberId);
+    const gear = getEquippedItem(memberId);
+    const injury = getInjury(memberId);
+    const build = getBuildChoice(memberId);
+    const buildConfig = C.heroBuilds?.[memberId];
+    const unlock = buildUnlockRenown(memberId);
+
     const itemButtons = ["bandage", "healing_tonic"].filter(id => hasItem(id)).map(id =>
       `<button class="small" data-action="use-item" data-item="${id}" data-member="${memberId}">Use ${ITEM_MAP[id].name}</button>`
     ).join("");
+
+    let buildHtml = "";
+    if (build) {
+      buildHtml = `<p><strong>Path — ${build.name}:</strong> ${build.description}</p>`;
+    } else if (buildConfig && state.renown >= unlock) {
+      buildHtml = `
+        <p><strong>Choose a permanent path:</strong></p>
+        <div class="choice-list">
+          ${buildConfig.choices.map(choice => `
+            <button class="small" data-action="choose-build" data-member="${memberId}" data-build="${choice.id}">
+              ${choice.name} — ${choice.description}
+            </button>
+          `).join("")}
+        </div>
+      `;
+    } else if (buildConfig) {
+      buildHtml = `<p class="subtle">Path unlocks at ${unlock} renown.</p>`;
+    }
+
+    const injuryHtml = injury
+      ? `<p><strong>Injury — ${injury.def.name}:</strong> ${injury.def.description} ${injury.restRemaining} proper rest${injury.restRemaining === 1 ? "" : "s"} to recover.</p>`
+      : `<p class="subtle">No persistent injury.</p>`;
+
     return `
       <div class="party-card art-card">
         ${artSlot("party", memberId, base.name)}
@@ -1642,6 +2165,9 @@
             <div>Guile +${getSkill(memberId,"guile")}</div>
           </div>
           <p><strong>${base.ability.name}:</strong> ${base.ability.text}</p>
+          <p><strong>Gear:</strong> ${gear ? gear.name : "No hero gear equipped"}.</p>
+          ${buildHtml}
+          ${injuryHtml}
           <div class="row">
             <span class="tag">Trust: ${loyaltyLabel(story.loyalty)}${story.loyalty ? ` (${story.loyalty > 0 ? "+" : ""}${story.loyalty})` : ""}</span>
             ${(base.values || []).map(value => `<span class="tag">${value}</span>`).join("")}
@@ -1673,8 +2199,15 @@
   }
 
   function renderPartyTab() {
+    ensureProgressionState();
     const inventory = Object.entries(state.inventory).map(([id, qty]) => {
       const item = ITEM_MAP[id];
+      const equipped = item.kind === "gear" && item.hero && state.progression.equipment[item.hero] === id;
+      const heroName = item.hero ? getPartyBase(item.hero)?.name : "";
+      const equipmentAction = item.kind === "gear" && item.hero
+        ? `<button class="small" ${equipped ? "disabled" : ""} data-action="equip-gear" data-item="${id}">${equipped ? `Equipped by ${heroName}` : `Equip to ${heroName}`}</button>`
+        : "";
+
       return `
         <div class="item-entry art-entry">
           ${artSlot("item", id, item.name)}
@@ -1684,14 +2217,17 @@
               <span class="tag">${qty}</span>
             </div>
             <p>${item.description}</p>
+            ${equipmentAction}
           </div>
         </div>
       `;
     }).join("") || "<p>No items carried.</p>";
+
     const extra = hasItem("ward_salve") ? `<button data-action="use-item" data-item="ward_salve" data-member="all">Use Ward Salve</button>` : "";
     return `
       <div class="card">
         <h3>Adventuring Party</h3>
+        <p class="subtle">Each hero has one gear slot. Gear can be swapped freely; hero paths are permanent for this campaign.</p>
         ${state.party.map(m => memberCard(m.id)).join("")}
       </div>
       <div class="card">
@@ -1716,7 +2252,11 @@
   }
 
   function renderTabs() {
-    dom.tabs.forEach(tab => tab.classList.toggle("active", tab.dataset.tab === state.ui.tab));
+    dom.tabs.forEach(tab => {
+      const active = tab.dataset.tab === state.ui.tab;
+      tab.classList.toggle("active", active);
+      tab.setAttribute("aria-selected", active ? "true" : "false");
+    });
   }
 
   function renderTabContent() {
@@ -2441,6 +2981,20 @@
       closeDialogue();
       return;
     }
+    if (key === "loadManual") {
+      loadStoredState(SAVE_KEY, "Manual save");
+      return;
+    }
+    if (key === "loadAutosave") {
+      loadStoredState(AUTOSAVE_KEY, "Autosave");
+      return;
+    }
+    if (key === "newCampaignConfirm") {
+      closeDialogue();
+      startNewGame();
+      showFeedback("New campaign started", "Autosave now follows this campaign. Your Manual Save slot is unchanged.", "good");
+      return;
+    }
     if (key.startsWith("characterMoment:")) {
       const [, momentId, choiceIndex] = key.split(":");
       resolveCharacterCampMoment(momentId, Number(choiceIndex));
@@ -2673,7 +3227,7 @@
       order.push({
         kind: "party",
         id: member.id,
-        initiative: getSkill(member.id, "scout") + randInt(1, 20)
+        initiative: getSkill(member.id, "scout") + getProgressionEffect(member.id, "initiativeBonus") + randInt(1, 20)
       });
     });
     enemies.forEach(enemy => {
@@ -2736,7 +3290,7 @@
 
   function heroDefense(memberId) {
     const might = getSkill(memberId, "might");
-    return 10 + Math.max(0, Math.floor(might / 2));
+    return 10 + Math.max(0, Math.floor(might / 2)) + getProgressionEffect(memberId, "defenseBonus");
   }
 
   function enemyAct(enemyUid) {
@@ -2761,7 +3315,7 @@
     if (attackRoll >= defence) {
       let dmg = randInt(enemy.damage[0], enemy.damage[1]);
       if (target.guard > 0) {
-        dmg = Math.max(1, dmg - 3);
+        dmg = Math.max(1, dmg - Math.max(3, target.guard));
         target.guard = 0;
       }
       damageMember(target.id, dmg);
@@ -2836,7 +3390,7 @@
       const hit = attackEnemy(memberId, targetId, getSkill(memberId, "wits"), [2, 4], `${hero.name} binds`);
       if (hit) {
         const enemy = state.combat.enemies.find(e => e.uid === targetId);
-        if (enemy) enemy.statuses.weakened = 2;
+        if (enemy) enemy.statuses.weakened = 2 + getProgressionEffect(memberId, "bindBonus");
         signalVisualEffect("status");
         addCombatLog(`${enemy.name}'s next attack is weakened.`);
       }
@@ -2846,18 +3400,18 @@
     }
     if (actionKey === "guard") {
       const ally = getPartyMember(targetId);
-      ally.guard = 1;
+      ally.guard = 3 + getProgressionEffect(memberId, "guardReduction");
       signalVisualEffect("status");
       addCombatLog(`${hero.name} guards ${getPartyBase(targetId).name}.`);
     }
     if (actionKey === "mend") {
-      const heal = 5 + (hasItem("healer_satchel") ? 2 : 0);
+      const heal = 5 + getProgressionEffect(memberId, "healBonus");
       healMember(targetId, heal);
       addCombatLog(`${hero.name} restores ${heal} HP to ${getPartyBase(targetId).name}.`);
     }
     if (actionKey === "bless") {
       const ally = getPartyMember(targetId);
-      ally.bless = 2;
+      ally.bless = 2 + getProgressionEffect(memberId, "blessBonus");
       signalVisualEffect("status");
       addCombatLog(`${hero.name} blesses ${getPartyBase(targetId).name}'s next strike.`);
     }
@@ -2871,7 +3425,7 @@
     const actor = getPartyMember(memberId);
     let attack = randInt(1, 20) + bonus + (actor.bless || 0) + enemy.statuses.exposed;
     if (attack >= enemy.armor) {
-      let dmg = randInt(damageRange[0], damageRange[1]);
+      let dmg = randInt(damageRange[0], damageRange[1]) + getProgressionEffect(memberId, "damageBonus");
       enemy.hp = Math.max(0, enemy.hp - dmg);
       signalVisualEffect("hit");
       addCombatLog(`${verb} ${enemy.name} for ${dmg}.`);
@@ -3141,6 +3695,7 @@
     else if (state && state.activeScene) html = renderSceneModal();
     else if (state && state.ui.shop) html = renderShopModal();
     else if (state && state.ui.dialogue) html = renderDialogueModal();
+    else if (state && settingsOpen) html = renderAccessibilityModal();
     if (html) {
       dom.modalRoot.classList.remove("hidden");
       dom.modalRoot.innerHTML = html;
@@ -3148,6 +3703,83 @@
       dom.modalRoot.classList.add("hidden");
       dom.modalRoot.innerHTML = "";
     }
+    if (state) scheduleAutosave();
+  }
+
+  function defaultMapZoom() {
+    return window.matchMedia("(max-width: 640px)").matches ? 1.55 : 1;
+  }
+
+  function baseMapMetrics(rect) {
+    const size = Math.min(
+      rect.width / (Math.sqrt(3) * (C.region.width + 1.2)),
+      rect.height / (1.5 * (C.region.height + 1.3))
+    );
+    return { size, width: rect.width, height: rect.height };
+  }
+
+  function baseHexPosition(q, r, size) {
+    return {
+      x: size * Math.sqrt(3) * (q + 0.5 * (r & 1)) + size * 1.6,
+      y: size * 1.5 * r + size * 1.7
+    };
+  }
+
+  function clampMapPan(width, height) {
+    const extraX = Math.max(0, (width * mapView.zoom - width) / 2) + width * 0.14;
+    const extraY = Math.max(0, (height * mapView.zoom - height) / 2) + height * 0.14;
+    mapView.panX = Math.max(-extraX, Math.min(extraX, mapView.panX));
+    mapView.panY = Math.max(-extraY, Math.min(extraY, mapView.panY));
+  }
+
+  function centreMapOnParty(render = true) {
+    const rect = dom.mapCanvas.getBoundingClientRect();
+    if (!rect.width || !rect.height || !state) return;
+    const metrics = baseMapMetrics(rect);
+    const pos = baseHexPosition(state.position.q, state.position.r, metrics.size);
+    mapView.panX = -(pos.x - rect.width / 2) * mapView.zoom;
+    mapView.panY = -(pos.y - rect.height / 2) * mapView.zoom;
+    clampMapPan(rect.width, rect.height);
+    mapView.initialized = true;
+    if (render) renderMap();
+  }
+
+  function resetMapView() {
+    mapView.zoom = defaultMapZoom();
+    centreMapOnParty(false);
+    renderMap();
+    showFeedback("Map centred", `Zoom ${Math.round(mapView.zoom * 100)}% • centred on the party`);
+  }
+
+  function changeMapZoom(delta) {
+    mapView.zoom = Math.max(0.85, Math.min(2.4, mapView.zoom + delta));
+    const rect = dom.mapCanvas.getBoundingClientRect();
+    clampMapPan(rect.width, rect.height);
+    renderMap();
+    showFeedback("Map zoom", `${Math.round(mapView.zoom * 100)}%`);
+  }
+
+  function renderNearbyTravel() {
+    if (!dom.nearbyTravel || !state) return;
+    const directions = ["E", "NE", "NW", "W", "SW", "SE"];
+    const options = neighbours(state.position.q, state.position.r).map((n, index) => {
+      const tile = getTile(n.q, n.r);
+      const terrain = getTerrainDef(tile);
+      const weather = C.weatherDefs[state.weather];
+      const hours = Math.max(4, terrain.move - (tile.road ? 2 : 0) + weather.move);
+      const loc = getLocationAt(n.q, n.r);
+      const destination = loc && (loc.type === "settlement" || state.discoveredSites[loc.data.id])
+        ? loc.data.name
+        : terrain.name;
+      return `<button data-action="travel-hex" data-q="${n.q}" data-r="${n.r}" aria-label="Travel ${directions[index]} to ${destination}, about ${hours} hours">${directions[index]} · ${destination}<br><span class="subtle">${hours}h${tile.road ? " · road" : ""}</span></button>`;
+    }).join("");
+    dom.nearbyTravel.innerHTML = `
+      <div class="nearby-travel-head">
+        <strong>Nearby travel</strong>
+        <span class="muted">Large phone-friendly targets</span>
+      </div>
+      <div class="nearby-travel-grid">${options}</div>
+    `;
   }
 
   function renderMap() {
@@ -3157,18 +3789,25 @@
     dom.mapCanvas.height = Math.floor(rect.height * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, rect.width, rect.height);
-    const mapW = rect.width;
-    const mapH = rect.height;
-    const size = Math.min(mapW / (Math.sqrt(3) * (C.region.width + 1.2)), mapH / (1.5 * (C.region.height + 1.3)));
+    const metrics = baseMapMetrics(rect);
+    if (!mapView.initialized) {
+      mapView.zoom = defaultMapZoom();
+      centreMapOnParty(false);
+    }
+    clampMapPan(rect.width, rect.height);
+    const centreX = rect.width / 2;
+    const centreY = rect.height / 2;
     hexLayout = [];
     for (let r = 0; r < C.region.height; r++) {
       for (let q = 0; q < C.region.width; q++) {
-        const x = size * Math.sqrt(3) * (q + 0.5 * (r & 1)) + size * 1.6;
-        const y = size * 1.5 * r + size * 1.7;
-        drawHex(q, r, x, y, size);
+        const base = baseHexPosition(q, r, metrics.size);
+        const x = centreX + (base.x - centreX) * mapView.zoom + mapView.panX;
+        const y = centreY + (base.y - centreY) * mapView.zoom + mapView.panY;
+        drawHex(q, r, x, y, metrics.size * mapView.zoom);
       }
     }
-    dom.mapHint.textContent = "Gold-edged hexes are one step away. ◆ marks settlements, ✦ marks discovered sites, and the lantern ring marks your party.";
+    dom.mapHint.textContent = "Drag to pan. Use +/− to zoom. Gold-edged hexes are one step away; on phone, the large travel buttons below provide the same movement.";
+    renderNearbyTravel();
   }
 
   function hexPoints(cx, cy, size) {
@@ -3319,13 +3958,30 @@
     return inside;
   }
 
-  function onMapPointer(event) {
+  function findMapHexAt(x, y) {
+    const exact = hexLayout.find(h => pointInPoly(x, y, h.points));
+    if (exact) return exact;
+    let nearest = null;
+    let nearestDistance = Infinity;
+    hexLayout.forEach(h => {
+      const distance = Math.hypot(x - h.cx, y - h.cy);
+      if (distance < nearestDistance && distance <= h.size * 0.78) {
+        nearest = h;
+        nearestDistance = distance;
+      }
+    });
+    return nearest;
+  }
+
+  function handleMapTap(clientX, clientY) {
     if (!state || state.combat) return;
     const rect = dom.mapCanvas.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-    const clicked = hexLayout.find(h => pointInPoly(x, y, h.points));
-    if (!clicked) return;
+    const clicked = findMapHexAt(clientX - rect.left, clientY - rect.top);
+    if (!clicked) {
+      showFeedback("Map", "No hex selected. Try closer to the centre of a tile.");
+      return;
+    }
+    pulseHaptic(8);
     const loc = getLocationAt(clicked.q, clicked.r);
     if (clicked.q === state.position.q && clicked.r === state.position.r) {
       focusCurrentLocation();
@@ -3349,6 +4005,56 @@
     );
   }
 
+  function onMapPointerDown(event) {
+    if (!state || state.combat || mapPointer) return;
+    mapPointer = {
+      id: event.pointerId,
+      startX: event.clientX,
+      startY: event.clientY,
+      panX: mapView.panX,
+      panY: mapView.panY,
+      dragged: false
+    };
+    dom.mapCanvas.setPointerCapture?.(event.pointerId);
+  }
+
+  function onMapPointerMove(event) {
+    if (!mapPointer || mapPointer.id !== event.pointerId) return;
+    const dx = event.clientX - mapPointer.startX;
+    const dy = event.clientY - mapPointer.startY;
+    if (!mapPointer.dragged && Math.hypot(dx, dy) > 8) {
+      mapPointer.dragged = true;
+      dom.mapCanvas.classList.add("dragging");
+    }
+    if (!mapPointer.dragged) return;
+    event.preventDefault();
+    const rect = dom.mapCanvas.getBoundingClientRect();
+    mapView.panX = mapPointer.panX + dx;
+    mapView.panY = mapPointer.panY + dy;
+    clampMapPan(rect.width, rect.height);
+    mapView.initialized = true;
+    renderMap();
+  }
+
+  function onMapPointerUp(event) {
+    if (!mapPointer || mapPointer.id !== event.pointerId) return;
+    const wasDragged = mapPointer.dragged;
+    mapPointer = null;
+    dom.mapCanvas.classList.remove("dragging");
+    try {
+      dom.mapCanvas.releasePointerCapture?.(event.pointerId);
+    } catch {
+      // Pointer capture may already have been released by the browser.
+    }
+    if (!wasDragged) handleMapTap(event.clientX, event.clientY);
+  }
+
+  function onMapPointerCancel(event) {
+    if (!mapPointer || mapPointer.id !== event.pointerId) return;
+    mapPointer = null;
+    dom.mapCanvas.classList.remove("dragging");
+  }
+
   function renderAll() {
     if (!state) return;
     if (state.day > C.success.days && state.renown >= C.success.renownTarget && !state.worldFlags.victoryShown) {
@@ -3361,6 +4067,7 @@
     renderMap();
     renderModal();
     refreshAmbience();
+    scheduleAutosave();
   }
 
   async function toggleFullscreen() {
@@ -3408,7 +4115,10 @@
           guard: member.guard,
           loyalty: characterState(member.id).loyalty,
           memories: characterState(member.id).memories.map(memory => memory.id),
-          personalArcReady: personalArcReady(member.id)
+          personalArcReady: personalArcReady(member.id),
+          build: state.progression?.builds?.[member.id] || null,
+          equipment: state.progression?.equipment?.[member.id] || null,
+          injury: state.progression?.injuries?.[member.id] || null
         })),
         relationships: state.characterState?.relationships || {}
       } : null,
@@ -3426,6 +4136,43 @@
     });
   }
 
+  function installE2ETestHooks() {
+    const params = new URLSearchParams(window.location.search);
+    const localHost = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
+    if (!localHost || params.get("e2e") !== "1") return;
+
+    window.__lanternRoadTest = Object.freeze({
+      adjacentHexCenter() {
+        const adjacent = hexLayout.find(hex =>
+          neighbours(state.position.q, state.position.r).some(point => point.q === hex.q && point.r === hex.r)
+        );
+        return adjacent ? { q: adjacent.q, r: adjacent.r, x: adjacent.cx, y: adjacent.cy } : null;
+      },
+      placeAtSite(siteId) {
+        const site = SITE_MAP[siteId];
+        if (!site) throw new Error(`Unknown site: ${siteId}`);
+        state.position = { q: site.q, r: site.r };
+        state.discoveredSites[siteId] = true;
+        revealAround(site.q, site.r);
+        state.activeScene = null;
+        state.combat = null;
+        state.ui.dialogue = null;
+        state.ui.shop = null;
+        state.ui.tab = "context";
+        state.ui.focus = { type: "site", id: siteId };
+        renderAll();
+      },
+      startCombat(encounterId = "toll_cutters") {
+        if (!ENCOUNTER_MAP[encounterId]) throw new Error(`Unknown encounter: ${encounterId}`);
+        state.activeScene = null;
+        state.ui.dialogue = null;
+        state.ui.shop = null;
+        state.rngState = 123456789;
+        startCombat(encounterId, "Regression test encounter.");
+      }
+    });
+  }
+
   function handleDocumentClick(event) {
     const button = event.target.closest("[data-action]");
     if (!button) return;
@@ -3434,7 +4181,29 @@
     if (action === "set-tab") return;
     if (!state && !["load-game", "new-game"].includes(action)) return;
 
+    pulseHaptic(6);
     switch (action) {
+      case "close-accessibility":
+        closeAccessibility();
+        break;
+      case "set-text-scale":
+        prefs.textScale = button.dataset.value;
+        applyPrefs();
+        savePrefs();
+        renderModal();
+        break;
+      case "toggle-contrast":
+        prefs.highContrast = !prefs.highContrast;
+        applyPrefs();
+        savePrefs();
+        renderModal();
+        break;
+      case "toggle-haptics":
+        prefs.haptics = !prefs.haptics;
+        savePrefs();
+        renderModal();
+        if (prefs.haptics) pulseHaptic([15, 30, 15]);
+        break;
       case "close-dialogue":
         closeDialogue();
         break;
@@ -3465,6 +4234,12 @@
       case "use-item":
         useConsumable(button.dataset.item, button.dataset.member);
         break;
+      case "equip-gear":
+        equipGear(button.dataset.item);
+        break;
+      case "choose-build":
+        chooseBuild(button.dataset.member, button.dataset.build);
+        break;
       case "buy-item":
         buyItem(button.dataset.settlement, button.dataset.item);
         break;
@@ -3483,6 +4258,9 @@
       case "focus-current":
         focusCurrentLocation();
         break;
+      case "travel-hex":
+        moveTo(Number(button.dataset.q), Number(button.dataset.r));
+        break;
       case "camp":
         campParty();
         break;
@@ -3499,21 +4277,34 @@
 
   function bindStaticUI() {
     dom.newGameBtn.addEventListener("click", () => {
-      startNewGame();
+      pulseHaptic(6);
+      confirmNewCampaign();
     });
     dom.saveBtn.addEventListener("click", saveGame);
     dom.loadBtn.addEventListener("click", loadGame);
+    dom.accessibilityBtn.addEventListener("click", () => {
+      pulseHaptic(6);
+      openAccessibility();
+    });
     dom.fullscreenBtn.addEventListener("click", toggleFullscreen);
     dom.soundToggleBtn?.addEventListener("click", toggleSound);
     dom.ambienceToggleBtn?.addEventListener("click", toggleAmbience);
     dom.volumeSlider?.addEventListener("input", event => setAudioVolume(event.target.value));
     dom.campBtn.addEventListener("click", () => state && campParty());
     dom.focusHereBtn.addEventListener("click", () => state && focusCurrentLocation());
+    dom.mapZoomOutBtn.addEventListener("click", () => changeMapZoom(-0.2));
+    dom.mapResetBtn.addEventListener("click", resetMapView);
+    dom.mapZoomInBtn.addEventListener("click", () => changeMapZoom(0.2));
     dom.tabs.forEach(tab => {
       tab.addEventListener("click", () => {
         if (!state) return;
+        pulseHaptic(5);
         state.ui.tab = tab.dataset.tab;
         renderAll();
+        if (window.matchMedia("(max-width: 640px)").matches) {
+          const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          dom.sidePanel?.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
+        }
       });
     });
     document.body.addEventListener("click", handleDocumentClick);
@@ -3524,8 +4315,29 @@
     }, true);
     document.addEventListener("pointerdown", resumeSavedAudioFromGesture, { once: true, capture: true });
     document.addEventListener("keydown", resumeSavedAudioFromGesture, { once: true, capture: true });
-    dom.mapCanvas.addEventListener("pointerdown", onMapPointer);
-    window.addEventListener("resize", renderAll);
+    dom.mapCanvas.addEventListener("pointerdown", onMapPointerDown);
+    dom.mapCanvas.addEventListener("pointermove", onMapPointerMove);
+    dom.mapCanvas.addEventListener("pointerup", onMapPointerUp);
+    dom.mapCanvas.addEventListener("pointercancel", onMapPointerCancel);
+    dom.mapCanvas.addEventListener("keydown", event => {
+      if (event.key === "+" || event.key === "=") {
+        event.preventDefault();
+        changeMapZoom(0.2);
+      } else if (event.key === "-") {
+        event.preventDefault();
+        changeMapZoom(-0.2);
+      } else if (event.key === "0") {
+        event.preventDefault();
+        resetMapView();
+      } else if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        focusCurrentLocation();
+      }
+    });
+    window.addEventListener("resize", () => {
+      mapView.initialized = false;
+      renderAll();
+    });
     document.addEventListener("keydown", event => {
       if (event.key.toLowerCase() === "f" && !event.ctrlKey && !event.metaKey && !event.altKey) {
         event.preventDefault();
@@ -3535,12 +4347,24 @@
   }
 
   function init() {
+    loadPrefs();
     bindStaticUI();
     updateAudioControls();
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("./sw.js").catch(() => {});
     }
+    const hadAutosave = storageHas(AUTOSAVE_KEY);
+    const resumed = hadAutosave && loadStoredState(AUTOSAVE_KEY, "Autosave", { silent: true, recordLog: false });
+    if (!resumed) {
+      startNewGame();
+      if (hadAutosave) {
+        showFeedback("Autosave unreadable", "A new campaign was started. Your Manual Save slot was not changed.", "bad");
+      }
+    } else {
+      showFeedback("Autosave resumed", `${timeLabel()} • continue where you left off`, "good");
+    }
     startNewGame();
+    installE2ETestHooks();
     window.render_game_to_text = renderGameToText;
     window.advanceTime = () => {
       renderAll();

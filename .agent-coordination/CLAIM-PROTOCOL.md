@@ -100,7 +100,7 @@ Do not put the full claim token in public PR prose.
 
 ## Parking completed implementation behind external gates
 
-A task may be fully implemented but unable to merge because it is waiting only on `merge_gate_depends_on`, Josh's required device/sign-off evidence, or another external closure condition.
+A task may be fully implemented but unable to merge because it is waiting only on `merge_gate_depends_on`, required machine evidence, Director review, or another external closure condition. Josh's Android release validation is tracked separately by LR-0056 and must not consume an unrelated specialist's active claim.
 
 Do **not** hold an active scope lock merely to wait.
 
@@ -154,6 +154,18 @@ A fresh normal role-owned claim is still mandatory before:
 
 If another active lock has since claimed the same task/scope, the parked direct-merge path is unavailable until ownership is reconciled.
 
+
+If another active lock has since claimed the same task/scope, the parked direct-merge path is unavailable until ownership is reconciled.
+
+This rule does not permit bypassing merge gates, machine evidence, Director review, or the separate LR-0056 human release gate. It only prevents waiting from consuming an active agent/lock slot.
+
+## Technical foundation versus human release gates
+
+LR-0011 and LR-0013 are technical development gates. They become `DONE` only after merged implementation plus independently verified CI/artifact evidence and Agent 7 evidence verification. Once they are `DONE`, normal dependencies on them are satisfied and specialist agents may proceed.
+
+Josh's Android validation is deliberately separate in LR-0056. LR-0056 may remain incomplete while specialist development continues. Final integration/release tasks may depend on LR-0056.
+
+No agent may self-assert Josh's validation. The human validation record may be completed only after Josh explicitly reports the check passed.
 This rule never bypasses merge gates, required CI evidence, map canon or Josh-only human evidence. It removes only unnecessary ownership/review ping-pong.
 
 ## Completing work
