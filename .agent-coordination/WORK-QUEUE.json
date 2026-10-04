@@ -1915,7 +1915,7 @@
         ".github/workflows/",
         ".agent-coordination/"
       ],
-      "notes": "Steward enforcement counterpart to LR-0069. Does not choose geography or names. Important: current canon intentionally allows multiple authored locations in one gameplay hex, so enforcement must not impose one-place-per-hex."
+      "notes": "Implementation complete on branch agent/LR-0070-map-canon-enforcement-1d7f63e2-r2, exact useful head b9c6e3d9cdf218a96a3728861e0128118bf6e604, draft PR #50. Adds world/map-canon.schema.json, registry↔gameplay validator, exact-head protected-change approval guard, map-canon CI workflow and automated-enforcement documentation. Independent live reconciliation found 16 canonical gameplay places matching 16 gameplay places and 10 regional labels remaining PROPOSED. Map canon Actions run 37181187464 passed both registry validation and protected-change guard. Agent coordination validation also passed; only failing step is the intentional missing Agent 7 exact-head Director design review. Next action: after Director approval, freshly claim LR-0070, verify current queue/CI, merge PR #50, mark DONE, release fresh claim."
     },
     {
       "id": "LR-0071",
