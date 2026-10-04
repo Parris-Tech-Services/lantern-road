@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0006",
+  "exclusive_scope": "progression-builds",
+  "agent_number": 3,
+  "agent": "The Mechanist",
+  "session_id": "c751b94e-1f96-4757-8dfc-509e1e8edc07",
+  "claim_token": "c6f07a89-78af-4e8c-a927-5a9ef03f5712",
+  "claimed_at": "2026-10-04T14:31:55+11:00",
+  "expires_at": "2026-10-05T02:31:55+11:00",
+  "branch": "agent/LR-0006-progression-builds-c751b94e",
+  "note": "Implementing only LR-0006."
+}
