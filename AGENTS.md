@@ -24,12 +24,12 @@ These rules are mandatory for every coding/research agent working in this reposi
 - One session may hold only one active scope lock.
 - Stay inside the claimed task scope. If you discover adjacent work, record it as a new proposed task instead of silently expanding scope.
 - Do not claim `BLOCKED`, `DONE` or `CANCELLED` tasks.
-- Keep the lock until the work is merged or deliberately abandoned.
+- Keep the lock while material work is active. If implementation is finished and the task is only waiting on external merge gates or Josh-required evidence, park it using the claim protocol: record the exact handoff, leave the task READY, release your own lock, and claim other eligible work.
 - Feature branches use: `agent/<task-id>-<short-slug>-<session8>`.
 - Pull requests must name the task id and exclusive scope.
 - Implementation PRs owned by Agents 1–5 require a final Agent 7 — The Director approval commit under `.agent-coordination/design-reviews/` before merge. CI rejects stale or missing approval.
 - **Small PRs are mandatory:** one claimed task/scope per PR, no unrelated cleanup or opportunistic refactors. Split broad work into follow-up tasks.
-- If a task has `merge_gate_depends_on`, work may proceed while claimed but its PR must not merge until every merge-gate task is `DONE`.
+- If a task has `merge_gate_depends_on`, work may proceed while claimed but its PR must not merge until every merge-gate task is `DONE`. Once no legitimate implementation work remains, do not keep a lock merely to wait for those gates; park and release it.
 - Architectural/product/ownership decisions that future agents may relitigate must be surfaced to The Director and recorded briefly in `docs/DECISIONS.md`.
 - Re-fetch `WORK-QUEUE.json` immediately before declaring a task complete or opening its final PR; verify its current acceptance criteria, dependencies and merge gates have not changed while you were working.
 - Before merging, run `node scripts/validate-agent-coordination.mjs` plus relevant game checks.
