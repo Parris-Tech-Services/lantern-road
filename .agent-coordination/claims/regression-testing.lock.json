@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0013",
+  "exclusive_scope": "regression-testing",
+  "agent_number": 1,
+  "agent": "The Steward",
+  "session_id": "a2bc7c6d-4b79-4ab0-9c67-8da6f2aa7c5f",
+  "claim_token": "b1d8576f-0e6b-4d35-a11c-2bb4e2eb12f2",
+  "claimed_at": "2026-10-04T20:18:00+11:00",
+  "expires_at": "2026-10-05T08:18:00+11:00",
+  "branch": "agent/LR-0013-regression-current-a2bc7c6d",
+  "note": "Current-main replay of approved LR-0013 harness; preserve all newer gameplay/UI/service-worker work."
+}
