@@ -96,7 +96,9 @@ function emptyAgent(agent) {
     CANCELLED: 0,
     parked_ready: 0,
     actionable_ready: 0,
-    active_claims: 0
+    active_claims: 0,
+    work_state: "DONE",
+    next_task: null
   };
 }
 
@@ -231,6 +233,32 @@ export function buildReport(queue, locks = [], findings = [], options = {}) {
   }
   activeClaims.sort((a, b) => String(a.task_id).localeCompare(String(b.task_id)) || a.file.localeCompare(b.file));
 
+  const fanoutLookup = new Map(fanout.map(row => [row.id, row]));
+  for (const agent of agents.values()) {
+    const candidates = tasks
+      .filter(task => task.primary_agent === agent.number && task.status === "READY" && !isParked(task))
+      .map(task => ({
+        id: task.id,
+        title: task.title,
+        priority: task.priority ?? 99,
+        direct: fanoutLookup.get(task.id)?.direct ?? 0,
+        transitive: fanoutLookup.get(task.id)?.transitive ?? 0
+      }))
+      .sort((a, b) =>
+        a.priority - b.priority ||
+        b.transitive - a.transitive ||
+        b.direct - a.direct ||
+        a.id.localeCompare(b.id)
+      );
+
+    agent.next_task = candidates[0] ?? null;
+    if (agent.active_claims > 0) agent.work_state = "ACTIVE";
+    else if (agent.next_task) agent.work_state = "READY";
+    else if (agent.parked_ready > 0) agent.work_state = "REVIEW_DRAIN";
+    else if (agent.BLOCKED > 0) agent.work_state = "BLOCKED_ONLY";
+    else agent.work_state = "DONE";
+  }
+
   const parked = tasks.filter(isParked).map(task => {
     const parkedAt = parkedAtFromNotes(task);
     return {
@@ -355,7 +383,10 @@ export function formatReport(report, { top = 10 } = {}) {
   lines.push("");
   lines.push("Agent workload:");
   for (const a of report.agents) {
-    lines.push(`  ${a.number} ${a.name}: total ${a.total}, READY ${a.READY} (${a.actionable_ready} actionable, ${a.parked_ready} parked), BLOCKED ${a.BLOCKED}, DONE ${a.DONE}, claims ${a.active_claims}`);
+    const next = a.next_task
+      ? ` | NEXT ${a.next_task.id} P${a.next_task.priority}: ${a.next_task.title}`
+      : "";
+    lines.push(`  ${a.number} ${a.name}: ${a.work_state} | total ${a.total}, READY ${a.READY} (${a.actionable_ready} actionable, ${a.parked_ready} parked), BLOCKED ${a.BLOCKED}, DONE ${a.DONE}, claims ${a.active_claims}${next}`);
   }
   lines.push("");
   lines.push("Active claims:");
