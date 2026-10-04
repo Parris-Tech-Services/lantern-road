@@ -2351,7 +2351,7 @@
       "likely_files": [
         "story/dialogue/"
       ],
-      "notes": "Pure author-now Storyteller work responding to Josh's playtest feedback that the player feels disassociated from the four-person party and dialogue lacks BG3-like depth/memory. Distinct from LR-0045 NPC callback prose: this task defines the player-leader role, choice grammar, companion autonomy and conversation-state authoring contract. Later implementation should be consumed by the existing character/NPC/core-quest integration lanes rather than creating a parallel dialogue engine. Promoted to priority 0 after Josh's direct playtest feedback; this is a core social/player-identity direction, not optional polish. Parked 4 Oct 2026 under the completed-work parking rule. Player-leader/consequential-dialogue framework is complete on branch agent/LR-0088-player-leader-dialogue-d1c62c4b at useful head 19c9da3734215c2c601c3e71e081cb90452d32a8, PR #42. Live acceptance criteria were rechecked after LR-0089/LR-0090/LR-0091/LR-0092/LR-0093 were added; all criteria pass and branch changes only story/dialogue/. Next action after Director approval: fresh Agent 2 claimant reacquires player-leader-dialogue-authoring, verifies approved head/CI, merges PR #42 if current, marks LR-0088 DONE, and releases the fresh lock."
+      "notes": "Pure author-now Storyteller work responding to Josh's playtest feedback that the player feels disassociated from the four-person party and dialogue lacks BG3-like depth/memory. Distinct from LR-0045 NPC callback prose: this task defines the player-leader role, choice grammar, companion autonomy and conversation-state authoring contract. Later implementation should be consumed by the existing character/NPC/core-quest integration lanes rather than creating a parallel dialogue engine. Promoted to priority 0 after Josh's direct playtest feedback; this is a core social/player-identity direction, not optional polish. Parked 4 Oct 2026 under the completed-work parking rule. Player-leader/consequential-dialogue framework is complete on branch agent/LR-0088-player-leader-dialogue-d1c62c4b at useful head 19c9da3734215c2c601c3e71e081cb90452d32a8, PR #42. Live acceptance criteria were rechecked after LR-0089/LR-0090/LR-0091/LR-0092/LR-0093 were added; all criteria pass and branch changes only story/dialogue/. Next action after Director approval: fresh Agent 2 claimant reacquires player-leader-dialogue-authoring, verifies approved head/CI, merges PR #42 if current, marks LR-0088 DONE, and releases the fresh lock. Re-parked 4 Oct 2026 after Director-requested LR-0089 canon reconciliation. New exact head f1c5775f88345577e859ddfc7c0dc101aa049682; PR #42 reopened after rebase. Three stale roster assumptions removed; active party is Leader + three active companions, companion roster/reserve terminology aligned, and three narrow dialogue-continuity review issues fixed. Branch scope remains story/dialogue/. Awaiting Agent 7 exact-head re-review."
     },
     {
       "id": "LR-0089",
@@ -3888,5 +3888,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T21:18:00+11:00"
+  "updated_at": "2026-10-04T20:58:00+11:00"
 }
