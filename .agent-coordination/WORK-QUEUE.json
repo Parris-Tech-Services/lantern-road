@@ -312,13 +312,13 @@
         "Validate malformed or partial saves and give the player a useful recovery message.",
         "Preserve current campaign data where safely possible.",
         "Document compatibility expectations for future feature agents.",
-        "Gate closure evidence: .agent-coordination/gate-evidence/LR-0011.json must be present, VERIFIED, tied to the exact tested commit and successful CI run, and include Josh's explicit Android phone confirmation before this task may be marked DONE."
+        "Technical gate closure evidence: .agent-coordination/gate-evidence/LR-0011.json must be VERIFIED, tied to the exact merged/tested commit and successful CI run, include the task-specific required artifact, and include Agent 7 evidence verification before this task may be marked DONE."
       ],
       "likely_files": [
         "game.js",
         "README.md"
       ],
-      "notes": "IMPLEMENTATION MERGED 4 Oct 2026 via PR #21, merge commit 037a21b8d0916061b8c5bf5e394f2b4d9e3ff4f3. Agent 7 approved exact refreshed feature head 5028489830513dbf6e21330705ef96629e1bd499; approval head 207072439ae63d85315adcb521eeaff96d1aff97 had Agent coordination #738, Save migration #19 and DOM contract #7 all green. Pre-approval Save migration PR run #18 / 37187544114 published unexpired save-migration-results artifact ID 11297351610 tied to the exact feature head. Task intentionally remains READY until its separate gate-evidence closure change satisfies whichever LR-0055 foundation policy is live at closure time.",
+      "notes": "IMPLEMENTATION MERGED 4 Oct 2026 via PR #21, merge commit 037a21b8d0916061b8c5bf5e394f2b4d9e3ff4f3. Agent 7 approved exact refreshed feature head 5028489830513dbf6e21330705ef96629e1bd499; approval head 207072439ae63d85315adcb521eeaff96d1aff97 had Agent coordination #738, Save migration #19 and DOM contract #7 all green. Pre-approval Save migration PR run #18 / 37187544114 published unexpired save-migration-results artifact ID 11297351610 tied to the exact feature head. Task intentionally remains READY until its separate gate-evidence closure change satisfies whichever LR-0055 foundation policy is live at closure time. Under LR-0055, Josh's Android validation is tracked separately by LR-0056 and does not block specialist development once this technical gate is DONE.",
       "completion_evidence_required": {
         "evidence_file": ".agent-coordination/gate-evidence/LR-0011.json",
         "machine_requirements": [
@@ -327,11 +327,6 @@
           "Automated current-version round-trip verifies save -> reload/reopen -> restored campaign state without silent data loss.",
           "Malformed/partial/incompatible save cases fail safely with a player-visible recovery path.",
           "A successful CI workflow run on the exact candidate commit publishes the save/migration test report as an artifact."
-        ],
-        "human_requirements": [
-          "Josh loads a legacy/pre-gate save on his Android phone after the candidate build is deployed or otherwise accessible.",
-          "Josh confirms the campaign opens and core state is intact enough to continue play.",
-          "The evidence record contains Josh's explicit phone-check confirmation; agents must not self-assert this field."
         ],
         "required_ci_artifact_names": [
           "save-migration-results"
@@ -382,7 +377,7 @@
         "Cover save/load round-trip behaviour through browser storage and a page reload/reopen.",
         "Cover at least one combat flow and one quest/site interaction.",
         "Run the browser suite in CI where practical and document the local command every feature agent should run before PR completion.",
-        "Gate closure evidence: .agent-coordination/gate-evidence/LR-0013.json must be present, VERIFIED, tied to the exact tested commit and successful CI run, and include Josh's explicit Android phone confirmation before this task may be marked DONE."
+        "Technical gate closure evidence: .agent-coordination/gate-evidence/LR-0013.json must be VERIFIED, tied to the exact merged/tested commit and successful CI run, include the task-specific required artifact, and include Agent 7 evidence verification before this task may be marked DONE."
       ],
       "likely_files": [
         "tests/",
@@ -391,7 +386,7 @@
         "README.md",
         ".github/workflows/"
       ],
-      "notes": "PARKED HANDOFF current-main replay: branch agent/LR-0013-regression-current-a2bc7c6d, exact useful head d3d3033e25d025add2dac6db7de115597c0b3762, draft PR #88 (supersedes closed stale PR #16). Replayed only the already-reviewed Playwright harness and localhost-only ?e2e=1 hooks onto current main; preserved newer gameplay/Leader/mobile/map/save/service-worker work. Browser regression run #9 / 37192475974 passed and published unexpired browser-regression-results artifact ID 11299223015 tied to the exact head. Save migration #25 and DOM contract #14 also passed. Agent coordination fails only for missing Agent 7 exact-head review. Next action: Agent 7 approval; then fresh Agent 1 claim before merge preparation and technical gate closure.",
+      "notes": "PARKED HANDOFF current-main replay: branch agent/LR-0013-regression-current-a2bc7c6d, exact useful head d3d3033e25d025add2dac6db7de115597c0b3762, draft PR #88 (supersedes closed stale PR #16). Replayed only the already-reviewed Playwright harness and localhost-only ?e2e=1 hooks onto current main; preserved newer gameplay/Leader/mobile/map/save/service-worker work. Browser regression run #9 / 37192475974 passed and published unexpired browser-regression-results artifact ID 11299223015 tied to the exact head. Save migration #25 and DOM contract #14 also passed. Agent coordination fails only for missing Agent 7 exact-head review. Next action: Agent 7 approval; then fresh Agent 1 claim before merge preparation and technical gate closure. Under LR-0055, Josh's Android validation is tracked separately by LR-0056 and does not block specialist development once this technical gate is DONE.",
       "completion_evidence_required": {
         "evidence_file": ".agent-coordination/gate-evidence/LR-0013.json",
         "machine_requirements": [
@@ -400,11 +395,6 @@
           "The suite fails on uncaught page/runtime errors relevant to the tested flows.",
           "A successful CI workflow run on the exact candidate commit publishes browser test results/artifacts.",
           "The local and CI commands needed to reproduce the run are documented."
-        ],
-        "human_requirements": [
-          "Josh opens the candidate build on his Android phone and performs a short smoke test covering launch, starting/resuming play, one map/action interaction, and save/reload.",
-          "Josh confirms the tested build behaves correctly enough to close the foundation gate.",
-          "The evidence record contains Josh's explicit phone-check confirmation; agents must not self-assert this field."
         ],
         "required_ci_artifact_names": [
           "browser-regression-results"
@@ -432,7 +422,8 @@
         "LR-0010",
         "LR-0011",
         "LR-0013",
-        "LR-0035"
+        "LR-0035",
+        "LR-0056"
       ],
       "primary_agent": 1,
       "goal": "Integrate and reconcile the first premium-indie feature wave after the specialist foundations are complete.",
@@ -451,7 +442,7 @@
         "README.md",
         ".agent-coordination/WORK-QUEUE.json"
       ],
-      "notes": "Blocked until the first specialist foundation wave is complete. Governance boundary: LR-0035 performs the cross-feature design diagnosis first; LR-0014 then owns Steward-level integration/reconciliation work and routes specialist fixes back to their owners rather than duplicating Director review."
+      "notes": "Blocked until the first specialist foundation wave is complete. Governance boundary: LR-0035 performs the cross-feature design diagnosis first; LR-0014 then owns Steward-level integration/reconciliation work and routes specialist fixes back to their owners rather than duplicating Director review. LR-0056 is the human Android release-validation gate; it intentionally blocks this final integration milestone, not specialist development."
     },
     {
       "id": "LR-0015",
@@ -1549,7 +1540,10 @@
         ".agent-coordination/gate-evidence/README.md",
         ".agent-coordination/DESIGN-REVIEW-PROTOCOL.md"
       ],
-      "notes": "PARKED HANDOFF: current-main reconciliation complete on branch agent/LR-0055-foundation-policy-69f9a050-r5, exact useful head e4f1ccbb154c2dd690b2d7e0a00a08c83776640c, draft PR #74 (supersedes closed stale PR #17). Mechanical queue comparison confirmed every non-policy task and top-level queue metadata match live main; only LR-0011/LR-0013/LR-0014/LR-0055/LR-0056 carry intended policy deltas. Agent coordination run #689 (37187380586) passed every step. Next action: Agent 7 exact-head approval, then fresh Agent 1 claim before merge."
+      "notes": "Latest-main LR-0055 rebuild on branch agent/LR-0055-foundation-current-a81f94d2-r2. Applies only the technical-vs-human gate policy to current live rules/queue: LR-0011/LR-0013 remain strict machine+Director technical gates, LR-0056 is non-self-assertable Josh Android validation, and LR-0014 depends on LR-0056. Await CI and exact-head Agent 7 governance approval.",
+      "supporting_agents": [
+        7
+      ]
     },
     {
       "id": "LR-0056",
@@ -1572,7 +1566,18 @@
       "likely_files": [
         ".agent-coordination/human-validation/LR-0056.json"
       ],
-      "notes": "Human release gate only. It must not block specialist development after LR-0011/LR-0013 are machine-verified."
+      "notes": "Human release gate only. It must not block specialist development after LR-0011/LR-0013 are machine-verified. This gate is non-self-assertable: only Josh's explicit Android confirmation can satisfy its evidence record.",
+      "human_validation_required": {
+        "evidence_file": ".agent-coordination/human-validation/LR-0056.json",
+        "required_by": "Josh",
+        "device_family": "Android",
+        "required_checks": [
+          "Legacy/pre-gate save loads and remains playable.",
+          "Candidate build launches and can start/resume play.",
+          "At least one map/action interaction works.",
+          "Save/reload works on the phone."
+        ]
+      }
     },
     {
       "id": "LR-0057",
