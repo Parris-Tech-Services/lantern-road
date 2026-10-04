@@ -72,7 +72,8 @@ Recommended shape:
   "status": "APPROVED",
   "reviewed_head_sha": "FULL_SHA",
   "change_type": "ADD|MOVE|RENAME|RETIRE|IDENTITY|GRID|PROJECTION",
-  "affected_place_ids": ["example_id"],
+  "affected_place_ids": ["example_place_id"],
+  "affected_region_ids": ["example_region_id"],
   "josh_approval_required": false,
   "notes": "Why this change preserves Grey March coherence."
 }
@@ -100,6 +101,18 @@ Renaming, retiring or materially redefining a CANON regional label requires a de
 Generated concept labels use explicit dispositions (`ADOPT`, `RENAME`, `REJECT`, `DEFER`). A rejected/deferred label is not canonical overlay content.
 
 LR-0105 owns the machine-readable registry/schema/CI implementation of this rule.
+
+### Machine-enforced regional labels
+
+`world/map-canon.json.regional_labels` is the authoritative registry for protected non-node regions.
+
+- CANON regional labels use stable ids and `place_type: "region-label"`.
+- `gameplay_node` is always `false`; regions do not become travel/click targets by being named.
+- `anchor_place_ids` may reference only existing CANON settlements/sites and describe geographic relationship without inheriting their coordinates.
+- Regional labels do not carry q/r or grid references.
+- ADOPT/RENAME concept dispositions must resolve to an existing CANON regional id.
+- REJECT/DEFER concept labels remain non-canon and must not carry a canonical regional id.
+- Protected regional-label identity changes are checked by `verify-map-canon-change.mjs` and require fresh Agent 7 exact-head map-canon approval.
 
 ## Stable coordinate rule
 
@@ -183,6 +196,7 @@ That record must:
 - name the exact preceding commit in `reviewed_head_sha`;
 - use an allowed `change_type`: `ADD`, `MOVE`, `RENAME`, `RETIRE`, `IDENTITY`, `GRID` or `PROJECTION`;
 - list every changed canonical place id in `affected_place_ids`;
+- list every changed canonical regional-label id in `affected_region_ids` when regional canon changes;
 - explicitly state whether Josh approval was required.
 
 If `josh_approval_required` is true, the record must also contain `josh_approved: true`.
