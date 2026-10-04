@@ -2439,7 +2439,7 @@
     {
       "id": "LR-0092",
       "title": "Author companion willingness, autonomy and suggestion-resolution specification",
-      "status": "READY",
+      "status": "DONE",
       "priority": 0,
       "exclusive_scope": "companion-autonomy-design",
       "depends_on": [
@@ -2458,7 +2458,7 @@
       "likely_files": [
         "systems/companions/"
       ],
-      "notes": "PARKED 2026-10-04 by Agent 3 under claim-protocol v1.2. Branch: agent/LR-0092-companion-autonomy-design-c95a4f5e. Exact useful head: 0aed4d927d332a44aaef45a1fbdba5e527fb4c88. PR #53. Added systems/companions/COMPANION-WILLINGNESS-AUTONOMY-SPEC.md only; no runtime/save/story prose edits. Spec defines deterministic willingness from values/Trust/relationships/Fatigue/injury/stakes/scarcity/relevant memories, accept/reluctant-accept/counter-offer/refuse outcomes, character-grounded Garrick/Mira/Oren/Brindle profiles, bounded proactivity, predictable persuasion/Command hooks, Leader authority protections, action-economy integration and 18 automated test expectations. Acceptance criteria satisfied by authoring; remaining external closure is Director review/merge. Freshly claim companion-autonomy-design before any content change or merge reconciliation."
+      "notes": "DONE 2026-10-04. Director-approved PR #53 merged to main as 2ef7e11f9d888a5aa91e00079ca913bb63758fdd. Final reviewed feature head 0aed4d927d332a44aaef45a1fbdba5e527fb4c88 with Director approval commit 928de820e61fddf1af317cb15f71353568833d01; Agent coordination #450 SUCCESS. Companion willingness/autonomy design is now canonical for downstream LR-0093."
     },
     {
       "id": "LR-0093",
