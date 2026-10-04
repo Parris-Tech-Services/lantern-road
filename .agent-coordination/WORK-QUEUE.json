@@ -3994,6 +3994,34 @@
         "game.js"
       ],
       "notes": "Completed 4 Oct 2026 via PR #111, merge commit 3e982427ae2c5f954fb7b6a27582b26c6d1a26ca. Repaired merge-corrupted confirmNewCampaign(), removed the accidental unconditional startNewGame() after autosave resume, and updated stale browser assertions to the current Manual Save/Autosave chooser wording. Exact tested head 4c753bfc1aee66f86fc532037ab44d2bea4510fc passed Browser regression run #26 / 37199045956, Save migration #50 / 37199046013, Static runtime #44 / 37199045999, DOM contract #39 / 37199045924 and Agent coordination #1113 / 37199045981."
+    },
+    {
+      "id": "LR-0150",
+      "title": "Codify Director operational authority over production flow",
+      "status": "READY",
+      "priority": 0,
+      "exclusive_scope": "director-operational-authority",
+      "depends_on": [],
+      "primary_agent": 7,
+      "director_review": "NOT_REQUIRED",
+      "goal": "Make Josh's explicit delegation durable: Agent 7 may set queue priority, sequence/reroute work and direct Agents 1–8 within their existing role boundaries, task locks, ownership rules and approved product vision, while Josh remains final creative director.",
+      "acceptance_criteria": [
+        "State explicitly that Agent 7 may set and change queue priority based on critical path, player impact, risk and delivery flow.",
+        "State explicitly that Agent 7 may direct Agents 1–8 to take, pause, park, resume, merge or sequence work that remains within each agent's existing role boundaries and task ownership rules.",
+        "Allow Agent 7 to deliberately reassign a queue task's primary_agent when there is a genuine ownership/throughput need, provided no conflicting live lock exists and the new owner is within a reasonable role boundary; record the reason in queue notes.",
+        "Make clear that Director authority never permits bypassing create-only task locks, active ownership, exact-head review/evidence gates, QA independence, save/map safety or Josh-only human validation.",
+        "Make clear that Agent 7 may resolve operational sequencing/priority disputes without escalating routine production management to Josh.",
+        "Preserve Josh as final authority on creative direction, fun, tone, emotional effect, scope-changing product decisions and any genuine creative disagreement.",
+        "Preserve Agent 8 AED as advisory/efficiency support rather than an approval gate; AED reports to the production direction set by Agent 7 while retaining its audit independence.",
+        "Record the delegation in the durable decision log and coordination rules so future chats/agents do not rely on conversation memory."
+      ],
+      "likely_files": [
+        "AGENTS.md",
+        "docs/DECISIONS.md",
+        "docs/VISION.md",
+        ".agent-coordination/CLAIM-PROTOCOL.md"
+      ],
+      "notes": "Josh explicitly delegated CEO-style operational authority to Agent 7 on 5 Oct 2026: set queue priority and direct Agents 1–8 within existing role/lock/ownership boundaries, while Josh remains final creative director. This task codifies that delegation; it does not grant permission to bypass coordination or make unilateral creative-direction changes."
     }
   ],
   "agent_roster": [
@@ -4056,5 +4084,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T22:33:00+11:00"
+  "updated_at": "2026-10-05T08:49:00+11:00"
 }
