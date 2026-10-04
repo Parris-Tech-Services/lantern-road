@@ -115,7 +115,7 @@ test("rejects an unlocked feature commit", () => {
 
   const result = runVerifier(cwd, branch, featureHead);
   assert.notEqual(result.status, 0);
-  assert.match(result.stderr, /missing Director design review|no active scope lock/i);
+  assert.match(result.stderr, /do not name exact current PR head|no active scope lock|frozen parked/i);
 });
 
 test("rejects a stale Director approval on a parked task", () => {
@@ -292,4 +292,37 @@ test("rejects a frozen parked NOT_REQUIRED-review PR when the recorded head is s
   const result = runVerifier(cwd, branch, currentHead);
   assert.notEqual(result.status, 0);
   assert.match(result.stderr, /do not name exact current PR head|fresh ownership/i);
+});
+
+
+test("accepts an optional legacy Director approval on a now-NOT_REQUIRED parked task", () => {
+  const branch = "agent/LR-0124-legacy-approved-test";
+  const cwd = setupRepo(parkedTask("LR-0124", branch, "", "NOT_REQUIRED"));
+  const featureHead = commitFile(cwd, "assets/ui/material.svg", "<svg/>\n", "asset pack");
+
+  writeJson(cwd, ".agent-coordination/WORK-QUEUE.json", {
+    schema_version: 1,
+    tasks: [parkedTask(
+      "LR-0124",
+      branch,
+      `PARKED HANDOFF: branch ${branch}, exact useful head ${featureHead}; old Director approval may remain on top.`,
+      "NOT_REQUIRED"
+    )]
+  });
+  writeJson(cwd, ".agent-coordination/design-reviews/LR-0124.json", {
+    schema_version: 1,
+    task_id: "LR-0124",
+    reviewer_agent_number: 7,
+    reviewer: "The Director",
+    status: "APPROVED",
+    reviewed_head_sha: featureHead,
+    reviewed_at: "2026-10-04T17:00:00+11:00"
+  });
+  git(cwd, ["add", ".agent-coordination/design-reviews/LR-0124.json"]);
+  git(cwd, ["commit", "-m", "legacy Director approval"]);
+  const approvalHead = git(cwd, ["rev-parse", "HEAD"]);
+
+  const result = runVerifier(cwd, branch, approvalHead);
+  assert.equal(result.status, 0, result.stderr);
+  assert.match(result.stdout, /optional legacy Director approval verified for direct merge/);
 });
