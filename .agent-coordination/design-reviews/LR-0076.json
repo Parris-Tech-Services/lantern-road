@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0076",
+  "reviewer_agent_number": 7,
+  "reviewer": "The Director",
+  "status": "APPROVED",
+  "reviewed_head_sha": "94fde76323d570a47e3d80a4a4cc625205cb554c",
+  "reviewed_at": "2026-10-04T18:00:00+11:00",
+  "pillars_checked": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "terminology_checked": true,
+  "decision_log_checked": true,
+  "scope_conflicts_checked": true,
+  "notes": "Ending prose preserves all mixed-cost campaign outcomes, keeps Common Road non-golden and Fractured March meaningful, and provides named quest/party callbacks. Epilogues may cover all authored companions, but direct-witness claims must respect active/reserve history or explicit later telling."
+}
