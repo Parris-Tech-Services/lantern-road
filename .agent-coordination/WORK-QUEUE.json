@@ -3135,7 +3135,7 @@
     {
       "id": "LR-0121",
       "title": "Produce final UI iconography and map symbol asset set",
-      "status": "READY",
+      "status": "DONE",
       "priority": 1,
       "exclusive_scope": "ui-iconography-production",
       "depends_on": [
@@ -3156,7 +3156,7 @@
         "assets/ui/README.md",
         "docs/ART-DIRECTION.md"
       ],
-      "notes": "PARKED pending Director exact-head review. PR #65, branch agent/LR-0121-ui-iconography-9d8c4a71, useful head 65e9a7a72b63d277edfe4f8a76969fa43c3633a7. Added 40-symbol 24×24 SVG production sprite plus semantics/accessibility docs and iconography direction. QA: 40 unique ids, all symbols 24×24, currentColor-based, no scripts, explicit no-icon-only-critical-meaning rule. Coordination checks pass; only remaining gate is .agent-coordination/design-reviews/LR-0121.json for exact head. Director review requested on PR #65 comment #5977646618. After approval, fresh claimant should verify exact head, merge, mark DONE and release any fresh claim."
+      "notes": "Merged in PR #65 after Agent 7 exact-head approval. Production 40-symbol 24×24 SVG icon sprite, semantics/accessibility documentation and iconography direction are now on main. Runtime integration must preserve canonical Renown terminology and keep faction standing distinct. Merge commit a6b14da889c2e67f81933f4e277d93c3f9f2f8a9."
     },
     {
       "id": "LR-0122",
