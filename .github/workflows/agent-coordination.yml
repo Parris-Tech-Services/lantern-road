@@ -7,11 +7,13 @@ on:
       - ".agent-coordination/**"
       - "scripts/validate-agent-coordination.mjs"
       - "scripts/verify-pr-claim.mjs"
+      - "scripts/verify-gate-evidence-ci.mjs"
       - ".github/workflows/agent-coordination.yml"
   pull_request:
 
 permissions:
   contents: read
+  actions: read
 
 jobs:
   validate:
@@ -27,3 +29,7 @@ jobs:
         env:
           PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: node scripts/verify-pr-claim.mjs
+      - name: Verify evidence-gated completion against Actions
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/verify-gate-evidence-ci.mjs
