@@ -1540,6 +1540,50 @@
         ".agent-coordination/human-validation/LR-0056.json"
       ],
       "notes": "Human release gate only. It must not block specialist development after LR-0011/LR-0013 are machine-verified."
+    },
+    {
+      "id": "LR-0057",
+      "title": "Author equipment ecosystem and item trade-off catalogue",
+      "status": "READY",
+      "priority": 2,
+      "exclusive_scope": "equipment-design-authoring",
+      "depends_on": [],
+      "primary_agent": 3,
+      "goal": "Define the equipment categories, hero identities and curated item trade-offs that LR-0017 can later integrate without editing the shared runtime now.",
+      "acceptance_criteria": [
+        "Audit current live-main items plus the parked LR-0006 one-slot hero equipment foundation and identify the intended equipment categories/roles without inventing a second progression system.",
+        "Author a curated catalogue of distinct candidate equipment choices for all four heroes, with situational strengths, opportunity costs and explicit anti-upgrade-ladder rules.",
+        "Define availability/reward principles that let shops, quests and rare rewards create meaningful competition without making every best item universally purchasable.",
+        "Separate item effect/availability design from global base pricing: record price-band assumptions only as inputs from LR-0052/LR-0016, leaving final economy tuning to LR-0016/LR-0020.",
+        "Record migration/save and UI assumptions for later LR-0017 reconciliation; do not edit game.js, content.js or the parked LR-0006 branch in this task."
+      ],
+      "likely_files": [
+        "systems/equipment/",
+        "docs/"
+      ],
+      "notes": "Mechanist author-now input for LR-0017. Must extend the parked LR-0006 equipment foundation, not replace it, and must consume rather than duplicate global economy ownership."
+    },
+    {
+      "id": "LR-0058",
+      "title": "Author injury, condition and recovery design catalogue",
+      "status": "READY",
+      "priority": 2,
+      "exclusive_scope": "injury-design-authoring",
+      "depends_on": [],
+      "primary_agent": 3,
+      "goal": "Define a compact, fair injury/condition/recovery vocabulary that LR-0018 can later integrate without runtime changes while preserving meaningful expedition pressure.",
+      "acceptance_criteria": [
+        "Audit the parked LR-0006 knockout-injury foundation and define a compact catalogue of mechanically distinct injuries/conditions with clear sources, effects and player-facing descriptions.",
+        "Define understandable risk triggers and recovery choices so conditions arise from readable consequences rather than arbitrary punishment.",
+        "Define recovery-cost/time bands and anti-spiral rules that reconcile with the LR-0052 economy targets while leaving final global price tuning to LR-0016.",
+        "Specify how conditions interact with hero viability, existing skills, combat roles and future equipment without making any party member routinely non-functional.",
+        "Record persistence/migration and narrative-facing hooks for LR-0018 reconciliation; do not edit game.js, content.js or the parked LR-0006 branch in this task."
+      ],
+      "likely_files": [
+        "systems/injuries/",
+        "docs/"
+      ],
+      "notes": "Mechanist author-now input for LR-0018. Distinct from LR-0006's minimal persistent injury hook and LR-0018's eventual runtime recovery loop."
     }
   ],
   "agent_roster": [
