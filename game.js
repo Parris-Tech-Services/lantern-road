@@ -22,6 +22,7 @@
     statusStrip: document.getElementById("statusStrip"),
     tabContent: document.getElementById("tabContent"),
     modalRoot: document.getElementById("modalRoot"),
+    feedbackRoot: document.getElementById("feedbackRoot"),
     mapCanvas: document.getElementById("mapCanvas"),
     tabs: Array.from(document.querySelectorAll(".tab")),
     newGameBtn: document.getElementById("newGameBtn"),
@@ -35,6 +36,27 @@
   const ctx = dom.mapCanvas.getContext("2d");
   let state = null;
   let hexLayout = [];
+  let feedbackTimer = null;
+
+  function showFeedback(title, text = "", tone = "") {
+    if (!dom.feedbackRoot) return;
+    if (feedbackTimer) clearTimeout(feedbackTimer);
+    dom.feedbackRoot.innerHTML = `
+      <div class="feedback-card ${tone}">
+        <strong>${title}</strong>
+        ${text ? `<span>${text}</span>` : ""}
+      </div>
+    `;
+    dom.feedbackRoot.classList.add("visible");
+    feedbackTimer = setTimeout(() => {
+      dom.feedbackRoot.classList.remove("visible");
+      dom.feedbackRoot.innerHTML = "";
+    }, 3400);
+  }
+
+  function hasBlockingFeedback() {
+    return !!(state && (state.combat || state.activeScene || state.ui?.dialogue || state.ui?.shop));
+  }
 
   function tileKey(q, r) {
     return `${q},${r}`;
@@ -386,6 +408,8 @@
       renderAll();
       addLog("Campaign loaded.");
       renderAll();
+      const loc = currentLocation();
+      showFeedback("Campaign loaded", `${timeLabel()} • ${loc ? loc.data.name : getTerrainDef(currentTile()).name}`, "good");
     } catch (err) {
       console.error(err);
       openMessage("Load Failed", "The saved data could not be read cleanly.");
@@ -452,16 +476,22 @@
   }
 
   function hearRumours(settlementId) {
+    const settlement = SETTLEMENT_MAP[settlementId];
     const pool = getVisibleRumoursForSettlement(settlementId).filter(id => !state.knownRumours.includes(id));
     if (!pool.length) {
       addLog("You hear plenty of talk, but nothing truly new.");
       renderAll();
+      openMessage("Nothing New", `You listen around ${settlement.name}, but every useful story is one the party has already heard.`);
       return;
     }
     const learned = pool.slice(0, 2);
     learned.forEach(id => discoverRumour(id, false));
-    addLog(`You gather ${learned.length} fresh rumour${learned.length > 1 ? "s" : ""} in ${SETTLEMENT_MAP[settlementId].name}.`);
+    addLog(`You gather ${learned.length} fresh rumour${learned.length > 1 ? "s" : ""} in ${settlement.name}.`);
     renderAll();
+    openMessage(
+      learned.length > 1 ? "Fresh Rumours" : "Fresh Rumour",
+      learned.map(id => `• ${RUMOUR_MAP[id].text}`).join("\n\n")
+    );
   }
 
   function innRest(settlementId) {
@@ -470,6 +500,7 @@
       openMessage("Not Enough Coin", `A room in ${settlement.name} costs ${settlement.innCost} gold.`);
       return;
     }
+    const beforeRations = getItemQty("rations");
     state.gold -= settlement.innCost;
     state.fatigue = 0;
     state.party.forEach(m => m.hp = getMaxHp(m.id));
@@ -477,6 +508,13 @@
     state.lastSettlement = settlementId;
     addLog(`You rest properly in ${settlement.name}.`);
     renderAll();
+    const rationUsed = Math.max(0, beforeRations - getItemQty("rations"));
+    const summary = `Paid ${settlement.innCost} gold. The party is fully healed, fatigue is cleared, and you wake at ${timeLabel()}.${rationUsed ? ` ${rationUsed} ration was consumed overnight.` : ""}`;
+    if (state.ui.dialogue) {
+      showFeedback(`Rested at ${settlement.name}`, summary, "good");
+    } else {
+      openMessage(`Rested at ${settlement.name}`, summary);
+    }
   }
 
   function advanceToMorning() {
@@ -581,20 +619,35 @@
       addLog(`You travel into ${terrain.name.toLowerCase()}.`);
     }
     renderAll();
-    if (!loc || loc.type !== "settlement") maybeTravelEvent(tile);
+    const eventOpened = (!loc || loc.type !== "settlement") ? maybeTravelEvent(tile) : false;
+    if (!eventOpened && !hasBlockingFeedback()) {
+      showFeedback(
+        loc ? `Arrived: ${loc.data.name}` : `Travelled into ${terrain.name}`,
+        `${moveHours} hours pass • ${timeLabel()} • fatigue ${state.fatigue}/6`
+      );
+    }
   }
 
   function campParty(extraCalm = false) {
     clearTransientModal();
+    const fatigueBefore = state.fatigue;
+    const healAmount = extraCalm ? 3 : 2;
     advanceTime(8);
     state.fatigue = Math.max(0, state.fatigue - 2);
-    healAll(extraCalm ? 3 : 2);
+    healAll(healAmount);
     const pool = C.campEvents;
     if (!extraCalm && rand() < 0.35) {
       openScene(pickRandom(pool), "camp");
     } else {
       addLog("The camp passes without serious trouble.");
       renderAll();
+      if (!state.ui.dialogue) {
+        showFeedback(
+          "Camp complete",
+          `8 hours pass • party healed up to ${healAmount} HP • fatigue ${fatigueBefore} → ${state.fatigue}`,
+          "good"
+        );
+      }
     }
   }
 
@@ -602,50 +655,78 @@
     const loc = currentLocation();
     if (loc) {
       state.ui.focus = { type: loc.type, id: loc.data.id };
+      showFeedback("Focused here", loc.data.name);
     } else {
       state.ui.focus = { type: "hex", id: tileKey(state.position.q, state.position.r) };
+      showFeedback("Focused here", getTerrainDef(currentTile()).name);
     }
     renderAll();
   }
 
   function useConsumable(itemId, memberId) {
-    if (!hasItem(itemId)) return;
+    if (!hasItem(itemId)) {
+      showFeedback("Item unavailable", "You no longer have that item.", "bad");
+      return;
+    }
     if (itemId === "bandage") {
-      healMember(memberId, 4 + (hasItem("healer_satchel") ? 1 : 0));
+      const amount = 4 + (hasItem("healer_satchel") ? 1 : 0);
+      const name = getPartyBase(memberId).name;
+      const before = getPartyMember(memberId).hp;
+      healMember(memberId, amount);
+      const healed = getPartyMember(memberId).hp - before;
       changeItem("bandage", -1, false);
-      addLog(`You use a bandage on ${getPartyBase(memberId).name}.`);
+      addLog(`You use a bandage on ${name}.`);
+      showFeedback("Bandage used", `${name} recovered ${healed} HP.`, "good");
     } else if (itemId === "healing_tonic") {
+      const name = getPartyBase(memberId).name;
+      const before = getPartyMember(memberId).hp;
       healMember(memberId, 7);
+      const healed = getPartyMember(memberId).hp - before;
       changeItem("healing_tonic", -1, false);
-      addLog(`A healing tonic steadies ${getPartyBase(memberId).name}.`);
+      addLog(`A healing tonic steadies ${name}.`);
+      showFeedback("Healing tonic used", `${name} recovered ${healed} HP.`, "good");
     } else if (itemId === "ward_salve") {
+      const fatigueBefore = state.fatigue;
       healAll(2);
       state.fatigue = Math.max(0, state.fatigue - 1);
       changeItem("ward_salve", -1, false);
       addLog("Ward salve eases sore muscles and road-worn minds.");
+      showFeedback("Ward salve used", `Party healed up to 2 HP • fatigue ${fatigueBefore} → ${state.fatigue}`, "good");
     }
     renderAll();
   }
 
   function buyItem(settlementId, itemId) {
     const item = ITEM_MAP[itemId];
-    if (state.gold < item.value) return;
-    if (!item.stack && hasItem(itemId)) return;
+    if (state.gold < item.value) {
+      showFeedback("Not enough gold", `${item.name} costs ${item.value} gold.`, "bad");
+      return;
+    }
+    if (!item.stack && hasItem(itemId)) {
+      showFeedback("Already owned", `You already carry ${item.name}.`);
+      return;
+    }
     state.gold -= item.value;
     changeItem(itemId, 1, false);
     addLog(`Bought ${item.name} in ${SETTLEMENT_MAP[settlementId].name}.`);
     renderAll();
     renderModal();
+    showFeedback("Purchase complete", `${item.name} • -${item.value} gold • ${state.gold} gold left`, "good");
   }
 
   function sellItem(itemId) {
     const item = ITEM_MAP[itemId];
-    if (!hasItem(itemId)) return;
-    state.gold += Math.max(2, Math.floor(item.value * 0.5));
+    if (!hasItem(itemId)) {
+      showFeedback("Nothing to sell", `You no longer carry ${item.name}.`);
+      return;
+    }
+    const price = Math.max(2, Math.floor(item.value * 0.5));
+    state.gold += price;
     changeItem(itemId, -1, false);
     addLog(`Sold ${item.name}.`);
     renderAll();
     renderModal();
+    showFeedback("Sale complete", `${item.name} • +${price} gold • ${state.gold} gold total`, "good");
   }
 
   function applyEffects(effects) {
@@ -709,6 +790,7 @@
     const scene = state.activeScene;
     if (!scene) return;
     const option = scene.options[index];
+    const logBefore = state.logs[0] || "";
     if (!option) return;
     if (option.requiresItem && !hasItem(option.requiresItem)) {
       openMessage("Need Something First", `You need ${itemName(option.requiresItem)} for that.`);
@@ -730,6 +812,14 @@
       applyEffects(option.effects);
     }
     renderAll();
+    if (!hasBlockingFeedback()) {
+      const newestLog = state.logs[0] || "";
+      showFeedback(
+        "Choice resolved",
+        newestLog && newestLog !== logBefore ? newestLog.replace(/^Day \d+, [^—]+ — /, "") : option.label,
+        "good"
+      );
+    }
   }
 
   function terrainBadge(tile) {
@@ -1099,6 +1189,7 @@
 
   function handleSiteAction(key) {
     const [siteId, action] = key.split(":");
+    const logBefore = state.logs[0] || "";
     const qLantern = questState("lantern_road");
     const qLedger = questState("missing_ledger");
     const qRelic = questState("pilgrim_reliquary");
@@ -1379,6 +1470,14 @@
         addLog("You spend a little time looking and find nothing pressing.");
     }
     renderAll();
+    if (!hasBlockingFeedback()) {
+      const newestLog = state.logs[0] || "";
+      showFeedback(
+        SITE_MAP[siteId]?.name || "Action complete",
+        newestLog && newestLog !== logBefore ? newestLog.replace(/^Day \d+, [^—]+ — /, "") : "Your action is complete.",
+        "good"
+      );
+    }
   }
 
   function buildNpcDialogue(npcId) {
@@ -1743,6 +1842,7 @@
       if (questId === "ash_in_marsh") discoverRumour("marsh_lights");
       closeDialogue();
       renderAll();
+      openMessage("Quest Accepted", `${QUEST_MAP[questId].title}\n\n${QUEST_MAP[questId].summary}`);
       return;
     }
     if (key.startsWith("rumour:")) {
@@ -1750,6 +1850,7 @@
       discoverRumour(rumourId);
       closeDialogue();
       renderAll();
+      openMessage("Rumour Learned", RUMOUR_MAP[rumourId].text);
       return;
     }
     if (key === "lanternFight") {
@@ -2572,12 +2673,24 @@
     renderModal();
   }
 
-  function toggleFullscreen() {
-    if (document.fullscreenElement) {
-      document.exitFullscreen?.();
-      return;
+  async function toggleFullscreen() {
+    try {
+      if (document.fullscreenElement) {
+        if (!document.exitFullscreen) throw new Error("Fullscreen exit is unavailable");
+        await document.exitFullscreen();
+        showFeedback("Fullscreen off", "Returned to the normal browser view.");
+        return;
+      }
+      if (!document.documentElement.requestFullscreen) {
+        showFeedback("Fullscreen unavailable", "This browser does not allow fullscreen here.", "bad");
+        return;
+      }
+      await document.documentElement.requestFullscreen();
+      showFeedback("Fullscreen on", "Lantern Road is now using the full screen.", "good");
+    } catch (err) {
+      console.error(err);
+      showFeedback("Fullscreen unavailable", "The browser blocked the fullscreen request.", "bad");
     }
-    document.documentElement.requestFullscreen?.();
   }
 
   function renderGameToText() {
