@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { buildReport, formatReport, isParked, isReviewReady } from "../scripts/aed-report.mjs";
+import { buildReport, flowState, formatReport, isParked, isReviewReady } from "../scripts/aed-report.mjs";
 
 function queue(tasks) {
   return {
@@ -30,6 +30,39 @@ test("separates actionable READY from parked READY and review-ready", () => {
   assert.equal(report.totals.review_ready, 1);
   assert.equal(isParked({ status: "READY", notes: "PARKED" }), true);
   assert.equal(isReviewReady({ status: "READY", notes: "PARKED awaiting Director review" }), true);
+});
+
+
+test("ranks critical-path flow inbox and distinguishes review from owner merge", () => {
+  const report = buildReport(queue([
+    {
+      id: "LR-0001", title: "Low impact review", status: "READY", primary_agent: 1, priority: 1,
+      depends_on: [], exclusive_scope: "a",
+      notes: "PARKED HANDOFF. Awaiting Agent 7 Director approval."
+    },
+    {
+      id: "LR-0002", title: "Critical review", status: "READY", primary_agent: 1, priority: 0,
+      depends_on: [], exclusive_scope: "b",
+      notes: "PARKED HANDOFF. Next action: Agent 7 exact-head approval."
+    },
+    {
+      id: "LR-0003", title: "Owner merge", status: "READY", primary_agent: 2, priority: 0,
+      depends_on: ["LR-0002"], exclusive_scope: "c",
+      notes: "PARKED HANDOFF. Agent 7 approved exact useful head. Fresh claimant should reconcile, then merge and mark DONE."
+    },
+    {
+      id: "LR-0004", title: "Downstream", status: "BLOCKED", primary_agent: 2, priority: 1,
+      depends_on: ["LR-0002"], exclusive_scope: "d", notes: ""
+    }
+  ]));
+
+  assert.equal(flowState({ status: "READY", notes: "PARKED. Awaiting Director review." }), "DIRECTOR_REVIEW");
+  assert.equal(flowState({ status: "READY", notes: "PARKED. Agent 7 approved exact useful head. Fresh claim then merge." }), "OWNER_MERGE");
+  assert.equal(report.flow_inbox[0].id, "LR-0002");
+  assert.equal(report.flow_inbox[0].flow_state, "DIRECTOR_REVIEW");
+  assert.equal(report.totals.director_review, 2);
+  assert.equal(report.totals.owner_merge, 1);
+  assert.match(formatReport(report), /Critical-path flow inbox/);
 });
 
 test("computes direct and transitive incomplete dependency fan-out", () => {
