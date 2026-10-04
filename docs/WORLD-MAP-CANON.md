@@ -36,7 +36,7 @@ Examples:
 | Blacksalt Crossing | 3,7 | **D8** |
 | Moonmere Tower | 8,4 | **I5** |
 
-The complete registry is `world/map-canon.json`.
+The complete **place** registry is `world/map-canon.json`. LR-0104's protected regional-label canon is defined below and in `design/REGIONAL-MAP-CANON-CONTRACT.md`; LR-0105 will mirror those regional records into the machine-readable registry/schema.
 
 ### Map Canon v1 place index
 
