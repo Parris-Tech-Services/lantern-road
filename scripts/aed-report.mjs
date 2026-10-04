@@ -13,6 +13,18 @@ export function isReviewReady(task) {
   return /(director\s+(review|approval)|agent\s*7.*(review|approval)|exact-head.*(review|approval)|awaiting.*(review|approval))/i.test(String(task.notes ?? ""));
 }
 
+export function flowState(task) {
+  if (!isParked(task)) return null;
+  const notes = String(task.notes ?? "");
+  const approved = /(agent\s*7\s+approved|director-approved|director\s+approval\s+covers|approved\s+exact\s+(useful\s+)?head|exact-head\s+approval\s+(?:is\s+)?(?:valid|complete))/i.test(notes);
+  const mergeNext = /(fresh(?:ly)?\s+(?:agent\s+\d+\s+)?claim|fresh claimant|reconcil|merge preparation|then merge|merge and mark done)/i.test(notes);
+  const reviewNeeded = /(await(?:ing)?[^.]{0,80}(?:director|agent\s*7)[^.]{0,50}(?:review|approval)|missing\s+agent\s*7|director\s+review\s+requested|next action:\s*agent\s*7)/i.test(notes);
+
+  if (approved && mergeNext) return "OWNER_MERGE";
+  if (reviewNeeded) return "DIRECTOR_REVIEW";
+  return "PARKED_WAIT";
+}
+
 function emptyAgent(agent) {
   return {
     number: agent.number,
@@ -163,8 +175,21 @@ export function buildReport(queue, locks = []) {
     title: task.title,
     agent: task.primary_agent,
     priority: task.priority,
-    review_ready: isReviewReady(task)
+    review_ready: isReviewReady(task),
+    flow_state: flowState(task)
   })).sort((a, b) => (a.priority ?? 99) - (b.priority ?? 99) || a.id.localeCompare(b.id));
+
+  const fanoutById = new Map(fanout.map(row => [row.id, row]));
+  const flowInbox = parked.map(row => ({
+    ...row,
+    direct: fanoutById.get(row.id)?.direct ?? 0,
+    transitive: fanoutById.get(row.id)?.transitive ?? 0
+  })).sort((a, b) =>
+    (a.priority ?? 99) - (b.priority ?? 99) ||
+    b.transitive - a.transitive ||
+    b.direct - a.direct ||
+    a.id.localeCompare(b.id)
+  );
 
   const fileMap = new Map();
   for (const task of unfinished) {
@@ -191,12 +216,15 @@ export function buildReport(queue, locks = []) {
       CANCELLED: tasks.filter(t => t.status === "CANCELLED").length,
       parked_ready: parked.length,
       review_ready: parked.filter(t => t.review_ready).length,
+      director_review: flowInbox.filter(t => t.flow_state === "DIRECTOR_REVIEW").length,
+      owner_merge: flowInbox.filter(t => t.flow_state === "OWNER_MERGE").length,
       active_claims: activeClaims.length
     },
     agents: [...agents.values()].sort((a, b) => a.number - b.number),
     active_claims: activeClaims,
     fanout,
     parked,
+    flow_inbox: flowInbox,
     collisions,
     inconsistencies: [...new Set(inconsistencies)].sort(),
     warnings: [...new Set(warnings)].sort()
@@ -225,7 +253,7 @@ export function formatReport(report, { top = 10 } = {}) {
   const lines = [];
   lines.push(`${report.project} — AED queue health (advisory only; not a merge gate)`);
   if (report.queue_updated_at) lines.push(`Queue updated: ${report.queue_updated_at}`);
-  lines.push(`Tasks: ${report.totals.tasks} | READY ${report.totals.READY} | BLOCKED ${report.totals.BLOCKED} | DONE ${report.totals.DONE} | parked READY ${report.totals.parked_ready} | review-ready ${report.totals.review_ready} | active claims ${report.totals.active_claims}`);
+  lines.push(`Tasks: ${report.totals.tasks} | READY ${report.totals.READY} | BLOCKED ${report.totals.BLOCKED} | DONE ${report.totals.DONE} | parked READY ${report.totals.parked_ready} | Director review ${report.totals.director_review} | owner merge ${report.totals.owner_merge} | active claims ${report.totals.active_claims}`);
   lines.push("");
   lines.push("Agent workload:");
   for (const a of report.agents) {
@@ -239,6 +267,10 @@ export function formatReport(report, { top = 10 } = {}) {
   lines.push(`Top dependency fan-out (top ${top}):`);
   if (!report.fanout.length) lines.push("  none");
   for (const row of report.fanout.slice(0, top)) lines.push(`  ${row.id} | direct ${row.direct} | transitive ${row.transitive} | agent ${row.agent} | ${row.status}${row.parked ? " parked" : ""} | ${row.title}`);
+  lines.push("");
+  lines.push(`Critical-path flow inbox (top ${top}):`);
+  if (!report.flow_inbox.length) lines.push("  none");
+  for (const row of report.flow_inbox.slice(0, top)) lines.push(`  ${row.id} | ${row.flow_state} | P${row.priority ?? "?"} | fan-out ${row.direct}/${row.transitive} | agent ${row.agent} | ${row.title}`);
   lines.push("");
   lines.push(`Parked/review-ready (top ${top}):`);
   if (!report.parked.length) lines.push("  none");
