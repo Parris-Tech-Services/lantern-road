@@ -29,6 +29,9 @@
     saveBtn: document.getElementById("saveBtn"),
     loadBtn: document.getElementById("loadBtn"),
     fullscreenBtn: document.getElementById("fullscreenBtn"),
+    soundToggleBtn: document.getElementById("soundToggleBtn"),
+    ambienceToggleBtn: document.getElementById("ambienceToggleBtn"),
+    volumeSlider: document.getElementById("volumeSlider"),
     campBtn: document.getElementById("campBtn"),
     focusHereBtn: document.getElementById("focusHereBtn"),
     mapHint: document.getElementById("mapHint")
@@ -57,7 +60,301 @@
     `;
   }
 
+  const AUDIO_PREF_KEY = "lantern-road-audio-v1";
+  const AUDIO_DEFAULTS = { enabled: false, ambience: true, volume: 0.28 };
+  let audioPrefs = loadAudioPrefs();
+  let audioCtx = null;
+  let audioMaster = null;
+  let audioUnlocked = false;
+  let ambienceNodes = [];
+  let activeAmbienceKey = "";
+
+  function loadAudioPrefs() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(AUDIO_PREF_KEY) || "null");
+      if (!saved || typeof saved !== "object") return { ...AUDIO_DEFAULTS };
+      return {
+        enabled: saved.enabled === true,
+        ambience: saved.ambience !== false,
+        volume: Math.max(0, Math.min(1, Number.isFinite(Number(saved.volume)) ? Number(saved.volume) : AUDIO_DEFAULTS.volume))
+      };
+    } catch {
+      return { ...AUDIO_DEFAULTS };
+    }
+  }
+
+  function saveAudioPrefs() {
+    try {
+      localStorage.setItem(AUDIO_PREF_KEY, JSON.stringify(audioPrefs));
+    } catch {
+      // Audio preferences are non-critical; the game remains playable if storage is blocked.
+    }
+  }
+
+  function audioSupported() {
+    return !!(window.AudioContext || window.webkitAudioContext);
+  }
+
+  function updateAudioControls() {
+    const supported = audioSupported();
+    if (dom.soundToggleBtn) {
+      dom.soundToggleBtn.disabled = !supported;
+      dom.soundToggleBtn.textContent = supported ? `Sound: ${audioPrefs.enabled ? "On" : "Off"}` : "Sound unavailable";
+      dom.soundToggleBtn.setAttribute("aria-pressed", String(audioPrefs.enabled && supported));
+      dom.soundToggleBtn.title = audioPrefs.enabled && !audioUnlocked
+        ? "Sound starts after a user gesture because browsers block autoplay."
+        : "Toggle Lantern Road sound.";
+    }
+    if (dom.ambienceToggleBtn) {
+      dom.ambienceToggleBtn.disabled = !supported || !audioPrefs.enabled;
+      dom.ambienceToggleBtn.textContent = `Ambience: ${audioPrefs.ambience ? "On" : "Off"}`;
+      dom.ambienceToggleBtn.setAttribute("aria-pressed", String(audioPrefs.ambience));
+    }
+    if (dom.volumeSlider) {
+      dom.volumeSlider.disabled = !supported || !audioPrefs.enabled;
+      dom.volumeSlider.value = String(audioPrefs.volume);
+    }
+  }
+
+  function applyMasterVolume() {
+    if (!audioCtx || !audioMaster) return;
+    const target = audioPrefs.enabled ? audioPrefs.volume : 0;
+    const now = audioCtx.currentTime;
+    audioMaster.gain.cancelScheduledValues(now);
+    audioMaster.gain.setTargetAtTime(target, now, 0.025);
+  }
+
+  async function unlockAudio() {
+    if (!audioPrefs.enabled || !audioSupported()) return false;
+    try {
+      if (!audioCtx) {
+        const AudioCtor = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioCtor();
+        audioMaster = audioCtx.createGain();
+        audioMaster.gain.value = audioPrefs.volume;
+        audioMaster.connect(audioCtx.destination);
+      }
+      if (audioCtx.state === "suspended") await audioCtx.resume();
+      audioUnlocked = audioCtx.state === "running";
+      applyMasterVolume();
+      updateAudioControls();
+      if (audioUnlocked) refreshAmbience(true);
+      return audioUnlocked;
+    } catch (err) {
+      console.warn("Lantern Road audio could not start.", err);
+      audioUnlocked = false;
+      return false;
+    }
+  }
+
+  function stopAmbience() {
+    ambienceNodes.forEach(node => {
+      try { if (typeof node.stop === "function") node.stop(); } catch {}
+      try { if (typeof node.disconnect === "function") node.disconnect(); } catch {}
+    });
+    ambienceNodes = [];
+    activeAmbienceKey = "";
+  }
+
+  function addNoiseLayer({ gain = 0.01, frequency = 1000, type = "lowpass", q = 0.6 } = {}) {
+    if (!audioCtx || !audioMaster) return;
+    const seconds = 1.5;
+    const buffer = audioCtx.createBuffer(1, Math.floor(audioCtx.sampleRate * seconds), audioCtx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+    const source = audioCtx.createBufferSource();
+    const filter = audioCtx.createBiquadFilter();
+    const layerGain = audioCtx.createGain();
+    source.buffer = buffer;
+    source.loop = true;
+    filter.type = type;
+    filter.frequency.value = frequency;
+    filter.Q.value = q;
+    layerGain.gain.value = gain;
+    source.connect(filter);
+    filter.connect(layerGain);
+    layerGain.connect(audioMaster);
+    source.start();
+    ambienceNodes.push(source, filter, layerGain);
+  }
+
+  function addDroneLayer(frequency, gain = 0.004, type = "sine", detune = 0) {
+    if (!audioCtx || !audioMaster) return;
+    const osc = audioCtx.createOscillator();
+    const layerGain = audioCtx.createGain();
+    osc.type = type;
+    osc.frequency.value = frequency;
+    osc.detune.value = detune;
+    layerGain.gain.value = gain;
+    osc.connect(layerGain);
+    layerGain.connect(audioMaster);
+    osc.start();
+    ambienceNodes.push(osc, layerGain);
+  }
+
+  function getAmbienceProfile() {
+    if (!state) return { key: "none", weather: "clear", place: "road" };
+    const tile = currentTile();
+    const loc = currentLocation();
+    let place = `terrain:${tile?.terrain || "plains"}`;
+    if (state.combat) {
+      place = "combat";
+    } else if (loc?.type === "settlement") {
+      place = "settlement";
+    } else if (loc?.type === "site") {
+      const id = String(loc.data.id || "");
+      if (tile?.terrain === "swamp" || id.includes("marsh")) place = "swamp-site";
+      else if (/saint|chapel|shrine|reliquary/.test(id)) place = "sacred-site";
+      else place = "ruin-site";
+    }
+    return { key: `${state.weather}|${place}`, weather: state.weather, place };
+  }
+
+  function startAmbience(profile) {
+    if (!audioCtx || !audioMaster || !audioPrefs.enabled || !audioPrefs.ambience) return;
+
+    if (profile.weather === "drizzle") {
+      addNoiseLayer({ gain: 0.018, frequency: 2600, type: "lowpass", q: 0.35 });
+    } else if (profile.weather === "wind") {
+      addNoiseLayer({ gain: 0.017, frequency: 520, type: "bandpass", q: 0.55 });
+      addDroneLayer(88, 0.003, "sine", -7);
+    } else if (profile.weather === "storm") {
+      addNoiseLayer({ gain: 0.032, frequency: 700, type: "lowpass", q: 0.45 });
+      addDroneLayer(48, 0.006, "triangle", -10);
+    }
+
+    if (profile.place === "settlement") {
+      addDroneLayer(110, 0.0055, "triangle");
+      addDroneLayer(164.81, 0.0024, "sine", 4);
+    } else if (profile.place === "swamp-site" || profile.place === "terrain:swamp") {
+      addDroneLayer(73.42, 0.004, "sine", -9);
+      addNoiseLayer({ gain: 0.006, frequency: 920, type: "bandpass", q: 0.8 });
+    } else if (profile.place === "sacred-site") {
+      addDroneLayer(196, 0.0035, "sine");
+      addDroneLayer(293.66, 0.0018, "sine", 3);
+    } else if (profile.place === "ruin-site") {
+      addDroneLayer(82.41, 0.004, "triangle", -12);
+    } else if (profile.place === "terrain:forest") {
+      addNoiseLayer({ gain: 0.005, frequency: 1500, type: "lowpass", q: 0.4 });
+    } else if (profile.place === "terrain:mountain" || profile.place === "terrain:hills") {
+      addDroneLayer(92.5, 0.0028, "sine", -6);
+    } else if (profile.place === "combat") {
+      addDroneLayer(55, 0.0045, "triangle", -8);
+    }
+  }
+
+  function refreshAmbience(force = false) {
+    if (!audioUnlocked || !audioCtx || !audioPrefs.enabled || !audioPrefs.ambience) {
+      if (ambienceNodes.length) stopAmbience();
+      return;
+    }
+    const profile = getAmbienceProfile();
+    if (!force && profile.key === activeAmbienceKey) return;
+    stopAmbience();
+    activeAmbienceKey = profile.key;
+    startAmbience(profile);
+  }
+
+  function playTone({ frequency, endFrequency = null, duration = 0.08, gain = 0.06, type = "sine", delay = 0 } = {}) {
+    if (!audioUnlocked || !audioCtx || !audioMaster || !audioPrefs.enabled || audioCtx.state !== "running") return;
+    const osc = audioCtx.createOscillator();
+    const cueGain = audioCtx.createGain();
+    const start = audioCtx.currentTime + delay;
+    const end = start + duration;
+    osc.type = type;
+    osc.frequency.setValueAtTime(frequency, start);
+    if (endFrequency) osc.frequency.exponentialRampToValueAtTime(Math.max(1, endFrequency), end);
+    cueGain.gain.setValueAtTime(0.0001, start);
+    cueGain.gain.exponentialRampToValueAtTime(Math.max(0.0002, gain), start + Math.min(0.018, duration * 0.3));
+    cueGain.gain.exponentialRampToValueAtTime(0.0001, end);
+    osc.connect(cueGain);
+    cueGain.connect(audioMaster);
+    osc.start(start);
+    osc.stop(end + 0.02);
+  }
+
+  function playCue(name) {
+    if (!audioPrefs.enabled) return;
+    switch (name) {
+      case "ui":
+        playTone({ frequency: 460, endFrequency: 420, duration: 0.045, gain: 0.028, type: "triangle" });
+        break;
+      case "travel":
+        playTone({ frequency: 230, endFrequency: 320, duration: 0.11, gain: 0.038, type: "triangle" });
+        break;
+      case "hit":
+        playTone({ frequency: 135, endFrequency: 76, duration: 0.09, gain: 0.075, type: "sawtooth" });
+        break;
+      case "heal":
+        playTone({ frequency: 392, endFrequency: 587, duration: 0.15, gain: 0.052, type: "sine" });
+        break;
+      case "status":
+        playTone({ frequency: 520, endFrequency: 650, duration: 0.09, gain: 0.036, type: "triangle" });
+        break;
+      case "combat":
+        playTone({ frequency: 96, endFrequency: 72, duration: 0.16, gain: 0.065, type: "triangle" });
+        break;
+      case "victory":
+        playTone({ frequency: 392, endFrequency: 523.25, duration: 0.15, gain: 0.045, type: "sine" });
+        playTone({ frequency: 523.25, endFrequency: 659.25, duration: 0.18, gain: 0.04, type: "sine", delay: 0.12 });
+        break;
+      case "defeat":
+        playTone({ frequency: 196, endFrequency: 98, duration: 0.28, gain: 0.052, type: "triangle" });
+        break;
+    }
+  }
+
+  async function toggleSound() {
+    audioPrefs.enabled = !audioPrefs.enabled;
+    saveAudioPrefs();
+    updateAudioControls();
+    if (!audioPrefs.enabled) {
+      stopAmbience();
+      applyMasterVolume();
+      showFeedback("Sound off", "Lantern Road is quiet. Your setting is saved.");
+      return;
+    }
+    const started = await unlockAudio();
+    if (!started) {
+      audioPrefs.enabled = false;
+      saveAudioPrefs();
+      updateAudioControls();
+      showFeedback("Sound unavailable", "This browser would not start audio.", "bad");
+      return;
+    }
+    playCue("status");
+    showFeedback("Sound on", audioPrefs.ambience ? "Ambient sound and restrained action cues are enabled." : "Action cues are enabled; ambience remains off.", "good");
+  }
+
+  async function toggleAmbience() {
+    if (!audioPrefs.enabled) return;
+    audioPrefs.ambience = !audioPrefs.ambience;
+    saveAudioPrefs();
+    updateAudioControls();
+    if (audioPrefs.ambience) {
+      await unlockAudio();
+      refreshAmbience(true);
+      playCue("status");
+      showFeedback("Ambience on", "Weather and location atmosphere will follow the party.", "good");
+    } else {
+      stopAmbience();
+      showFeedback("Ambience off", "Action cues remain on, but continuous atmosphere is muted.");
+    }
+  }
+
+  function setAudioVolume(value) {
+    audioPrefs.volume = Math.max(0, Math.min(1, Number(value) || 0));
+    saveAudioPrefs();
+    applyMasterVolume();
+    updateAudioControls();
+  }
+
+  function resumeSavedAudioFromGesture() {
+    if (audioPrefs.enabled && !audioUnlocked) void unlockAudio();
+  }
+
   function signalVisualEffect(type) {
+    playCue(type);
     const root = document.getElementById("app");
     if (!root || window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
     const classes = ["fx-hit", "fx-heal", "fx-status", "fx-travel"];
@@ -2338,6 +2635,8 @@
       pendingAction: null,
       round: 1
     };
+    playCue("combat");
+    refreshAmbience(true);
     renderModal();
     maybeAdvanceEnemyTurn();
   }
@@ -2588,6 +2887,7 @@
       setQuestStage("silent_tower", "recovered");
     }
     state.combat = null;
+    playCue("victory");
     renderModal();
     openMessage("Victory", `The party wins.\n\nReward: ${gold} gold and ${lootText}.`);
     if (characterDecision) reactToDecision(characterDecision);
@@ -2609,6 +2909,7 @@
     state.fatigue = Math.min(6, state.fatigue + 2);
     revealAround(state.position.q, state.position.r);
     state.combat = null;
+    playCue("defeat");
     renderModal();
     openMessage("Driven Back", `The party is beaten and dragged back toward ${fallback.name}. You lose 10 gold and gain 2 fatigue.`);
     renderAll();
@@ -3000,6 +3301,7 @@
     renderTabContent();
     renderMap();
     renderModal();
+    refreshAmbience();
   }
 
   async function toggleFullscreen() {
@@ -3143,6 +3445,9 @@
     dom.saveBtn.addEventListener("click", saveGame);
     dom.loadBtn.addEventListener("click", loadGame);
     dom.fullscreenBtn.addEventListener("click", toggleFullscreen);
+    dom.soundToggleBtn?.addEventListener("click", toggleSound);
+    dom.ambienceToggleBtn?.addEventListener("click", toggleAmbience);
+    dom.volumeSlider?.addEventListener("input", event => setAudioVolume(event.target.value));
     dom.campBtn.addEventListener("click", () => state && campParty());
     dom.focusHereBtn.addEventListener("click", () => state && focusCurrentLocation());
     dom.tabs.forEach(tab => {
@@ -3153,6 +3458,13 @@
       });
     });
     document.body.addEventListener("click", handleDocumentClick);
+    document.body.addEventListener("click", event => {
+      const button = event.target.closest("button");
+      if (!button || button === dom.soundToggleBtn || button === dom.ambienceToggleBtn) return;
+      playCue("ui");
+    }, true);
+    document.addEventListener("pointerdown", resumeSavedAudioFromGesture, { once: true, capture: true });
+    document.addEventListener("keydown", resumeSavedAudioFromGesture, { once: true, capture: true });
     dom.mapCanvas.addEventListener("pointerdown", onMapPointer);
     window.addEventListener("resize", renderAll);
     document.addEventListener("keydown", event => {
@@ -3165,6 +3477,7 @@
 
   function init() {
     bindStaticUI();
+    updateAudioControls();
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("./sw.js").catch(() => {});
     }

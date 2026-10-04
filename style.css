@@ -595,3 +595,68 @@ footer.note{
     animation:none !important;
   }
 }
+
+
+/* LR-0003: opt-in audio controls and reduced-distraction presentation. */
+.audio-controls{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding-left:4px;
+  flex-wrap:wrap;
+}
+.audio-toggle{
+  min-width:108px;
+}
+.volume-control{
+  min-height:46px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:7px 10px;
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:14px;
+  background:rgba(255,255,255,.06);
+  color:#eadfc6;
+  font-weight:700;
+}
+.volume-control span{
+  font-size:.82rem;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+}
+.volume-control input[type="range"]{
+  width:104px;
+  accent-color:var(--accent);
+}
+.volume-control:has(input:disabled){
+  opacity:.48;
+}
+.audio-controls button:disabled,
+.volume-control input:disabled{
+  cursor:not-allowed;
+}
+
+@media (max-width:760px){
+  .audio-controls{
+    width:100%;
+    padding-left:0;
+  }
+  .audio-toggle{
+    flex:1 1 128px;
+  }
+  .volume-control{
+    flex:1 1 180px;
+    justify-content:center;
+  }
+  .volume-control input[type="range"]{
+    width:min(150px, 42vw);
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .audio-controls *,
+  .volume-control *{
+    transition:none !important;
+  }
+}
