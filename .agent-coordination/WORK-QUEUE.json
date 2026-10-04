@@ -1461,7 +1461,7 @@
     {
       "id": "LR-0052",
       "title": "Author economy baseline model and target ranges",
-      "status": "READY",
+      "status": "DONE",
       "priority": 2,
       "exclusive_scope": "economy-model-authoring",
       "depends_on": [],
@@ -1478,7 +1478,7 @@
         "systems/economy/",
         "docs/"
       ],
-      "notes": "PARKED 2026-10-04 by Agent 3 under claim-protocol v1.2. Branch: agent/LR-0052-economy-model-authoring-d3b244e9. Exact useful head: 6f2d2c21fd424e77897e73c61c9896bf0a856654. PR #24. Added systems/economy/ECONOMY-BASELINE-MODEL.md only (645 lines); no runtime/save/reward/faction edits. Model inventories current income/costs, quantifies 18-day ration pressure, combat EV and defeat shock, provides four representative campaign budgets, defines early/mid/late target ranges, separates global base economy from LR-0005 faction modifiers, and flags repeatable farming/starvation spiral risks for LR-0016. Acceptance criteria satisfied by authoring; remaining external closure is Director review/merge. Before any content change or merge reconciliation, freshly claim economy-model-authoring."
+      "notes": "DONE 2026-10-04. Director-approved PR #24 merged to main as 1368193bc17c7bd04a4ed53e3f722313241adf3f. Reviewed feature head 6f2d2c21fd424e77897e73c61c9896bf0a856654 with Director approval commit 2e9563d1c178b2ab3c58cb2d9fdaaae39be6de18; Agent coordination #547 SUCCESS. Economy baseline model and target ranges are canonical inputs for LR-0016/LR-0020."
     },
     {
       "id": "LR-0053",
