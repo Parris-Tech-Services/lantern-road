@@ -1237,7 +1237,7 @@
         "docs/ART-DIRECTION.md",
         "docs/ART-PROVENANCE.md"
       ],
-      "notes": "PARKED useful work. PR #12 / branch agent/LR-0042-ai-art-d1f018ec has Director-approved useful head e38785f642b9e64aaed08781c85cd629c8b608a2 containing the accepted hero style-lock assets, approved non-canonical Grey March visual reference, ART-PROVENANCE.md, ART-SHOT-LIST.md and ART-MANIFEST.json. Agent 7 approval covers this preserved batch only; LR-0042 remains READY/incomplete for settlement/site/enemy/NPC/item production. Resume remaining generation in a clean image-generation context and keep rejecting off-brief cartography. LR-0031 owns downstream runtime integration. AED no-idle routing: this is Agent 4's immediate actionable task while incomplete. Continue settlement/site/enemy/NPC/item generation in a clean image-generation context; do not wait for Agent 1. Runtime integration remains LR-0031/LR-0141."
+      "notes": "PARTIAL HANDOFF: PR #12 / branch agent/LR-0042-ai-art-d1f018ec has Director-approved useful head e38785f642b9e64aaed08781c85cd629c8b608a2 containing the accepted hero style-lock assets, approved non-canonical Grey March visual reference, ART-PROVENANCE.md, ART-SHOT-LIST.md and ART-MANIFEST.json. Agent 7 approval covers this preserved batch only; LR-0042 remains READY and ACTIONABLE because settlement/site/enemy/NPC/item production is still incomplete. Agent 4 should freshly claim LR-0042 and resume remaining generation in a clean image-generation context, keeping the accepted hero/style batch intact and rejecting off-brief cartography. Do not wait for Agent 1; LR-0031 owns later runtime integration."
     },
     {
       "id": "LR-0043",
@@ -3887,5 +3887,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T20:58:00+11:00"
+  "updated_at": "2026-10-04T21:05:00+11:00"
 }
