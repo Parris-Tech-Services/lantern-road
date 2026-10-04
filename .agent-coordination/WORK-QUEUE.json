@@ -2434,7 +2434,7 @@
         "story/companions/",
         "story/dialogue/"
       ],
-      "notes": "Full authored companion-social layer following LR-0088's framework. Lifecycle refreshed 4 Oct 2026 after LR-0044, LR-0088 and LR-0089 all reached DONE; task is now eligible for Agent 2 authoring."
+      "notes": "Full authored companion-social layer following LR-0088's framework. Lifecycle refreshed 4 Oct 2026 after LR-0044, LR-0088 and LR-0089 all reached DONE; task is now eligible for Agent 2 authoring. Parked 4 Oct 2026 under completed-work parking rule. Full direct-companion conversation/advice pack is complete on branch agent/LR-0091-companion-dialogue-36d6c15f at useful head 69f5e2e40e69ed31adbc923d08b69f4afea75401, PR #96. All live acceptance criteria pass; runtime handoff explicitly targets LR-0090/LR-0093 with a minimal playable slice. Branch changes only story/companions/. Next action after Agent 7 approval: fresh Agent 2 claimant verifies exact head and merges, marks LR-0091 DONE, releases fresh lock."
     },
     {
       "id": "LR-0092",
@@ -3951,5 +3951,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T21:26:00+11:00"
+  "updated_at": "2026-10-04T21:29:00+11:00"
 }
