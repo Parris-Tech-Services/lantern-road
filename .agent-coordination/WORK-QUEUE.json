@@ -2862,7 +2862,7 @@
     {
       "id": "LR-0109",
       "title": "Modernise and enforce GitHub Actions runtime versions",
-      "status": "READY",
+      "status": "DONE",
       "priority": 1,
       "exclusive_scope": "actions-runtime-maintenance",
       "depends_on": [
@@ -2883,7 +2883,7 @@
         "scripts/validate-actions-runtime.mjs",
         "README.md"
       ],
-      "notes": "PARKED HANDOFF: reconciled implementation complete on branch agent/LR-0109-actions-runtime-77a2c468-r3, exact useful head f890db9821f3a46bdeee7ea8dcacfddeb9df418a, draft PR #62. This supersedes closed PR #57 and upgrades all currently live Agent coordination, Content integrity and Map canon workflow uses to actions/checkout@v7 / actions/setup-node@v7 where applicable. Agent coordination run #521 passed queue validation, the new Actions runtime-major validator, and all parked-claim regression tests; its only failure is the intentional missing Agent 7 design review. Content integrity run #7 and Map canon run #9 passed on the same head. Next action: Agent 7 appends exact-head review, then fresh Agent 1 claim is required before merge preparation."
+      "notes": "Completed 4 Oct 2026 via PR #62, merge commit d7b35884795329b18a5d497f2722ba0be4670398. All live core GitHub Actions workflows now use Node-24-compatible checkout/setup-node majors (v7 where applicable), and scripts/validate-actions-runtime.mjs prevents future checkout/setup-node majors below v5. Approval-head Agent coordination run #542, Map canon run #10 and Content integrity run #8 all passed."
     },
     {
       "id": "LR-0110",
