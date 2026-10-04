@@ -3744,7 +3744,7 @@
     {
       "id": "LR-0142",
       "title": "Eliminate avoidable cross-agent waiting",
-      "status": "READY",
+      "status": "DONE",
       "priority": 0,
       "exclusive_scope": "aed-no-idle-parallelism",
       "depends_on": [
@@ -3769,7 +3769,8 @@
         "scripts/aed-report.mjs",
         "tests/aed-report.test.mjs",
         "README.md"
-      ]
+      ],
+      "notes": "Completed 4 Oct 2026 via PR #87, merge commit 4c47ce58c0b5d87563fadb23b9afcb96210936fd. Added no-idle waiting rule, per-agent work-state/NEXT reporting, safe producer/integration decomposition, corrected LR-0042 to actionable partial work, and created Lamplighter producer lanes LR-0143 audio sources + LR-0144 final art delivery. Exact-head Agent coordination run #825 and AED report tests run #19 passed."
     },
     {
       "id": "LR-0143",
@@ -3887,5 +3888,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T21:14:00+11:00"
+  "updated_at": "2026-10-04T21:18:00+11:00"
 }
