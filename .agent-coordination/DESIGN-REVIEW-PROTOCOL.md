@@ -62,6 +62,18 @@ For every specialist implementation PR, answer all of these against the final co
 
 A review may be concise, but it should be able to point to concrete code/content evidence for any blocking finding.
 
+## Foundation-gate governance
+
+For LR-0055 and future coordination changes that alter the dependency critical path, The Director reviews the policy itself before merge. The review should verify that:
+
+- machine verification remains objective and independently checkable;
+- no specialist can bypass required CI/artifact evidence;
+- Josh's human sign-off remains impossible for agents to self-assert;
+- human validation protects final integration/release without unnecessarily blocking technically proven development;
+- the queue, validator, claim protocol and decision log describe the same dependency model.
+
+The Director reviews governance and product-risk boundaries; it does not replace the machine test results or Josh's later real-device validation.
+
 ## Review outcomes
 
 Use exactly one:
