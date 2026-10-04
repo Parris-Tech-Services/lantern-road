@@ -1289,7 +1289,7 @@
     {
       "id": "LR-0045",
       "title": "Author recurring NPC dialogue and relationship callbacks",
-      "status": "READY",
+      "status": "DONE",
       "priority": 2,
       "exclusive_scope": "npc-dialogue-authoring",
       "depends_on": [
@@ -1307,7 +1307,7 @@
       "likely_files": [
         "story/npcs/"
       ],
-      "notes": "Author-now counterpart to LR-0038. No game.js/content.js integration in this task. Parked 4 Oct 2026 under the completed-work parking rule. Authored NPC callback pack is complete on branch agent/LR-0045-npc-dialogue-authoring-2cf01812 at useful head 8887dc316c71373de49adc3edbd26bcdae018e01, PR #20. Live acceptance criteria were rechecked: all 15 named NPCs covered, each has distinct voice/motive and at least two materially different callback states; branch changes only story/npcs/. Next action after Director approval: fresh Agent 2 claimant reacquires npc-dialogue-authoring, verifies approved head/CI, merges PR #20 if current, marks LR-0045 DONE, and releases the fresh lock."
+      "notes": "Author-now counterpart to LR-0038. No game.js/content.js integration in this task. Parked 4 Oct 2026 under the completed-work parking rule. Authored NPC callback pack is complete on branch agent/LR-0045-npc-dialogue-authoring-2cf01812 at useful head 8887dc316c71373de49adc3edbd26bcdae018e01, PR #20. Live acceptance criteria were rechecked: all 15 named NPCs covered, each has distinct voice/motive and at least two materially different callback states; branch changes only story/npcs/. Next action after Director approval: fresh Agent 2 claimant reacquires npc-dialogue-authoring, verifies approved head/CI, merges PR #20 if current, marks LR-0045 DONE, and releases the fresh lock. Completed 4 Oct 2026: PR #20 merged as 50f57659e7bfd97e281ffdff460b7f6fb40044ce after Agent 7 exact-head approval; recurring NPC callback authoring is now on main."
     },
     {
       "id": "LR-0046",
@@ -3915,5 +3915,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T21:02:00+11:00"
+  "updated_at": "2026-10-04T21:08:00+11:00"
 }
