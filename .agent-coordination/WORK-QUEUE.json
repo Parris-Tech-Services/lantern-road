@@ -2327,7 +2327,7 @@
         "systems/balance/",
         "docs/"
       ],
-      "notes": "PARKED 2026-10-04 by Agent 3 under claim-protocol v1.2. Branch: agent/LR-0087-systems-balance-authoring-719b9b52. Exact useful head: b4ddf398f1f3426a341d8459770542b02b0024cd. PR #33. Added systems/balance/BUILD-VIABILITY-SCENARIO-MATRIX.md only (1108 lines); no runtime/test-harness/black-box-QA edits. Matrix defines 8 representative build combinations, equipment/economy/recovery overlays, 10 core balance scenarios, 4 full-campaign profiles, early/mid/late checkpoints, dominance/trap/non-functional/spiral diagnostics, and final assumption reconciliation for LR-0020. Acceptance criteria satisfied by authoring; remaining external closure is Director review/merge. Freshly claim systems-balance-authoring before any content change or merge reconciliation."
+      "notes": "PARKED 2026-10-04T21:38+11:00 corrective reconciliation. Original PR #33 was merged before Director-requested Leader/reserve addendum was incorporated, so LR-0087 correctly remains READY. Corrective branch: agent/LR-0087-roster-reconcile-9ab4f38e. Exact useful head: fedff55e285810242e552919e50d56b406837336. PR #103. Changes only systems/balance/BUILD-VIABILITY-SCENARIO-MATRIX.md: reclassifies B1-B8 as companion build-component coverage, adds four Leader+three-active reserve scenarios, both Lead From the Front / Steady Hand focus cases, reserve-dominance/mandatory-companion diagnostics, and explicit LR-0106/LR-0125 consumption. Remaining external closure: Agent 7 exact-head approval, then fresh Agent 3 claim to merge correction, mark DONE, release."
     },
     {
       "id": "LR-0088",
