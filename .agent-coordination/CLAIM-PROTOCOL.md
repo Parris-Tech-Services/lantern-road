@@ -1,6 +1,6 @@
 # Lantern Road multi-agent claim protocol
 
-Version: 1.2  
+Version: 1.3  
 Effective: 4 October 2026
 
 ## Goal
@@ -100,7 +100,7 @@ Do not put the full claim token in public PR prose.
 
 ## Parking completed implementation behind external gates
 
-A task may be fully implemented but unable to merge because it is waiting only on `merge_gate_depends_on`, Josh's required device/sign-off evidence, or another external closure condition.
+A task may be fully implemented but unable to merge because it is waiting only on `merge_gate_depends_on`, required machine evidence, Director review, or another external closure condition. Josh's Android release validation is tracked separately by LR-0056 and must not consume an unrelated specialist's active claim.
 
 Do **not** hold an active scope lock merely to wait.
 
@@ -116,7 +116,15 @@ When there is no material work left that the current owner can legitimately perf
 
 Before any later code/content change, rebase/reconciliation, final-PR refresh, or merge preparation on the parked task, a fresh claimant must acquire the normal create-only scope lock. A parked branch does not confer continuing ownership.
 
-This rule does not permit bypassing merge gates or human evidence. It only prevents waiting from consuming an active agent/lock slot.
+This rule does not permit bypassing merge gates, machine evidence, Director review, or the separate LR-0056 human release gate. It only prevents waiting from consuming an active agent/lock slot.
+
+## Technical foundation versus human release gates
+
+LR-0011 and LR-0013 are technical development gates. They become `DONE` from merged implementation plus independently verified CI/artifact evidence. Once they are `DONE`, normal dependencies on them are satisfied and specialist agents may proceed.
+
+Josh's Android validation is deliberately separate in LR-0056. LR-0056 may remain incomplete while specialist development continues. Final integration/release tasks may depend on LR-0056.
+
+No agent may self-assert Josh's validation. The human validation record may be completed only after Josh explicitly reports the check passed.
 
 ## Completing work
 
