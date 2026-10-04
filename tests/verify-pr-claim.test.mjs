@@ -159,7 +159,7 @@ test("rejects an unlocked feature commit", () => {
 
   const result = runVerifier(cwd, branch, featureHead);
   assert.notEqual(result.status, 0);
-  assert.match(result.stderr, /do not name exact current PR head|no active scope lock|frozen parked/i);
+  assert.match(result.stderr, /do not name the exact current or accepted underlying parked head|no active scope lock|frozen parked/i);
 });
 
 test("rejects a stale Steward approval on a parked task", () => {
@@ -229,7 +229,7 @@ test("continues to accept an ordinary active-claim PR", () => {
 });
 
 
-test("accepts an active Agent 1–5 PR with review NOT_REQUIRED and no Director commit", () => {
+test("accepts an active specialist PR with review NOT_REQUIRED and no Steward commit", () => {
   const branch = "agent/LR-0044-low-risk-test";
   const task = {
     id: "LR-0044",
@@ -335,7 +335,7 @@ test("rejects a frozen parked NOT_REQUIRED-review PR when the recorded head is s
 
   const result = runVerifier(cwd, branch, currentHead);
   assert.notEqual(result.status, 0);
-  assert.match(result.stderr, /do not name exact current PR head|fresh ownership/i);
+  assert.match(result.stderr, /do not name the exact current or accepted underlying parked head|fresh ownership/i);
 });
 
 
