@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0077",
+  "exclusive_scope": "save-recovery-ux-authoring",
+  "agent_number": 5,
+  "agent": "The Wayfinder",
+  "session_id": "5d2e8b97-3d5e-4f2b-9a51-0f2e7c4ab821",
+  "claim_token": "6a3f9d10-2fd7-4a8c-9e24-54c18f2db6a1",
+  "claimed_at": "2026-10-04T17:20:00+11:00",
+  "expires_at": "2026-10-05T05:20:00+11:00",
+  "branch": "agent/LR-0077-save-recovery-ux-5d2e8b97",
+  "note": "Authoring only LR-0077 save and recovery UX state model; no runtime or persistence implementation."
+}
