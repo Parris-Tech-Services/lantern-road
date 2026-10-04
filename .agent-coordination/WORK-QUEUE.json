@@ -1892,7 +1892,7 @@
       "primary_agent": 1,
       "goal": "Make the canonical Grey March registry technically enforceable so ordinary feature PRs cannot silently rename, move, duplicate or orphan canonical places.",
       "acceptance_criteria": [
-        "Add a schema/validator for world/map-canon.json covering unique ids, unique canonical grid positions, valid A–I/1–8 derived references, recognised canon statuses and valid place types.",
+        "Add a schema/validator for world/map-canon.json covering unique ids, valid in-bounds q/r, correctly derived A–I/1–8 references, recognised canon statuses and valid place types; allow explicit shared-hex occupancy.",
         "Cross-check canonical settlement/site ids, names and q/r values against gameplay content until LR-0073 establishes a cleaner shared data path.",
         "Fail CI when an ordinary PR changes canonical place identity/coordinates without dedicated map-canon change metadata and fresh Director approval.",
         "Allow non-canonical PROPOSED art/lore labels to exist without becoming gameplay canon.",
@@ -1905,7 +1905,7 @@
         ".github/workflows/",
         ".agent-coordination/"
       ],
-      "notes": "Steward enforcement counterpart to LR-0069. Does not choose geography or names."
+      "notes": "Steward enforcement counterpart to LR-0069. Does not choose geography or names. Important: current canon intentionally allows multiple authored locations in one gameplay hex, so enforcement must not impose one-place-per-hex."
     },
     {
       "id": "LR-0071",
@@ -2095,5 +2095,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T16:31:00+11:00"
+  "updated_at": "2026-10-04T16:38:00+11:00"
 }
