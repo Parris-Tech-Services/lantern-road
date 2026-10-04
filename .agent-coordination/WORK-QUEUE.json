@@ -2673,6 +2673,30 @@
         "tests/"
       ],
       "notes": "Director-routed process bug discovered on LR-0044 approval: Agent coordination run 360 passed queue validation but failed PR claim verification because the task was correctly parked with zero active locks. CI must support review-only approval of parked work without weakening normal claim enforcement."
+    },
+    {
+      "id": "LR-0102",
+      "title": "Author minimal Leader identity and reactive background pack",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "leader-identity-authoring",
+      "depends_on": [
+        "LR-0089"
+      ],
+      "primary_agent": 2,
+      "goal": "Give the player Leader a light authored identity layer that NPCs and companions can recognise through a chosen name, at most one compact background tag and emergent remembered leadership behaviour, without expanding Lantern Road into a full character creator.",
+      "acceptance_criteria": [
+        "Propose a small optional set of Leader background tags plus a no-stated-background/default path, with each tag broad enough for player projection and narrow enough to create distinctive dialogue.",
+        "Background tags must not grant automatic faction loyalty, fixed family/history, major mechanical superiority or replace the existing skill/progression systems.",
+        "Author representative background-sensitive dialogue for Garrick, Mira, Oren and Brindle plus at least five important NPCs or settlement contexts.",
+        "Author emergent leadership-behaviour callbacks for patterns such as keeping/breaking promises, consulting companions, frequent commands, honest uncertainty and protecting/revealing secrets without exposing an alignment meter.",
+        "Define how reserve companions can still remember the Leader's identity and major behaviour while off the active party without inventing new roster mechanics.",
+        "Document declarative handoff requirements for LR-0090/LR-0091 and later UI implementation; do not edit game.js, content.js or persisted state."
+      ],
+      "likely_files": [
+        "story/leader/"
+      ],
+      "notes": "Pure author-now Storyteller follow-up to DONE LR-0089 and authored LR-0088. Must stay within the Director's explicit light-identity rule: player-chosen name, at most one small background tag, emergent behaviour. No large character creator."
     }
   ],
   "agent_roster": [
@@ -2730,5 +2754,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T17:04:00+11:00"
+  "updated_at": "2026-10-04T17:06:00+11:00"
 }
