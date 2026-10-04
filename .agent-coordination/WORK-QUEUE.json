@@ -2510,7 +2510,7 @@
         "research/ui/",
         "docs/"
       ],
-      "notes": "Wayfinder research task. External games are references only; final recommendation must fit Lantern Road."
+      "notes": "PARKED HANDOFF (4 Oct 2026): research complete on branch agent/LR-0095-responsive-rpg-ui-4f2a7c81 at head ebbe51908661577d3d547d32916a54a045df1cef, PR #45. Final diff adds research/ui/RESPONSIVE-RPG-PLAY-SHELL-RESEARCH.md only. It compares Sorcery!, Roadwarden and Citizen Sleeper; directly addresses the map→result→map scrolling loop; recommends phone persistent map + independently scrollable/snap bottom sheet and desktop persistent map + split context/action pane; includes persistent-state guidance, touch/text/controller lessons, ASCII wireframes and LR-0096 acceptance handoff. No runtime layout implementation changed. Remaining external condition is Agent 7 approval; fresh claim required before later edits or final merge preparation."
     },
     {
       "id": "LR-0096",
@@ -2655,5 +2655,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T18:03:00+11:00"
+  "updated_at": "2026-10-04T18:08:00+11:00"
 }
