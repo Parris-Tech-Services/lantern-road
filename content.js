@@ -548,7 +548,7 @@ window.CONTENT = {
     "clear": {
       "name": "Clear",
       "move": 0,
-      "risk": 0.0
+      "risk": 0
     },
     "drizzle": {
       "name": "Drizzle",
@@ -609,6 +609,18 @@ window.CONTENT = {
       "ability": {
         "name": "Hold Fast",
         "text": "Guard an ally and blunt the next hit."
+      },
+      "values": [
+        "Duty",
+        "Protection"
+      ],
+      "personalArc": {
+        "title": "The Wall That Walks",
+        "premise": "Garrick has spent years making himself the person who takes the first blow. The harder question is whether he knows who he is when nobody needs shielding.",
+        "unlock": {
+          "minLoyalty": 2,
+          "memory": "garrick_shared_weight"
+        }
       }
     },
     {
@@ -627,6 +639,18 @@ window.CONTENT = {
       "ability": {
         "name": "Slip Knife",
         "text": "Fast strike that favours exposed or fragile foes."
+      },
+      "values": [
+        "Freedom",
+        "Truth"
+      ],
+      "personalArc": {
+        "title": "The Name Before the Road",
+        "premise": "Mira jokes whenever the road gets too close to the life she had before it. Someone in the March still knows that older name.",
+        "unlock": {
+          "minLoyalty": 2,
+          "memory": "mira_old_name"
+        }
       }
     },
     {
@@ -645,6 +669,18 @@ window.CONTENT = {
       "ability": {
         "name": "Sigil Bolt",
         "text": "Reliable ranged harm and wards against strange things."
+      },
+      "values": [
+        "Knowledge",
+        "Responsibility"
+      ],
+      "personalArc": {
+        "title": "The Unfinished Page",
+        "premise": "Oren left the Archive after a field decision went wrong. He still carries the page describing what happened, folded so tightly the ink has cracked.",
+        "unlock": {
+          "minLoyalty": 2,
+          "memory": "oren_burned_page"
+        }
       }
     },
     {
@@ -663,6 +699,18 @@ window.CONTENT = {
       "ability": {
         "name": "Lantern Grace",
         "text": "Restore health or steady the party in bleak moments."
+      },
+      "values": [
+        "Mercy",
+        "Faith"
+      ],
+      "personalArc": {
+        "title": "What the Lamp Asks",
+        "premise": "Brindle can comfort almost anyone except herself. The March keeps forcing her to decide where mercy ends and responsibility begins.",
+        "unlock": {
+          "minLoyalty": 2,
+          "memory": "brindle_unanswered_prayer"
+        }
       }
     }
   ],
@@ -2703,5 +2751,510 @@ window.CONTENT = {
     "missing_ledger",
     "medicine_run"
   ],
-  "startingLocation": "hearthwick"
+  "startingLocation": "hearthwick",
+  "characterCampMoments": [
+    {
+      "id": "garrick_first_watch",
+      "character": "garrick",
+      "minDay": 1,
+      "title": "First Watch",
+      "text": "Long after the others settle, Garrick is still sitting upright at the edge of the firelight. His shield is across his knees. \"Habit,\" he says before you ask. \"If somebody is awake, everybody else gets to sleep.\"",
+      "choices": [
+        {
+          "label": "Tell him the weight can be shared.",
+          "resultTitle": "A Shared Watch",
+          "resultText": "Garrick studies the fire for a while, then finally lies back. \"Wake me if you hear anything stupid,\" he says. It is almost a joke.",
+          "loyalty": {
+            "garrick": 1
+          },
+          "memories": {
+            "garrick": "You told Garrick he did not have to carry every watch alone."
+          },
+          "addMemoryIds": {
+            "garrick": "garrick_shared_weight"
+          },
+          "bonds": [
+            [
+              "garrick",
+              "brindle",
+              1
+            ]
+          ]
+        },
+        {
+          "label": "Tell him the party is safer because he stays ready.",
+          "resultTitle": "The Reliable Wall",
+          "resultText": "He nods once. The praise lands, but so does the expectation behind it. Garrick keeps the watch.",
+          "loyalty": {
+            "garrick": 1
+          },
+          "memories": {
+            "garrick": "You affirmed Garrick's instinct to be the party's shield."
+          }
+        }
+      ]
+    },
+    {
+      "id": "mira_map_edges",
+      "character": "mira",
+      "minDay": 2,
+      "title": "The Edge of Mira's Map",
+      "text": "Mira has drawn tonight's route in charcoal, then deliberately smudged one corner. Oren notices. \"That road exists,\" he says. \"Not on my map,\" she replies too quickly.",
+      "choices": [
+        {
+          "label": "Ask Mira why she erased the road.",
+          "resultTitle": "An Older Name",
+          "resultText": "Mira turns the charcoal between her fingers. \"People used to know me there. Different work. Different name.\" She does not give you the name yet, but she stops pretending the road is imaginary.",
+          "loyalty": {
+            "mira": 1
+          },
+          "memories": {
+            "mira": "Mira admitted that one road in the March leads back to a life she has not explained."
+          },
+          "addMemoryIds": {
+            "mira": "mira_old_name"
+          },
+          "bonds": [
+            [
+              "mira",
+              "oren",
+              1
+            ]
+          ]
+        },
+        {
+          "label": "Tell Oren to leave the map alone.",
+          "resultTitle": "A Boundary Kept",
+          "resultText": "Oren lifts both hands in surrender. Mira gives you a grateful look that disappears almost immediately.",
+          "loyalty": {
+            "mira": 1
+          },
+          "bonds": [
+            [
+              "mira",
+              "oren",
+              -1
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "oren_burned_page",
+      "character": "oren",
+      "minDay": 3,
+      "title": "The Folded Page",
+      "text": "Oren thinks everyone is asleep when he takes a scorched sheet from inside his coat. It carries an Archive seal and three lines crossed out so hard the paper is nearly torn.",
+      "choices": [
+        {
+          "label": "Ask him what happened.",
+          "resultTitle": "An Unfinished Account",
+          "resultText": "\"I made the correct scholarly decision,\" Oren says. Then, quieter: \"A person was hurt anyway.\" He folds the page again. \"Those facts have never agreed with each other.\"",
+          "loyalty": {
+            "oren": 1
+          },
+          "memories": {
+            "oren": "Oren showed you the scorched Archive report from a field decision he still regrets."
+          },
+          "addMemoryIds": {
+            "oren": "oren_burned_page"
+          }
+        },
+        {
+          "label": "Let him keep the page private.",
+          "resultTitle": "Privacy by the Fire",
+          "resultText": "You look away before he notices you noticed. In the morning, Oren is a little less guarded around you.",
+          "loyalty": {
+            "oren": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "brindle_small_prayer",
+      "character": "brindle",
+      "minDay": 3,
+      "title": "A Prayer Without an Ending",
+      "text": "Brindle's night prayer stops halfway through. She stays kneeling long enough that Garrick finally asks whether she is all right. \"I know what to say for frightened people,\" she answers. \"I am less certain what to say when I am the frightened one.\"",
+      "choices": [
+        {
+          "label": "Sit beside her without trying to solve it.",
+          "resultTitle": "Company",
+          "resultText": "No revelation comes. No lantern flares. Brindle seems relieved by that. \"Thank you for not making silence into a lesson,\" she says.",
+          "loyalty": {
+            "brindle": 1
+          },
+          "memories": {
+            "brindle": "You sat with Brindle through a prayer she could not finish."
+          },
+          "addMemoryIds": {
+            "brindle": "brindle_unanswered_prayer"
+          },
+          "bonds": [
+            [
+              "garrick",
+              "brindle",
+              1
+            ]
+          ]
+        },
+        {
+          "label": "Remind her that doubt does not cancel faith.",
+          "resultTitle": "A Smaller Certainty",
+          "resultText": "Brindle breathes out slowly. \"No. But it does make faith more honest.\" She finishes the prayer with fewer words.",
+          "loyalty": {
+            "brindle": 1
+          },
+          "memories": {
+            "brindle": "Brindle admitted that the March has made her faith feel less certain and more honest."
+          },
+          "addMemoryIds": {
+            "brindle": "brindle_unanswered_prayer"
+          }
+        }
+      ]
+    },
+    {
+      "id": "garrick_mira_method",
+      "character": "garrick",
+      "minDay": 4,
+      "title": "Two Ways Through Trouble",
+      "text": "Garrick wants tomorrow's route marked plainly. Mira wants three false trails in case someone is following. The disagreement is not really about maps anymore.",
+      "choices": [
+        {
+          "label": "Ask them to build one plan together.",
+          "resultTitle": "A Better Route",
+          "resultText": "It takes longer and contains more arguing than either admits was useful. By the end, Garrick's straight line has two of Mira's traps built into it.",
+          "bonds": [
+            [
+              "garrick",
+              "mira",
+              1
+            ]
+          ],
+          "loyalty": {
+            "garrick": 1,
+            "mira": 1
+          }
+        },
+        {
+          "label": "Back Garrick's direct approach.",
+          "resultTitle": "No Games",
+          "resultText": "Garrick appreciates the clarity. Mira shrugs as though it means nothing, which is how you know it did.",
+          "bonds": [
+            [
+              "garrick",
+              "mira",
+              -1
+            ]
+          ],
+          "loyalty": {
+            "garrick": 1,
+            "mira": -1
+          }
+        },
+        {
+          "label": "Back Mira's misdirection.",
+          "resultTitle": "Leave Three Stories Behind",
+          "resultText": "Mira grins and immediately starts inventing footprints. Garrick goes quiet, but follows the plan.",
+          "bonds": [
+            [
+              "garrick",
+              "mira",
+              -1
+            ]
+          ],
+          "loyalty": {
+            "mira": 1,
+            "garrick": -1
+          }
+        }
+      ]
+    },
+    {
+      "id": "oren_brindle_truth",
+      "character": "oren",
+      "minDay": 5,
+      "title": "What Truth Is For",
+      "text": "Oren says a dangerous truth should still be preserved. Brindle asks whether preservation matters if the truth destroys people who never chose to carry it. Neither is speaking only in hypotheticals.",
+      "choices": [
+        {
+          "label": "Truth should survive, even when it costs.",
+          "resultTitle": "A Hard Record",
+          "resultText": "Oren nods. Brindle does not agree, but she respects that you answered without pretending the cost was imaginary.",
+          "loyalty": {
+            "oren": 1
+          },
+          "bonds": [
+            [
+              "oren",
+              "brindle",
+              -1
+            ]
+          ]
+        },
+        {
+          "label": "Truth has obligations to the people it affects.",
+          "resultTitle": "A Merciful Record",
+          "resultText": "Brindle's expression softens. Oren argues for another ten minutes, then quietly adds, \"Obligations are not the same thing as censorship.\" It is progress.",
+          "loyalty": {
+            "brindle": 1
+          },
+          "bonds": [
+            [
+              "oren",
+              "brindle",
+              1
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "characterDecisionReactions": {
+    "lantern_bargained": {
+      "loyalty": {
+        "brindle": 1,
+        "mira": 1
+      },
+      "memories": {
+        "brindle": "You ended the false-lantern threat without bloodshed.",
+        "mira": "You proved that a bluff can sometimes be dismantled without a blade."
+      },
+      "reactions": [
+        {
+          "member": "brindle",
+          "text": "Brindle looks relieved. \"A road made safer without burying anybody is worth remembering.\""
+        },
+        {
+          "member": "garrick",
+          "text": "Garrick accepts the result, though he clearly intends to watch the crew's old routes for a while."
+        }
+      ]
+    },
+    "lantern_fought_clear": {
+      "loyalty": {
+        "garrick": 1,
+        "brindle": -1
+      },
+      "memories": {
+        "garrick": "You backed force when the false-lantern crew turned violent.",
+        "brindle": "The road was made safe through bloodshed."
+      },
+      "reactions": [
+        {
+          "member": "garrick",
+          "text": "Garrick cleans his shield in silence. \"They chose the last part. We chose not to lose it.\""
+        },
+        {
+          "member": "brindle",
+          "text": "Brindle helps with the wounded before she speaks. \"Necessary and good are not always the same word.\""
+        }
+      ]
+    },
+    "reliquary_shrine": {
+      "loyalty": {
+        "brindle": 2,
+        "garrick": 1
+      },
+      "memories": {
+        "brindle": "You returned Saint Rhel's reliquary to the small roadside shrine."
+      },
+      "reactions": [
+        {
+          "member": "brindle",
+          "text": "Brindle's smile is small and unguarded. \"Some things become more valuable when nobody owns them.\""
+        }
+      ]
+    },
+    "reliquary_archive": {
+      "loyalty": {
+        "oren": 1,
+        "brindle": -1
+      },
+      "bonds": [
+        [
+          "oren",
+          "brindle",
+          -1
+        ]
+      ],
+      "memories": {
+        "oren": "You placed Saint Rhel's reliquary under Archive protection.",
+        "brindle": "You chose preservation in the Archive over returning the reliquary to its shrine."
+      },
+      "reactions": [
+        {
+          "member": "oren",
+          "text": "Oren approves of the preservation, though he is careful not to call the choice neutral."
+        },
+        {
+          "member": "brindle",
+          "text": "Brindle says nothing until you are outside. \"Safe is not always the same thing as home.\""
+        }
+      ]
+    },
+    "ledger_guild": {
+      "loyalty": {
+        "garrick": 1,
+        "mira": -1
+      },
+      "memories": {
+        "mira": "You returned the dangerous ledger to the institution most threatened by it."
+      },
+      "reactions": [
+        {
+          "member": "mira",
+          "text": "Mira raises an eyebrow. \"Very tidy. I suppose tidy is a kind of outcome.\""
+        },
+        {
+          "member": "garrick",
+          "text": "Garrick seems satisfied that the job ended where it began."
+        }
+      ]
+    },
+    "ledger_veil": {
+      "loyalty": {
+        "mira": 2,
+        "garrick": -1
+      },
+      "memories": {
+        "mira": "You trusted the Veil with the missing guild ledger."
+      },
+      "reactions": [
+        {
+          "member": "mira",
+          "text": "Mira gives Nera's disappearing act an appreciative half-smile. \"Messy truth survives longer when nobody can catalogue it.\""
+        },
+        {
+          "member": "garrick",
+          "text": "Garrick dislikes handing dangerous evidence to people who specialise in vanishing."
+        }
+      ]
+    },
+    "ledger_archive": {
+      "loyalty": {
+        "oren": 2
+      },
+      "memories": {
+        "oren": "You preserved the missing ledger as evidence rather than returning or burying it."
+      },
+      "reactions": [
+        {
+          "member": "oren",
+          "text": "Oren is openly pleased. \"A record can accuse people long after a sword has gone blunt.\""
+        }
+      ]
+    },
+    "medicine_delivered": {
+      "loyalty": {
+        "brindle": 2,
+        "garrick": 1
+      },
+      "memories": {
+        "brindle": "You carried medicine through the March while people were waiting for it."
+      },
+      "reactions": [
+        {
+          "member": "brindle",
+          "text": "Brindle watches the crate disappear into Alderwatch's stores. \"This is what roads are supposed to be for.\""
+        }
+      ]
+    },
+    "medicine_diverted": {
+      "loyalty": {
+        "brindle": -2,
+        "garrick": -1,
+        "mira": -1
+      },
+      "memories": {
+        "brindle": "You diverted medicine away from Alderwatch for Veil coin.",
+        "garrick": "You sold medicine that had been promised to people waiting for it."
+      },
+      "reactions": [
+        {
+          "member": "brindle",
+          "text": "Brindle's voice goes very quiet. \"There were people at the other end of that road.\""
+        },
+        {
+          "member": "garrick",
+          "text": "Garrick does not argue. The absence of an argument is worse."
+        }
+      ]
+    },
+    "chart_archive": {
+      "loyalty": {
+        "oren": 2
+      },
+      "memories": {
+        "oren": "You recovered the Moonmere chart and returned it to the Archive."
+      },
+      "reactions": [
+        {
+          "member": "oren",
+          "text": "Oren handles the empty wrapping as carefully as the chart itself. \"For once, the Archive gets to keep something before the weather eats it.\""
+        }
+      ]
+    },
+    "marsh_exposed": {
+      "loyalty": {
+        "garrick": 1,
+        "mira": -1
+      },
+      "memories": {
+        "mira": "You exposed the Mosslight routes to the Wardens."
+      },
+      "reactions": [
+        {
+          "member": "garrick",
+          "text": "Garrick respects a decision that puts dangerous routes under scrutiny."
+        },
+        {
+          "member": "mira",
+          "text": "Mira watches the marsh behind you. \"Order always looks cleanest from the road.\""
+        }
+      ]
+    },
+    "marsh_brokered": {
+      "loyalty": {
+        "mira": 1,
+        "brindle": 1
+      },
+      "bonds": [
+        [
+          "mira",
+          "brindle",
+          1
+        ]
+      ],
+      "memories": {
+        "brindle": "You brokered a compromise around the Mosslight routes instead of crushing them."
+      },
+      "reactions": [
+        {
+          "member": "brindle",
+          "text": "Brindle seems cautiously hopeful. \"Mercy that ignores consequences is laziness. This wasn't that.\""
+        },
+        {
+          "member": "mira",
+          "text": "Mira likes that the answer left somebody room to breathe."
+        }
+      ]
+    },
+    "marsh_recorded": {
+      "loyalty": {
+        "oren": 1,
+        "garrick": 1
+      },
+      "memories": {
+        "oren": "You turned Mosslight evidence into a durable public record."
+      },
+      "reactions": [
+        {
+          "member": "oren",
+          "text": "Oren calls it the least dramatic choice, which from him sounds like praise."
+        }
+      ]
+    }
+  }
 };
