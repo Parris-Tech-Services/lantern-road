@@ -2273,6 +2273,28 @@
         "docs/MOBILE-BROWSER-CAPABILITY-MATRIX.md"
       ],
       "notes": "Capability/fallback contract for Wayfinder implementation; no runtime code or CI automation."
+    },
+    {
+      "id": "LR-0087",
+      "title": "Author build viability and whole-system balance scenario matrix",
+      "status": "READY",
+      "priority": 3,
+      "exclusive_scope": "systems-balance-authoring",
+      "depends_on": [],
+      "primary_agent": 3,
+      "goal": "Define representative build/economy/recovery campaign scenarios and measurable dominance/trap signals now so LR-0020 can perform a disciplined whole-system balance pass once the runtime systems land.",
+      "acceptance_criteria": [
+        "Define representative party build combinations across all four heroes that exercise defensive, offensive, control, support and hybrid identities without assuming one canonical party setup.",
+        "Define representative spending/resource strategies using LR-0052 economy targets, including frugal, recovery-heavy and equipment-investment campaigns.",
+        "Create explicit dominance, trap, non-functional and unrecoverable-spiral signals for progression, combat, equipment, recovery and economy so LR-0020 can distinguish real balance defects from normal variation.",
+        "Specify a compact campaign checkpoint matrix across early, mid and late play with expected observations rather than fixed win-rate targets, preserving Josh as final judge of fun.",
+        "Map the matrix to LR-0053 combat, LR-0057 equipment and LR-0058 injury/recovery assumptions and clearly mark everything that must be reconciled against the final merged runtime; do not edit game.js/content.js or perform Warden black-box QA."
+      ],
+      "likely_files": [
+        "systems/balance/",
+        "docs/"
+      ],
+      "notes": "Mechanist author-now input for LR-0020. This is a design/measurement matrix, not independent black-box QA and not a substitute for Warden playtesting or Agent 1 automation."
     }
   ],
   "agent_roster": [
