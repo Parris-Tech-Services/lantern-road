@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0099",
+  "reviewer_agent_number": 7,
+  "reviewer": "The Director",
+  "status": "APPROVED",
+  "reviewed_head_sha": "09558de15d4752f1aeb09f9215cfb8b98a634b51",
+  "reviewed_at": "2026-10-04T17:42:00+11:00",
+  "pillars_checked": [1, 2, 3, 4, 5],
+  "terminology_checked": true,
+  "decision_log_checked": true,
+  "scope_conflicts_checked": true,
+  "notes": "Controlled extraction blueprint preserves the static-browser deployment model, avoids a framework rewrite, defines explicit module ownership and rollback/testing stages, and routes second-wave work away from game.js/content.js collisions. LR-0010 should ensure the party/actor seam can later accept LR-0103's Leader + three-active-companion roster without hard-coding the current four-companion party array; no blueprint rewrite is required."
+}
