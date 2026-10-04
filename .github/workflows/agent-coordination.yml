@@ -7,7 +7,7 @@ on:
       - ".agent-coordination/**"
       - "scripts/validate-agent-coordination.mjs"
       - "scripts/verify-pr-claim.mjs"
-      - "scripts/verify-gate-evidence-ci.mjs"
+      - "scripts/verify-gate-evidence-ci.mjs"\n      - "tests/verify-pr-claim.test.mjs"
       - ".github/workflows/agent-coordination.yml"
   pull_request:
 
