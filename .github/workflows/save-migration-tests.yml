@@ -1,6 +1,7 @@
 name: Save migration tests
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - "save-system.js"
