@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="160" viewBox="0 0 320 160">
+<defs>
+  <linearGradient id="wood" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#3b2b22"/><stop offset=".5" stop-color="#2f241e"/><stop offset="1" stop-color="#261d19"/></linearGradient>
+  <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency=".012 .16" numOctaves="3" seed="8" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="3" xChannelSelector="R" yChannelSelector="G"/></filter>
+</defs>
+<rect width="320" height="160" fill="url(#wood)"/>
+<g fill="none" stroke="#9b7650" stroke-opacity=".12" stroke-width="2" filter="url(#grain)">
+  <path d="M-10 24 C52 8 99 38 161 21 S270 31 330 15"/>
+  <path d="M-10 56 C44 40 92 66 154 51 S262 62 330 45"/>
+  <path d="M-10 91 C60 76 109 103 169 87 S272 99 330 80"/>
+  <path d="M-10 127 C51 111 105 143 169 123 S275 136 330 119"/>
+</g>
+<ellipse cx="90" cy="82" rx="31" ry="13" fill="none" stroke="#b78e61" stroke-opacity=".09" stroke-width="3"/>
+</svg>
