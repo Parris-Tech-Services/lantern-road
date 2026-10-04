@@ -3373,6 +3373,12 @@
     if (!localHost || params.get("e2e") !== "1") return;
 
     window.__lanternRoadTest = Object.freeze({
+      adjacentHexCenter() {
+        const adjacent = hexLayout.find(hex =>
+          neighbours(state.position.q, state.position.r).some(point => point.q === hex.q && point.r === hex.r)
+        );
+        return adjacent ? { q: adjacent.q, r: adjacent.r, x: adjacent.cx, y: adjacent.cy } : null;
+      },
       placeAtSite(siteId) {
         const site = SITE_MAP[siteId];
         if (!site) throw new Error(`Unknown site: ${siteId}`);
