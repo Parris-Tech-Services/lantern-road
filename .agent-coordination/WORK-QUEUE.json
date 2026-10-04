@@ -1599,7 +1599,7 @@
     {
       "id": "LR-0058",
       "title": "Author injury, condition and recovery design catalogue",
-      "status": "READY",
+      "status": "DONE",
       "priority": 2,
       "exclusive_scope": "injury-design-authoring",
       "depends_on": [],
@@ -1616,7 +1616,7 @@
         "systems/injuries/",
         "docs/"
       ],
-      "notes": "PARKED 2026-10-04 by Agent 3 under claim-protocol v1.2. Branch: agent/LR-0058-injury-design-authoring-2e341c8a. Exact useful head: 485bbb5364bbbde2d6ec3dc68b100a6bf5b47ede. PR #28. Added systems/injuries/INJURY-CONDITION-RECOVERY-CATALOGUE.md only (1026 lines); no runtime/save/service/price edits. Catalogue preserves one persistent adverse state per hero, defines five injuries plus optional expedition conditions, readable triggers, anti-snowball rules, three recovery routes, LR-0052 economy bands, LR-0057 equipment adaptation, save/migration/narrative hooks and 10 QA scenarios. Acceptance criteria satisfied by authoring; remaining external closure is Director review/merge. Freshly claim injury-design-authoring before any content change or merge reconciliation."
+      "notes": "DONE 2026-10-04. Director-approved PR #28 merged to main as 77967abedd1c421cd25759bb52c2f19cc6836254. Reviewed feature head 485bbb5364bbbde2d6ec3dc68b100a6bf5b47ede with Director approval commit f81cbabc9fc3ac5766dc417a13938115ad571246; Agent coordination #560 SUCCESS. Injury/condition/recovery catalogue is canonical for LR-0018."
     },
     {
       "id": "LR-0059",
