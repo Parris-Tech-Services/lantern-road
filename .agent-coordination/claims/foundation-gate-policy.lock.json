@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0055",
+  "exclusive_scope": "foundation-gate-policy",
+  "agent_number": 1,
+  "agent": "The Steward",
+  "session_id": "a81f94d2-cb26-41ca-a09d-2f3028f7bc11",
+  "claim_token": "f501a3e1-eaf8-4d75-93a9-576eddbef6da",
+  "claimed_at": "2026-10-04T10:32:00Z",
+  "expires_at": "2026-10-04T22:32:00Z",
+  "branch": "agent/LR-0055-foundation-current-a81f94d2-r2",
+  "note": "Latest-main LR-0055 rebuild; preserve all current queue/AED rules and apply only five policy task deltas."
+}
