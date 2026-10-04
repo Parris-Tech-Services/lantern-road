@@ -3971,6 +3971,32 @@
         "tests/verify-pr-claim.test.mjs"
       ],
       "notes": "Emergency coordination hotfix after malformed concurrent merges and LR-0146 verifier regression tests left main Agent Coordination red."
+    },
+    {
+      "id": "LR-0149",
+      "title": "Emergency repair current-main game.js merge corruption",
+      "status": "READY",
+      "priority": 0,
+      "exclusive_scope": "production-runtime-syntax-hotfix",
+      "depends_on": [],
+      "primary_agent": 1,
+      "supporting_agents": [
+        6
+      ],
+      "director_review": "NOT_REQUIRED",
+      "goal": "Restore a playable production runtime after current main inherited merge-corrupted game.js that fails JavaScript parsing and would discard a resumed autosave.",
+      "acceptance_criteria": [
+        "Restore confirmNewCampaign() to the known-good mobile-parent implementation: only guard for no saves, then open the new-campaign confirmation dialogue.",
+        "Remove the accidental unconditional startNewGame() from init() after autosave resume while preserving installE2ETestHooks() and all current mobile/save/service-worker behaviour.",
+        "Keep the production diff limited to game.js plus coordination/QA evidence required for this task.",
+        "game.js and save-system.js must pass JavaScript syntax checks on the exact candidate head.",
+        "Static runtime integrity, save migration, DOM contract and real-browser regression checks must pass on the exact candidate head.",
+        "Verify autosave-resume does not immediately start a replacement campaign."
+      ],
+      "likely_files": [
+        "game.js"
+      ],
+      "notes": "Emergency P0 created after live main SHA 1582edda446c104b339a9276aa44a3bcafe701f6 was directly syntax-checked and failed with Unexpected token ')'. CI runs 37197157601 and 37196650139 independently show the same game.js parse failure. Root cause is merge corruption from LR-0009/main reconciliation: confirmNewCampaign contains an unrelated SaveSystem.decode(raw...) block and init() unconditionally calls startNewGame() after resume. Known-good mobile parent 8af907283e602214b24a1f286f444ded3ff10080 supplies the intended confirmNewCampaign/autosave flow."
     }
   ],
   "agent_roster": [
