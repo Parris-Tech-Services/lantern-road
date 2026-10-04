@@ -58,7 +58,7 @@ function runVerifier(cwd, branch, head) {
   });
 }
 
-function parkedTask(id, branch, notes = "") {
+function parkedTask(id, branch, notes = "", directorReview = "NOT_REQUIRED") {
   return {
     id,
     title: "Fixture parked task",
@@ -67,13 +67,14 @@ function parkedTask(id, branch, notes = "") {
     exclusive_scope: "fixture-scope",
     depends_on: [],
     primary_agent: 2,
+    director_review: directorReview,
     notes: notes || `PARKED HANDOFF branch ${branch}`
   };
 }
 
 test("accepts exact final Director approval for a parked READY task without an idle lock", () => {
   const branch = "agent/LR-0044-personal-arc-test";
-  const cwd = setupRepo(parkedTask("LR-0044", branch));
+  const cwd = setupRepo(parkedTask("LR-0044", branch, "", "REQUIRED"));
 
   const featureHead = commitFile(cwd, "story/feature.md", "finished feature\n", "feature work");
 
@@ -84,7 +85,8 @@ test("accepts exact final Director approval for a parked READY task without an i
     tasks: [parkedTask(
       "LR-0044",
       branch,
-      `PARKED HANDOFF: implementation complete on branch ${branch}, exact useful head ${featureHead}. Fresh claim required before later edits or merge preparation.`
+      `PARKED HANDOFF: implementation complete on branch ${branch}, exact useful head ${featureHead}. Frozen after approval.`,
+      "REQUIRED"
     )]
   });
 
@@ -103,7 +105,7 @@ test("accepts exact final Director approval for a parked READY task without an i
 
   const result = runVerifier(cwd, branch, approvalHead);
   assert.equal(result.status, 0, result.stderr);
-  assert.match(result.stdout, /Parked PR Director approval verified without idle lock/);
+  assert.match(result.stdout, /Parked REQUIRED-review PR verified for direct merge without owner re-claim/);
 });
 
 test("rejects an unlocked feature commit", () => {
@@ -113,7 +115,7 @@ test("rejects an unlocked feature commit", () => {
 
   const result = runVerifier(cwd, branch, featureHead);
   assert.notEqual(result.status, 0);
-  assert.match(result.stderr, /missing Director design review|no active scope lock/i);
+  assert.match(result.stderr, /do not name exact current PR head|no active scope lock|frozen parked/i);
 });
 
 test("rejects a stale Director approval on a parked task", () => {
@@ -127,7 +129,8 @@ test("rejects a stale Director approval on a parked task", () => {
     tasks: [parkedTask(
       "LR-0044",
       branch,
-      `PARKED HANDOFF: branch ${branch}, exact useful head ${featureHead}. Fresh claim required.`
+      `PARKED HANDOFF: branch ${branch}, exact useful head ${featureHead}. Frozen after approval.`,
+      "REQUIRED"
     )]
   });
   writeJson(cwd, ".agent-coordination/design-reviews/LR-0044.json", {
@@ -179,4 +182,147 @@ test("continues to accept an ordinary active-claim PR", () => {
   const result = runVerifier(cwd, branch, featureHead);
   assert.equal(result.status, 0, result.stderr);
   assert.match(result.stdout, /PR claim verified/);
+});
+
+
+test("accepts an active Agent 1–5 PR with review NOT_REQUIRED and no Director commit", () => {
+  const branch = "agent/LR-0044-low-risk-test";
+  const task = {
+    id: "LR-0044",
+    title: "Fixture low-risk task",
+    status: "READY",
+    priority: 1,
+    exclusive_scope: "fixture-low-risk",
+    depends_on: [],
+    primary_agent: 2,
+    director_review: "NOT_REQUIRED",
+    notes: ""
+  };
+  const cwd = setupRepo(task);
+  const featureHead = commitFile(cwd, "story/feature.md", "routine implementation\n", "feature work");
+
+  writeJson(cwd, ".agent-coordination/claims/fixture-low-risk.lock.json", {
+    schema_version: 1,
+    task_id: "LR-0044",
+    exclusive_scope: "fixture-low-risk",
+    agent_number: 2,
+    agent: "The Storyteller",
+    session_id: "33333333-3333-4333-8333-333333333333",
+    claim_token: "44444444-4444-4444-8444-444444444444",
+    claimed_at: "2026-10-04T17:00:00+11:00",
+    expires_at: "2999-01-01T00:00:00Z",
+    branch
+  });
+
+  const result = runVerifier(cwd, branch, featureHead);
+  assert.equal(result.status, 0, result.stderr);
+  assert.match(result.stdout, /PR claim verified/);
+});
+
+test("rejects an active REQUIRED-review PR without Director approval", () => {
+  const branch = "agent/LR-0006-required-review-test";
+  const task = {
+    id: "LR-0006",
+    title: "Fixture design-sensitive task",
+    status: "READY",
+    priority: 0,
+    exclusive_scope: "fixture-required",
+    depends_on: [],
+    primary_agent: 3,
+    director_review: "REQUIRED",
+    notes: ""
+  };
+  const cwd = setupRepo(task);
+  const featureHead = commitFile(cwd, "systems/feature.md", "design-sensitive work\n", "feature work");
+
+  writeJson(cwd, ".agent-coordination/claims/fixture-required.lock.json", {
+    schema_version: 1,
+    task_id: "LR-0006",
+    exclusive_scope: "fixture-required",
+    agent_number: 3,
+    agent: "The Mechanist",
+    session_id: "55555555-5555-4555-8555-555555555555",
+    claim_token: "66666666-6666-4666-8666-666666666666",
+    claimed_at: "2026-10-04T17:00:00+11:00",
+    expires_at: "2999-01-01T00:00:00Z",
+    branch
+  });
+
+  const result = runVerifier(cwd, branch, featureHead);
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /missing Director design review/i);
+});
+
+test("accepts a frozen parked NOT_REQUIRED-review PR at the exact recorded head without owner re-claim", () => {
+  const branch = "agent/LR-0124-asset-pack-test";
+  const cwd = setupRepo(parkedTask("LR-0124", branch, "", "NOT_REQUIRED"));
+  const featureHead = commitFile(cwd, "assets/ui/material.svg", "<svg/>\n", "asset pack");
+
+  writeJson(cwd, ".agent-coordination/WORK-QUEUE.json", {
+    schema_version: 1,
+    tasks: [parkedTask(
+      "LR-0124",
+      branch,
+      `PARKED HANDOFF: branch ${branch}, exact useful head ${featureHead}; implementation frozen and ready to merge.`,
+      "NOT_REQUIRED"
+    )]
+  });
+
+  const result = runVerifier(cwd, branch, featureHead);
+  assert.equal(result.status, 0, result.stderr);
+  assert.match(result.stdout, /Parked NOT_REQUIRED-review PR verified for direct merge without owner re-claim/);
+});
+
+test("rejects a frozen parked NOT_REQUIRED-review PR when the recorded head is stale", () => {
+  const branch = "agent/LR-0124-asset-pack-test";
+  const cwd = setupRepo(parkedTask("LR-0124", branch, "", "NOT_REQUIRED"));
+  const recordedHead = commitFile(cwd, "assets/ui/material.svg", "<svg/>\n", "asset pack");
+  const currentHead = commitFile(cwd, "assets/ui/other.svg", "<svg/>\n", "unrecorded follow-up");
+
+  writeJson(cwd, ".agent-coordination/WORK-QUEUE.json", {
+    schema_version: 1,
+    tasks: [parkedTask(
+      "LR-0124",
+      branch,
+      `PARKED HANDOFF: branch ${branch}, exact useful head ${recordedHead}.`,
+      "NOT_REQUIRED"
+    )]
+  });
+
+  const result = runVerifier(cwd, branch, currentHead);
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /do not name exact current PR head|fresh ownership/i);
+});
+
+
+test("accepts an optional legacy Director approval on a now-NOT_REQUIRED parked task", () => {
+  const branch = "agent/LR-0124-legacy-approved-test";
+  const cwd = setupRepo(parkedTask("LR-0124", branch, "", "NOT_REQUIRED"));
+  const featureHead = commitFile(cwd, "assets/ui/material.svg", "<svg/>\n", "asset pack");
+
+  writeJson(cwd, ".agent-coordination/WORK-QUEUE.json", {
+    schema_version: 1,
+    tasks: [parkedTask(
+      "LR-0124",
+      branch,
+      `PARKED HANDOFF: branch ${branch}, exact useful head ${featureHead}; old Director approval may remain on top.`,
+      "NOT_REQUIRED"
+    )]
+  });
+  writeJson(cwd, ".agent-coordination/design-reviews/LR-0124.json", {
+    schema_version: 1,
+    task_id: "LR-0124",
+    reviewer_agent_number: 7,
+    reviewer: "The Director",
+    status: "APPROVED",
+    reviewed_head_sha: featureHead,
+    reviewed_at: "2026-10-04T17:00:00+11:00"
+  });
+  git(cwd, ["add", ".agent-coordination/design-reviews/LR-0124.json"]);
+  git(cwd, ["commit", "-m", "legacy Director approval"]);
+  const approvalHead = git(cwd, ["rev-parse", "HEAD"]);
+
+  const result = runVerifier(cwd, branch, approvalHead);
+  assert.equal(result.status, 0, result.stderr);
+  assert.match(result.stdout, /optional legacy Director approval verified for direct merge/);
 });
