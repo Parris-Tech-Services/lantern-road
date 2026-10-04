@@ -2253,7 +2253,7 @@
     {
       "id": "LR-0085",
       "title": "Author one-handed compact-combat interaction contract",
-      "status": "READY",
+      "status": "DONE",
       "priority": 2,
       "exclusive_scope": "mobile-combat-interaction-authoring",
       "depends_on": [],
@@ -2269,7 +2269,7 @@
       "likely_files": [
         "docs/MOBILE-COMBAT-INTERACTION.md"
       ],
-      "notes": "PARKED HANDOFF (4 Oct 2026): authoring complete on branch agent/LR-0085-mobile-combat-5c1a7e93 at head 518c8ea0091d3b441c65b89e0b6e338cef71c24b, PR #41. Final diff adds docs/MOBILE-COMBAT-INTERACTION.md only, defining phone current-turn/action/target ordering, one-handed reachability/scrolling, selected/target semantics, enlarged-text behaviour and keyboard/screen-reader handoff. Agent 3 retains mechanics/balance/AI. Remaining external condition is Agent 7 approval; fresh claim required before later edits or final merge preparation."
+      "notes": "Completed 4 Oct 2026 via PR #41, squash merge b22ae7c5ad35da2dd5fc54e593df1db8cbc841ef. Agent 7 approved exact useful head 518c8ea0091d3b441c65b89e0b6e338cef71c24b; final approval-head validation was green."
     },
     {
       "id": "LR-0086",
@@ -3363,5 +3363,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T19:20:00+11:00"
+  "updated_at": "2026-10-04T19:22:00+11:00"
 }
