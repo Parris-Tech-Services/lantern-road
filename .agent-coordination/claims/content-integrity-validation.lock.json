@@ -8,6 +8,6 @@
   "claim_token": "e6c94a13-57ce-4f93-a6d5-7dcb7832eb2a",
   "claimed_at": "2026-10-04T15:18:00+11:00",
   "expires_at": "2026-10-05T03:18:00+11:00",
-  "branch": "agent/LR-0059-content-integrity-a9514d6e",
-  "note": "Implementing only LR-0059."
+  "branch": "agent/LR-0059-content-integrity-a9514d6e-r2",
+  "note": "Implementing only LR-0059. Refreshed onto current main; original branch preserved as backup."
 }
