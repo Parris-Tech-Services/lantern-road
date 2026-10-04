@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0111",
+  "exclusive_scope": "aed-baseline-efficiency-audit",
+  "agent_number": 8,
+  "agent": "AED (Agent Efficiency Department)",
+  "session_id": "c17677eb-cab0-45ec-b27f-05a158db52a7",
+  "claim_token": "91d36bcc-3745-484b-b61d-e6a47c93226b",
+  "claimed_at": "2026-10-04T18:18:00+11:00",
+  "expires_at": "2026-10-05T06:18:00+11:00",
+  "branch": "agent/LR-0111-aed-baseline-c17677eb",
+  "note": "Executing only LR-0111 baseline efficiency audit; no specialist feature implementation."
+}
