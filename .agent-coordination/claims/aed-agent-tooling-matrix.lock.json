@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0113",
+  "exclusive_scope": "aed-agent-tooling-matrix",
+  "agent_number": 8,
+  "agent": "AED (Agent Efficiency Department)",
+  "session_id": "71f2af4d-c637-4b57-8462-ffea2eec0f54",
+  "claim_token": "ab08cc9e-f7ee-4c1e-b281-f95c166c7cad",
+  "claimed_at": "2026-10-04T19:05:00+11:00",
+  "expires_at": "2026-10-05T07:05:00+11:00",
+  "branch": "agent/LR-0113-agent-tooling-71f2af4d",
+  "note": "Executing only LR-0113 tooling/capability audit."
+}
