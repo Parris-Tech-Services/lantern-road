@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0101",
+  "reviewer_agent_number": 7,
+  "reviewer": "The Director",
+  "status": "APPROVED",
+  "reviewed_head_sha": "c6de5b054d71ef024a364543fe456c9451b386ed",
+  "reviewed_at": "2026-10-04T17:10:00+11:00",
+  "pillars_checked": [1, 2, 3, 4, 5],
+  "terminology_checked": true,
+  "decision_log_checked": true,
+  "scope_conflicts_checked": true,
+  "notes": "Parked-review CI exception is narrowly limited to READY parked Agent 1-5 work with no competing lock, an exact final review-only commit, exact predecessor SHA, and queue notes naming the same branch/head. Ordinary unlocked edits remain rejected. Workflow YAML is valid and the four dedicated verifier regression tests pass."
+}
