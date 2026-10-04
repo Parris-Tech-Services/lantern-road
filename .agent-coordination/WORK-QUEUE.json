@@ -3328,6 +3328,37 @@
         "docs/ART-DIRECTION.md"
       ],
       "notes": "PARKED pending Director exact-head review. PR #76, branch agent/LR-0127-motion-vfx-1c7b9d4f, useful head de9096fbce708b8176dbbab67a9d57870fcc10a7. Added motion/VFX production bible plus five decorative SVG effect sources (rain, fog, embers, lantern bloom, sacred halo). QA: required choreography/atmosphere/reduced-motion/discomfort sections present; ~2.7 KB SVG source total; no scripts, text or remote dependencies. Coordination checks pass; only remaining gate is .agent-coordination/design-reviews/LR-0127.json."
+    },
+    {
+      "id": "LR-0128",
+      "title": "Streamline critical-path review flow and staged architecture gates",
+      "status": "READY",
+      "priority": 0,
+      "exclusive_scope": "aed-critical-path-flow-reform",
+      "depends_on": [
+        "LR-0112",
+        "LR-0116",
+        "LR-0117",
+        "LR-0118"
+      ],
+      "primary_agent": 8,
+      "goal": "Convert AED findings into a lower-wait production flow: surface and prioritise review/merge-ready work, prevent filler backlog while critical parked work exists, and decompose the LR-0010 monolithic architecture gate into staged owned extraction gates that progressively unlock specialist runtime lanes.",
+      "acceptance_criteria": [
+        "Add a clear critical-path drain rule: priority-zero/high-fan-out parked review and approved-merge work takes precedence over creating filler tasks, without weakening role ownership or design review.",
+        "Extend the deterministic AED report with a ranked flow inbox that distinguishes review-needed from owner-merge/reconciliation candidates using queue evidence and dependency fan-out.",
+        "Split LR-0010 execution into smaller Agent 1 architecture-stage tasks with stable exclusive scopes and explicit sequencing; LR-0010 becomes the parent completion/integration audit.",
+        "Rewire second-wave tasks away from the all-or-nothing LR-0010 dependency only when their required architecture seam is explicit; preserve final integration/QA tasks that genuinely require full LR-0010 completion.",
+        "Do not reassign or modify any live claimed specialist scope, and do not create a new approval gate.",
+        "Add focused tests for the new AED flow-inbox calculations and validate the resulting queue has no READY task with incomplete dependencies introduced by this change."
+      ],
+      "likely_files": [
+        "AGENTS.md",
+        ".agent-coordination/WORK-QUEUE.json",
+        "scripts/aed-report.mjs",
+        "tests/aed-report.test.mjs",
+        "docs/ARCHITECTURE-MODULARISATION-PLAN.md"
+      ],
+      "notes": "Josh explicitly asked AED to solve the review/merge bottleneck and shared game.js collision problem. Operational coordination only; specialist code extraction remains Agent 1 ownership."
     }
   ],
   "agent_roster": [
@@ -3390,5 +3421,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T19:27:00+11:00"
+  "updated_at": "2026-10-04T19:34:00+11:00"
 }
