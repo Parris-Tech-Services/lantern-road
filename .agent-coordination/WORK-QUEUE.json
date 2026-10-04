@@ -1358,7 +1358,7 @@
     {
       "id": "LR-0049",
       "title": "Parallel work lanes and parked-claim policy",
-      "status": "READY",
+      "status": "DONE",
       "priority": 0,
       "exclusive_scope": "parallel-work-policy",
       "depends_on": [],
@@ -1378,7 +1378,7 @@
         ".agent-coordination/WORK-QUEUE.json",
         "docs/DECISIONS.md"
       ],
-      "notes": "Director coordination task created from Josh's explicit request to reduce idle agents after reviewing Claude Code's queue feedback against the current live repository."
+      "notes": "Director coordination task created from Josh's explicit request to reduce idle agents after reviewing Claude Code's queue feedback against the current live repository. Completed 4 Oct 2026 via PR #15. Parked-claim policy v1.2 merged, LR-0047 lifecycle corrected, LR-0050–LR-0054 parallel lanes added, and Agent coordination run 143 passed on the exact PR head."
     },
     {
       "id": "LR-0050",
@@ -1547,5 +1547,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T15:57:00+11:00"
+  "updated_at": "2026-10-04T16:01:00+11:00"
 }
