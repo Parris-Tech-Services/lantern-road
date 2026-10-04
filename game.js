@@ -238,6 +238,163 @@
     return state.party.find(p => p.id === memberId);
   }
 
+  function ensureCharacterState() {
+    if (!state.characterState || typeof state.characterState !== "object") state.characterState = {};
+    if (!state.characterState.members || typeof state.characterState.members !== "object") state.characterState.members = {};
+    C.party.forEach(member => {
+      const current = state.characterState.members[member.id];
+      if (!current || typeof current !== "object") {
+        state.characterState.members[member.id] = { loyalty: 0, memories: [] };
+        return;
+      }
+      if (!Number.isFinite(current.loyalty)) current.loyalty = 0;
+      if (!Array.isArray(current.memories)) current.memories = [];
+    });
+    if (!state.characterState.relationships || typeof state.characterState.relationships !== "object") {
+      state.characterState.relationships = {};
+    }
+    if (!Array.isArray(state.characterState.seenCampMoments)) state.characterState.seenCampMoments = [];
+  }
+
+  function characterState(memberId) {
+    ensureCharacterState();
+    return state.characterState.members[memberId];
+  }
+
+  function relationshipKey(a, b) {
+    return [a, b].sort().join("|");
+  }
+
+  function changeCharacterLoyalty(memberId, amount) {
+    if (!amount) return;
+    const member = characterState(memberId);
+    member.loyalty = Math.max(-3, Math.min(3, member.loyalty + amount));
+    addLog(`${getPartyBase(memberId).name}'s trust ${amount > 0 ? "deepened" : "strained"}.`);
+  }
+
+  function addCharacterMemory(memberId, memoryId, text) {
+    if (!text) return;
+    const member = characterState(memberId);
+    const id = memoryId || `memory-${member.memories.length + 1}`;
+    if (member.memories.some(memory => memory.id === id)) return;
+    member.memories.push({ id, text, day: state.day });
+    member.memories = member.memories.slice(-12);
+  }
+
+  function hasCharacterMemory(memberId, memoryId) {
+    return characterState(memberId).memories.some(memory => memory.id === memoryId);
+  }
+
+  function changeRelationship(a, b, amount) {
+    if (!amount || a === b) return;
+    ensureCharacterState();
+    const key = relationshipKey(a, b);
+    const before = state.characterState.relationships[key] || 0;
+    state.characterState.relationships[key] = Math.max(-3, Math.min(3, before + amount));
+  }
+
+  function loyaltyLabel(value) {
+    if (value >= 3) return "Deeply loyal";
+    if (value >= 2) return "Trusting";
+    if (value >= 1) return "Warming";
+    if (value <= -3) return "Alienated";
+    if (value <= -2) return "Strained";
+    if (value <= -1) return "Wary";
+    return "Steady";
+  }
+
+  function relationshipLabel(value) {
+    if (value >= 3) return "Close";
+    if (value >= 2) return "Strong trust";
+    if (value >= 1) return "Growing trust";
+    if (value <= -3) return "Rivals";
+    if (value <= -2) return "Sharp friction";
+    if (value <= -1) return "Friction";
+    return "Unproven";
+  }
+
+  function personalArcReady(memberId) {
+    const base = getPartyBase(memberId);
+    const unlock = base.personalArc?.unlock;
+    if (!unlock) return false;
+    if (Number.isFinite(unlock.minLoyalty) && characterState(memberId).loyalty < unlock.minLoyalty) return false;
+    if (unlock.memory && !hasCharacterMemory(memberId, unlock.memory)) return false;
+    return true;
+  }
+
+  function getEligibleCharacterCampMoments() {
+    ensureCharacterState();
+    return (C.characterCampMoments || []).filter(moment => {
+      if (state.characterState.seenCampMoments.includes(moment.id)) return false;
+      if (moment.minDay && state.day < moment.minDay) return false;
+      if (moment.maxDay && state.day > moment.maxDay) return false;
+      if (moment.minLoyalty) {
+        for (const [memberId, minimum] of Object.entries(moment.minLoyalty)) {
+          if (characterState(memberId).loyalty < minimum) return false;
+        }
+      }
+      if (moment.requiresMemory && !hasCharacterMemory(moment.character, moment.requiresMemory)) return false;
+      if (moment.requiresDecision && !state.worldFlags[`characterDecision:${moment.requiresDecision}`]) return false;
+      if (moment.requiresAnyDecision && !moment.requiresAnyDecision.some(id => state.worldFlags[`characterDecision:${id}`])) return false;
+      return true;
+    });
+  }
+
+  function openCharacterCampMoment(moment) {
+    openDialogue({
+      title: moment.title,
+      text: moment.text,
+      choices: moment.choices.map((choice, index) => ({
+        key: `characterMoment:${moment.id}:${index}`,
+        label: choice.label
+      }))
+    });
+  }
+
+  function resolveCharacterCampMoment(momentId, choiceIndex) {
+    ensureCharacterState();
+    const moment = (C.characterCampMoments || []).find(entry => entry.id === momentId);
+    const choice = moment?.choices?.[choiceIndex];
+    if (!moment || !choice) {
+      closeDialogue();
+      return;
+    }
+    if (!state.characterState.seenCampMoments.includes(moment.id)) {
+      state.characterState.seenCampMoments.push(moment.id);
+    }
+    Object.entries(choice.loyalty || {}).forEach(([memberId, amount]) => changeCharacterLoyalty(memberId, amount));
+    Object.entries(choice.memories || {}).forEach(([memberId, text]) => {
+      const memoryId = choice.addMemoryIds?.[memberId] || `${moment.id}:${memberId}`;
+      addCharacterMemory(memberId, memoryId, text);
+    });
+    (choice.bonds || []).forEach(([a, b, amount]) => changeRelationship(a, b, amount));
+    addLog(`Camp conversation: ${moment.title}.`);
+    closeDialogue();
+    openMessage(choice.resultTitle || moment.title, choice.resultText || "The conversation settles into the firelight.");
+    renderAll();
+  }
+
+  function reactToDecision(decisionId) {
+    ensureCharacterState();
+    const flag = `characterDecision:${decisionId}`;
+    if (state.worldFlags[flag]) return;
+    const reaction = C.characterDecisionReactions?.[decisionId];
+    if (!reaction) return;
+    state.worldFlags[flag] = true;
+    Object.entries(reaction.loyalty || {}).forEach(([memberId, amount]) => changeCharacterLoyalty(memberId, amount));
+    Object.entries(reaction.memories || {}).forEach(([memberId, text]) => {
+      addCharacterMemory(memberId, `decision:${decisionId}`, text);
+    });
+    (reaction.bonds || []).forEach(([a, b, amount]) => changeRelationship(a, b, amount));
+    const lines = (reaction.reactions || []).map(entry => `${getPartyBase(entry.member).name}: ${entry.text}`);
+    if (lines.length && state.ui?.dialogue) {
+      state.ui.dialogue.text += `\n\nParty reaction\n${lines.join("\n\n")}`;
+      renderModal();
+    } else if (lines.length) {
+      showFeedback("Party reaction", lines[0]);
+    }
+  }
+
   function getMaxHp(memberId) {
     const base = getPartyBase(memberId).maxHp;
     let bonus = 0;
@@ -388,6 +545,11 @@
       knownRumours: [...C.startingRumours],
       quests: Object.fromEntries(C.quests.map(q => [q.id, { known: false, status: "hidden", stage: "", outcome: "", dueDay: null }])),
       party: C.party.map(p => ({ id: p.id, hp: p.maxHp, guard: 0, bless: 0 })),
+      characterState: {
+        members: Object.fromEntries(C.party.map(p => [p.id, { loyalty: 0, memories: [] }])),
+        relationships: {},
+        seenCampMoments: []
+      },
       logs: [],
       worldFlags: {},
       activeScene: null,
@@ -400,6 +562,7 @@
       },
       lastSettlement: C.startingLocation
     };
+    ensureCharacterState();
     revealAround(state.position.q, state.position.r);
     C.settlements.forEach(s => { if (s.id === C.startingLocation) state.discoveredSites[s.id] = true; });
     addLog("You begin in Hearthwick with a little coin, enough food for a few days, and a road full of trouble.");
@@ -438,6 +601,7 @@
     try {
       state = JSON.parse(raw);
       if (!state.ui) state.ui = { tab: "context", focus: null, dialogue: null, shop: null };
+      ensureCharacterState();
       clampPartyHp();
       renderAll();
       addLog("Campaign loaded.");
@@ -672,8 +836,18 @@
     advanceTime(8);
     state.fatigue = Math.max(0, state.fatigue - 2);
     healAll(healAmount);
+    if (state.ui.dialogue) {
+      renderAll();
+      return;
+    }
     const pool = C.campEvents;
-    if (!extraCalm && rand() < 0.35) {
+    const characterMoments = getEligibleCharacterCampMoments();
+    const shouldShowCharacterMoment = !extraCalm && characterMoments.length && (
+      state.characterState.seenCampMoments.length === 0 || rand() < 0.55
+    );
+    if (shouldShowCharacterMoment) {
+      openCharacterCampMoment(pickRandom(characterMoments));
+    } else if (!extraCalm && rand() < 0.35) {
       openScene(pickRandom(pool), "camp");
     } else {
       addLog("The camp passes without serious trouble.");
@@ -1085,6 +1259,9 @@
     const base = getPartyBase(memberId);
     const member = getPartyMember(memberId);
     const hpPct = Math.round((member.hp / getMaxHp(memberId)) * 100);
+    const story = characterState(memberId);
+    const latestMemory = story.memories[story.memories.length - 1];
+    const arcReady = personalArcReady(memberId);
     const itemButtons = ["bandage", "healing_tonic"].filter(id => hasItem(id)).map(id =>
       `<button class="small" data-action="use-item" data-item="${id}" data-member="${memberId}">Use ${ITEM_MAP[id].name}</button>`
     ).join("");
@@ -1109,10 +1286,34 @@
             <div>Guile +${getSkill(memberId,"guile")}</div>
           </div>
           <p><strong>${base.ability.name}:</strong> ${base.ability.text}</p>
+          <div class="row">
+            <span class="tag">Trust: ${loyaltyLabel(story.loyalty)}${story.loyalty ? ` (${story.loyalty > 0 ? "+" : ""}${story.loyalty})` : ""}</span>
+            ${(base.values || []).map(value => `<span class="tag">${value}</span>`).join("")}
+          </div>
+          ${latestMemory ? `<p><em>Remembers: ${latestMemory.text}</em></p>` : ""}
+          ${base.personalArc ? `<p><strong>Personal thread — ${base.personalArc.title}:</strong> ${arcReady ? "This story is ready to deepen." : base.personalArc.premise}</p>` : ""}
           <div class="row">${itemButtons}</div>
         </div>
       </div>
     `;
+  }
+
+  function renderPartyRelationships() {
+    ensureCharacterState();
+    const entries = Object.entries(state.characterState.relationships)
+      .filter(([, value]) => value !== 0)
+      .map(([key, value]) => {
+        const [a, b] = key.split("|");
+        return `
+          <div class="faction-entry">
+            <div class="entry-head">
+              <strong>${getPartyBase(a).name} & ${getPartyBase(b).name}</strong>
+              <span class="tag">${relationshipLabel(value)}${value ? ` (${value > 0 ? "+" : ""}${value})` : ""}</span>
+            </div>
+          </div>
+        `;
+      }).join("");
+    return entries || "<p>The party is still learning one another's edges.</p>";
   }
 
   function renderPartyTab() {
@@ -1136,6 +1337,10 @@
       <div class="card">
         <h3>Adventuring Party</h3>
         ${state.party.map(m => memberCard(m.id)).join("")}
+      </div>
+      <div class="card">
+        <h3>Party Bonds</h3>
+        ${renderPartyRelationships()}
       </div>
       <div class="card">
         <h3>Inventory</h3>
@@ -1880,6 +2085,11 @@
       closeDialogue();
       return;
     }
+    if (key.startsWith("characterMoment:")) {
+      const [, momentId, choiceIndex] = key.split(":");
+      resolveCharacterCampMoment(momentId, Number(choiceIndex));
+      return;
+    }
     if (key.startsWith("acceptQuest:")) {
       const questId = key.split(":")[1];
       revealQuest(questId);
@@ -1918,6 +2128,7 @@
         changeFaction("veil", 1);
         changeFaction("wardens", -1);
         openMessage("Lanterns Extinguished", "The crew scatters without blood. They will likely remember who made that deal possible.");
+        reactToDecision("lantern_bargained");
       } else {
         startCombat("toll_cutters", "Talk fails and the crew reaches for steel.");
         state.worldFlags.lanternPendingOutcome = "fight";
@@ -1955,6 +2166,7 @@
       changeFaction("guild", -2);
       changeFaction("wardens", -2);
       openMessage("Quiet Coin", "The crate vanishes into the Veil's routes. You are paid well, and judged accordingly.");
+      reactToDecision("medicine_diverted");
       renderAll();
       return;
     }
@@ -1981,6 +2193,7 @@
         }
         state.renown += 1;
         openMessage("Road Restored", "Wagons will risk the road again. In a frontier village, that matters more than speeches.");
+        reactToDecision((state.worldFlags.lanternOutcome || "") === "bargained" ? "lantern_bargained" : "lantern_fought_clear");
         break;
       case "pilgrim_reliquary:elira":
         if (!hasItem("saint_bone")) return;
@@ -1989,6 +2202,7 @@
         state.gold += 18;
         changeFaction("wardens", 2);
         openMessage("A Small Holy Thing", "Sister Elira receives the reliquary like someone greeting a traveller home.");
+        reactToDecision("reliquary_shrine");
         break;
       case "pilgrim_reliquary:archive":
         if (!hasItem("saint_bone")) return;
@@ -1998,6 +2212,7 @@
         changeFaction("archive", 2);
         changeFaction("wardens", -1);
         openMessage("Catalogued", "The Archive records and secures the reliquary. Whether that is the same as honouring it depends on who you ask.");
+        reactToDecision("reliquary_archive");
         break;
       case "missing_ledger:oswin":
         if (!hasItem("guild_ledger")) return;
@@ -2007,6 +2222,7 @@
         changeFaction("guild", 2);
         changeFaction("veil", -1);
         openMessage("Paid Quietly", "Oswin pays fast and asks for no copy. That, perhaps, is its own answer.");
+        reactToDecision("ledger_guild");
         break;
       case "missing_ledger:nera":
         if (!hasItem("guild_ledger")) return;
@@ -2016,6 +2232,7 @@
         changeFaction("veil", 2);
         changeFaction("guild", -2);
         openMessage("Gone to Ground", "Nera disappears the ledger into channels where accountability goes to be argued about later.");
+        reactToDecision("ledger_veil");
         break;
       case "missing_ledger:holt":
         if (!hasItem("guild_ledger")) return;
@@ -2026,6 +2243,7 @@
         changeFaction("guild", -1);
         changeFaction("wardens", 1);
         openMessage("Recorded", "Holt stores the ledger as evidence, which is a more dangerous burial than fire.");
+        reactToDecision("ledger_archive");
         break;
       case "sealed_medicine:yor":
         if (!hasItem("sealed_crate")) return;
@@ -2036,6 +2254,7 @@
         changeFaction("guild", 1);
         healAll(3);
         openMessage("Crate Delivered", "The quartermaster nearly snatches the crate out of your hands. Whatever else the road is, today it carried help.");
+        reactToDecision("medicine_delivered");
         break;
       case "silent_tower:sen":
         if (!hasItem("moon_chart")) return;
@@ -2044,6 +2263,7 @@
         state.gold += 26;
         changeFaction("archive", 2);
         openMessage("A Record Recovered", "Sen is already thinking ahead to what the chart will prove and whom it will annoy.");
+        reactToDecision("chart_archive");
         break;
       case "ash_in_marsh:edda":
         completeQuest("ash_in_marsh", "exposed_to_wardens");
@@ -2052,6 +2272,7 @@
         changeFaction("wardens", 2);
         changeFaction("veil", -1);
         openMessage("Wardens Move In", "Edda takes the report with grim clarity. Mosslight will not stay quiet for long now.");
+        reactToDecision("marsh_exposed");
         break;
       case "ash_in_marsh:nera":
         completeQuest("ash_in_marsh", "brokered_with_veil");
@@ -2059,6 +2280,7 @@
         changeFaction("veil", 2);
         changeFaction("wardens", -1);
         openMessage("Brokered Peace", "Nera promises the Mosslight routes will avoid warden stores and medicine lines. That is not law, but it may be enough.");
+        reactToDecision("marsh_brokered");
         break;
       case "ash_in_marsh:holt":
         if (!hasItem("ashen_sigil")) return;
@@ -2068,6 +2290,7 @@
         changeFaction("archive", 2);
         changeFaction("veil", -1);
         openMessage("Entered into Record", "Holt receives the sigil with a look best described as professionally delighted.");
+        reactToDecision("marsh_recorded");
         break;
     }
   }
@@ -2348,11 +2571,13 @@
     applyEffects(encounter.onWin);
     const loot = collectEnemyLoot();
     const lootText = loot.length ? loot.map(l => `${l.qty} × ${itemName(l.id)}`).join(", ") : "no extra loot";
+    let characterDecision = null;
     if (state.worldFlags.lanternPendingOutcome === "fight") {
       state.worldFlags.roadSafe = true;
       state.worldFlags.lanternOutcome = "fought_clear";
       setQuestStage("lantern_road", "solved");
       state.worldFlags.lanternPendingOutcome = null;
+      characterDecision = "lantern_fought_clear";
     }
     if (state.combat.encounterId === "marsh_cult") {
       setQuestStage("ash_in_marsh", "decision");
@@ -2365,6 +2590,7 @@
     state.combat = null;
     renderModal();
     openMessage("Victory", `The party wins.\n\nReward: ${gold} gold and ${lootText}.`);
+    if (characterDecision) reactToDecision(characterDecision);
     renderAll();
   }
 
@@ -2815,7 +3041,15 @@
         activeQuests: Object.entries(state.quests)
           .filter(([, quest]) => quest.status === "active")
           .map(([id, quest]) => ({ id, stage: quest.stage, dueDay: quest.dueDay })),
-        party: state.party.map((member) => ({ id: member.id, hp: member.hp, guard: member.guard }))
+        party: state.party.map((member) => ({
+          id: member.id,
+          hp: member.hp,
+          guard: member.guard,
+          loyalty: characterState(member.id).loyalty,
+          memories: characterState(member.id).memories.map(memory => memory.id),
+          personalArcReady: personalArcReady(member.id)
+        })),
+        relationships: state.characterState?.relationships || {}
       } : null,
       combat: state?.combat ? {
         encounterId: state.combat.encounterId,
