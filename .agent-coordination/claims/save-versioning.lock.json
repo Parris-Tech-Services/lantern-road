@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0011",
+  "exclusive_scope": "save-versioning",
+  "agent_number": 1,
+  "agent": "The Steward",
+  "session_id": "b5c09ce8-65fc-49d8-9773-3ac70f462d4c",
+  "claim_token": "34d76f90-4c37-44be-9d15-c6d39cb4089c",
+  "claimed_at": "2026-10-04T19:18:00+11:00",
+  "expires_at": "2026-10-05T07:18:00+11:00",
+  "branch": "agent/LR-0011-save-versioning-7c3e29a1",
+  "note": "Fresh merge-preparation claim for Agent 7-approved PR #21."
+}
