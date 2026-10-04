@@ -2833,7 +2833,7 @@
         "systems/roster/",
         "systems/checks/"
       ],
-      "notes": "PARKED PARTIAL 2026-10-04 by Agent 3 under claim-protocol v1.2 to drain newly approved higher-priority Mechanist work. Fresh branch: agent/LR-0106-roster-check-viability-1a42c780. Initial live audit completed: 11 data-driven companion-specific checks and 8 direct hard-coded rollCheck calls identified, with additional dynamic actor cases still to classify. Key finding: some checks are optional flavour, but others gate core quest/site progress, so simply hiding options when a companion is reserve would soft-lock runs. Next action after higher-priority approved closeout: freshly claim LR-0106, complete dynamic actor inventory, classify each dependency and author the four-reserve fallback matrix. No deliverable PR yet."
+      "notes": "PARKED 2026-10-04T21:35+11:00 by Agent 3 under claim-protocol v1.2. Branch: agent/LR-0106-roster-check-viability-f35c2e15. Exact useful head: 77c6ace2ea2399883c40a34e6e50f98ca31c7e3b. PR #100. Added systems/roster/ACTIVE-ROSTER-CHECK-VIABILITY-MATRIX.md only; no game.js/content.js/save edits. Audit covers 11 data-driven checks, 8 literal hard-coded rollCheck calls, 3 dynamic Oren/Mira selections, direct Brindle quest negotiation, 6 camp moments and 13 decision-reaction groups. Defines reserve-safe core fallbacks for Saint Rhel, Weeping Stones, Broken Span, Moonmere, Smuggler Cache and Lantern negotiation; four reserve permutations; witness filtering; and regression matrix. Acceptance criteria satisfied by authoring. Remaining external closure: Agent 7 exact-head approval, then fresh Agent 3 claim to merge/mark DONE/release."
     },
     {
       "id": "LR-0107",
