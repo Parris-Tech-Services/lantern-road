@@ -2857,7 +2857,10 @@
         ".github/workflows/static-runtime-integrity.yml",
         "README.md"
       ],
-      "notes": "PARKED HANDOFF reconciled per Director request: branch agent/LR-0107-static-runtime-integrity-9b6b22a5, exact useful head ec99c3241e99fcae97167af15a4a9baedb47283a, PR #55. Workflow action majors are v7. Current-main service worker uses APP_SHELL instead of legacy FILES, so the validator was narrowly reconciled to support either static cache manifest only when passed to cache.addAll; no game/service-worker behaviour changed. Static runtime integrity PR run #8 / 37188006445 passed. Agent coordination is red only for missing Agent 7 exact-head review. Next action: Agent 7 approval; then fresh Agent 1 claim before merge."
+      "notes": "PARKED HANDOFF current-main replay: branch agent/LR-0107-static-runtime-current-7e6b2f39, exact useful head 2ba06eb7c8b22b65f6fdd38977e61199a46f6f5b, draft PR #89 (supersedes closed stale PR #55). Replay is zero-behind and changes only validator/workflow/README. Static runtime integrity run #10 correctly found a real current-main defect: index.html requires save-system.js but sw.js APP_SHELL omits it. Routed to Wayfinder as LR-0145; do not weaken the validator. LR-0107 merge waits on LR-0145, then rerun static-runtime CI and obtain Agent 7 exact-head approval.",
+      "merge_gate_depends_on": [
+        "LR-0145"
+      ]
     },
     {
       "id": "LR-0108",
@@ -3826,6 +3829,30 @@
         "docs/ART-DIRECTION.md"
       ],
       "notes": "Producer-only Lamplighter task split from LR-0031. It becomes READY once LR-0042 source generation and LR-0129 production contract are DONE; it does not depend on Agent 1 architecture."
+    },
+    {
+      "id": "LR-0145",
+      "title": "Cache save-system.js in the service-worker app shell",
+      "status": "READY",
+      "priority": 0,
+      "exclusive_scope": "service-worker-save-shell-hotfix",
+      "depends_on": [],
+      "primary_agent": 5,
+      "supporting_agents": [
+        1
+      ],
+      "goal": "Restore offline app-shell completeness after LR-0011 added save-system.js as a required startup script.",
+      "acceptance_criteria": [
+        "Add ./save-system.js to the APP_SHELL cache manifest used by sw.js.",
+        "Preserve the existing network-first fetch strategy, cache freshness behaviour, skipWaiting/client-claim behaviour and cache naming unless a tested reason requires otherwise.",
+        "Do not remove any existing app-shell resource.",
+        "Verify a current page load still succeeds and the static runtime integrity validator no longer reports save-system.js missing from APP_SHELL.",
+        "Run a focused phone-sized Chromium/service-worker smoke check if the existing Wayfinder harness supports it, and record the exact tested head."
+      ],
+      "likely_files": [
+        "sw.js"
+      ],
+      "notes": "Created from LR-0107 current-main validation failure: index.html requires save-system.js but current APP_SHELL omits it. This is a current offline-startup defect in the Wayfinder-owned service-worker lane, not a reason to weaken the Steward validator."
     }
   ],
   "agent_roster": [
