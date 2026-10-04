@@ -13,7 +13,9 @@
   "notes": [
     "Active ownership is determined only by a successfully created exclusive-scope lock.",
     "Claiming does not change task status.",
-    "Tasks were seeded from the Premium Indie Gap Analysis dated 4 October 2026 and current player-feedback defects."
+    "Tasks were seeded from the Premium Indie Gap Analysis dated 4 October 2026 and current player-feedback defects.",
+    "Tasks are role-owned through primary_agent. Agents normally claim only tasks assigned to their own agent number unless Josh explicitly reassigns the work or the queue is updated.",
+    "Supporting agents may advise or review but must not independently implement the primary task without a separate non-overlapping queued scope."
   ],
   "tasks": [
     {
@@ -36,7 +38,8 @@
         "style.css",
         "content.js"
       ],
-      "notes": "Highest-priority polish/bug task from observed play."
+      "notes": "Highest-priority polish/bug task from observed play.",
+      "primary_agent": 5
     },
     {
       "id": "LR-0002",
@@ -59,7 +62,8 @@
         "content.js",
         "assets/"
       ],
-      "notes": "Premium-gap area: art/presentation."
+      "notes": "Premium-gap area: art/presentation.",
+      "primary_agent": 4
     },
     {
       "id": "LR-0003",
@@ -81,7 +85,8 @@
         "style.css",
         "assets/audio/"
       ],
-      "notes": "Premium-gap area: audio/atmosphere."
+      "notes": "Premium-gap area: audio/atmosphere.",
+      "primary_agent": 4
     },
     {
       "id": "LR-0004",
@@ -101,7 +106,8 @@
         "content.js",
         "game.js"
       ],
-      "notes": "The premium gap analysis identifies personality/emotional weight as the biggest missing ingredient."
+      "notes": "The premium gap analysis identifies personality/emotional weight as the biggest missing ingredient.",
+      "primary_agent": 2
     },
     {
       "id": "LR-0005",
@@ -120,7 +126,8 @@
         "content.js",
         "game.js"
       ],
-      "notes": "Premium-gap area: choice and consequence."
+      "notes": "Premium-gap area: choice and consequence.",
+      "primary_agent": 2
     },
     {
       "id": "LR-0006",
@@ -140,7 +147,8 @@
         "content.js",
         "game.js"
       ],
-      "notes": "Premium-gap area: progression/builds."
+      "notes": "Premium-gap area: progression/builds.",
+      "primary_agent": 3
     },
     {
       "id": "LR-0007",
@@ -163,7 +171,11 @@
         "content.js",
         "game.js"
       ],
-      "notes": "Blocked until character, consequence and progression foundations exist."
+      "notes": "Blocked until character, consequence and progression foundations exist.",
+      "primary_agent": 2,
+      "supporting_agents": [
+        3
+      ]
     },
     {
       "id": "LR-0008",
@@ -183,7 +195,8 @@
         "content.js",
         "game.js"
       ],
-      "notes": "Premium-gap area: campaign arc/replayability."
+      "notes": "Premium-gap area: campaign arc/replayability.",
+      "primary_agent": 2
     },
     {
       "id": "LR-0009",
@@ -206,7 +219,164 @@
         "game.js",
         "manifest.webmanifest"
       ],
-      "notes": "Premium-gap area: mobile experience."
+      "notes": "Premium-gap area: mobile experience.",
+      "primary_agent": 5
+    },
+    {
+      "id": "LR-0010",
+      "title": "Architecture and integration audit",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "architecture-integration",
+      "depends_on": [],
+      "primary_agent": 1,
+      "goal": "Audit Lantern Road's current architecture for fragile coupling, duplicated state logic, unsafe extension points and integration risks before the next wave of systems lands.",
+      "acceptance_criteria": [
+        "Document the main runtime/state/rendering boundaries and identify high-risk coupling.",
+        "Remove or contain obvious architectural hazards where a small safe refactor is justified.",
+        "Define integration contracts for content, save state, UI feedback and feature modules.",
+        "Create follow-up queue tasks for larger refactors rather than silently expanding scope.",
+        "Existing gameplay behaviour remains intact."
+      ],
+      "likely_files": [
+        "game.js",
+        "content.js",
+        "README.md",
+        ".agent-coordination/WORK-QUEUE.json"
+      ],
+      "notes": "Steward-owned foundation task. Prefer small risk-reducing changes over a rewrite."
+    },
+    {
+      "id": "LR-0011",
+      "title": "Save format versioning and migration hardening",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "save-versioning",
+      "depends_on": [],
+      "primary_agent": 1,
+      "goal": "Make save/load resilient as character, progression, consequence and mobile systems evolve.",
+      "acceptance_criteria": [
+        "Introduce an explicit save schema/version identifier.",
+        "Add a migration path for older saves rather than assuming the latest state shape.",
+        "Validate malformed or partial saves and give the player a useful recovery message.",
+        "Preserve current campaign data where safely possible.",
+        "Document compatibility expectations for future feature agents."
+      ],
+      "likely_files": [
+        "game.js",
+        "README.md"
+      ],
+      "notes": "Steward-owned cross-system reliability task."
+    },
+    {
+      "id": "LR-0012",
+      "title": "Runtime stability and performance baseline",
+      "status": "READY",
+      "priority": 2,
+      "exclusive_scope": "runtime-performance",
+      "depends_on": [],
+      "primary_agent": 1,
+      "goal": "Establish a performance and stability baseline so new premium-indie features do not gradually make the browser game unreliable.",
+      "acceptance_criteria": [
+        "Identify obvious repeated rendering/event-listener/timer or state-update hazards.",
+        "Check startup, travel, map interaction, modal flow and combat for runtime errors.",
+        "Add lightweight development diagnostics where useful without affecting normal play.",
+        "Keep mobile-browser performance in mind and record any measurable hotspots.",
+        "Turn significant out-of-scope findings into separate queue tasks."
+      ],
+      "likely_files": [
+        "game.js",
+        "style.css",
+        "index.html"
+      ],
+      "notes": "Steward-owned technical quality task."
+    },
+    {
+      "id": "LR-0013",
+      "title": "Automated gameplay regression harness",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "regression-testing",
+      "depends_on": [],
+      "primary_agent": 1,
+      "goal": "Create repeatable automated checks for Lantern Road's critical game loops so concurrent agent work can be integrated with confidence.",
+      "acceptance_criteria": [
+        "Add automated checks for new campaign creation, deterministic state inspection and representative travel/action flows.",
+        "Cover save/load round-trip behaviour.",
+        "Cover at least one combat flow and one quest/site interaction.",
+        "Tests fail clearly on uncaught runtime errors or broken critical interactions.",
+        "Document how every feature agent should run the regression checks before PR completion."
+      ],
+      "likely_files": [
+        "tests/",
+        "package.json",
+        "game.js",
+        "README.md",
+        ".github/workflows/"
+      ],
+      "notes": "Steward-owned production-discipline task. Use the lightest practical test tooling for a static browser game."
+    },
+    {
+      "id": "LR-0014",
+      "title": "Premium feature integration and consistency pass",
+      "status": "BLOCKED",
+      "priority": 2,
+      "exclusive_scope": "premium-integration",
+      "depends_on": [
+        "LR-0001",
+        "LR-0002",
+        "LR-0003",
+        "LR-0004",
+        "LR-0005",
+        "LR-0006",
+        "LR-0008",
+        "LR-0009"
+      ],
+      "primary_agent": 1,
+      "goal": "Integrate and reconcile the first premium-indie feature wave after the specialist foundations are complete.",
+      "acceptance_criteria": [
+        "Audit cross-feature conflicts in UI, state, save data, content and pacing.",
+        "Ensure specialist systems feel like one game rather than independent feature patches.",
+        "Resolve duplicated patterns and inconsistent terminology/feedback.",
+        "Run full regression and phone-oriented smoke checks.",
+        "Record remaining premium-gap work as a prioritised second-wave queue."
+      ],
+      "likely_files": [
+        "game.js",
+        "content.js",
+        "style.css",
+        "index.html",
+        "README.md",
+        ".agent-coordination/WORK-QUEUE.json"
+      ],
+      "notes": "Blocked until the first specialist foundation wave is complete."
+    }
+  ],
+  "agent_roster": [
+    {
+      "number": 1,
+      "name": "The Steward",
+      "role": "Lead, architecture, integration, production discipline, cross-system consistency, bug triage and code review."
+    },
+    {
+      "number": 2,
+      "name": "The Storyteller",
+      "role": "Narrative, characters, dialogue, quests, consequences, campaign structure and endings."
+    },
+    {
+      "number": 3,
+      "name": "The Mechanist",
+      "role": "Combat, equipment, abilities, injuries, builds, economy, balance and deeper gameplay systems."
+    },
+    {
+      "number": 4,
+      "name": "The Lamplighter",
+      "role": "Art direction, UI feedback, animation, map presentation, sound, ambience and overall feel."
+    },
+    {
+      "number": 5,
+      "name": "The Wayfinder",
+      "role": "Mobile UX, accessibility, save/autosave usability, touch/map behaviour, testing, edge cases and interaction audits."
     }
   ]
 }
