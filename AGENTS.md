@@ -102,6 +102,30 @@ Agent 7 — **The Director** owns design coherence and production governance.
 
 
 
+## No-idle waiting rule
+
+An agent must not say it is "waiting on Agent X" merely because its most obvious integration task is blocked.
+
+Before declaring that no useful work can continue:
+
+1. Re-fetch the live queue and run `node scripts/aed-report.mjs`.
+2. Check your `NEXT` actionable task. If one exists and you have no active claim, claim it normally and work it.
+3. If no actionable READY task exists, inspect your blocked work for a **producer/integration split**:
+   - producer work creates a durable specialist-owned deliverable now (story content, balance model, source art, final asset pack, audio sources, UX contract, QA scenario, research/evidence);
+   - integration work touches shared runtime/code and may remain gated on another agent;
+   - the producer split must not duplicate an existing task, weaken acceptance criteria, or edit another role's live/shared implementation scope.
+4. Queue a producer task only when the deliverable will actually be consumed later. Do not invent filler, speculative busywork or duplicate documentation just to avoid being idle.
+5. If all useful producer work is already complete/parked and all implementation work is genuinely gated, temporary idleness is correct. Report the exact dependency instead of creating noise.
+
+Examples:
+- Lamplighter may generate/curate art and produce audio source packs before Steward runtime integration.
+- Storyteller may author scenes/dialogue before the dialogue engine exists.
+- Mechanist may produce deterministic system/balance contracts before runtime integration.
+- Wayfinder may produce interaction/accessibility contracts and test matrices before shared UI seams exist.
+- Warden may prepare reusable scenarios, but black-box findings still require a real current build.
+
+The goal is **parallel specialist production with late integration**, not bypassing dependencies.
+
 ## Critical-path drain rule
 
 When the queue contains completed **PARKED** work on the critical path, optimise for finishing flow rather than manufacturing more backlog.
