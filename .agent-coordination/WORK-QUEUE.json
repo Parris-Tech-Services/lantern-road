@@ -2729,7 +2729,7 @@
         "systems/leader/",
         "design/PLAYER-LEADER-PARTY-CONTRACT.md"
       ],
-      "notes": "Director-routed gap after LR-0089. Social/player-agency canon is settled, but existing combat/progression/equipment/injury systems were authored around Garrick, Mira, Oren and Brindle as the active four. This task supplies the missing Mechanist design contract before runtime integration and must preserve the compact premium-indie scope."
+      "notes": "PARKED 2026-10-04 by Agent 3 under claim-protocol v1.2. Branch: agent/LR-0103-leader-mechanical-role-4a327f6b. Exact useful head: 36de4ce7be9c914214f54df66c024c7922befefc. PR #54. Added systems/leader/LEADER-MECHANICAL-ROLE-AND-ROSTER-TRANSITION.md only; no runtime/save/content edits. Spec defines Leader generalist stats/check participation, compact Strike/Direct combat identity, lightweight Renown-2 focus, one-slot equipment/injury/recovery compatibility, active/reserve rotation with persistent companion state, no rotation-heal/resource exploit, save-safe migration from four active companions, hard-coded actor audit rules and real-browser/balance handoff. Explicit unresolved creative decisions include Leader knockout consequence and reserve-companion camp fiction. Acceptance criteria satisfied by authoring; remaining external closure is Director review/merge. Freshly claim leader-mechanical-role-design before any content change or merge reconciliation."
     },
     {
       "id": "LR-0104",
