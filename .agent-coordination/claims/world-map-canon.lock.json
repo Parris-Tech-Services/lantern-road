@@ -8,6 +8,6 @@
   "claim_token": "cf3b83ac-594f-4329-8af1-d5c5c8ce8272",
   "claimed_at": "2026-10-04T16:32:00+11:00",
   "expires_at": "2026-10-05T04:32:00+11:00",
-  "branch": "agent/LR-0069-world-map-canon-6d8d5ff0",
-  "note": "Implementing only LR-0069 canonical Grey March registry and governance."
+  "branch": "agent/LR-0069-world-map-canon-6d8d5ff0-r2",
+  "note": "Implementing only LR-0069 canonical Grey March registry and governance. Rebased onto current main via r2; original branch preserved as backup."
 }
