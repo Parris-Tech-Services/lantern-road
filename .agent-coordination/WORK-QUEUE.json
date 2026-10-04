@@ -135,7 +135,7 @@
         "content.js",
         "game.js"
       ],
-      "notes": "Storyteller owns consequence logic and faction-specific modifiers. The Mechanist owns base economy/prices in LR-0016. This task is grandfathered as already in flight but has LR-0011/LR-0013 merge gates.",
+      "notes": "Storyteller owns consequence logic and faction-specific modifiers. The Mechanist owns base economy/prices in LR-0016. This task is grandfathered as already in flight but has LR-0011/LR-0013 merge gates. Implementation is complete on commit 5c9e3caf2823b3f84ec548c7cdff58dbda6bad44 and archived draft PR #7. CI coordination validation passed; merge verification is intentionally blocked by LR-0011 and LR-0013. After those gates are DONE, a fresh Agent 2 claimant should create a new claim/branch, rebase or cherry-pick the LR-0005 implementation, run the real-browser harness, obtain fresh Agent 7 Director approval as the final PR commit, then merge.",
       "primary_agent": 2,
       "merge_gate_depends_on": [
         "LR-0011",
