@@ -269,7 +269,8 @@
         "LR-0003",
         "LR-0005",
         "LR-0006",
-        "LR-0009"
+        "LR-0009",
+        "LR-0099"
       ],
       "primary_agent": 1,
       "goal": "After the already-in-flight specialist branches land, split the monolithic runtime/content hotspots into safer module boundaries so the next feature wave does not keep colliding in game.js and content.js.",
@@ -2598,6 +2599,28 @@
         "tests/"
       ],
       "notes": "Mechanist implementation of LR-0094 across combat and non-combat repeatability."
+    },
+    {
+      "id": "LR-0099",
+      "title": "Author modularisation blueprint and extraction sequence",
+      "status": "READY",
+      "priority": 0,
+      "exclusive_scope": "architecture-blueprint",
+      "depends_on": [],
+      "primary_agent": 1,
+      "goal": "Prepare LR-0010 with a concrete low-risk module map, extraction order and collision plan against the current codebase without editing shared runtime files.",
+      "acceptance_criteria": [
+        "Inventory current game.js/content.js responsibilities and identify the highest-collision seams used by queued feature work.",
+        "Define target modules and their public contracts for save/state, dialogue/scenes, combat/actions, map/travel, economy/services, party/companions and UI/rendering.",
+        "Define an extraction order that preserves a simple static-browser build and avoids a framework/bundler rewrite.",
+        "Map upcoming queued integration tasks to the modules they should own so they do not all return to game.js/content.js.",
+        "Identify temporary compatibility shims and exact tests required after each extraction step.",
+        "Produce a concise risk/rollback plan and explicit non-goals for LR-0010."
+      ],
+      "likely_files": [
+        "docs/ARCHITECTURE-MODULARISATION-PLAN.md"
+      ],
+      "notes": "Safe author-now Steward preparation for blocked LR-0010. Documentation only; do not edit game.js/content.js in this task."
     }
   ],
   "agent_roster": [
