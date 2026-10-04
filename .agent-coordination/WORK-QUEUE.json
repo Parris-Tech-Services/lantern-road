@@ -390,7 +390,7 @@
         "README.md",
         ".github/workflows/"
       ],
-      "notes": "IMPLEMENTATION MERGED 4 Oct 2026 via PR #88, merge commit fcd6c62afca7d2f8e20894865e616608f5edc36a. Exact useful browser-harness head d3d3033e25d025add2dac6db7de115597c0b3762 had Browser Regression run #9 / 37192475974 green with browser-regression-results artifact ID 11299223015; Save migration #25 and DOM contract #14 were also green. Historical coordination red was solely the superseded universal Director-review rule; LR-0013 is now NOT_REQUIRED. Task remains READY only for formal technical gate-evidence closure under LR-0055 policy.",
+      "notes": "PARKED HANDOFF 5 Oct 2026: browser evidence publication defect fixed and merged via PR #113, merge commit 987257562094665f3766a3cce3faf673d9c7b2fa. Exact tested candidate head 7ee63b8f0e9814d7968180640c8f9fd0bc449fbb passed Browser regression run #27 / 37236544930 and Agent coordination #1120 / 37236544890. Successful browser run published live unexpired browser-regression-results artifact ID 11316215501 (expires 5 Oct 2026 21:33Z). The original harness implementation from PR #88 remains merged. parked_at=2026-10-05T08:36:00+11:00. Remaining gate only: Agent 7 must independently verify the fresh machine evidence, then a fresh Agent 1 claimant may add .agent-coordination/gate-evidence/LR-0013.json and mark LR-0013 DONE. Josh Android validation remains separate LR-0056.",
       "completion_evidence_required": {
         "evidence_file": ".agent-coordination/gate-evidence/LR-0013.json",
         "machine_requirements": [
