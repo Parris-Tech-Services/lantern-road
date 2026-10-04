@@ -2906,7 +2906,7 @@
         "docs/MOBILE-BACK-NAVIGATION-CONTRACT.md",
         "QA/"
       ],
-      "notes": "Author-now Wayfinder gap discovered after LR-0108. Owns player-facing Back/history/exit behaviour only; browser routing implementation remains downstream."
+      "notes": "PARKED HANDOFF (4 Oct 2026): authoring complete on branch agent/LR-0110-mobile-back-a4f96d3c at useful head 1325d32cd7c756bd43bbf1a62ad8b6e2cc5bbb21, PR #58. Final diff adds docs/MOBILE-BACK-NAVIGATION-CONTRACT.md and QA/MOBILE-BACK-NAVIGATION-MATRIX.md only. It defines Back/Escape priority across modals, FULL_DETAIL, MAP_EXPANDED, details and root play; forbids history inflation for routine tabs/sheet snaps; protects destructive/required flows; consumes LR-0077 unconfirmed-progress rules; defines focus restoration and browser/PWA acceptance cases. No runtime/history implementation changed. Remaining external condition is Agent 7 approval; fresh mobile-back-navigation-authoring claim required before later edits or final merge preparation."
     }
   ],
   "agent_roster": [
@@ -2964,5 +2964,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T18:10:00+11:00"
+  "updated_at": "2026-10-04T18:15:00+11:00"
 }
