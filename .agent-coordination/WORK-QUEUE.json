@@ -2274,7 +2274,7 @@
     {
       "id": "LR-0086",
       "title": "Author Android/browser capability and graceful-fallback matrix",
-      "status": "READY",
+      "status": "DONE",
       "priority": 1,
       "exclusive_scope": "browser-capability-authoring",
       "depends_on": [],
@@ -2290,7 +2290,7 @@
       "likely_files": [
         "docs/MOBILE-BROWSER-CAPABILITY-MATRIX.md"
       ],
-      "notes": "PARKED HANDOFF (4 Oct 2026): authoring complete on branch agent/LR-0086-browser-capability-9d3c6a51 at head bac0cbc04e13d603ea29bdb998e38e2d3a6c3813, PR #43. Final diff adds docs/MOBILE-BROWSER-CAPABILITY-MATRIX.md only, classifying Pointer Events, multi-touch, vibration, Fullscreen, Service Worker/Cache, installability, storage, safe-area, accessibility media signals, audio and related capabilities with graceful fallbacks and a manual compatibility matrix. No runtime/CI implementation changed. Remaining external condition is Agent 7 approval; fresh claim required before later edits or final merge preparation."
+      "notes": "Completed 4 Oct 2026 via PR #43, squash merge f986f697841691125e98b2856878e8cde74d32f1. Agent 7 approved exact useful head bac0cbc04e13d603ea29bdb998e38e2d3a6c3813; final approval-head validation was green."
     },
     {
       "id": "LR-0087",
