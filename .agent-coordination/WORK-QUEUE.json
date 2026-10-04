@@ -906,18 +906,17 @@
     },
     {
       "id": "LR-0031",
-      "title": "Authored illustration and asset production pass",
+      "title": "Integrate final authored illustration delivery pack",
       "status": "BLOCKED",
       "priority": 2,
       "exclusive_scope": "authored-art-production",
       "depends_on": [
         "LR-0002",
-        "LR-0042",
-        "LR-0137",
-        "LR-0129"
+        "LR-0144",
+        "LR-0137"
       ],
       "primary_agent": 4,
-      "goal": "Curate, optimise and integrate the approved illustration set into Lantern Road's existing visual slots while keeping mobile download cost controlled.",
+      "goal": "Map the already-curated final illustration delivery pack into Lantern Road's existing visual slots after the UI/render seam exists, retaining mobile performance and fallbacks.",
       "acceptance_criteria": [
         "Select the strongest approved images from LR-0042 and reject inconsistent generations rather than forcing full coverage.",
         "Crop and prepare final party, NPC, settlement, site, enemy and item artwork for the existing art-slot contract.",
@@ -931,22 +930,22 @@
         "style.css",
         "docs/ART-DIRECTION.md"
       ],
-      "notes": "Second-wave Lamplighter illustration integration task. LR-0042 generates/sources the approved image set; LR-0129 defines exact composition/crop/export standards; LR-0031 owns final selection, crop, compression and runtime mapping into existing art slots after the UI/render seam exists. First visible priority is the approved Garrick/Mira/Oren/Brindle hero portrait set, followed by settlements/sites/enemies/NPCs/items as LR-0042 completes. Do not leave approved art sitting only in source folders once this task is unblocked."
+      "notes": "Runtime/presentation integration counterpart to producer task LR-0144. Agent 4 should complete source generation and final delivery production before waiting for Agent 1's UI/render seam; this task itself stays gated by LR-0137."
     },
     {
       "id": "LR-0032",
-      "title": "Bespoke soundscape and restrained score production pass",
+      "title": "Integrate authored soundscape and restrained score",
       "status": "BLOCKED",
       "priority": 2,
       "exclusive_scope": "authored-audio-production",
       "depends_on": [
         "LR-0003",
-        "LR-0126",
+        "LR-0143",
         "LR-0137",
         "LR-0131"
       ],
       "primary_agent": 4,
-      "goal": "Replace or augment the procedural audio foundation with a coherent authored soundscape and restrained adaptive score while preserving phone performance and player control.",
+      "goal": "Integrate the completed authored audio pack through Lantern Road's existing sound controls and lifecycle after the UI/render seam and Wayfinder audio-control audit are ready.",
       "acceptance_criteria": [
         "Produce clean loopable ambience layers for core weather states and the main location families.",
         "Produce a cohesive final UI, travel and combat cue set with controlled loudness and no cue spam.",
@@ -960,7 +959,7 @@
         "game.js",
         "docs/AUDIO-DIRECTION.md"
       ],
-      "notes": "Second-wave Lamplighter authored-audio production/integration task. LR-0126 supplies the approved soundscape/score production bible and source-asset contract; LR-0131 supplies Wayfinder's mobile audio-control/sensory-accessibility audit. LR-0032 owns obtaining/creating the final authored ambience/music/cue files plus runtime integration after the UI/render seam exists. Existing procedural Web Audio remains the fallback until authored assets are proven. Must preserve sound-off play, browser lifecycle correctness and phone/headphone performance."
+      "notes": "Runtime audio integration counterpart to producer task LR-0143. Authored audio asset creation proceeds independently; this task waits only for the completed source pack plus LR-0137 and LR-0131."
     },
     {
       "id": "LR-0033",
@@ -1216,7 +1215,7 @@
       "id": "LR-0042",
       "title": "Generate and style-lock the Lantern Road AI art set",
       "status": "READY",
-      "priority": 1,
+      "priority": 0,
       "exclusive_scope": "ai-art-generation",
       "depends_on": [
         "LR-0002"
@@ -1238,7 +1237,7 @@
         "docs/ART-DIRECTION.md",
         "docs/ART-PROVENANCE.md"
       ],
-      "notes": "PARKED useful work. PR #12 / branch agent/LR-0042-ai-art-d1f018ec has Director-approved useful head e38785f642b9e64aaed08781c85cd629c8b608a2 containing the accepted hero style-lock assets, approved non-canonical Grey March visual reference, ART-PROVENANCE.md, ART-SHOT-LIST.md and ART-MANIFEST.json. Agent 7 approval covers this preserved batch only; LR-0042 remains READY/incomplete for settlement/site/enemy/NPC/item production. Resume remaining generation in a clean image-generation context and keep rejecting off-brief cartography. LR-0031 owns downstream runtime integration."
+      "notes": "PARKED useful work. PR #12 / branch agent/LR-0042-ai-art-d1f018ec has Director-approved useful head e38785f642b9e64aaed08781c85cd629c8b608a2 containing the accepted hero style-lock assets, approved non-canonical Grey March visual reference, ART-PROVENANCE.md, ART-SHOT-LIST.md and ART-MANIFEST.json. Agent 7 approval covers this preserved batch only; LR-0042 remains READY/incomplete for settlement/site/enemy/NPC/item production. Resume remaining generation in a clean image-generation context and keep rejecting off-brief cartography. LR-0031 owns downstream runtime integration. AED no-idle routing: this is Agent 4's immediate actionable task while incomplete. Continue settlement/site/enemy/NPC/item generation in a clean image-generation context; do not wait for Agent 1. Runtime integration remains LR-0031/LR-0141."
     },
     {
       "id": "LR-0043",
@@ -3741,6 +3740,91 @@
         "assets/ui/effects/"
       ],
       "notes": "Steward-owned runtime integration task created by Agent 4 to make already-produced Lamplighter assets visibly land in the game. Agent 4 retains art/VFX direction; Agent 5 retains interaction/accessibility semantics; Agent 1 owns runtime wiring. Do not duplicate LR-0031 hero/location art integration or LR-0032 authored audio integration."
+    },
+    {
+      "id": "LR-0142",
+      "title": "Eliminate avoidable cross-agent waiting",
+      "status": "READY",
+      "priority": 0,
+      "exclusive_scope": "aed-no-idle-parallelism",
+      "depends_on": [
+        "LR-0128",
+        "LR-0139"
+      ],
+      "primary_agent": 8,
+      "goal": "Prevent agents from idling behind another role when valid specialist work or a safe producer/integration split exists, while preserving ownership and avoiding filler.",
+      "acceptance_criteria": [
+        "Add a no-idle-wait rule requiring agents to check their highest-priority actionable READY work before stating they are waiting on another agent.",
+        "If no actionable task exists, require a dependency-decomposition check: split a blocked task only when a durable specialist-owned deliverable can be completed without shared-runtime integration or duplicating existing work.",
+        "Extend the AED report with each agent's highest-priority actionable next task and a BLOCKED_ONLY/REVIEW_DRAIN/ACTIVE/READY classification so false waiting is visible.",
+        "Make LR-0042 the explicit immediate Lamplighter next action while it remains incomplete; do not create duplicate visual-generation work.",
+        "Split LR-0032 into independent Agent 4 authored-audio production followed by the existing runtime integration task.",
+        "Split LR-0031 into independent Agent 4 art curation/export followed by the existing runtime integration task.",
+        "Do not let producer tasks edit game.js/index.html/shared runtime surfaces; integration remains gated by the correct architecture seam.",
+        "Add focused tests for actionable-next-task/wait-state reporting and preserve one-lock/role ownership rules."
+      ],
+      "likely_files": [
+        "AGENTS.md",
+        ".agent-coordination/WORK-QUEUE.json",
+        "scripts/aed-report.mjs",
+        "tests/aed-report.test.mjs",
+        "README.md"
+      ]
+    },
+    {
+      "id": "LR-0143",
+      "title": "Produce authored Grey March audio source pack",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "audio-source-production",
+      "depends_on": [
+        "LR-0126"
+      ],
+      "primary_agent": 4,
+      "goal": "Create the final authored ambience, restrained score/stems and feedback cue source pack from the approved audio production bible without waiting for runtime/UI architecture.",
+      "acceptance_criteria": [
+        "Produce/source clean loopable ambience layers for the core weather and location families defined by LR-0126.",
+        "Produce/source the restrained music motifs/stems and semantic cue set defined by LR-0126.",
+        "Normalise/export phone-friendly source/delivery files with documented format, loop points, duration, loudness intent and licence/provenance.",
+        "Record an audio asset manifest mapping filenames to intended runtime roles and fallbacks.",
+        "Do not edit game.js, index.html, style.css or runtime audio logic; LR-0032 remains the later integration task.",
+        "Preserve sound-off play and accessibility semantics as constraints for later integration rather than trying to implement Agent 5's controls here."
+      ],
+      "likely_files": [
+        "assets/audio/",
+        "assets/audio/README.md",
+        "docs/AUDIO-DIRECTION.md",
+        "docs/AUDIO-PROVENANCE.md"
+      ],
+      "notes": "Producer-only Lamplighter task split from LR-0032 so audio creation does not wait for Agent 1's UI/render seam. LR-0032 consumes this pack later."
+    },
+    {
+      "id": "LR-0144",
+      "title": "Curate, crop and export final illustration delivery pack",
+      "status": "BLOCKED",
+      "priority": 1,
+      "exclusive_scope": "art-delivery-production",
+      "depends_on": [
+        "LR-0042",
+        "LR-0129"
+      ],
+      "primary_agent": 4,
+      "goal": "Turn the completed approved source illustration set into phone-ready final delivery assets before runtime mapping, without waiting for Agent 1's UI/render seam.",
+      "acceptance_criteria": [
+        "Select/reject final approved source images using LR-0129 crop/readability rules.",
+        "Create final phone-friendly crops/exports for heroes, NPCs, settlements/sites, enemies and priority items.",
+        "Compress to browser-friendly delivery formats and record dimensions/file-size/provenance manifest entries.",
+        "Check silhouette, crop safety, contrast and small-screen recognisability against the production contract.",
+        "Do not edit style.css, game.js, index.html or runtime art-slot mapping; LR-0031 remains the later integration task.",
+        "Hand LR-0031 a complete delivery manifest so integration becomes wiring rather than another art-production pass."
+      ],
+      "likely_files": [
+        "assets/art/final/",
+        "assets/art/ART-MANIFEST.json",
+        "docs/ART-PROVENANCE.md",
+        "docs/ART-DIRECTION.md"
+      ],
+      "notes": "Producer-only Lamplighter task split from LR-0031. It becomes READY once LR-0042 source generation and LR-0129 production contract are DONE; it does not depend on Agent 1 architecture."
     }
   ],
   "agent_roster": [
@@ -3803,5 +3887,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T20:52:00+11:00"
+  "updated_at": "2026-10-04T20:58:00+11:00"
 }
