@@ -145,7 +145,8 @@
       "merge_gate_depends_on": [
         "LR-0011",
         "LR-0013"
-      ]
+      ],
+      "director_review": "REQUIRED"
     },
     {
       "id": "LR-0006",
@@ -165,12 +166,13 @@
         "content.js",
         "game.js"
       ],
-      "notes": "PARKED 2026-10-04 by Agent 3 under claim-protocol v1.2. Useful branch: agent/LR-0006-progression-builds-c751b94e. Exact parked head: 3ebde0d7a342479ef11603193ae968f86ab930f2. Draft PR #5. Implementation covers 2 mutually exclusive paths per hero, explicit hero equipment choices, persistent injuries/recovery, progression effects, migration compatibility and visible feedback. Focused runtime/state regression completed: all 8 hero paths persist across save/reload; all 8 gear choices persist; injuries persist with recovery counters; current saves do not silently auto-equip legacy gear; genuine pre-progression saves still migrate carried legacy gear. Remaining work is external: after LR-0011/LR-0013 technical gates clear, freshly claim LR-0006, reconcile/rebase against the final shared save/browser foundations, run the real-browser suite, obtain exact-head Agent 7 approval, then merge and mark DONE. Do not edit or merge the parked branch without a fresh progression-builds claim.",
+      "notes": "PARKED 2026-10-04T22:08+11:00 after merged-runtime verification. LR-0006 implementation is already present on main via PR #5 merge commit ea0cc88f082d5c7a0a20f340477c6f5c826ab125; current main contains heroBuilds, explicit companion equipment slots, persistent injuries/recovery and progression-aware combat/UI hooks. Do NOT replay/cherry-pick the old 259-commit-behind branch over current main. Merged LR-0011 save-system v2 preserves progression because encode clones the full state and decode/mergeDefaults retains candidate keys while filling current defaults; current game.js also normalizes builds/equipment/injuries. Task must remain READY because merge gates LR-0011 and LR-0013 are not formally DONE and director_review is REQUIRED. After both gates are DONE: fresh Agent 3 claim, run the permanent LR-0013 real-browser suite plus focused progression save/reload checks against exact current main, obtain/repair exact-head Agent 7 approval for the merged progression state, then mark LR-0006 DONE. No further feature replay is currently needed.",
       "primary_agent": 3,
       "merge_gate_depends_on": [
         "LR-0011",
         "LR-0013"
-      ]
+      ],
+      "director_review": "REQUIRED"
     },
     {
       "id": "LR-0007",
@@ -229,7 +231,8 @@
         "game.js"
       ],
       "notes": "Premium-gap area: campaign arc/replayability. Architecture dependency narrowed by LR-0128: replaces all-or-nothing LR-0010 wait with stage(s) LR-0138; final integration remains governed by LR-0010 where separately applicable.",
-      "primary_agent": 2
+      "primary_agent": 2,
+      "director_review": "REQUIRED"
     },
     {
       "id": "LR-0009",
@@ -254,7 +257,7 @@
         "game.js",
         "manifest.webmanifest"
       ],
-      "notes": "PARKED HANDOFF refreshed 4 Oct 2026: the obsolete PR #6 was closed and replaced by draft PR #85 on branch agent/LR-0009-mobile-ux-64c3f2a1, current useful head 8af907283e602214b24a1f286f444ded3ff10080. This is a clean rebuild from then-current main, not a 500-commit stale rebase. It includes phone map pan/zoom/centre, six large neighbouring Travel buttons, bottom-thumb tabs, Settings/Accessibility, Standard/Large/Extra Large text, High Contrast, optional haptics, separate Manual Save + Autosave, New Campaign Manual Save protection, Manual/Autosave load chooser, visible Version 1.0.0 / Build 2026.10.04-lr0009-v7, floating/safe-area overlap handling, and schema-v2 persistence through merged LR-0011 window.LanternRoadSave. LR-0050 network-first sw.js is preserved unchanged. Real Chromium run 37191895794 passed at 320x700, 360x780, 390x844 and 430x900; artifact 11299491815; QA record QA/LR-0009-CURRENT-MAIN-MOBILE-RECONCILIATION.md. DOM contract and node --check game.js also passed. Remaining external merge gates: LR-0011 and LR-0013 must be formally DONE. After they clear, acquire a fresh mobile-ux claim, reconcile with then-current main, run the permanent LR-0013 browser harness, obtain fresh Agent 7 exact-head approval, then merge/close. Deeper keyboard/screen-reader, PWA lifecycle, canonical map UX and persistent-map shell remain separate LR-0039/LR-0040/LR-0074/LR-0096 tasks.",
+      "notes": "IMPLEMENTATION MERGED 4 Oct 2026 via PR #85, merge commit confirmed in GitHub after current-main rebuild. Includes phone map pan/zoom/centre, six large neighbouring Travel buttons, bottom-thumb tabs, Settings/Accessibility, Standard/Large/Extra Large text, High Contrast, optional haptics, Manual Save + Autosave UX, load chooser, visible build ID and safe-area/floating-control fixes. Pre-merge real Chromium evidence covered 320x700, 360x780, 390x844 and 430x900 with artifact 11299491815. Task remains READY for formal lifecycle closeout because its declared merge gates LR-0011/LR-0013 are not yet DONE; do not re-merge the feature.",
       "primary_agent": 5,
       "merge_gate_depends_on": [
         "LR-0011",
@@ -319,6 +322,7 @@
         "README.md"
       ],
       "notes": "IMPLEMENTATION MERGED 4 Oct 2026 via PR #21, merge commit 037a21b8d0916061b8c5bf5e394f2b4d9e3ff4f3. Agent 7 approved exact refreshed feature head 5028489830513dbf6e21330705ef96629e1bd499; approval head 207072439ae63d85315adcb521eeaff96d1aff97 had Agent coordination #738, Save migration #19 and DOM contract #7 all green. Pre-approval Save migration PR run #18 / 37187544114 published unexpired save-migration-results artifact ID 11297351610 tied to the exact feature head. Task remains READY until its technical gate-evidence closure change. Under LR-0055, Josh's Android validation is tracked separately by LR-0056 and does not block specialist development once this technical gate is DONE.",
+      "notes": "IMPLEMENTATION MERGED 4 Oct 2026 via PR #21, merge commit 037a21b8d0916061b8c5bf5e394f2b4d9e3ff4f3. Agent 7 approved exact refreshed feature head 5028489830513dbf6e21330705ef96629e1bd499; approval head 207072439ae63d85315adcb521eeaff96d1aff97 had Agent coordination #738, Save migration #19 and DOM contract #7 all green. Pre-approval Save migration PR run #18 / 37187544114 published unexpired save-migration-results artifact ID 11297351610 tied to the exact feature head. Task intentionally remains READY until its separate gate-evidence closure change satisfies whichever LR-0055 foundation policy is live at closure time. Under LR-0055, Josh's Android validation is tracked separately by LR-0056 and does not block specialist development once this technical gate is DONE.",
       "completion_evidence_required": {
         "evidence_file": ".agent-coordination/gate-evidence/LR-0011.json",
         "machine_requirements": [
@@ -334,7 +338,8 @@
         "required_repository_paths": [
           "tests/fixtures/saves/legacy/"
         ]
-      }
+      },
+      "director_review": "NOT_REQUIRED"
     },
     {
       "id": "LR-0012",
@@ -387,6 +392,7 @@
         ".github/workflows/"
       ],
       "notes": "PARKED HANDOFF current-main replay: branch agent/LR-0013-regression-current-a2bc7c6d, exact useful head d3d3033e25d025add2dac6db7de115597c0b3762, draft PR #88 (supersedes closed stale PR #16). Replayed only the already-reviewed Playwright harness and localhost-only ?e2e=1 hooks onto current main; preserved newer gameplay/Leader/mobile/map/save/service-worker work. Browser regression run #9 / 37192475974 passed and published unexpired browser-regression-results artifact ID 11299223015 tied to the exact head. Save migration #25 and DOM contract #14 also passed. Agent coordination fails only for missing Agent 7 exact-head review. Next action: Agent 7 approval; then fresh Agent 1 claim before merge preparation and technical gate closure. Under LR-0055, Josh's Android validation is tracked separately by LR-0056 and does not block specialist development once this technical gate is DONE.",
+      "notes": "IMPLEMENTATION MERGED 4 Oct 2026 via PR #88, merge commit fcd6c62afca7d2f8e20894865e616608f5edc36a. Exact useful browser-harness head d3d3033e25d025add2dac6db7de115597c0b3762 had Browser Regression run #9 / 37192475974 green with browser-regression-results artifact ID 11299223015; Save migration #25 and DOM contract #14 were also green. Historical coordination red was solely the superseded universal Director-review rule; LR-0013 is now NOT_REQUIRED. Task remains READY only for formal technical gate-evidence closure under LR-0055 policy.",
       "completion_evidence_required": {
         "evidence_file": ".agent-coordination/gate-evidence/LR-0013.json",
         "machine_requirements": [
@@ -402,7 +408,8 @@
         "required_repository_paths": [
           "tests/e2e/"
         ]
-      }
+      },
+      "director_review": "NOT_REQUIRED"
     },
     {
       "id": "LR-0014",
@@ -1469,7 +1476,9 @@
         "systems/economy/",
         "docs/"
       ],
-      "notes": "DONE 2026-10-04. Director-approved PR #24 merged to main as 1368193bc17c7bd04a4ed53e3f722313241adf3f. Reviewed feature head 6f2d2c21fd424e77897e73c61c9896bf0a856654 with Director approval commit 2e9563d1c178b2ab3c58cb2d9fdaaae39be6de18; Agent coordination #547 SUCCESS. Economy baseline model and target ranges are canonical inputs for LR-0016/LR-0020."
+      "notes": "PARKED 2026-10-04 by Agent 3 under claim-protocol v1.2. Branch: agent/LR-0052-economy-model-authoring-d3b244e9. Exact useful head: 6f2d2c21fd424e77897e73c61c9896bf0a856654. PR #24. Added systems/economy/ECONOMY-BASELINE-MODEL.md only (645 lines); no runtime/save/reward/faction edits. Model inventories current income/costs, quantifies 18-day ration pressure, combat EV and defeat shock, provides four representative campaign budgets, defines early/mid/late target ranges, separates global base economy from LR-0005 faction modifiers, and flags repeatable farming/starvation spiral risks for LR-0016. Acceptance criteria satisfied by authoring; remaining external closure is Director review/merge. Before any content change or merge reconciliation, freshly claim economy-model-authoring.",
+      "notes": "DONE 2026-10-04. Director-approved PR #24 merged to main as 1368193bc17c7bd04a4ed53e3f722313241adf3f. Reviewed feature head 6f2d2c21fd424e77897e73c61c9896bf0a856654 with Director approval commit 2e9563d1c178b2ab3c58cb2d9fdaaae39be6de18; Agent coordination #547 SUCCESS. Economy baseline model and target ranges are canonical inputs for LR-0016/LR-0020.",
+      "director_review": "REQUIRED"
     },
     {
       "id": "LR-0053",
@@ -1491,7 +1500,9 @@
         "systems/combat/",
         "docs/"
       ],
-      "notes": "DONE 2026-10-04. Director-approved PR #19 merged to main as 6cf2eeda190c00d22383fdc4e0b75105fcec918e. Reviewed feature head cb6069b8f41b0ec485a4aed829ed57de23d03662 with Director approval commit e0e1c1f63a1841c4b937c1b7155377366a9021c7; Agent coordination #555 SUCCESS. Compact-combat depth and enemy-intent specification is canonical for LR-0015/LR-0019."
+      "notes": "PARKED 2026-10-04 by Agent 3 under claim-protocol v1.2. Branch: agent/LR-0053-combat-design-authoring-4f6d9ab8. Exact useful head: cb6069b8f41b0ec485a4aed829ed57de23d03662. PR #19. Added systems/combat/COMPACT-COMBAT-DEPTH-SPEC.md only (570 lines); no runtime/save/economy edits. Spec covers all 7 current enemy archetypes with visible intent/counterplay, five party decision axes, dominant-action risks, five signature encounter patterns, LR-0006 progression assumptions/reconciliation, and a staged LR-0015 implementation slice. Acceptance criteria satisfied by authoring; remaining external closure is Director review/merge. Before any content change or merge reconciliation, freshly claim combat-design-authoring.",
+      "notes": "DONE 2026-10-04. Director-approved PR #19 merged to main as 6cf2eeda190c00d22383fdc4e0b75105fcec918e. Reviewed feature head cb6069b8f41b0ec485a4aed829ed57de23d03662 with Director approval commit e0e1c1f63a1841c4b937c1b7155377366a9021c7; Agent coordination #555 SUCCESS. Compact-combat depth and enemy-intent specification is canonical for LR-0015/LR-0019.",
+      "director_review": "REQUIRED"
     },
     {
       "id": "LR-0054",
@@ -1544,6 +1555,12 @@
       "supporting_agents": [
         7
       ]
+      "notes": "Latest-main LR-0055 rebuild on branch agent/LR-0055-foundation-current-a81f94d2-r2. Applies only the technical-vs-human gate policy to current live rules/queue: LR-0011/LR-0013 remain strict machine+Director technical gates, LR-0056 is non-self-assertable Josh Android validation, and LR-0014 depends on LR-0056. Await CI and exact-head Agent 7 governance approval.",
+      "supporting_agents": [
+        7
+      ]
+      "notes": "PARKED HANDOFF: current-main reconciliation complete on branch agent/LR-0055-foundation-policy-69f9a050-r5, exact useful head e4f1ccbb154c2dd690b2d7e0a00a08c83776640c, draft PR #74 (supersedes closed stale PR #17). Mechanical queue comparison confirmed every non-policy task and top-level queue metadata match live main; only LR-0011/LR-0013/LR-0014/LR-0055/LR-0056 carry intended policy deltas. Agent coordination run #689 (37187380586) passed every step. Next action: Agent 7 exact-head approval, then fresh Agent 1 claim before merge.",
+      "director_review": "NOT_REQUIRED"
     },
     {
       "id": "LR-0056",
@@ -1599,7 +1616,9 @@
         "systems/equipment/",
         "docs/"
       ],
-      "notes": "DONE 2026-10-04. Director-approved PR #25 merged to main as bcd1c3d4d4b41a3ebed284d791f432ce0d149778. Reviewed feature head 4343f8e524374c8ff0c824d2260c230723503ba4 with Director approval commit 498e7a8a3bae7018d855c0a9084d6a9b46fc6461; Agent coordination #558 SUCCESS. Equipment ecosystem/trade-off catalogue is canonical for LR-0017."
+      "notes": "PARKED 2026-10-04 by Agent 3 under claim-protocol v1.2. Branch: agent/LR-0057-equipment-design-authoring-6b52de3a. Exact useful head: 4343f8e524374c8ff0c824d2260c230723503ba4. PR #25. Added systems/equipment/EQUIPMENT-ECOSYSTEM-CATALOGUE.md only (919 lines); no runtime/save/shop/reward/price edits. Catalogue preserves one-slot hero equipment, defines four meaningful sidegrade choices per hero, anti-upgrade-ladder rules, path/item interaction matrix, availability and rare-reward constraints, economy ownership boundary, save/migration/selling assumptions and phone-first comparison UI. Acceptance criteria satisfied by authoring; remaining external closure is Director review/merge. Freshly claim equipment-design-authoring before any content change or merge reconciliation.",
+      "notes": "DONE 2026-10-04. Director-approved PR #25 merged to main as bcd1c3d4d4b41a3ebed284d791f432ce0d149778. Reviewed feature head 4343f8e524374c8ff0c824d2260c230723503ba4 with Director approval commit 498e7a8a3bae7018d855c0a9084d6a9b46fc6461; Agent coordination #558 SUCCESS. Equipment ecosystem/trade-off catalogue is canonical for LR-0017.",
+      "director_review": "REQUIRED"
     },
     {
       "id": "LR-0058",
@@ -1621,7 +1640,9 @@
         "systems/injuries/",
         "docs/"
       ],
-      "notes": "DONE 2026-10-04. Director-approved PR #28 merged to main as 77967abedd1c421cd25759bb52c2f19cc6836254. Reviewed feature head 485bbb5364bbbde2d6ec3dc68b100a6bf5b47ede with Director approval commit f81cbabc9fc3ac5766dc417a13938115ad571246; Agent coordination #560 SUCCESS. Injury/condition/recovery catalogue is canonical for LR-0018."
+      "notes": "PARKED 2026-10-04 by Agent 3 under claim-protocol v1.2. Branch: agent/LR-0058-injury-design-authoring-2e341c8a. Exact useful head: 485bbb5364bbbde2d6ec3dc68b100a6bf5b47ede. PR #28. Added systems/injuries/INJURY-CONDITION-RECOVERY-CATALOGUE.md only (1026 lines); no runtime/save/service/price edits. Catalogue preserves one persistent adverse state per hero, defines five injuries plus optional expedition conditions, readable triggers, anti-snowball rules, three recovery routes, LR-0052 economy bands, LR-0057 equipment adaptation, save/migration/narrative hooks and 10 QA scenarios. Acceptance criteria satisfied by authoring; remaining external closure is Director review/merge. Freshly claim injury-design-authoring before any content change or merge reconciliation.",
+      "notes": "DONE 2026-10-04. Director-approved PR #28 merged to main as 77967abedd1c421cd25759bb52c2f19cc6836254. Reviewed feature head 485bbb5364bbbde2d6ec3dc68b100a6bf5b47ede with Director approval commit f81cbabc9fc3ac5766dc417a13938115ad571246; Agent coordination #560 SUCCESS. Injury/condition/recovery catalogue is canonical for LR-0018.",
+      "director_review": "REQUIRED"
     },
     {
       "id": "LR-0059",
@@ -2315,7 +2336,7 @@
     {
       "id": "LR-0087",
       "title": "Author build viability and whole-system balance scenario matrix",
-      "status": "READY",
+      "status": "DONE",
       "priority": 3,
       "exclusive_scope": "systems-balance-authoring",
       "depends_on": [],
@@ -2332,7 +2353,8 @@
         "systems/balance/",
         "docs/"
       ],
-      "notes": "PARKED 2026-10-04 by Agent 3 under claim-protocol v1.2. Branch: agent/LR-0087-systems-balance-authoring-719b9b52. Exact useful head: b4ddf398f1f3426a341d8459770542b02b0024cd. PR #33. Added systems/balance/BUILD-VIABILITY-SCENARIO-MATRIX.md only (1108 lines); no runtime/test-harness/black-box-QA edits. Matrix defines 8 representative build combinations, equipment/economy/recovery overlays, 10 core balance scenarios, 4 full-campaign profiles, early/mid/late checkpoints, dominance/trap/non-functional/spiral diagnostics, and final assumption reconciliation for LR-0020. Acceptance criteria satisfied by authoring; remaining external closure is Director review/merge. Freshly claim systems-balance-authoring before any content change or merge reconciliation."
+      "notes": "PARKED 2026-10-04T21:38+11:00 corrective reconciliation. Original PR #33 was merged before Director-requested Leader/reserve addendum was incorporated, so LR-0087 correctly remains READY. Corrective branch: agent/LR-0087-roster-reconcile-9ab4f38e. Exact useful head: fedff55e285810242e552919e50d56b406837336. PR #103. Changes only systems/balance/BUILD-VIABILITY-SCENARIO-MATRIX.md: reclassifies B1-B8 as companion build-component coverage, adds four Leader+three-active reserve scenarios, both Lead From the Front / Steady Hand focus cases, reserve-dominance/mandatory-companion diagnostics, and explicit LR-0106/LR-0125 consumption. Remaining external closure: Agent 7 exact-head approval, then fresh Agent 3 claim to merge correction, mark DONE, release."
+      "notes": "DONE 2026-10-04. Original PR #33 merged the base matrix; corrective PR #103 merged the Director-requested Leader/reserve reconciliation as 1950ca0a507def9f1f02554f0ffe1e6bff066e94. Under current review-by-exception rules LR-0087 has no director_review: REQUIRED field. Final matrix now treats B1-B8 as companion build-component coverage, adds all four reserve permutations, both Leader focuses, LR-0106/LR-0125 consumption and anti-dominant-reserve checks."
     },
     {
       "id": "LR-0088",
@@ -2757,7 +2779,9 @@
         "systems/leader/",
         "design/PLAYER-LEADER-PARTY-CONTRACT.md"
       ],
-      "notes": "DONE 2026-10-04. Director-approved PR #54 merged to main as bf4f840b3a825cf9f3643cadc71a58f4b47ee2d2. Reviewed feature head bd5449e8c3ddbeccda05329a1b5611734b1221a2 with Director approval commit 704a4f5960afb89614bdd18529d7d1d4fbb5b352; Agent coordination #904 SUCCESS. Canon now includes ordinary Leader knockout, camp/support reserve, Lead From the Front / Steady Hand, and one permanent Renown-2 focus."
+      "notes": "PARKED 2026-10-04 after Director-requested revisions. Branch: agent/LR-0103-leader-mechanical-role-4a327f6b. Exact current review head: bd5449e8c3ddbeccda05329a1b5611734b1221a2. PR #54. All four requested decisions are now settled in the spec: Leader knockout uses ordinary party-member knockout with combat continuing while any active companion stands; reserve companion is the safe camp/support reserve with no field benefit and rotation only at settlements/established safe camps; Leader focuses are Lead From the Front and Steady Hand; one Renown-2 binary focus remains permanent. PR comment 5978604651 requests exact-head Director approval. No runtime/save/content edits. Freshly claim leader-mechanical-role-design before any further change or final merge closeout.",
+      "notes": "DONE 2026-10-04. Director-approved PR #54 merged to main as bf4f840b3a825cf9f3643cadc71a58f4b47ee2d2. Reviewed feature head bd5449e8c3ddbeccda05329a1b5611734b1221a2 with Director approval commit 704a4f5960afb89614bdd18529d7d1d4fbb5b352; Agent coordination #904 SUCCESS. Canon now includes ordinary Leader knockout, camp/support reserve, Lead From the Front / Steady Hand, and one permanent Renown-2 focus.",
+      "director_review": "REQUIRED"
     },
     {
       "id": "LR-0104",
@@ -2813,12 +2837,14 @@
         "docs/WORLD-MAP-CANON.md",
         ".agent-coordination/MAP-CANON-PROTOCOL.md"
       ],
-      "notes": "PARKED HANDOFF: implementation complete on branch agent/LR-0105-regional-canon-c12d0e41, exact useful feature head 3ab1792b557a701d3d9286285b8a74ecb0a8ca15, draft PR #95. Exact LR-0104 six-region registry, concept dispositions, schema/runtime validation, protected regional-label change enforcement, LR-0073 overlay documentation, and compatible map-canon→Director dual-review tail are implemented. Map Canon run #27 passed registry/gameplay validation and is red only for missing Agent 7 map-canon approval. Agent Coordination run #967 passed queue/runtime validation and all PR-claim regression tests and is red only for missing final Agent 7 design review. Next action: Agent 7 appends map-canon review-only commit for the feature head, then final design-review-only commit; fresh Agent 1 claim before merge preparation."
+      "notes": "Steward enforcement follow-on. Do not infer extra names beyond the exact LR-0104 ratification. Dependencies LR-0070 and LR-0104 are DONE; machine enforcement may proceed.",
+      "notes": "IMPLEMENTATION ALREADY PRESENT ON MAIN as of 4 Oct 2026; former PR #95 has zero commits/files ahead of main after later reconciliation. Task remains READY because the protected regional-label canon mutation still lacks the separate Agent 7 map-canon approval record required by MAP-CANON-PROTOCOL. Director design review is NOT_REQUIRED under LR-0146. Next action: Agent 7 records map-canon approval against the integrated canonical change/evidence, then close LR-0105.",
+      "director_review": "NOT_REQUIRED"
     },
     {
       "id": "LR-0106",
       "title": "Author active-roster check viability and specialist fallback matrix",
-      "status": "READY",
+      "status": "DONE",
       "priority": 1,
       "exclusive_scope": "roster-check-viability-authoring",
       "depends_on": [
@@ -2838,7 +2864,7 @@
         "systems/roster/",
         "systems/checks/"
       ],
-      "notes": "PARKED PARTIAL 2026-10-04 by Agent 3 under claim-protocol v1.2 to drain newly approved higher-priority Mechanist work. Fresh branch: agent/LR-0106-roster-check-viability-1a42c780. Initial live audit completed: 11 data-driven companion-specific checks and 8 direct hard-coded rollCheck calls identified, with additional dynamic actor cases still to classify. Key finding: some checks are optional flavour, but others gate core quest/site progress, so simply hiding options when a companion is reserve would soft-lock runs. Next action after higher-priority approved closeout: freshly claim LR-0106, complete dynamic actor inventory, classify each dependency and author the four-reserve fallback matrix. No deliverable PR yet."
+      "notes": "DONE 2026-10-04. PR #100 merged to main as abc7c2bf267bf1d33ab02244d97158005d80b92a. Under the current review-by-exception protocol LR-0106 has no director_review: REQUIRED field, so no Director approval record is required. The merged roster viability matrix audits companion-specific checks, defines core Leader/tool/active-specialist fallbacks, four reserve permutations, witness filtering, and LR-0125 regression requirements."
     },
     {
       "id": "LR-0107",
@@ -2865,7 +2891,8 @@
       "notes": "PARKED HANDOFF post-LR-0145 current-main replay: branch agent/LR-0107-static-runtime-fixed-5f1b3a2e, exact useful head 68492a68dbbdad61ab8eafcda7016c435ed65f22, draft PR #97 (supersedes closed #89/#55). Changes only validator/workflow/README. Static runtime integrity run #12 / 37195510540 passed against main with LR-0145's save-system.js APP_SHELL fix. Agent coordination passes queue/runtime/regression steps and is red only for missing Agent 7 exact-head review. Next action: Agent 7 approval; fresh Agent 1 claim before merge preparation.",
       "merge_gate_depends_on": [
         "LR-0145"
-      ]
+      ],
+      "director_review": "NOT_REQUIRED"
     },
     {
       "id": "LR-0108",
@@ -3257,7 +3284,8 @@
         "assets/ui/materials/README.md",
         "docs/ART-DIRECTION.md"
       ],
-      "notes": "PARKED pending refreshed Director exact-head review after merge-conflict resolution. PR #66 branch agent/LR-0124-ui-materials-3d6fcf41 now at e09800eb898226a7c0fa4fb92128380ea1ef7bfe. The prior feature approval was valid, but LR-0121 landed first and both appended docs/ART-DIRECTION.md; conflict was resolved by preserving both approved iconography and UI-material sections without changing the six material SVG assets. Fresh Agent 7 review is required for the resolved head before merge."
+      "notes": "PARKED pending refreshed Director exact-head review after merge-conflict resolution. PR #66 branch agent/LR-0124-ui-materials-3d6fcf41 now at e09800eb898226a7c0fa4fb92128380ea1ef7bfe. The prior feature approval was valid, but LR-0121 landed first and both appended docs/ART-DIRECTION.md; conflict was resolved by preserving both approved iconography and UI-material sections without changing the six material SVG assets. Fresh Agent 7 review is required for the resolved head before merge.",
+      "director_review": "NOT_REQUIRED"
     },
     {
       "id": "LR-0125",
@@ -3331,7 +3359,7 @@
     {
       "id": "LR-0127",
       "title": "Author motion, transition and atmospheric VFX production language",
-      "status": "READY",
+      "status": "DONE",
       "priority": 2,
       "exclusive_scope": "motion-vfx-production-language",
       "depends_on": [
@@ -3353,7 +3381,9 @@
         "assets/ui/effects/",
         "docs/ART-DIRECTION.md"
       ],
-      "notes": "PARKED pending Director exact-head review. PR #76, branch agent/LR-0127-motion-vfx-1c7b9d4f, useful head de9096fbce708b8176dbbab67a9d57870fcc10a7. Added motion/VFX production bible plus five decorative SVG effect sources (rain, fog, embers, lantern bloom, sacred halo). QA: required choreography/atmosphere/reduced-motion/discomfort sections present; ~2.7 KB SVG source total; no scripts, text or remote dependencies. Coordination checks pass; only remaining gate is .agent-coordination/design-reviews/LR-0127.json."
+      "notes": "PARKED pending Director exact-head review. PR #76, branch agent/LR-0127-motion-vfx-1c7b9d4f, useful head de9096fbce708b8176dbbab67a9d57870fcc10a7. Added motion/VFX production bible plus five decorative SVG effect sources (rain, fog, embers, lantern bloom, sacred halo). QA: required choreography/atmosphere/reduced-motion/discomfort sections present; ~2.7 KB SVG source total; no scripts, text or remote dependencies. Coordination checks pass; only remaining gate is .agent-coordination/design-reviews/LR-0127.json.",
+      "notes": "Integrated on main by 4 Oct 2026. Former PR #76 now has zero commits/files ahead of main after later reconciliations. Under review-by-exception this production-language/asset task is NOT_REQUIRED for Director review; acceptance content is present on main, so the stale PR is closed.",
+      "director_review": "NOT_REQUIRED"
     },
     {
       "id": "LR-0128",
@@ -3412,7 +3442,8 @@
         "assets/art/ASSET-SPECS.json",
         "docs/ART-DIRECTION.md"
       ],
-      "notes": "PARKED pending Director exact-head review. PR #77, branch agent/LR-0129-art-production-contract-5a2b7347, useful head 778f1e4d41cbe4a4091c4cb260d576afbb3664ff. Added exact composition/crop/export contract and machine-readable ASSET-SPECS.json grounded in 58 px entry, 76–92 px card and ~112 px wide-phone art cases. QA: all category/crop/export/provenance sections present and JSON parses across eight asset categories. Coordination checks pass; only remaining gate is .agent-coordination/design-reviews/LR-0129.json."
+      "notes": "PARKED pending Director exact-head review. PR #77, branch agent/LR-0129-art-production-contract-5a2b7347, useful head 778f1e4d41cbe4a4091c4cb260d576afbb3664ff. Added exact composition/crop/export contract and machine-readable ASSET-SPECS.json grounded in 58 px entry, 76–92 px card and ~112 px wide-phone art cases. QA: all category/crop/export/provenance sections present and JSON parses across eight asset categories. Coordination checks pass; only remaining gate is .agent-coordination/design-reviews/LR-0129.json.",
+      "director_review": "REQUIRED"
     },
     {
       "id": "LR-0130",
@@ -3805,7 +3836,8 @@
         "docs/AUDIO-DIRECTION.md",
         "docs/AUDIO-PROVENANCE.md"
       ],
-      "notes": "Producer-only Lamplighter task split from LR-0032 so audio creation does not wait for Agent 1's UI/render seam. LR-0032 consumes this pack later."
+      "notes": "Producer-only Lamplighter task split from LR-0032 so audio creation does not wait for Agent 1's UI/render seam. LR-0032 consumes this pack later.",
+      "director_review": "NOT_REQUIRED"
     },
     {
       "id": "LR-0144",
@@ -3833,7 +3865,8 @@
         "docs/ART-PROVENANCE.md",
         "docs/ART-DIRECTION.md"
       ],
-      "notes": "Producer-only Lamplighter task split from LR-0031. It becomes READY once LR-0042 source generation and LR-0129 production contract are DONE; it does not depend on Agent 1 architecture."
+      "notes": "Producer-only Lamplighter task split from LR-0031. It becomes READY once LR-0042 source generation and LR-0129 production contract are DONE; it does not depend on Agent 1 architecture.",
+      "director_review": "NOT_REQUIRED"
     },
     {
       "id": "LR-0145",
@@ -3857,12 +3890,13 @@
       "likely_files": [
         "sw.js"
       ],
-      "notes": "Completed 4 Oct 2026 via PR #92, squash merge e78f8c7400cc73fa447e1894e0b1ca778e4f9675. Production change adds ./save-system.js to sw.js APP_SHELL and preserves existing network-first/cache/skipWaiting/clients.claim behaviour. Current-main reconstruction had already passed exact LR-0107 static runtime validation and 390x844 Chromium first-install→offline→reload in Actions run 37193340901 / artifact 11300176435. Agent 7 approved useful head 566c3d5905f2d8bc427f070373657e72c62f836c; approval head a1adca8a799c58b7e2477adada23cce339b4bfc1 had green coordination validation."
+      "notes": "Completed 4 Oct 2026 via PR #92, squash merge e78f8c7400cc73fa447e1894e0b1ca778e4f9675. Production change adds ./save-system.js to sw.js APP_SHELL and preserves existing network-first/cache/skipWaiting/clients.claim behaviour. Current-main reconstruction had already passed exact LR-0107 static runtime validation and 390x844 Chromium first-install→offline→reload in Actions run 37193340901 / artifact 11300176435. Agent 7 approved useful head 566c3d5905f2d8bc427f070373657e72c62f836c; approval head a1adca8a799c58b7e2477adada23cce339b4bfc1 had green coordination validation.",
+      "director_review": "NOT_REQUIRED"
     },
     {
       "id": "LR-0146",
       "title": "Replace universal Director review with review-by-exception",
-      "status": "READY",
+      "status": "DONE",
       "priority": 0,
       "exclusive_scope": "aed-review-by-exception",
       "depends_on": [
@@ -3893,7 +3927,10 @@
         "tests/verify-pr-claim.test.mjs",
         "scripts/validate-agent-coordination.mjs"
       ],
-      "notes": "Josh explicitly directed the system to err on the side of fewer reviews. Review remains available for real creative/design risk; routine specialist work should flow without a universal Agent 7 tollbooth."
+      "notes": "Josh explicitly directed the system to err on the side of fewer reviews. Review-by-exception: only explicit director_review=REQUIRED tasks need Agent 7. Current design-setting REQUIRED set: LR-0005, LR-0006, LR-0008, LR-0052, LR-0053, LR-0057, LR-0058, LR-0103, LR-0129. All missing/NOT_REQUIRED tasks bypass Director approval unless a genuine design trade-off is escalated.",
+      "director_review": "NOT_REQUIRED"
+      "notes": "Completed 4 Oct 2026 via PR #102, merge commit 27896880a95965350dee4e9a3ecbcad7660dcddf. Josh directed the project to err on the side of fewer reviews. Director review is now review-by-exception: only explicit director_review=REQUIRED tasks need Agent 7; missing/NOT_REQUIRED defaults to no review. Frozen parked NOT_REQUIRED PRs may merge at exact recorded head without owner re-claim; frozen REQUIRED PRs may be approved+merged by Agent 7 in one session if gates are DONE. Exact-head Agent coordination and AED report tests both passed.",
+      "director_review": "NOT_REQUIRED"
     },
     {
       "id": "LR-0147",
@@ -3925,7 +3962,7 @@
       "likely_files": [
         "story/integration/"
       ],
-      "notes": "Acceleration task created after Josh explicitly asked to get merged Storyteller work into the playable game ASAP. Content-side handoff/index only; does not duplicate LR-0138 data-seam architecture or runtime ownership. LR-0091 can be appended after it reaches DONE, but LR-0147 does not depend on unapproved content."
+      "notes": "Acceleration task created after Josh explicitly asked to get merged Storyteller work into the playable game ASAP. Content-side handoff/index only; does not duplicate LR-0138 data-seam architecture or runtime ownership. LR-0091 can be appended after it reaches DONE, but LR-0147 does not depend on unapproved content. Parked 4 Oct 2026 under completed-work parking rule. Narrative runtime integration index complete on branch agent/LR-0147-narrative-integration-d8a7e69c at useful head 6a3004da1a121c17ecd624626ed588fe77184ee4, PR #101. All acceptance criteria pass; branch changes only story/integration/. Next action after applicable review under the live policy: fresh Agent 2 claimant verifies exact head and merges, marks LR-0147 DONE, releases fresh lock."
     }
   ],
   "agent_roster": [
@@ -3988,5 +4025,7 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T21:33:00+11:00"
+  "updated_at": "2026-10-04T21:34:00+11:00"
+  "updated_at": "2026-10-04T21:37:00+11:00"
+  "updated_at": "2026-10-04T22:00:00+11:00"
 }

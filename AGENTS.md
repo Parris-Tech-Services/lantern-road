@@ -27,7 +27,7 @@ These rules are mandatory for every coding/research agent working in this reposi
 - Keep the lock while material work is active. If implementation is finished and the task is only waiting on external merge gates or Josh-required evidence, park it using the claim protocol: record the exact handoff, leave the task READY, release your own lock, and claim other eligible work.
 - Feature branches use: `agent/<task-id>-<short-slug>-<session8>`.
 - Pull requests must name the task id and exclusive scope.
-- Implementation PRs owned by Agents 1–5 require a final Agent 7 — The Director approval commit under `.agent-coordination/design-reviews/` before merge. CI rejects stale or missing approval.
+- Director review is **by exception, not automatic**. A task requires Agent 7 approval only when `director_review` is explicitly `REQUIRED`; missing or `NOT_REQUIRED` means the PR may merge without Director approval once its normal ownership/tests/gates pass. Err on the side of fewer reviews.
 - **Small PRs are mandatory:** one claimed task/scope per PR, no unrelated cleanup or opportunistic refactors. Split broad work into follow-up tasks.
 - If a task has `merge_gate_depends_on`, work may proceed while claimed but its PR must not merge until every merge-gate task is `DONE`. Once no legitimate implementation work remains, do not keep a lock merely to wait for those gates; park and release it.
 - Architectural/product/ownership decisions that future agents may relitigate must be surfaced to The Director and recorded briefly in `docs/DECISIONS.md`.
@@ -91,9 +91,9 @@ Lantern Road must optimise for **playable improvement**, not merely merged outpu
 Agent 7 — **The Director** owns design coherence and production governance.
 
 - Maintain `docs/VISION.md`, `docs/DECISIONS.md`, and `docs/TERMINOLOGY.md`.
-- Review implementation PRs from Agents 1–5 against the five pillars, non-goals, terminology, task scope and adjacent ownership.
+- Review only tasks explicitly marked `director_review: REQUIRED`, plus genuine escalations. Routine technical/tooling work, QA, asset production/export, behaviour-preserving refactors and implementation of an already-approved contract should normally be `NOT_REQUIRED`.
 - Follow `.agent-coordination/DESIGN-REVIEW-PROTOCOL.md`.
-- The Director may append a review-only approval commit to another agent's feature branch without claiming that feature scope. That commit may modify only `.agent-coordination/design-reviews/<TASK-ID>.json`.
+- For `REQUIRED` tasks, the Director may append a review-only approval commit to a parked feature branch without claiming that feature scope. That commit may modify only `.agent-coordination/design-reviews/<TASK-ID>.json`. If the PR is frozen and all gates are DONE, the Director may merge it immediately in the same review session without sending it back to the implementation owner.
 - If code changes after approval, the approval is stale and must be repeated.
 - Concrete conflicts may be blocked and routed back to the owning specialist.
 - Genuine creative-direction trade-offs must be marked `ESCALATE_TO_JOSH`; Josh remains final creative director.
@@ -130,8 +130,8 @@ The goal is **parallel specialist production with late integration**, not bypass
 
 When the queue contains completed **PARKED** work on the critical path, optimise for finishing flow rather than manufacturing more backlog.
 
-- Agent 7's standing review work should prioritise **priority-0 and high-downstream-fan-out parked PRs** before lower-impact review inventory, unless a correctness/security/data-loss issue is more urgent.
-- After required review or merge gates clear, the owning specialist should normally prefer a **fresh claim to reconcile/merge/close the parked task** before starting new authoring, when that closure unblocks downstream work.
+- Agent 7's standing review work should prioritise only **REQUIRED-review** priority-0/high-downstream-fan-out parked PRs before lower-impact review inventory, unless a correctness/security/data-loss issue is more urgent.
+- After merge gates clear, a frozen parked PR should merge directly when its exact head is still valid. For `REQUIRED` tasks Agent 7 may approve+merge in one session; for `NOT_REQUIRED` tasks no Director trip is needed. Wake the owning specialist only if code/content/rebase/reconciliation must change.
 - A role with no genuinely actionable work may be temporarily idle. Do not create filler tasks merely to keep every agent busy.
 - Use `node scripts/aed-report.mjs` as an advisory flow view; its ranked inbox is not an approval authority and does not override the queue, locks, Agent 7 design governance or Josh.
 - Critical-path urgency never permits cross-role claiming, editing another agent's live scope, bypassing exact-head review, or weakening save/map/QA evidence.

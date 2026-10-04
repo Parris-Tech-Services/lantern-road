@@ -1,0 +1,188 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0129",
+  "runtime_reference": {
+    "smallest_entry_px": 58,
+    "card_range_px": [
+      76,
+      92
+    ],
+    "wide_phone_height_px": 112,
+    "wide_default_height_px": 138,
+    "css_fit": "cover"
+  },
+  "universal_safe_area": {
+    "essential_width_percent": 70,
+    "essential_height_percent": 72,
+    "edge_bleed_percent": 10
+  },
+  "categories": {
+    "party": {
+      "master": [
+        2048,
+        2048
+      ],
+      "master_min": [
+        1536,
+        1536
+      ],
+      "aspect": "1:1",
+      "delivery": [
+        512,
+        512
+      ],
+      "format": "webp",
+      "target_kb": 80,
+      "preview_px": [
+        [
+          58,
+          58
+        ],
+        [
+          76,
+          76
+        ],
+        [
+          92,
+          92
+        ]
+      ]
+    },
+    "npc": {
+      "master_min": [
+        1536,
+        1536
+      ],
+      "aspect": "1:1",
+      "delivery_range_px": [
+        384,
+        512
+      ],
+      "format": "webp",
+      "target_kb": 70,
+      "preview_px": [
+        [
+          58,
+          58
+        ],
+        [
+          76,
+          76
+        ]
+      ]
+    },
+    "enemy": {
+      "master_min": [
+        1536,
+        1536
+      ],
+      "aspect": "1:1",
+      "delivery": [
+        512,
+        512
+      ],
+      "format": "webp",
+      "target_kb": 90,
+      "preview_px": [
+        [
+          58,
+          58
+        ],
+        [
+          76,
+          76
+        ]
+      ]
+    },
+    "item": {
+      "master_min": [
+        1024,
+        1024
+      ],
+      "aspect": "1:1",
+      "delivery_range_px": [
+        320,
+        384
+      ],
+      "format": "webp",
+      "target_kb": 45,
+      "preview_px": [
+        [
+          48,
+          48
+        ],
+        [
+          58,
+          58
+        ]
+      ]
+    },
+    "settlement": {
+      "master_min": [
+        2048,
+        1152
+      ],
+      "preferred_master": [
+        2560,
+        1440
+      ],
+      "aspect": "16:9",
+      "delivery": [
+        1280,
+        720
+      ],
+      "format": "webp",
+      "target_kb": 180,
+      "preview_px": [
+        [
+          300,
+          112
+        ]
+      ]
+    },
+    "site": {
+      "master_min": [
+        2048,
+        1152
+      ],
+      "aspect": "16:9",
+      "delivery": [
+        1280,
+        720
+      ],
+      "format": "webp",
+      "target_kb": 170,
+      "preview_px": [
+        [
+          300,
+          112
+        ]
+      ]
+    },
+    "key_art_portrait": {
+      "master_min": [
+        1800,
+        2400
+      ],
+      "aspect": "3:4",
+      "delivery": [
+        1080,
+        1440
+      ],
+      "target_kb": 260
+    },
+    "key_art_landscape": {
+      "master_min": [
+        2560,
+        1440
+      ],
+      "aspect": "16:9",
+      "delivery": [
+        1600,
+        900
+      ],
+      "target_kb": 260
+    }
+  },
+  "note": "Targets are provisional Art Director production budgets. LR-0065 owns later measured CI enforcement."
+}

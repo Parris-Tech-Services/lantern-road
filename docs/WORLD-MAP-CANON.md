@@ -36,7 +36,7 @@ Examples:
 | Blacksalt Crossing | 3,7 | **D8** |
 | Moonmere Tower | 8,4 | **I5** |
 
-The complete **place** registry is `world/map-canon.json`. LR-0104's protected regional-label canon is defined below and in `design/REGIONAL-MAP-CANON-CONTRACT.md`; LR-0105 will mirror those regional records into the machine-readable registry/schema.
+The complete **place and regional-label** registry is `world/map-canon.json`. LR-0104's protected regional-label decisions are defined below and in `design/REGIONAL-MAP-CANON-CONTRACT.md`; LR-0105 mirrors those decisions into the machine-readable registry/schema and CI enforcement.
 
 ### Map Canon v1 place index
 
@@ -103,7 +103,7 @@ These landscape names are now CANON:
 - **Greyfen Plain** — central open road country around Greyfen Market;
 - **Stoneveil Heights** — existing northern hill/mountain high-country and horizon.
 
-They are orientation/lore labels only. They do not create gameplay nodes, coordinates or new territory. See `design/REGIONAL-MAP-CANON-CONTRACT.md`.
+They are orientation/lore labels only. They do not create gameplay nodes, coordinates or new territory. Their machine-readable records live in `world/map-canon.json.regional_labels`; each record is non-clickable, coordinate-free, and may anchor only to existing CANON places. See `design/REGIONAL-MAP-CANON-CONTRACT.md`.
 
 Resolved concept-map names:
 
@@ -157,6 +157,7 @@ The game draws these separately over the atlas:
 - mathematically exact hex grid;
 - A–I / 1–8 references where useful;
 - canonical settlement and site labels/symbols;
+- canonical regional labels as secondary orientation text sourced from `regional_labels`;
 - roads and route affordances;
 - party marker;
 - reachable-hex outlines;
@@ -165,6 +166,8 @@ The game draws these separately over the atlas:
 - world-state changes.
 
 That allows the game world to change visibly without repainting the base atlas.
+
+For LR-0073 rendering, regional labels are subordinate to place labels, never clickable, never authoritative for travel, and must not reveal hidden site ids. REJECT/DEFER concept labels are excluded from canonical overlays.
 
 ## Projection contract
 

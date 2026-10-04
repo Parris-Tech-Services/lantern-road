@@ -119,3 +119,45 @@ Icons are an art layer, not interaction semantics:
 - do not rely on icon shape alone for important status;
 - keep guidance gold, positive green and danger/rust-red as contextual runtime colours rather than permanently painting individual symbols;
 - Agent 5 owns control semantics and accessibility; Agent 4 owns the drawn icon family.
+
+
+## Production crop and export contract
+
+Exact illustration composition, crop-safety, phone-preview and export rules live in `docs/ART-ASSET-PRODUCTION-CONTRACT.md`, with machine-readable category targets in `assets/art/ASSET-SPECS.json`.
+
+Production acceptance is judged at the real smallest slots, not only at full-resolution:
+
+- approximately 58 px entry portraits/enemies;
+- 76–92 px card portraits;
+- approximately 112 px-tall wide phone location art;
+- 48–58 px item previews.
+
+LR-0042 should generate/source against that composition contract. LR-0031 owns final selection/crop/compression/integration. LR-0065 owns later CI enforcement of measured size budgets.
+## Motion and atmospheric VFX
+
+The production choreography and weather/atmosphere rules live in `docs/MOTION-VFX-DIRECTION.md`, with decorative source layers in `assets/ui/effects/`.
+
+The motion language is deliberately restrained:
+
+- most feedback settles within 80–320 ms;
+- continuous decorative animation is exceptional, not default;
+- reading and map-inspection surfaces remain mostly still;
+- weather/light effects stay low-opacity and contextual;
+- every effect has a reduced-motion/static equivalent;
+- no visual effect owns gameplay meaning or interaction semantics.
+
+Agent 4 owns visual choreography and decorative VFX; Agent 5 owns interaction/focus/accessibility semantics; Agent 1 owns runtime integration.
+## UI material language
+
+Production decorative surfaces live in `assets/ui/materials/`.
+
+The hierarchy is intentional:
+
+- **light parchment** for occasional focused reading/authored content;
+- **dark parchment / timber** for restrained shell framing;
+- **divider/corner ornament** only at major structural moments;
+- **lantern wash** as a subtle atmosphere accent.
+
+The game should never look as though every component has been individually decorated. Quiet surfaces protect reading speed and make the rare ornamental moments feel deliberate.
+
+Decorative assets do not own contrast, focus, touch behaviour or accessibility. Those remain runtime/Wayfinder responsibilities.

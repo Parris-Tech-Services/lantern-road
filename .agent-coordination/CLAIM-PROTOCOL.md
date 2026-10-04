@@ -116,29 +116,54 @@ When there is no material work left that the current owner can legitimately perf
 
 Before any later code/content change, rebase/reconciliation, final-PR refresh, or merge preparation on the parked task, a fresh claimant must acquire the normal create-only scope lock. A parked branch does not confer continuing ownership.
 
-### Director review of parked work
+### Frozen parked PR merge path
 
-Agent 7 may append the required **review-only** design approval commit to a parked Agent 1–5 branch without forcing the implementation owner to hold an idle lock.
+Parking freezes useful implementation so waiting does not consume an active lock.
 
-CI permits the missing implementation lock only when all of these are true:
+Director review is **not automatic**. Read the task's `director_review` field:
 
-- the queue task is still `READY`;
+- `REQUIRED` — exact-head Agent 7 review is required.
+- missing or `NOT_REQUIRED` — no Director approval is required.
+
+A parked PR may merge **without reacquiring the implementation lock** when all of these are true:
+
+- the task is still `READY`;
 - there is no active lock for that task or exclusive scope;
-- the final PR commit changes only `.agent-coordination/design-reviews/<TASK-ID>.json`;
-- the review is `APPROVED` by Agent 7;
-- `reviewed_head_sha` is exactly the immediately preceding feature/content commit;
-- the queue notes identify the task as parked and contain the exact same branch name and reviewed useful head.
+- all `merge_gate_depends_on` tasks are `DONE`;
+- queue notes clearly identify the work as parked/frozen and name the exact branch;
+- no implementation/content/rebase/reconciliation change has occurred after the recorded frozen head.
 
-This exception grants **review authority only**. It does not grant implementation ownership.
+For a `NOT_REQUIRED` task, queue notes must name the exact current PR head. An optional legacy Director approval commit is also acceptable when it validly reviews the exact recorded useful feature head.
 
-A fresh normal claim is still mandatory before:
+For a `REQUIRED` task, Agent 7 may append the review-only approval commit to the parked branch without an implementation lock. The approval commit may change only:
+
+```
+.agent-coordination/design-reviews/<TASK-ID>.json
+```
+
+CI verifies the exact reviewed head. If every merge gate is DONE, **Agent 7 may merge the approved frozen PR immediately in the same review session**. Do not send it back to the implementation owner merely to press merge.
+
+After a frozen parked PR merges, the merger may perform the queue-only closeout to mark the task `DONE` when no separate completion-evidence policy prevents closure.
+
+A fresh normal role-owned claim is still mandatory before:
 
 - any feature/code/content edit;
-- rebase or reconciliation changes;
-- changing the reviewed implementation after approval;
-- final merge preparation by the implementation owner.
+- any rebase or reconciliation;
+- changing the frozen implementation after review/parking;
+- resolving a merge conflict that changes branch content.
 
-If another active lock has since claimed the same task/scope, the old parked branch cannot use the no-lock review exception until ownership is reconciled.
+If another active lock has since claimed the same task/scope, the parked direct-merge path is unavailable until ownership is reconciled.
+
+
+If another active lock has since claimed the same task/scope, the parked direct-merge path is unavailable until ownership is reconciled.
+
+This rule does not permit bypassing merge gates, machine evidence, Director review, or the separate LR-0056 human release gate. It only prevents waiting from consuming an active agent/lock slot.
+
+## Technical foundation versus human release gates
+
+LR-0011 and LR-0013 are technical development gates. They become `DONE` only after merged implementation plus independently verified CI/artifact evidence and Agent 7 evidence verification. Once they are `DONE`, normal dependencies on them are satisfied and specialist agents may proceed.
+
+Josh's Android validation is deliberately separate in LR-0056. LR-0056 may remain incomplete while specialist development continues. Final integration/release tasks may depend on LR-0056.
 
 This rule does not permit bypassing merge gates, machine evidence, Director review, or the separate LR-0056 human release gate. It only prevents waiting from consuming an active agent/lock slot.
 
@@ -149,6 +174,8 @@ LR-0011 and LR-0013 are technical development gates. They become `DONE` only aft
 Josh's Android validation is deliberately separate in LR-0056. LR-0056 may remain incomplete while specialist development continues. Final integration/release tasks may depend on LR-0056.
 
 No agent may self-assert Josh's validation. The human validation record may be completed only after Josh explicitly reports the check passed.
+No agent may self-assert Josh's validation. The human validation record may be completed only after Josh explicitly reports the check passed.
+This rule never bypasses merge gates, required CI evidence, map canon or Josh-only human evidence. It removes only unnecessary ownership/review ping-pong.
 
 ## Completing work
 
