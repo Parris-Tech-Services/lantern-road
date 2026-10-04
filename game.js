@@ -20,6 +20,7 @@
   const SAVE_KEY = "lantern-road-save-v1";
   const AUTOSAVE_KEY = "lantern-road-autosave-v1";
   const PREFS_KEY = "lantern-road-ui-prefs-v1";
+  const BUILD_ID = "2026.10.04-lr0009-v6";
   const dom = {
     statusStrip: document.getElementById("statusStrip"),
     tabContent: document.getElementById("tabContent"),
@@ -1129,12 +1130,13 @@
 
   function renderAccessibilityModal() {
     const hapticsSupported = typeof navigator.vibrate === "function";
+    const gameVersion = C.version || "development";
     return `
-      <div class="modal">
+      <div class="modal settings-modal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
         <div class="modal-header">
           <div>
-            <h2>Accessibility & Phone</h2>
-            <p class="subtle">These settings stay on this device and are separate from campaign saves.</p>
+            <h2 id="settingsTitle">Settings</h2>
+            <p class="subtle">Accessibility and phone preferences stay on this device and are separate from campaign saves.</p>
           </div>
           <button class="close-btn" data-action="close-accessibility">Close</button>
         </div>
@@ -1163,6 +1165,13 @@
               <p class="subtle">${hapticsSupported ? "Optional short vibration on supported phones." : "This browser does not expose vibration controls."}</p>
             </div>
             <button data-action="toggle-haptics" aria-pressed="${prefs.haptics}" ${hapticsSupported ? "" : "disabled"}>${prefs.haptics ? "On" : "Off"}</button>
+          </div>
+          <div class="setting-row settings-about" data-settings-target>
+            <div>
+              <strong>About Lantern Road</strong>
+              <p class="subtle">Version ${gameVersion} · Build <span class="build-id">${BUILD_ID}</span></p>
+              <p class="subtle">Share this build identifier when reporting stale or cached behaviour.</p>
+            </div>
           </div>
         </div>
       </div>
