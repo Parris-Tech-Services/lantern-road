@@ -1323,7 +1323,7 @@
       "likely_files": [
         "story/quests/"
       ],
-      "notes": "Author-now task for the six existing local questlines. Distinct from LR-0043 regional campaign structure, LR-0044 hero arcs, LR-0045 recurring NPC callbacks and LR-0046 travel/camp events. Depends on LR-0043 so quest scenes reinforce the agreed campaign spine rather than inventing a competing one. Lifecycle corrected by LR-0049: LR-0043 is DONE, so this authoring task is now eligible."
+      "notes": "Author-now task for the six existing local questlines. Distinct from LR-0043 regional campaign structure, LR-0044 hero arcs, LR-0045 recurring NPC callbacks and LR-0046 travel/camp events. Depends on LR-0043 so quest scenes reinforce the agreed campaign spine rather than inventing a competing one. Lifecycle corrected by LR-0049: LR-0043 is DONE, so this authoring task is now eligible. Parked 4 Oct 2026 under the completed-work parking rule. Six premium core-quest scene packs are complete on branch agent/LR-0047-core-quest-authoring-8aa7e61c at useful head 625b77fdc45fba9072e16b0da7b97c544e9f3531, PR #26. Live acceptance criteria were rechecked: every quest has a distinctive offer, investigation/complication, resolution, consequence-aware aftermath, non-ideal material, campaign callbacks and declarative integration notes; branch changes only story/quests/. Next action after Director approval: fresh Agent 2 claimant reacquires core-quest-authoring, verifies approved head/CI, merges PR #26 if current, marks LR-0047 DONE, and releases the fresh lock."
     },
     {
       "id": "LR-0048",
@@ -2095,5 +2095,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-04T16:31:00+11:00"
+  "updated_at": "2026-10-04T17:12:00+11:00"
 }
