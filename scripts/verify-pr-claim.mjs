@@ -227,7 +227,7 @@ if (branchLocks.length === 0) {
       const recordedLegacyHead = legacyUsefulHeads.find(candidate => notes.includes(candidate));
       if (recordedLegacyHead) {
         console.log(
-          `Parked NOT_REQUIRED-review PR with optional legacy approval verified for direct merge: ${task.id} / ${task.exclusive_scope} / ${branch} / useful ${recordedLegacyHead}`
+          `Parked NOT_REQUIRED-review PR with optional legacy Director approval verified for direct merge: ${task.id} / ${task.exclusive_scope} / ${branch} / parked useful head ${recordedLegacyHead}`
         );
         process.exit(0);
       }
