@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0145",
+  "exclusive_scope": "service-worker-save-shell-hotfix",
+  "agent_number": 5,
+  "agent": "The Wayfinder",
+  "session_id": "c4a8f7d1-6b2e-4e95-9a31-7d5c2f8b6041",
+  "claim_token": "7e2c1a94-5d68-4f0b-a731-9c4e2d6f8150",
+  "claimed_at": "2026-10-04T21:16:00+11:00",
+  "expires_at": "2026-10-05T09:16:00+11:00",
+  "branch": "agent/LR-0145-save-shell-current-c2d86f51",
+  "note": "Fresh Agent 5 finalisation claim after Agent 7 exact-head approval; current main comparison is clean and production diff remains the intended one-line sw.js APP_SHELL fix."
+}
