@@ -872,24 +872,25 @@
       "priority": 2,
       "exclusive_scope": "authored-art-production",
       "depends_on": [
-        "LR-0002"
+        "LR-0002",
+        "LR-0042"
       ],
       "primary_agent": 4,
-      "goal": "Replace the visual foundation's fallback sigils with a coherent, production-ready illustrated asset set while keeping mobile download cost controlled.",
+      "goal": "Curate, optimise and integrate the approved illustration set into Lantern Road's existing visual slots while keeping mobile download cost controlled.",
       "acceptance_criteria": [
-        "Commit actual final image assets for all four party members and the most frequently encountered named NPCs; placeholder sigils/CSS-only stand-ins do not satisfy this task.",
-        "Commit one strong final illustration for each major settlement and adventure site.",
-        "Commit readable final art for all enemy archetypes and a prioritised item-icon set.",
-        "Use the existing reusable art-slot contract without changing gameplay logic.",
-        "Compress assets for phone browsers and retain graceful fallbacks when any asset is unavailable.",
-        "Perform a consistency pass for silhouette, palette, crop, contrast and small-screen legibility."
+        "Select the strongest approved images from LR-0042 and reject inconsistent generations rather than forcing full coverage.",
+        "Crop and prepare final party, NPC, settlement, site, enemy and item artwork for the existing art-slot contract.",
+        "Compress final assets for phone browsers and choose suitable browser-friendly raster formats.",
+        "Integrate assets without changing gameplay logic and retain graceful fallback sigils when any image is unavailable.",
+        "Perform a consistency pass for silhouette, palette, crop, contrast and small-screen legibility.",
+        "Record final asset filenames and provenance references in the art-direction documentation."
       ],
       "likely_files": [
         "assets/art/",
         "style.css",
         "docs/ART-DIRECTION.md"
       ],
-      "notes": "Requires actual illustration assets. If the current agent environment cannot generate/import approved images and commit them, do not fake completion with placeholders; report the capability gap and leave the task unfinished."
+      "notes": "Second-wave Lamplighter integration task. AI image generation itself is split into LR-0042 to avoid mixing generation with curation, optimisation and repo integration."
     },
     {
       "id": "LR-0032",
@@ -1159,6 +1160,34 @@
         "content.js"
       ],
       "notes": "Discovered during LR-0009. Intentionally depends on LR-0026 fresh-player black-box evidence so implementation responds to observed confusion rather than guessing."
+    },
+    {
+      "id": "LR-0042",
+      "title": "Generate and style-lock the Lantern Road AI art set",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "ai-art-generation",
+      "depends_on": [
+        "LR-0002"
+      ],
+      "primary_agent": 4,
+      "goal": "Use ChatGPT image generation to create a coherent original illustration set for Lantern Road, locking a repeatable visual style before production integration.",
+      "acceptance_criteria": [
+        "Generate actual raster artwork, not SVG/CSS placeholders, for the four party heroes first and use them to lock the visual style.",
+        "Create a reusable master prompt/style specification covering medium, palette, lighting, framing, texture, mood and prohibited visual drift.",
+        "After style approval, generate the major settlements and adventure sites, then enemy archetypes, priority NPCs and priority items.",
+        "Keep characters and locations visually consistent across separate generations, regenerating outliers instead of accepting obvious style drift.",
+        "Prepare phone-friendly source compositions that remain recognisable at the art-slot sizes defined in docs/ART-DIRECTION.md.",
+        "Avoid copyrighted characters, logos or direct imitation of a living artist; keep the setting and visual language original to Lantern Road.",
+        "Record prompt/version/provenance metadata for every accepted generation so the art set is reproducible and auditable.",
+        "Hand the accepted source images and provenance manifest to LR-0031 for cropping, compression and repository integration."
+      ],
+      "likely_files": [
+        "assets/art/source/",
+        "docs/ART-DIRECTION.md",
+        "docs/ART-PROVENANCE.md"
+      ],
+      "notes": "Lamplighter image-generation task. This chat/model has image-generation capability and can create the actual artwork. LR-0031 remains the downstream curation, optimisation and integration pass."
     }
   ],
   "agent_roster": [
