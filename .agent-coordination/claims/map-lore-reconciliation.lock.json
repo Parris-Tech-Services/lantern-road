@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0071",
+  "exclusive_scope": "map-lore-reconciliation",
+  "agent_number": 2,
+  "agent": "The Storyteller",
+  "session_id": "eb8a52d1-77e9-4a4a-a2ff-8ddd55bf4dda",
+  "claim_token": "7a3bb521-4ef3-4a83-a25c-8c12793c2b3a",
+  "claimed_at": "2026-10-04T21:18:00+11:00",
+  "expires_at": "2026-10-05T09:18:00+11:00",
+  "branch": "agent/LR-0071-map-lore-a4c829c7",
+  "note": "Fresh post-review merge-reconciliation claim."
+}
