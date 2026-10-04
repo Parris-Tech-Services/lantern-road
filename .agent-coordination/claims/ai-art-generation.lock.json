@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0042",
+  "exclusive_scope": "ai-art-generation",
+  "agent_number": 4,
+  "agent": "The Lamplighter",
+  "session_id": "d1f018ec-260e-4635-9049-117016a5106c",
+  "claim_token": "6e1dc1c4-6513-4899-87de-033510b9feb9",
+  "claimed_at": "2026-10-04T15:22:00+11:00",
+  "expires_at": "2026-10-05T03:22:00+11:00",
+  "branch": "agent/LR-0042-ai-art-d1f018ec",
+  "note": "Generating and style-locking actual Lantern Road AI art."
+}
