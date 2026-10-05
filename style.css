@@ -878,3 +878,106 @@ html.high-contrast #mapCanvas{
   font-size:.92em;
   overflow-wrap:anywhere;
 }
+
+
+/* LR-0141: early approved visual-asset wiring. */
+.ui-icon{
+  width:1.05em;
+  height:1.05em;
+  display:inline-block;
+  flex:0 0 auto;
+  vertical-align:-.15em;
+  margin-right:.38em;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.8;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.tab .ui-icon{
+  width:1em;
+  height:1em;
+  margin-right:.3em;
+}
+.topbar{
+  background-image:url("assets/ui/materials/lantern-wash.svg");
+  background-repeat:no-repeat;
+  background-position:top right;
+  background-size:min(520px, 64vw) 180px;
+}
+.panel{
+  background-image:
+    linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.025)),
+    url("assets/ui/materials/parchment-dark.svg");
+  background-size:auto, 420px 280px;
+  background-blend-mode:normal,soft-light;
+}
+.art-slot[data-art-kind="party"][data-art-id="garrick"]{--art-image:url("assets/art/source/garrick.webp")}
+.art-slot[data-art-kind="party"][data-art-id="mira"]{--art-image:url("assets/art/source/mira.webp")}
+.art-slot[data-art-kind="party"][data-art-id="oren"]{--art-image:url("assets/art/source/oren.webp")}
+.art-slot[data-art-kind="party"][data-art-id="brindle"]{--art-image:url("assets/art/source/brindle.webp")}
+
+.map-panel{
+  position:relative;
+}
+.map-panel::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  pointer-events:none;
+  opacity:0;
+  background-repeat:repeat;
+  background-size:420px 420px;
+  transition:opacity .24s cubic-bezier(.2,.7,.2,1);
+}
+#app[data-weather="drizzle"] .map-panel::after{
+  opacity:.075;
+  background-image:url("assets/ui/effects/rain-lines.svg");
+  animation:lr-rain-drift 12s linear infinite;
+}
+#app[data-weather="storm"] .map-panel::after{
+  opacity:.115;
+  background-image:url("assets/ui/effects/rain-lines.svg");
+  animation:lr-rain-drift 8s linear infinite;
+}
+#app[data-place="swamp-site"] .map-panel::after,
+#app[data-place="terrain:swamp"] .map-panel::after{
+  opacity:.09;
+  background-image:url("assets/ui/effects/fog-wash.svg");
+  background-size:cover;
+  animation:lr-fog-drift 16s ease-in-out infinite alternate;
+}
+#app[data-place="sacred-site"] .side-panel{
+  background-image:
+    url("assets/ui/effects/sacred-halo.svg"),
+    linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.025)),
+    url("assets/ui/materials/parchment-dark.svg");
+  background-repeat:no-repeat,no-repeat,repeat;
+  background-position:50% 12%,center,center;
+  background-size:min(420px, 90%) 280px,auto,420px 280px;
+}
+@keyframes lr-rain-drift{
+  from{background-position:0 0}
+  to{background-position:70px 210px}
+}
+@keyframes lr-fog-drift{
+  from{background-position:42% 50%}
+  to{background-position:58% 50%}
+}
+html.high-contrast .topbar,
+html.high-contrast .panel,
+html.high-contrast #app[data-place="sacred-site"] .side-panel{
+  background-image:none;
+}
+html.high-contrast .map-panel::after{
+  display:none;
+}
+@media (prefers-reduced-motion:reduce){
+  #app[data-weather="drizzle"] .map-panel::after,
+  #app[data-weather="storm"] .map-panel::after,
+  #app[data-place="swamp-site"] .map-panel::after,
+  #app[data-place="terrain:swamp"] .map-panel::after{
+    animation:none !important;
+  }
+}
