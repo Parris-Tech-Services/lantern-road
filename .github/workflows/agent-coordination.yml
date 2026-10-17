@@ -1,17 +1,8 @@
 name: Agent coordination
 
 on:
-  push:
-    paths:
-      - "AGENTS.md"
-      - ".agent-coordination/**"
-      - "scripts/validate-agent-coordination.mjs"
-      - "scripts/verify-pr-claim.mjs"
-      - "scripts/verify-gate-evidence-ci.mjs"
-      - "scripts/validate-actions-runtime.mjs"
-      - "tests/verify-pr-claim.test.mjs"
-      - ".github/workflows/agent-coordination.yml"
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
