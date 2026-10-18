@@ -1,28 +1,7 @@
 name: Map canon
 
 on:
-  push:
-    paths:
-      - "world/map-canon.json"
-      - "world/map-canon.schema.json"
-      - "content.js"
-      - "scripts/validate-map-canon.mjs"
-      - "scripts/verify-map-canon-change.mjs"
-      - "docs/WORLD-MAP-CANON.md"
-      - ".agent-coordination/MAP-CANON-PROTOCOL.md"
-      - ".agent-coordination/map-canon-reviews/**"
-      - ".github/workflows/map-canon.yml"
-  pull_request:
-    paths:
-      - "world/map-canon.json"
-      - "world/map-canon.schema.json"
-      - "content.js"
-      - "scripts/validate-map-canon.mjs"
-      - "scripts/verify-map-canon-change.mjs"
-      - "docs/WORLD-MAP-CANON.md"
-      - ".agent-coordination/MAP-CANON-PROTOCOL.md"
-      - ".agent-coordination/map-canon-reviews/**"
-      - ".github/workflows/map-canon.yml"
+  workflow_dispatch:
 
 permissions:
   contents: read
