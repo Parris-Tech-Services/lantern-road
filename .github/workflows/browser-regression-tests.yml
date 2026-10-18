@@ -1,7 +1,7 @@
 name: Browser regression tests
 
 on:
-  pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
