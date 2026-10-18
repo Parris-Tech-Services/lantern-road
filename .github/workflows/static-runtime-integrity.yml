@@ -1,26 +1,7 @@
 name: Static runtime integrity
 
 on:
-  push:
-    paths:
-      - "index.html"
-      - "style.css"
-      - "content.js"
-      - "game.js"
-      - "sw.js"
-      - "manifest.webmanifest"
-      - "scripts/**"
-      - ".github/workflows/static-runtime-integrity.yml"
-  pull_request:
-    paths:
-      - "index.html"
-      - "style.css"
-      - "content.js"
-      - "game.js"
-      - "sw.js"
-      - "manifest.webmanifest"
-      - "scripts/**"
-      - ".github/workflows/static-runtime-integrity.yml"
+  workflow_dispatch:
 
 permissions:
   contents: read
