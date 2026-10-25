@@ -23,10 +23,11 @@
   const AUTOSAVE_KEY = "lantern-road-autosave-v1";
   const LEGACY_BACKUP_KEY = "lantern-road-save-v1-backup";
   const PREFS_KEY = "lantern-road-ui-prefs-v1";
-  const BUILD_ID = "2026.10.04-lr0009-v7";
+  const BUILD_ID = "2026.10.05-lr0141-v1";
   const SaveSystem = window.LanternRoadSave;
   if (!SaveSystem) throw new Error("Lantern Road save system failed to load.");
   const dom = {
+    app: document.getElementById("app"),
     statusStrip: document.getElementById("statusStrip"),
     tabContent: document.getElementById("tabContent"),
     modalRoot: document.getElementById("modalRoot"),
@@ -430,6 +431,13 @@
     } else if (profile.place === "combat") {
       addDroneLayer(55, 0.0045, "triangle", -8);
     }
+  }
+
+  function refreshAtmosphere() {
+    if (!dom.app || !state) return;
+    const profile = getAmbienceProfile();
+    dom.app.dataset.weather = profile.weather || "clear";
+    dom.app.dataset.place = profile.place || "road";
   }
 
   function refreshAmbience(force = false) {
@@ -4008,6 +4016,7 @@
     renderTabContent();
     renderMap();
     renderModal();
+    refreshAtmosphere();
     refreshAmbience();
     scheduleAutosave();
   }
