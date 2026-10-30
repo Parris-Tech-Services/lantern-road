@@ -2,6 +2,29 @@ name: Static runtime integrity
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "game.js"
+      - "save-system.js"
+      - "index.html"
+      - "sw.js"
+      - "manifest.webmanifest"
+      - "scripts/**"
+      - ".agent-coordination/WORK-QUEUE.json"
+      - ".github/workflows/static-runtime-integrity.yml"
+      - "tests/work-queue-integrity.test.mjs"
+  pull_request:
+    paths:
+      - "game.js"
+      - "save-system.js"
+      - "index.html"
+      - "sw.js"
+      - "manifest.webmanifest"
+      - "scripts/**"
+      - ".agent-coordination/WORK-QUEUE.json"
+      - ".github/workflows/static-runtime-integrity.yml"
+      - "tests/work-queue-integrity.test.mjs"
 
 permissions:
   contents: read
@@ -18,3 +41,7 @@ jobs:
           node-version: "22"
       - name: Validate app shell references, cache wiring and JavaScript syntax
         run: node scripts/validate-static-runtime.mjs
+      - name: Assert agent queue syntax, duplicate fields and valid dependencies
+        run: |
+          node scripts/validate-work-queue.mjs
+          node --test tests/work-queue-integrity.test.mjs
