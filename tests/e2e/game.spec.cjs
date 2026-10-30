@@ -120,3 +120,36 @@ test("site action and combat action work in a real browser", async ({ page }) =>
 
   expectNoPageErrors(errors);
 });
+
+test("autosave resumes the same quest without a hidden new-game reset",async({page})=>{
+ const errors=await openGame(page);
+ await page.locator('button[data-action="talk-npc"][data-npc="mayor_rowan"]').click();
+ await page.getByRole("button",{name:"Take the road trouble job."}).click();
+ await page.locator('#modalRoot button[data-action="close-dialogue"]').click();
+ const before=await snapshot(page);
+ expect(before.campaign.activeQuests.some(q=>q.id==="lantern_road")).toBe(true);
+ await expect.poll(async()=>page.evaluate(()=>{
+   const raw=localStorage.getItem("lantern-road-autosave-v1");
+   return raw?JSON.parse(raw).state?.quests?.lantern_road?.status:null;
+ })).toBe("active");
+ await page.reload({waitUntil:"networkidle"});
+ await expect(page.locator("#mapCanvas")).toBeVisible();
+ const resumed=await snapshot(page);
+ expect(resumed.campaign.activeQuests).toEqual(before.campaign.activeQuests);
+ expect(resumed.campaign.day).toBe(before.campaign.day);
+ await expect(page.locator("#feedbackRoot")).toContainText("Autosave resumed");
+ // A user-initiated new campaign must require confirmation and preserve manual save.
+ await page.locator("#saveBtn").click();
+ await expect(page.locator("#modalRoot")).toContainText("Manual Save Updated");
+ const manual=await page.evaluate(()=>localStorage.getItem("lantern-road-save-v1"));
+ await page.locator('#modalRoot button[data-action="close-dialogue"]').click();
+ await page.locator("#newGameBtn").click();
+ await expect(page.locator("#modalRoot")).toContainText("Start New Campaign?");
+ await page.getByRole("button",{name:"Keep current campaign"}).click();
+ expect((await snapshot(page)).campaign.activeQuests).toEqual(before.campaign.activeQuests);
+ await page.locator("#newGameBtn").click();
+ await page.getByRole("button",{name:"Start new campaign"}).click();
+ expect((await snapshot(page)).campaign.activeQuests.some(q=>q.id==="lantern_road")).toBe(false);
+ expect(await page.evaluate(()=>localStorage.getItem("lantern-road-save-v1"))).toBe(manual);
+ expectNoPageErrors(errors);
+});
