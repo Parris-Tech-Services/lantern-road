@@ -2,6 +2,25 @@ name: Browser regression tests
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "game.js"
+      - "save-system.js"
+      - "index.html"
+      - "content.js"
+      - "tests/e2e/**"
+      - "playwright.config.cjs"
+      - ".github/workflows/browser-regression-tests.yml"
+  pull_request:
+    paths:
+      - "game.js"
+      - "save-system.js"
+      - "index.html"
+      - "content.js"
+      - "tests/e2e/**"
+      - "playwright.config.cjs"
+      - ".github/workflows/browser-regression-tests.yml"
 
 permissions:
   contents: read
