@@ -2,6 +2,19 @@ name: Save migration tests
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "game.js"
+      - "save-system.js"
+      - "tests/save-migrations.test.cjs"
+      - ".github/workflows/save-migration-tests.yml"
+  pull_request:
+    paths:
+      - "game.js"
+      - "save-system.js"
+      - "tests/save-migrations.test.cjs"
+      - ".github/workflows/save-migration-tests.yml"
 
 permissions:
   contents: read
