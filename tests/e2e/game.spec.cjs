@@ -13,6 +13,13 @@ async function openGame(page) {
   });
 
   await page.goto("/?e2e=1");
+  // A real visitor must explicitly choose consent before using controls beneath
+  // the analytics banner. Do not force-click through this overlay in tests.
+  const declineAnalytics = page.getByRole("button", { name: "Decline", exact: true });
+  if (await declineAnalytics.isVisible()) {
+    await declineAnalytics.click();
+    await expect(declineAnalytics).toBeHidden();
+  }
   await expect(page.locator("#mapCanvas")).toBeVisible();
 
   const introButton = page.getByRole("button", { name: "Set out from Hearthwick." });
