@@ -4116,7 +4116,7 @@
     {
       "id": "LR-0155",
       "title": "Author Lantern Road Voice Bible, voice grammar and name registry seed",
-      "status": "READY",
+      "status": "DONE",
       "priority": 1,
       "exclusive_scope": "originality-voice-bible",
       "depends_on": [],
@@ -4134,12 +4134,12 @@
         "voice.json",
         "docs/NAME-REGISTRY.md"
       ],
-      "notes": "First originality-program task. Derived from existing canon; Josh approves the voice, not the agent. Consumes the research branch templates and tools/originality/namegen.py. No canon renames."
+      "notes": "First originality-program task. Derived from existing canon; Josh approves the voice, not the agent. Consumes the research branch templates and tools/originality/namegen.py. No canon renames. | completed_at=2026-11-12T22:31:00+11:00 | merge_commit=see PR #126 | deliverables=docs/VOICE-BIBLE.md, voice.json, docs/NAME-REGISTRY.md | evidence=20 generated names, 0 banlist hits, 0 reserved collisions; slop 12.98/1.71 (docs, under 15) | status=draft for Josh approval; no canon rename or runtime change"
     },
     {
       "id": "LR-0156",
       "title": "Enforce naming grammar and registry in CI",
-      "status": "BLOCKED",
+      "status": "READY",
       "priority": 1,
       "exclusive_scope": "originality-name-ci",
       "depends_on": [
@@ -4160,12 +4160,12 @@
         "scripts/",
         " .github/workflows/"
       ],
-      "notes": "Blocked on LR-0155's voice grammar and registry seed. AED owns CI/tooling; Storyteller owns canon decisions."
+      "notes": "Blocked on LR-0155's voice grammar and registry seed. AED owns CI/tooling; Storyteller owns canon decisions. | unblocked after LR-0155 DONE"
     },
     {
       "id": "LR-0157",
       "title": "Apply major-NPC depth template to three canon NPCs",
-      "status": "BLOCKED",
+      "status": "READY",
       "priority": 1,
       "exclusive_scope": "originality-npc-template",
       "depends_on": [
@@ -4185,7 +4185,7 @@
         "story/npcs/",
         "story/dialogue/"
       ],
-      "notes": "Blocked on LR-0155 Voice Bible. Authoring only; runtime integration remains with the existing dialogue runtime tasks."
+      "notes": "Blocked on LR-0155 Voice Bible. Authoring only; runtime integration remains with the existing dialogue runtime tasks. | unblocked after LR-0155 DONE"
     }
   ],
   "agent_roster": [
@@ -4248,5 +4248,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-11-12T22:27:12+11:00"
+  "updated_at": "2026-11-12T22:31:00+11:00"
 }
