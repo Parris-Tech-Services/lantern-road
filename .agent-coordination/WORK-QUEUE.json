@@ -4090,6 +4090,28 @@
         "docs/DECISIONS.md"
       ],
       "notes": "Completed 5 Oct 2026 via PR #119, merge commit ec47fa68d511da8461755708f2504ffac643b094. docs/DECISIONS.md now records Josh-approved Map Canon v2 direction: 24×18 / 432 hexes; preserve all 16 current CANON place ids and embed the current 9×8 world as the developed core province; save-safe position/discovery migration; approximately 3200×2200 atlas with overview/regional/local scales; 6–8 major regions; eventual 40–60 meaningful named locations with roughly 25–30 in the first expansion wave; terrain/route-sensitive travel pacing; and staged specialist ownership. Actual protected grid/projection/canonical-coordinate mutation remains a later dedicated map-canon implementation task. Agent coordination #1186 and Browser regression #35 passed on exact PR head 224ad19370374a4c07627416b621d35df167ed6c."
+    },
+    {
+      "id": "LR-0154",
+      "title": "Restore browser-regression CI on current GitHub runner",
+      "status": "READY",
+      "priority": 0,
+      "exclusive_scope": "ci-browser-runtime",
+      "depends_on": [],
+      "primary_agent": 8,
+      "goal": "Make the existing browser-regression workflow run successfully on the current GitHub-hosted runner without weakening any test or quality gate.",
+      "acceptance_criteria": [
+        "The browser-regression workflow completes successfully on a PR that changes the workflow or test files.",
+        "Chromium installs and the Playwright suite runs; no continue-on-error, skipped tests, relaxed assertions or removed gates.",
+        "The exact runner image and Playwright version are recorded in the PR.",
+        "The LR-0005 PR #121 browser-regression check is re-run or rebased onto the fix and reported.",
+        "Game code, save schema, content and test thresholds are unchanged by this task."
+      ],
+      "likely_files": [
+        ".github/workflows/browser-regression-tests.yml",
+        "package.json"
+      ],
+      "notes": "CI blocker discovered on PR #121: Playwright 1.55 cannot install Chromium on the ubuntu-26.04 runner image ('Playwright does not support chromium on ubuntu26.04-x64'). Prefer a supported runner pin or a deliberate toolchain upgrade. Do not weaken the gate."
     }
   ],
   "agent_roster": [
@@ -4152,5 +4174,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-10-05T10:11:00+11:00"
+  "updated_at": "2026-11-12T22:17:17+11:00"
 }
