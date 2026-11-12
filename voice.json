@@ -90,7 +90,6 @@
   "avoid": [
     "Elara",
     "Elias",
-    "Mara",
     "Kael",
     "Lyra",
     "Aria",
@@ -188,6 +187,7 @@
   ],
   "reserved": [
     "Mira Quickstep",
+    "Mara Kett",
     "Oren Thale",
     "Garrick Vale",
     "Sister Brindle",

@@ -19,6 +19,7 @@
 | --- | --- | --- |
 | Mira Quickstep | Scout companion | Reserved; personal arc exists |
 | Oren Thale | Scholar companion | Reserved; personal arc exists |
+| Mara Kett | Rope guide / Oren's witness | Existing canon; do not create a second unrelated Mara |
 | Garrick Vale | Frontline companion | Reserved; personal arc exists |
 | Sister Brindle | Priest companion | Reserved; personal arc exists |
 | Rowan Pike | Mayor of Hearthwick | Shared Grey March canon |
@@ -45,7 +46,7 @@ These are protected by `world/map-canon.json`. Do not add, rename, move or retir
 
 ## Watchlist — do not add without a specific reason
 
-Elara, Elias, Mara, Kael, Lyra, Aria, Seraphina, Thorne, Cassian, Isolde, Nova.
+Elara, Elias, Kael, Lyra, Aria, Seraphina, Thorne, Cassian, Isolde, Nova. Mara Kett is existing canon; only a *new, unrelated* Mara would be a watchlist problem.
 
 These are model-default / generic fantasy names. They are not automatically forbidden if a future culture or canon reason justifies one, but a new core character using one needs an explicit note in the PR and showrunner approval.
 

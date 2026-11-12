@@ -91,7 +91,7 @@ The Grey March sounds like a wet English/Welsh border that has been worked for c
 
 - One or two syllables, usually.
 - Soft or clipped consonants; endings in **-a, -en, -in, -y, -k, -d, -r**.
-- Avoid the current model defaults: Elara, Elias, Mara, Kael, Lyra, Aria, Seraphina, Thorne, Cassian, Isolde.
+- Avoid the current model defaults: Elara, Elias, Kael, Lyra, Aria, Seraphina, Thorne, Cassian, Isolde, Nova. **Mara Kett is existing canon**; do not create a second, unrelated Mara.
 - A name should sound speakable by a tired ferryman, not chosen from a fantasy name generator.
 
 ### Surnames
@@ -109,7 +109,7 @@ The Grey March sounds like a wet English/Welsh border that has been worked for c
 
 ### Reserved canon
 
-Mira Quickstep, Oren Thale, Garrick Vale, Sister Brindle, Rowan Pike, Tessa Reed, Sister Elira, Oswin Marris, Halden Crow, Joric Pell, Sen Marrow, Iven Holt, Alwen Reed, Edda Briar, Fen Lark, Yor Dane, Nera Vale, Tobin Reed and Vesk Harran are **reserved**. Do not rename them. Do not give a new core character the same name.
+Mira Quickstep, Oren Thale, Mara Kett, Garrick Vale, Sister Brindle, Rowan Pike, Tessa Reed, Sister Elira, Oswin Marris, Halden Crow, Joric Pell, Sen Marrow, Iven Holt, Alwen Reed, Edda Briar, Fen Lark, Yor Dane, Nera Vale, Tobin Reed and Vesk Harran are **reserved**. Do not rename them. Do not give a new core character the same name.
 
 The full list and ownership status are in [`docs/NAME-REGISTRY.md`](NAME-REGISTRY.md) and `voice.json`.
 
