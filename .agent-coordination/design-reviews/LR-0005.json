@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0005",
+  "reviewer_agent_number": 1,
+  "reviewer": "The Steward",
+  "status": "APPROVED",
+  "reviewed_head_sha": "ebabcae144c75c85e0e70b5823aee5a91ce2e2ac",
+  "reviewed_at": "2026-11-12T22:32:00+11:00",
+  "pillars_checked": [1, 2, 3, 4, 5],
+  "terminology_checked": true,
+  "decision_log_checked": true,
+  "scope_conflicts_checked": true,
+  "notes": "Approved as the exact-head Steward game review for LR-0005. Checked against VISION pillar 2 (choices leave visible marks), the DECISIONS Storyteller/Mechanist economy split, and TERMINOLOGY; no internal world_flag/save keys leak into player prose. Acceptance criteria are met: faction changes now show before/after feedback and practical settlement/shop effects; patron-standing and direct quest outcomes affect buy/inn prices only through scoped hooks without moving base economy; named quest outcomes drive settlement state, route/danger notes, NPC reactions and the end-of-campaign legacy list. Save impact is additive (factionHistory is guarded and quest outcomes already persisted) and map canon is untouched. Exact head ebabcae: browser regression run 43208932914 passed 6/6 including the new faction/quest world-state test; save-migration and static-runtime passed; merge gates LR-0011 and LR-0013 are DONE. Non-blocking follow-ups for later polish: a capped faction gain currently returns with no feedback, the Greyfen direct-market note can appear in an inn summary although it only discounts shop buys, and the patron-to-settlement map could move into content data. Full 20-minute fun/phone playtest remains Josh/Warden validation, not a merge blocker."
+}

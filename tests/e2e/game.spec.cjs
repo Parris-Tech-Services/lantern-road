@@ -160,3 +160,26 @@ test("autosave resumes the same quest without a hidden new-game reset",async({pa
  expect(await page.evaluate(()=>localStorage.getItem("lantern-road-save-v1"))).toBe(manual);
  expectNoPageErrors(errors);
 });
+
+test("faction standing and quest outcomes are visible in world state", async ({ page }) => {
+  const errors = await openGame(page);
+
+  await page.evaluate(() => {
+    window.__lanternRoadTest.setFaction("guild", 4);
+    window.__lanternRoadTest.setQuestOutcome("missing_ledger", "returned_to_guild");
+  });
+
+  const state = await snapshot(page);
+  expect(state.campaign.worldConsequences.marketStanding.greyfen.innCost).toBe(4);
+  expect(state.campaign.worldConsequences.marketStanding.greyfen.standing).toBe(4);
+  expect(state.campaign.worldConsequences.marketStanding.greyfen.note).toContain("Gilt Caravan Guild standing earns you better local prices");
+  expect(state.campaign.worldConsequences.legacy).toContain("You returned the missing ledger to the Gilt Caravan Guild.");
+  expect(state.campaign.worldConsequences.settlementStates.greyfen.join(" ")).toContain("Guild factors are suddenly friendlier");
+
+  await page.evaluate(() => window.__lanternRoadTest.setFaction("guild", 0));
+  const noStanding = await snapshot(page);
+  expect(noStanding.campaign.worldConsequences.marketStanding.greyfen.innCost).toBe(5);
+  expect(noStanding.campaign.worldConsequences.marketStanding.greyfen.note).toContain("Local market prices have improved");
+
+  expectNoPageErrors(errors);
+});
