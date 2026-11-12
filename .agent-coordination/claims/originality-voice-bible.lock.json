@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0155",
+  "exclusive_scope": "originality-voice-bible",
+  "agent_number": 2,
+  "agent": "The Storyteller",
+  "session_id": "6d29a7f4-6885-4e72-a68e-2b017a6f4696",
+  "claim_token": "abc4772c-98c4-450b-b6cf-0ff7379e1e14",
+  "claimed_at": "2026-11-12T22:28:24+11:00",
+  "expires_at": "2026-11-13T10:28:24+11:00",
+  "branch": "agent/LR-0155-originality-voice-bible-6d29a7f4",
+  "note": "Draft Voice Bible, voice grammar and registry seed from existing canon; no renames or runtime changes."
+}
