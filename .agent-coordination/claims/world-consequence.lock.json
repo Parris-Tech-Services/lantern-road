@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0005",
+  "exclusive_scope": "world-consequence",
+  "agent_number": 2,
+  "agent": "The Storyteller",
+  "session_id": "88910c5e-8aff-4bb4-b414-620c7abfc1fe",
+  "claim_token": "255a1d6a-bd3e-44de-8bc3-29de06a17cd3",
+  "claimed_at": "2026-11-12T22:09:52+11:00",
+  "expires_at": "2026-11-13T10:09:52+11:00",
+  "branch": "agent/LR-0005-world-consequence-88910c5e",
+  "note": "Reviving parked LR-0005 implementation on current main; implementing only world-consequence."
+}
