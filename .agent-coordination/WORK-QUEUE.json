@@ -4094,7 +4094,7 @@
     {
       "id": "LR-0154",
       "title": "Restore browser-regression CI on current GitHub runner",
-      "status": "READY",
+      "status": "DONE",
       "priority": 0,
       "exclusive_scope": "ci-browser-runtime",
       "depends_on": [],
@@ -4111,7 +4111,7 @@
         ".github/workflows/browser-regression-tests.yml",
         "package.json"
       ],
-      "notes": "CI blocker discovered on PR #121: Playwright 1.55 cannot install Chromium on the ubuntu-26.04 runner image ('Playwright does not support chromium on ubuntu26.04-x64'). Prefer a supported runner pin or a deliberate toolchain upgrade. Do not weaken the gate."
+      "notes": "CI blocker discovered on PR #121: Playwright 1.55 cannot install Chromium on the ubuntu-26.04 runner image ('Playwright does not support chromium on ubuntu26.04-x64'). Prefer a supported runner pin or a deliberate toolchain upgrade. Do not weaken the gate. | completed_at=2026-11-12T22:19:48+11:00 | merge_commit=cb66044 | workflow_run=43208025491 | runner=ubuntu-24.04 | playwright=1.55.0 | browser_regression=pass (33s) | no gates weakened"
     }
   ],
   "agent_roster": [
@@ -4174,5 +4174,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-11-12T22:17:17+11:00"
+  "updated_at": "2026-11-12T22:19:48+11:00"
 }
