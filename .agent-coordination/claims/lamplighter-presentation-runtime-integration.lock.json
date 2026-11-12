@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0141",
+  "exclusive_scope": "lamplighter-presentation-runtime-integration",
+  "agent_number": 1,
+  "agent": "The Steward",
+  "session_id": "393b3bfe-69f2-4253-9e5c-bcb9eaa3d435",
+  "claim_token": "b4e23923-db47-4a57-801b-9fb3036a0720",
+  "claimed_at": "2026-11-12T22:38:45+11:00",
+  "expires_at": "2026-11-13T10:38:45+11:00",
+  "branch": "agent/LR-0141-early-visual-wiring-2c2fd694",
+  "note": "Steward merge prep: reconcile parked LR-0141 onto current main, rerun checks, merge."
+}
