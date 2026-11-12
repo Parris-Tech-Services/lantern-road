@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "LR-0054",
+  "exclusive_scope": "qa-scenario-catalog",
+  "agent_number": 6,
+  "agent": "The Warden",
+  "session_id": "a8ae0666-4bed-41cc-8452-d82d72866127",
+  "claim_token": "5f5c666d-1333-4333-8b1d-ca7f8867357c",
+  "claimed_at": "2026-11-12T22:44:22+11:00",
+  "expires_at": "2026-11-13T10:44:22+11:00",
+  "branch": "agent/LR-0054-qa-scenario-catalog-a8ae0666",
+  "note": "Author reusable black-box scenario catalogue; QA methodology only, no specialist fixes."
+}
