@@ -167,7 +167,7 @@
         "content.js",
         "game.js"
       ],
-      "notes": "PARKED 2026-10-04T22:08+11:00 after merged-runtime verification. LR-0006 implementation is already present on main via PR #5 merge commit ea0cc88f082d5c7a0a20f340477c6f5c826ab125; current main contains heroBuilds, explicit companion equipment slots, persistent injuries/recovery and progression-aware combat/UI hooks. Do NOT replay/cherry-pick the old 259-commit-behind branch over current main. Merged LR-0011 save-system v2 preserves progression because encode clones the full state and decode/mergeDefaults retains candidate keys while filling current defaults; current game.js also normalizes builds/equipment/injuries. Task must remain READY because merge gates LR-0011 and LR-0013 are not formally DONE and steward_review is REQUIRED. After both gates are DONE: fresh Agent 3 claim, run the permanent LR-0013 real-browser suite plus focused progression save/reload checks against exact current main, obtain/repair exact-head Agent 1 Steward approval for the merged progression state, then mark LR-0006 DONE. No further feature replay is currently needed.",
+      "notes": "PARKED 2026-10-04T22:08+11:00 after merged-runtime verification. LR-0006 implementation is already present on main via PR #5 merge commit ea0cc88f082d5c7a0a20f340477c6f5c826ab125; current main contains heroBuilds, explicit companion equipment slots, persistent injuries/recovery and progression-aware combat/UI hooks. Do NOT replay/cherry-pick the old 259-commit-behind branch over current main. Merged LR-0011 save-system v2 preserves progression because encode clones the full state and decode/mergeDefaults retains candidate keys while filling current defaults; current game.js also normalizes builds/equipment/injuries. Task must remain READY because merge gates LR-0011 and LR-0013 are not formally DONE and steward_review is REQUIRED. After both gates are DONE: fresh Agent 3 claim, run the permanent LR-0013 real-browser suite plus focused progression save/reload checks against exact current main, obtain/repair exact-head Agent 1 Steward approval for the merged progression state, then mark LR-0006 DONE. No further feature replay is currently needed. | steward_routing=2026-11-12T22:44:00+11:00: LR-0011/LR-0013 are now DONE and the progression implementation is already on main. Remaining gate is Agent 3 evidence: a focused progression save/reload check against current main. No feature replay and no retroactive Steward review of already-merged code; keep READY until that evidence is recorded.",
       "primary_agent": 3,
       "merge_gate_depends_on": [
         "LR-0011",
@@ -1522,7 +1522,7 @@
     {
       "id": "LR-0055",
       "title": "Decouple technical foundation gates from human release validation",
-      "status": "READY",
+      "status": "DONE",
       "priority": 0,
       "exclusive_scope": "foundation-gate-policy",
       "depends_on": [],
@@ -1544,7 +1544,7 @@
         ".agent-coordination/gate-evidence/README.md",
         ".agent-coordination/DESIGN-REVIEW-PROTOCOL.md"
       ],
-      "notes": "PARKED HANDOFF: current-main reconciliation complete on branch agent/LR-0055-foundation-policy-69f9a050-r5, exact useful head e4f1ccbb154c2dd690b2d7e0a00a08c83776640c, draft PR #74 (supersedes closed stale PR #17). Mechanical queue comparison confirmed every non-policy task and top-level queue metadata match live main; only LR-0011/LR-0013/LR-0014/LR-0055/LR-0056 carry intended policy deltas. Agent coordination run #689 (37187380586) passed every step. Next action: Agent 1 Steward approval, then fresh Agent 1 claim before merge.",
+      "notes": "PARKED HANDOFF: current-main reconciliation complete on branch agent/LR-0055-foundation-policy-69f9a050-r5, exact useful head e4f1ccbb154c2dd690b2d7e0a00a08c83776640c, draft PR #74 (supersedes closed stale PR #17). Mechanical queue comparison confirmed every non-policy task and top-level queue metadata match live main; only LR-0011/LR-0013/LR-0014/LR-0055/LR-0056 carry intended policy deltas. Agent coordination run #689 (37187380586) passed every step. Next action: Agent 1 Steward approval, then fresh Agent 1 claim before merge. | closed_done=2026-11-12T22:44:00+11:00 | Steward closure: the intended policy model is already live on main (LR-0011/LR-0013 technical DONE with verified gate evidence; LR-0056 retains Josh's separate Android release gate; gate verification is Steward-owned). PR #74's obsolete branch must not be replayed. Stale claim lock foundation-gate-policy.lock.json expired 2026-10-04T22:32Z with no recent branch/PR activity; recovered and deleted.",
       "supporting_agents": []
     },
     {
@@ -3397,7 +3397,7 @@
     {
       "id": "LR-0129",
       "title": "Author illustration composition, crop and export production contract",
-      "status": "READY",
+      "status": "DONE",
       "priority": 1,
       "exclusive_scope": "art-asset-production-contract",
       "depends_on": [
@@ -3419,7 +3419,7 @@
         "assets/art/ASSET-SPECS.json",
         "docs/ART-DIRECTION.md"
       ],
-      "notes": "PARKED pending Steward exact-head review. PR #77, branch agent/LR-0129-art-production-contract-5a2b7347, useful head 778f1e4d41cbe4a4091c4cb260d576afbb3664ff. Added exact composition/crop/export contract and machine-readable ASSET-SPECS.json grounded in 58 px entry, 76–92 px card and ~112 px wide-phone art cases. QA: all category/crop/export/provenance sections present and JSON parses across eight asset categories. Coordination checks pass; only remaining gate is .agent-coordination/design-reviews/LR-0129.json.",
+      "notes": "PARKED pending Steward exact-head review. PR #77, branch agent/LR-0129-art-production-contract-5a2b7347, useful head 778f1e4d41cbe4a4091c4cb260d576afbb3664ff. Added exact composition/crop/export contract and machine-readable ASSET-SPECS.json grounded in 58 px entry, 76–92 px card and ~112 px wide-phone art cases. QA: all category/crop/export/provenance sections present and JSON parses across eight asset categories. Coordination checks pass; only remaining gate is .agent-coordination/design-reviews/LR-0129.json. | closed_done=2026-11-12T22:44:00+11:00 | Steward closure: PR #77 merged 2026-10-04 and current main contains docs/ART-ASSET-PRODUCTION-CONTRACT.md plus assets/art/ASSET-SPECS.json (parses, covers the eight categories). This is administrative closure of already-merged work, not a retroactive exact-head approval.",
       "steward_review": "REQUIRED"
     },
     {
@@ -3725,7 +3725,7 @@
     {
       "id": "LR-0141",
       "title": "Integrate Lamplighter UI icons, materials and atmospheric VFX",
-      "status": "READY",
+      "status": "DONE",
       "priority": 1,
       "exclusive_scope": "lamplighter-presentation-runtime-integration",
       "depends_on": [
@@ -3752,7 +3752,7 @@
         "assets/ui/materials/",
         "assets/ui/effects/"
       ],
-      "notes": "PARKED HANDOFF 5 Oct 2026: Josh-directed early current-shell presentation integration implemented on branch agent/LR-0141-early-visual-wiring-2c2fd694, exact useful head 12082a50870bd00f40b20acca8b769ef960ab916, PR #115. Player-visible work includes accepted Garrick/Mira/Oren/Brindle portraits via existing CSS art slots, authored icons on selected visible controls, restrained parchment/lantern material treatment, contextual rain/fog/sacred VFX with reduced-motion/high-contrast fallbacks, build id 2026.10.05-lr0141-v1, and service-worker caching for every new runtime asset. CI green on exact head: Browser regression #29 / 37237342547, Static runtime #50 / 37237342542, DOM contract #43 / 37237342515, Save migration #58 / 37237342482, Agent coordination #1129 / 37237342499. parked_at=2026-10-05T08:47:00+11:00. Agent 4 visual feedback is welcome but advisory; Steward is final internal game-production approver and may merge the frozen green PR at unchanged head. Broader LR-0031 art delivery remains separate."
+      "notes": "PARKED HANDOFF 5 Oct 2026: Josh-directed early current-shell presentation integration implemented on branch agent/LR-0141-early-visual-wiring-2c2fd694, exact useful head 12082a50870bd00f40b20acca8b769ef960ab916, PR #115. Player-visible work includes accepted Garrick/Mira/Oren/Brindle portraits via existing CSS art slots, authored icons on selected visible controls, restrained parchment/lantern material treatment, contextual rain/fog/sacred VFX with reduced-motion/high-contrast fallbacks, build id 2026.10.05-lr0141-v1, and service-worker caching for every new runtime asset. CI green on exact head: Browser regression #29 / 37237342547, Static runtime #50 / 37237342542, DOM contract #43 / 37237342515, Save migration #58 / 37237342482, Agent coordination #1129 / 37237342499. parked_at=2026-10-05T08:47:00+11:00. Agent 4 visual feedback is welcome but advisory; Steward is final internal game-production approver and may merge the frozen green PR at unchanged head. Broader LR-0031 art delivery remains separate. | reconciled_head=66e9f32eb417d7e72947c2c2fadc8806f8eeea4e | merge_commit=9a4927ec6d00916476101c317a5fc06ad7d105b7 | merged_at=2026-11-12T22:42:26+11:00 | Steward reconciled the frozen presentation branch onto current main, preserved the presentation-only scope, and merged it. Browser regression, save migration and static runtime passed on 66e9f32. Claim lock deleted after closure."
     },
     {
       "id": "LR-0142",
@@ -4248,5 +4248,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-11-12T22:40:22+11:00"
+  "updated_at": "2026-11-12T22:44:00+11:00"
 }
