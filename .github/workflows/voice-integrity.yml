@@ -1,0 +1,41 @@
+name: Voice and name registry
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "voice.json"
+      - "docs/VOICE-BIBLE.md"
+      - "docs/NAME-REGISTRY.md"
+      - "story/**"
+      - "content.js"
+      - "world/map-canon.json"
+      - "scripts/validate-voice.mjs"
+      - ".github/workflows/voice-integrity.yml"
+  pull_request:
+    paths:
+      - "voice.json"
+      - "docs/VOICE-BIBLE.md"
+      - "docs/NAME-REGISTRY.md"
+      - "story/**"
+      - "content.js"
+      - "world/map-canon.json"
+      - "scripts/validate-voice.mjs"
+      - ".github/workflows/voice-integrity.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  voice-integrity:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Use Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+      - name: Validate voice grammar and name registry
+        run: node scripts/validate-voice.mjs
