@@ -10,6 +10,10 @@ A Warden playtest must drive Lantern Road in a real browser using Playwright, ag
 
 The one early baseline pass (LR-0021) establishes a before-state. Other Warden passes intentionally wait for their relevant foundations so stale findings do not flood the queue.
 
+## Scenario catalogue
+
+Reusable player-driven scenarios: [`QA/SCENARIO-CATALOG.md`](SCENARIO-CATALOG.md). It is methodology, not a playtest result.
+
 ## Severity
 
 - **S0 — Blocker:** crash, corruption, hard lock, campaign cannot continue, or severe data loss.
