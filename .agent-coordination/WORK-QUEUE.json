@@ -4139,7 +4139,7 @@
     {
       "id": "LR-0156",
       "title": "Enforce naming grammar and registry in CI",
-      "status": "READY",
+      "status": "DONE",
       "priority": 1,
       "exclusive_scope": "originality-name-ci",
       "depends_on": [
@@ -4160,7 +4160,7 @@
         "scripts/",
         " .github/workflows/"
       ],
-      "notes": "Blocked on LR-0155's voice grammar and registry seed. AED owns CI/tooling; Storyteller owns canon decisions. | unblocked after LR-0155 DONE"
+      "notes": "Blocked on LR-0155's voice grammar and registry seed. AED owns CI/tooling; Storyteller owns canon decisions. | unblocked after LR-0155 DONE | completed_at=2026-11-12T22:34:26+11:00 | merge=PR #128 | deliverables=scripts/validate-voice.mjs, .github/workflows/voice-integrity.yml | evidence=positive 15 NPCs/16 places/0 hits; negative Elara test exit 1; voice-integrity pass 7s | corrected Mara Kett as existing canon"
     },
     {
       "id": "LR-0157",
@@ -4248,5 +4248,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-11-12T22:31:00+11:00"
+  "updated_at": "2026-11-12T22:34:26+11:00"
 }
