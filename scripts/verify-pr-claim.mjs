@@ -71,12 +71,12 @@ if (branchLocks.length > 1) {
 
 const prHead = process.env.PR_HEAD_SHA || "";
 
-function inspectDirectorApproval() {
+function inspectStewardApproval() {
   const expectedReviewFile = `.agent-coordination/design-reviews/${task.id}.json`;
   const reviewPath = path.join(root, expectedReviewFile);
 
   if (!prHead) {
-    return { present: false, reviewOnly: false, valid: false, error: `${task.id}: PR_HEAD_SHA is unavailable; cannot verify Director approval freshness.` };
+    return { present: false, reviewOnly: false, valid: false, error: `${task.id}: PR_HEAD_SHA is unavailable; cannot verify Steward approval freshness.` };
   }
 
   let reviewedHead;
@@ -105,7 +105,7 @@ function inspectDirectorApproval() {
       valid: false,
       reviewedHead,
       approvalChanges,
-      error: `${task.id}: missing Director design review at ${expectedReviewFile}`
+      error: `${task.id}: missing Steward game review at ${expectedReviewFile}`
     };
   }
 
@@ -119,7 +119,7 @@ function inspectDirectorApproval() {
       valid: false,
       reviewedHead,
       approvalChanges,
-      error: `${task.id}: invalid Director design review JSON: ${error.message}`
+      error: `${task.id}: invalid Steward game review JSON: ${error.message}`
     };
   }
 
@@ -131,11 +131,11 @@ function inspectDirectorApproval() {
       review,
       reviewedHead,
       approvalChanges,
-      error: `${task.id}: Director approval must be the final PR commit and change only ${expectedReviewFile}; found: ${approvalChanges.join(", ") || "no files"}.`
+      error: `${task.id}: Steward approval must be the final PR commit and change only ${expectedReviewFile}; found: ${approvalChanges.join(", ") || "no files"}.`
     };
   }
 
-  if (review.task_id !== task.id || review.reviewer_agent_number !== 7 || review.status !== "APPROVED") {
+  if (review.task_id !== task.id || review.reviewer_agent_number !== 1 || review.status !== "APPROVED") {
     return {
       present: true,
       reviewOnly: true,
@@ -143,7 +143,7 @@ function inspectDirectorApproval() {
       review,
       reviewedHead,
       approvalChanges,
-      error: `${task.id}: Director review must match the task, be by Agent 7, and have status APPROVED.`
+      error: `${task.id}: Steward review must match the task, be by Agent 1, and have status APPROVED.`
     };
   }
 
@@ -155,7 +155,7 @@ function inspectDirectorApproval() {
       review,
       reviewedHead,
       approvalChanges,
-      error: `${task.id}: Director approval is stale. It reviewed ${review.reviewed_head_sha || "nothing"}, but current feature head before approval is ${reviewedHead}.`
+      error: `${task.id}: Steward approval is stale. It reviewed ${review.reviewed_head_sha || "nothing"}, but current feature head before approval is ${reviewedHead}.`
     };
   }
 
@@ -170,9 +170,9 @@ function inspectDirectorApproval() {
   };
 }
 
-const reviewCapable = [1, 2, 3, 4, 5].includes(task.primary_agent);
-const needsDirectorReview = task.director_review === "REQUIRED";
-const director = reviewCapable ? inspectDirectorApproval() : null;
+const reviewCapable = task.primary_agent !== 1;
+const needsStewardReview = task.steward_review === "REQUIRED";
+const steward = reviewCapable ? inspectStewardApproval() : null;
 
 function assertMergeGatesComplete() {
   const incompleteGates = (task.merge_gate_depends_on ?? []).filter(
@@ -185,7 +185,7 @@ function assertMergeGatesComplete() {
 
 if (branchLocks.length === 0) {
   // A frozen parked PR may merge without waking the implementation owner back up.
-  // REQUIRED-review tasks need an exact final Director approval commit.
+  // steward_review REQUIRED specialist tasks need an exact final Steward approval commit.
   // NOT_REQUIRED (or omitted) tasks may merge at the exact parked feature head.
   if (task.status !== "READY") {
     fail(`${task.id}: parked no-lock merge requires task status READY; found ${task.status}.`);
@@ -205,55 +205,52 @@ if (branchLocks.length === 0) {
 
   assertMergeGatesComplete();
 
-  if (!needsDirectorReview) {
-    // Legacy optional approval is accepted, but never required for NOT_REQUIRED tasks.
-    // If that approval reviewed a map-canon review-only commit, also accept the
-    // underlying feature head recorded in the parked handoff.
-    if (director?.valid) {
-      const legacyUsefulHeads = [director.reviewedHead];
-      try {
-        const reviewParent = git(["rev-parse", `${director.reviewedHead}^`]);
-        const reviewChanges = git(["diff", "--name-only", reviewParent, director.reviewedHead])
-          .split("\n")
-          .filter(Boolean);
-        const expectedMapCanonReview = `.agent-coordination/map-canon-reviews/${task.id}.json`;
-        if (reviewChanges.length === 1 && reviewChanges[0] === expectedMapCanonReview) {
-          legacyUsefulHeads.push(reviewParent);
-        }
-      } catch {
-        // A normal optional approval needs only its reviewed head.
-      }
-
-      const recordedLegacyHead = legacyUsefulHeads.find(candidate => notes.includes(candidate));
-      if (recordedLegacyHead) {
-        console.log(
-          `Parked NOT_REQUIRED-review PR with optional legacy Director approval verified for direct merge: ${task.id} / ${task.exclusive_scope} / ${branch} / parked useful head ${recordedLegacyHead}`
-        );
-        process.exit(0);
-      }
-    }
-
+  if (!needsStewardReview) {
     if (!prHead) {
       fail(`${task.id}: PR_HEAD_SHA is unavailable; cannot verify frozen parked no-review head.`);
     }
-    if (!notes.includes(prHead)) {
-      fail(`${task.id}: parked queue notes do not name exact current PR head ${prHead}; fresh ownership is required before reconciliation/rebase changes.`);
+
+    // Historical review-only commits (including old Agent 7 approvals) remain valid
+    // branch history. They are not a current approval gate, so accept the current
+    // head or the underlying parked useful head when the final commit(s) contain
+    // only this task's legacy design/map review records.
+    const acceptedHeads = [prHead];
+    try {
+      const parent = git(["rev-parse", `${prHead}^`]);
+      const changes = git(["diff", "--name-only", parent, prHead]).split("\n").filter(Boolean);
+      const designReview = `.agent-coordination/design-reviews/${task.id}.json`;
+      const mapReview = `.agent-coordination/map-canon-reviews/${task.id}.json`;
+      if (changes.length === 1 && (changes[0] === designReview || changes[0] === mapReview)) {
+        acceptedHeads.push(parent);
+        const grandparent = git(["rev-parse", `${parent}^`]);
+        const parentChanges = git(["diff", "--name-only", grandparent, parent]).split("\n").filter(Boolean);
+        if (changes[0] === designReview && parentChanges.length === 1 && parentChanges[0] === mapReview) {
+          acceptedHeads.push(grandparent);
+        }
+      }
+    } catch {
+      // Single-commit branches simply rely on the exact current parked head.
+    }
+
+    const recordedHead = acceptedHeads.find(candidate => notes.includes(candidate));
+    if (!recordedHead) {
+      fail(`${task.id}: parked queue notes do not name the exact current or accepted underlying parked head. Expected one of: ${acceptedHeads.join(", ")}.`);
     }
 
     console.log(
-      `Parked NOT_REQUIRED-review PR verified for direct merge without owner re-claim: ${task.id} / ${task.exclusive_scope} / ${branch} / head ${prHead}`
+      `Parked no-review PR verified for direct merge without owner re-claim: ${task.id} / ${task.exclusive_scope} / ${branch} / parked useful head ${recordedHead}`
     );
     process.exit(0);
   }
 
-  if (!director?.valid) {
-    fail(director?.error || `${task.id}: missing valid Director approval.`);
+  if (!steward?.valid) {
+    fail(steward?.error || `${task.id}: missing valid Steward approval.`);
   }
 
-  const parkedUsefulHeads = [director.reviewedHead];
+  const parkedUsefulHeads = [steward.reviewedHead];
   try {
-    const reviewParent = git(["rev-parse", `${director.reviewedHead}^`]);
-    const reviewChanges = git(["diff", "--name-only", reviewParent, director.reviewedHead])
+    const reviewParent = git(["rev-parse", `${steward.reviewedHead}^`]);
+    const reviewChanges = git(["diff", "--name-only", reviewParent, steward.reviewedHead])
       .split("\n")
       .filter(Boolean);
     const expectedMapCanonReview = `.agent-coordination/map-canon-reviews/${task.id}.json`;
@@ -273,7 +270,7 @@ if (branchLocks.length === 0) {
   }
 
   console.log(
-    `Parked REQUIRED-review PR verified for direct merge without owner re-claim: ${task.id} / ${task.exclusive_scope} / ${branch} / reviewed ${director.reviewedHead} / parked useful head ${parkedHead}`
+    `Parked Steward-reviewed PR verified for direct merge without owner re-claim: ${task.id} / ${task.exclusive_scope} / ${branch} / reviewed ${steward.reviewedHead} / parked useful head ${parkedHead}`
   );
   process.exit(0);
 }
@@ -298,8 +295,8 @@ if (task.status !== "READY") {
 
 assertMergeGatesComplete();
 
-if (needsDirectorReview) {
-  if (!director?.valid) fail(director?.error || `${task.id}: missing valid Director approval.`);
+if (needsStewardReview) {
+  if (!steward?.valid) fail(steward?.error || `${task.id}: missing valid Steward approval.`);
 }
 
 const expiry = Date.parse(lock.expires_at);

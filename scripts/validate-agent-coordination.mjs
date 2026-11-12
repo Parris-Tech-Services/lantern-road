@@ -43,7 +43,13 @@ for (const task of tasks) {
   if (task.merge_gate_depends_on !== undefined && !Array.isArray(task.merge_gate_depends_on)) fail(`${task.id}: merge_gate_depends_on must be an array when present.`);
   if (!rosterNumbers.has(task.primary_agent)) fail(`${task.id}: primary_agent must be one of the roster agent numbers.`);
   if (task.director_review !== undefined && !["REQUIRED", "NOT_REQUIRED"].includes(task.director_review)) {
-    fail(`${task.id}: director_review must be REQUIRED or NOT_REQUIRED when present.`);
+    fail(`${task.id}: legacy director_review must be REQUIRED or NOT_REQUIRED when present.`);
+  }
+  if (task.steward_review !== undefined && !["REQUIRED", "NOT_REQUIRED"].includes(task.steward_review)) {
+    fail(`${task.id}: steward_review must be REQUIRED or NOT_REQUIRED when present.`);
+  }
+  if (task.primary_agent === 1 && task.steward_review === "REQUIRED") {
+    fail(`${task.id}: Agent 1-owned tasks must not require a separate Steward self-review.`);
   }
   if (task.supporting_agents !== undefined) {
     if (!Array.isArray(task.supporting_agents)) fail(`${task.id}: supporting_agents must be an array when present.`);
@@ -100,10 +106,10 @@ for (const task of tasks) {
           if (!Number.isInteger(evidence.ci?.workflow_run_id) || evidence.ci.workflow_run_id <= 0) fail(`${task.id}: ci.workflow_run_id must be a positive integer.`);
           if (evidence.ci?.conclusion !== "success") fail(`${task.id}: ci.conclusion must be success.`);
           if (!Array.isArray(evidence.ci?.artifact_names) || evidence.ci.artifact_names.length === 0) fail(`${task.id}: at least one CI artifact name is required.`);
-          if (evidence.director_verification?.agent_number !== 7 || evidence.director_verification?.status !== "VERIFIED") {
-            fail(`${task.id}: Agent 7 Director evidence verification is required.`);
+          if (evidence.steward_verification?.agent_number !== 1 || evidence.steward_verification?.status !== "VERIFIED") {
+            fail(`${task.id}: Agent 1 Steward evidence verification is required.`);
           }
-          if (!Number.isFinite(Date.parse(evidence.director_verification?.verified_at ?? ""))) fail(`${task.id}: Director verified_at is invalid.`);
+          if (!Number.isFinite(Date.parse(evidence.steward_verification?.verified_at ?? ""))) fail(`${task.id}: Steward verified_at is invalid.`);
         }
       }
     }

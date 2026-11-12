@@ -6,10 +6,10 @@ These records prove that the implementation itself is merged and machine-verifie
 
 ## Technical closure flow
 
-1. Merge the implementation after normal Agent 7 exact-head review.
+1. Merge the implementation after normal ownership/tests and any explicitly required Steward game review.
 2. Run the required CI suite on the exact merged candidate commit.
 3. Keep the task-specific required workflow artifacts.
-4. Agent 7 verifies that the referenced machine evidence is coherent and corresponds to the task.
+4. Agent 1 — The Steward verifies that the referenced machine evidence is coherent and corresponds to the task.
 5. Add `.agent-coordination/gate-evidence/<TASK-ID>.json`.
 6. Mark the technical gate task `DONE` in the same closure change.
 7. CI independently verifies repository, candidate SHA, successful workflow conclusion, artifact names, required repository paths, and the evidence record.
@@ -28,11 +28,11 @@ These records prove that the implementation itself is merged and machine-verifie
     "conclusion": "success",
     "artifact_names": ["save-migration-results"]
   },
-  "director_verification": {
-    "agent_number": 7,
+  "steward_verification": {
+    "agent_number": 1,
     "status": "VERIFIED",
     "verified_at": "2026-10-04T19:00:00+11:00",
-    "notes": "Verified task-specific workflow evidence and artifact linkage."
+    "notes": "Steward verified task-specific workflow evidence and artifact linkage."
   }
 }
 ```

@@ -1,14 +1,34 @@
 name: Browser regression tests
 
 on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "game.js"
+      - "save-system.js"
+      - "index.html"
+      - "content.js"
+      - "tests/e2e/**"
+      - "playwright.config.cjs"
+      - ".github/workflows/browser-regression-tests.yml"
   pull_request:
+    paths:
+      - "game.js"
+      - "save-system.js"
+      - "index.html"
+      - "content.js"
+      - "tests/e2e/**"
+      - "playwright.config.cjs"
+      - ".github/workflows/browser-regression-tests.yml"
 
 permissions:
   contents: read
 
 jobs:
   browser-regression:
-    runs-on: ubuntu-latest
+    # Playwright 1.55 cannot install Chromium on ubuntu-26.04; pin a supported LTS image.
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@v7

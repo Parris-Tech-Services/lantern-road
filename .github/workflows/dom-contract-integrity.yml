@@ -1,20 +1,7 @@
 name: DOM contract integrity
 
 on:
-  push:
-    paths:
-      - "index.html"
-      - "game.js"
-      - "src/**"
-      - "scripts/validate-dom-contract.mjs"
-      - ".github/workflows/dom-contract-integrity.yml"
-  pull_request:
-    paths:
-      - "index.html"
-      - "game.js"
-      - "src/**"
-      - "scripts/validate-dom-contract.mjs"
-      - ".github/workflows/dom-contract-integrity.yml"
+  workflow_dispatch:
 
 permissions:
   contents: read

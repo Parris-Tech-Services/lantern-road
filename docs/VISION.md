@@ -62,6 +62,10 @@ Lantern Road should remain recognisably its own compact browser road campaign.
 
 ## Governance
 
-**Josh is the creative director and final authority on product direction, fun and premium feel.**
+**Josh is the owner / creative director and final authority on product direction, fun and premium feel.**
 
-Agent 7 — **The Director** is the operational design governor: it keeps this vision, the decision log and terminology coherent; checks implementation work for drift and hidden cross-task conflicts; and escalates genuine creative trade-offs to Josh rather than deciding them unilaterally.
+Agent 1 — **The Steward** is the project lead, lead game designer, technical lead and program integrator. Within Josh's established creative direction, The Steward owns day-to-day game design, production sequencing, architecture, integration, map canon, cross-system consistency and final internal game-production approval. Routine game-development decisions do not require CEO approval.
+
+Agent 7 — **The Director / CEO** owns executive oversight: company-level priorities, resourcing, organisational health, delivery risk and executive escalation. The CEO is not the routine game designer, technical approver or merge gate.
+
+Josh's creative authority remains above both roles. Scope-changing creative trade-offs still escalate to Josh; business/organisational trade-offs may escalate to the CEO; ordinary game-development decisions are resolved by The Steward.

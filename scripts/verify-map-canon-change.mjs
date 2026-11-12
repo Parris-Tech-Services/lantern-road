@@ -161,7 +161,7 @@ const reviewFiles = mapReviewChanges.filter(file =>
 if (reviewFiles.length !== 1 || mapReviewChanges.length !== 1) {
   console.error(
     "Protected map-canon changes require one map-canon review-only commit. " +
-    "For Agent 1–5 implementation PRs, an optional final Director design-review-only commit may follow it. " +
+    "For Agent 1–5 implementation PRs, an optional legacy final design-review-only commit may follow it. " +
     `Expected exactly one .agent-coordination/map-canon-reviews/LR-xxxx.json file in the map review commit; found: ${mapReviewChanges.join(", ") || "nothing"}.`
   );
   process.exit(1);
@@ -172,7 +172,7 @@ const fileTaskId = path.basename(reviewFile, ".json");
 
 if (designReviewMatch && designReviewMatch[1] !== fileTaskId) {
   console.error(
-    `Final Director design review task ${designReviewMatch[1]} does not match map-canon review task ${fileTaskId}.`
+    `Final legacy design review task ${designReviewMatch[1]} does not match map-canon review task ${fileTaskId}.`
   );
   process.exit(1);
 }
@@ -189,8 +189,8 @@ if (review.task_id !== fileTaskId) {
   console.error(`${reviewFile}: task_id must match filename ${fileTaskId}.`);
   process.exit(1);
 }
-if (review.reviewer_agent_number !== 7 || review.status !== "APPROVED") {
-  console.error(`${reviewFile}: requires Agent 7 with status APPROVED.`);
+if (review.reviewer_agent_number !== 1 || review.status !== "APPROVED") {
+  console.error(`${reviewFile}: requires Agent 1 Steward approval with status APPROVED.`);
   process.exit(1);
 }
 if (review.reviewed_head_sha !== reviewedFeatureSha) {
@@ -253,5 +253,5 @@ if (!(queue.tasks || []).some(task => task.id === review.task_id)) {
 }
 
 console.log(
-  `Protected map-canon change approved for ${review.task_id}; ${changedPlaceIds.size} place id(s) and ${changedRegionIds.size} regional label id(s) changed, exact reviewed feature head ${reviewedFeatureSha}${designReviewMatch ? ", followed by final Director design review" : ""}.`
+  `Protected map-canon change approved for ${review.task_id}; ${changedPlaceIds.size} place id(s) and ${changedRegionIds.size} regional label id(s) changed, exact reviewed feature head ${reviewedFeatureSha}${designReviewMatch ? ", followed by legacy review-only history" : ""}.`
 );

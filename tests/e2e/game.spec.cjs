@@ -13,6 +13,13 @@ async function openGame(page) {
   });
 
   await page.goto("/?e2e=1");
+  // A real visitor must explicitly choose consent before using controls beneath
+  // the analytics banner. Do not force-click through this overlay in tests.
+  const declineAnalytics = page.getByRole("button", { name: "Decline", exact: true });
+  if (await declineAnalytics.isVisible()) {
+    await declineAnalytics.click();
+    await expect(declineAnalytics).toBeHidden();
+  }
   await expect(page.locator("#mapCanvas")).toBeVisible();
 
   const introButton = page.getByRole("button", { name: "Set out from Hearthwick." });
@@ -117,6 +124,62 @@ test("site action and combat action work in a real browser", async ({ page }) =>
     const state = await snapshot(page);
     return state.combat ? state.combat.round : 0;
   }).toBeGreaterThanOrEqual(1);
+
+  expectNoPageErrors(errors);
+});
+
+test("autosave resumes the same quest without a hidden new-game reset",async({page})=>{
+ const errors=await openGame(page);
+ await page.locator('button[data-action="talk-npc"][data-npc="mayor_rowan"]').click();
+ await page.getByRole("button",{name:"Take the road trouble job."}).click();
+ await page.locator('#modalRoot button[data-action="close-dialogue"]').click();
+ const before=await snapshot(page);
+ expect(before.campaign.activeQuests.some(q=>q.id==="lantern_road")).toBe(true);
+ await expect.poll(async()=>page.evaluate(()=>{
+   const raw=localStorage.getItem("lantern-road-autosave-v1");
+   return raw?JSON.parse(raw).state?.quests?.lantern_road?.status:null;
+ })).toBe("active");
+ await page.reload({waitUntil:"networkidle"});
+ await expect(page.locator("#mapCanvas")).toBeVisible();
+ const resumed=await snapshot(page);
+ expect(resumed.campaign.activeQuests).toEqual(before.campaign.activeQuests);
+ expect(resumed.campaign.day).toBe(before.campaign.day);
+ await expect(page.locator("#feedbackRoot")).toContainText("Autosave resumed");
+ // A user-initiated new campaign must require confirmation and preserve manual save.
+ await page.locator("#saveBtn").click();
+ await expect(page.locator("#modalRoot")).toContainText("Manual Save Updated");
+ const manual=await page.evaluate(()=>localStorage.getItem("lantern-road-save-v1"));
+ await page.locator('#modalRoot button[data-action="close-dialogue"]').click();
+ await page.locator("#newGameBtn").click();
+ await expect(page.locator("#modalRoot")).toContainText("Start New Campaign?");
+ await page.getByRole("button",{name:"Keep current campaign"}).click();
+ expect((await snapshot(page)).campaign.activeQuests).toEqual(before.campaign.activeQuests);
+ await page.locator("#newGameBtn").click();
+ await page.getByRole("button",{name:"Start new campaign"}).click();
+ expect((await snapshot(page)).campaign.activeQuests.some(q=>q.id==="lantern_road")).toBe(false);
+ expect(await page.evaluate(()=>localStorage.getItem("lantern-road-save-v1"))).toBe(manual);
+ expectNoPageErrors(errors);
+});
+
+test("faction standing and quest outcomes are visible in world state", async ({ page }) => {
+  const errors = await openGame(page);
+
+  await page.evaluate(() => {
+    window.__lanternRoadTest.setFaction("guild", 4);
+    window.__lanternRoadTest.setQuestOutcome("missing_ledger", "returned_to_guild");
+  });
+
+  const state = await snapshot(page);
+  expect(state.campaign.worldConsequences.marketStanding.greyfen.innCost).toBe(4);
+  expect(state.campaign.worldConsequences.marketStanding.greyfen.standing).toBe(4);
+  expect(state.campaign.worldConsequences.marketStanding.greyfen.note).toContain("Gilt Caravan Guild standing earns you better local prices");
+  expect(state.campaign.worldConsequences.legacy).toContain("You returned the missing ledger to the Gilt Caravan Guild.");
+  expect(state.campaign.worldConsequences.settlementStates.greyfen.join(" ")).toContain("Guild factors are suddenly friendlier");
+
+  await page.evaluate(() => window.__lanternRoadTest.setFaction("guild", 0));
+  const noStanding = await snapshot(page);
+  expect(noStanding.campaign.worldConsequences.marketStanding.greyfen.innCost).toBe(5);
+  expect(noStanding.campaign.worldConsequences.marketStanding.greyfen.note).toContain("Local market prices have improved");
 
   expectNoPageErrors(errors);
 });

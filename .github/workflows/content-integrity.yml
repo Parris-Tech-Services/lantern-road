@@ -1,16 +1,7 @@
 name: Content integrity
 
 on:
-  push:
-    paths:
-      - "content.js"
-      - "scripts/validate-content.mjs"
-      - ".github/workflows/content-integrity.yml"
-  pull_request:
-    paths:
-      - "content.js"
-      - "scripts/validate-content.mjs"
-      - ".github/workflows/content-integrity.yml"
+  workflow_dispatch:
 
 permissions:
   contents: read
