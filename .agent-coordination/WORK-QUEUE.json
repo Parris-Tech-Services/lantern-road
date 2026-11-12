@@ -4165,7 +4165,7 @@
     {
       "id": "LR-0157",
       "title": "Apply major-NPC depth template to three canon NPCs",
-      "status": "READY",
+      "status": "DONE",
       "priority": 1,
       "exclusive_scope": "originality-npc-template",
       "depends_on": [
@@ -4185,7 +4185,7 @@
         "story/npcs/",
         "story/dialogue/"
       ],
-      "notes": "Blocked on LR-0155 Voice Bible. Authoring only; runtime integration remains with the existing dialogue runtime tasks. | unblocked after LR-0155 DONE"
+      "notes": "Blocked on LR-0155 Voice Bible. Authoring only; runtime integration remains with the existing dialogue runtime tasks. | unblocked after LR-0155 DONE | completed_at=2026-11-12T22:40:22+11:00 | merge=PR #130 | deliverables=Rowan/Tessa/Elira full template, first/return/repeat states, Onion Budget scene, medicine callbacks, blind speaker check | evidence=slop 3.57; voice integrity pass; content/static/map/coordination pass | no runtime or canon changes"
     }
   ],
   "agent_roster": [
@@ -4248,5 +4248,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-11-12T11:35:08.669Z"
+  "updated_at": "2026-11-12T22:40:22+11:00"
 }
