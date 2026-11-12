@@ -1962,6 +1962,7 @@
     const multiplier = standingPriceMultiplier(standing);
     if (multiplier < 1) return `${FACTION_MAP[factionId].name} standing earns you better local prices.`;
     if (multiplier > 1) return `${FACTION_MAP[factionId].name} standing is costing you at local counters.`;
+    if (directMarketMultiplier(settlementId) < 1) return "Local market prices have improved after your recent choices.";
     return `${FACTION_MAP[factionId].name} standing is not changing prices here yet.`;
   }
 
@@ -4350,7 +4351,8 @@
             {
               faction: settlementPatronFaction(settlement.id),
               standing: settlementStanding(settlement.id),
-              innCost: getInnCost(settlement.id)
+              innCost: getInnCost(settlement.id),
+              note: marketStandingText(settlement.id)
             }
           ]))
         }
@@ -4402,6 +4404,16 @@
         state.ui.shop = null;
         state.rngState = 123456789;
         startCombat(encounterId, "Regression test encounter.");
+      },
+      setFaction(factionId, value) {
+        if (!FACTION_MAP[factionId]) throw new Error(`Unknown faction: ${factionId}`);
+        state.factions[factionId] = Math.max(-5, Math.min(5, Number(value) || 0));
+        renderAll();
+      },
+      setQuestOutcome(questId, outcome) {
+        if (!state.quests[questId]) throw new Error(`Unknown quest: ${questId}`);
+        state.quests[questId].outcome = String(outcome);
+        renderAll();
       }
     });
   }
