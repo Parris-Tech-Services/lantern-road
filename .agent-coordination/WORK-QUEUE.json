@@ -4112,6 +4112,80 @@
         "package.json"
       ],
       "notes": "CI blocker discovered on PR #121: Playwright 1.55 cannot install Chromium on the ubuntu-26.04 runner image ('Playwright does not support chromium on ubuntu26.04-x64'). Prefer a supported runner pin or a deliberate toolchain upgrade. Do not weaken the gate. | completed_at=2026-11-12T22:19:48+11:00 | merge_commit=cb66044 | workflow_run=43208025491 | runner=ubuntu-24.04 | playwright=1.55.0 | browser_regression=pass (33s) | no gates weakened"
+    },
+    {
+      "id": "LR-0155",
+      "title": "Author Lantern Road Voice Bible, voice grammar and name registry seed",
+      "status": "READY",
+      "priority": 1,
+      "exclusive_scope": "originality-voice-bible",
+      "depends_on": [],
+      "primary_agent": 2,
+      "goal": "Give every Lantern Road writer a short, canon-derived voice guide and machine-readable naming grammar so new NPCs, places and prose sound like the Grey March rather than generic fantasy.",
+      "acceptance_criteria": [
+        "Create docs/VOICE-BIBLE.md from existing canon, marked Status: draft until Josh approves; no established name, place, faction or character is renamed.",
+        "Create voice.json with reserved canon names, naming sounds/morphology, place grammar, trades, quirks, wants and a small banlist.",
+        "Create a name registry seed that distinguishes owned, shared Grey March and watchlist names; record the Mira/Oren reservation decision and the existing Rowan/Tessa/Elira shared-canon status.",
+        "Demonstrate namegen.py --voice voice.json can generate at least 20 candidate NPC names with zero banlist hits and no reserved-name collisions.",
+        "Do not change runtime code, game state, saves, map canon or existing prose; this is authoring/grammar only."
+      ],
+      "likely_files": [
+        "docs/VOICE-BIBLE.md",
+        "voice.json",
+        "docs/NAME-REGISTRY.md"
+      ],
+      "notes": "First originality-program task. Derived from existing canon; Josh approves the voice, not the agent. Consumes the research branch templates and tools/originality/namegen.py. No canon renames."
+    },
+    {
+      "id": "LR-0156",
+      "title": "Enforce naming grammar and registry in CI",
+      "status": "BLOCKED",
+      "priority": 1,
+      "exclusive_scope": "originality-name-ci",
+      "depends_on": [
+        "LR-0155"
+      ],
+      "primary_agent": 8,
+      "goal": "Prevent new player-facing names from bypassing the approved voice grammar, reserved canon and shared Grey March registry.",
+      "acceptance_criteria": [
+        "Add a dependency-free repository check that compares new/changed names against voice.json, the registry and the existing canon registry.",
+        "The check fails on a new core name that is reserved, cross-universe or outside the declared naming grammar; it reports the exact file and name.",
+        "Wire the check into the existing validation workflow without weakening tests or adding continue-on-error.",
+        "The check is advisory for existing canon and strict for new/changed player-facing names.",
+        "Do not rename existing canon or modify game runtime."
+      ],
+      "likely_files": [
+        "voice.json",
+        "docs/NAME-REGISTRY.md",
+        "scripts/",
+        " .github/workflows/"
+      ],
+      "notes": "Blocked on LR-0155's voice grammar and registry seed. AED owns CI/tooling; Storyteller owns canon decisions."
+    },
+    {
+      "id": "LR-0157",
+      "title": "Apply major-NPC depth template to three canon NPCs",
+      "status": "BLOCKED",
+      "priority": 1,
+      "exclusive_scope": "originality-npc-template",
+      "depends_on": [
+        "LR-0155"
+      ],
+      "primary_agent": 2,
+      "goal": "Turn three existing Lantern Road NPCs into fully modelled recurring people using the major-NPC template, without renaming or contradicting canon.",
+      "acceptance_criteria": [
+        "Choose three existing NPCs (recommended Rowan Pike, Tessa Reed, Sister Elira) and fill identity, speech style, routine, status, motives, fears, capabilities and limits, public/private/unknown knowledge, stance, taboo topics, exit conditions, first-notice detail and tone-change triggers.",
+        "Give each NPC first-meeting, return and repeat-safe conversation states tied to world state; add at least one cross-NPC or overheard scene.",
+        "Every new line passes the choice-change test and names only canon locations/factions.",
+        "Add callbacks to at least one existing quest outcome; no runtime implementation in this task.",
+        "Blind speaker test: three characters are distinguishable with names removed."
+      ],
+      "likely_files": [
+        "story/npcs/HEARTHWICK.md",
+        "story/npcs/",
+        "story/dialogue/"
+      ],
+      "notes": "Blocked on LR-0155 Voice Bible. Authoring only; runtime integration remains with the existing dialogue runtime tasks."
     }
   ],
   "agent_roster": [
@@ -4174,5 +4248,5 @@
       "LR-0013"
     ]
   },
-  "updated_at": "2026-11-12T22:19:48+11:00"
+  "updated_at": "2026-11-12T22:27:12+11:00"
 }
